@@ -1,7 +1,6 @@
 package com.zeepy.server.review.controller;
 
-import com.zeepy.server.review.domain.Review;
-import com.zeepy.server.review.dto.ResponseReviewListDto;
+import com.zeepy.server.review.dto.ResponseReviewListDtos;
 import com.zeepy.server.review.dto.ReviewDto;
 import com.zeepy.server.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +16,9 @@ public class ReviewController {
     final private ReviewService reviewService;
 
     @GetMapping("/{address}")//api를 스케줄링으로 불러오면 build_id사용해서 객체참조로 불러오도록 수정
-    public ResponseEntity<List<Review>> getReview(@PathVariable String address) {
-        List<Review> responseReviewListDto = reviewService.getReviewList(address);
-        return ResponseEntity.ok().body(responseReviewListDto);
+    public ResponseEntity<ResponseReviewListDtos> getReview(@PathVariable String address) {
+        ResponseReviewListDtos responseReviewListDtos = reviewService.getReviewList(address);
+        return ResponseEntity.ok().body(responseReviewListDtos);
     }
 
     @PostMapping
