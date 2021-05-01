@@ -36,4 +36,9 @@ public class ReviewService {
 		Review review = reviewInterface.save(reviewDto.returnReviewEntity());
 		return review.getId();
 	}
+
+    @Transactional
+    public void deleteReview(Long id) {
+        reviewInterface.deleteById(id);
+    }
 }

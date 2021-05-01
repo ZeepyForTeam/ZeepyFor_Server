@@ -36,4 +36,10 @@ public class ReviewController {
 		return ResponseEntity.created(URI.create("/api/review/" + saveId)).build();
 	}
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
+        reviewService.deleteReview(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
