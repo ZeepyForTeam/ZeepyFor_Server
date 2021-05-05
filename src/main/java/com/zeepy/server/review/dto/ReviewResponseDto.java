@@ -5,11 +5,13 @@ import com.zeepy.server.review.domain.LessorAge;
 import com.zeepy.server.review.domain.MultiChoiceReview;
 import com.zeepy.server.review.domain.Review;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor
 @Getter
-public class ResponseReviewListDto {
+public class ReviewResponseDto {
     private Long id;
     private Long user;
     private String address;
@@ -23,7 +25,7 @@ public class ResponseReviewListDto {
     private String review;
     private List<String> imageUrls;
 
-    public ResponseReviewListDto(Review review){
+    public ReviewResponseDto(Review review){
         this.id = review.getId();
         this.user = review.getUser();
         this.address = review.getAddress();
