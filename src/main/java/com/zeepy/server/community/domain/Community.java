@@ -48,6 +48,12 @@ public class Community {
     @OneToMany(mappedBy = "community")
     private List<CommunityLike> likeUsers = new ArrayList<>();
 
+    @Deprecated
+    private String Comments;
+
+    @Deprecated
+    private String AchievementRate;
+
     @ElementCollection
     @JoinTable(name = "communityImageUrls",joinColumns = @JoinColumn(name = "communityID"))
     private List<String> imageUrls;   //사진
