@@ -31,7 +31,7 @@ public class CommunityRepositoryTest {
         communityRepository.save(Community.builder()
                 .communityCategory(CommunityCategory.FREESHARING)
                 .productName("무료나눔물건")
-                .productPrice("100000")
+                .productPrice(100000)
                 .sharingMethod("만나서")
                 .targetNumberOfPeople(3)
                 .targetAmount(100000)
