@@ -28,7 +28,7 @@ public class Community {
     private String productName; //상품명
 
     @Nullable
-    private String productPrice;    //상품가격
+    private Integer productPrice;    //상품가격
 
     @Nullable
     private String sharingMethod;   //나눔방식
@@ -62,7 +62,7 @@ public class Community {
     public Community(
             CommunityCategory communityCategory,
                      String productName,
-                     String productPrice,
+                     Integer productPrice,
                      String sharingMethod,
                      Integer targetNumberOfPeople,
                      Integer targetAmount,
