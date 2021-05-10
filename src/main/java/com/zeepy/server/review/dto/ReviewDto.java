@@ -2,10 +2,12 @@ package com.zeepy.server.review.dto;
 
 import com.zeepy.server.review.domain.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
+@NoArgsConstructor
 @Setter
 @Getter
 public class ReviewDto {
