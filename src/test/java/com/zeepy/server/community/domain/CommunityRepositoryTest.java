@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -16,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("CommunityDomain_테스트_클래스")
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@DataJpaTest
 public class CommunityRepositoryTest {
     @Autowired
     CommunityRepository communityRepository;
@@ -36,7 +37,7 @@ public class CommunityRepositoryTest {
                 .targetAmount(100000)
                 .title("asadasda")
                 .content("assssssss")
-                .imageUrls(Arrays.asList(new String[]{"1", "2", "3"}))
+                .imageUrls(Arrays.asList("1", "2", "3"))
                 .build());
 
         //when
