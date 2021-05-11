@@ -5,20 +5,36 @@ import com.zeepy.server.community.domain.CommunityCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
+@Setter
 public class SaveCommunityRequestDto {
+
+    @NotNull(message = "커뮤니티카테고리는 필수값입니다.")
     private CommunityCategory communityCategory;
+
     private String productName;
+
     private Integer productPrice;
+
     private String sharingMethod;
+
     private Integer targetNumberOfPeople;
+
     private Integer targetAmount;
+
+    @NotEmpty(message = "제목은 필수입니다.")
     private String title;
+    @NotEmpty(message = "내용은 필수입니다.")
     private String content;
+
     List<String> imageUrls;
 
     @Builder
@@ -30,19 +46,19 @@ public class SaveCommunityRequestDto {
                                    Integer targetAmount,
                                    String title,
                                    String content,
-                                   List<String> imageUrls){
-        this.communityCategory=communityCategory;
-        this.productName=productName;
-        this.productPrice=productPrice;
-        this.sharingMethod=sharingMethod;
-        this.targetNumberOfPeople=targetNumberOfPeople;
-        this.targetAmount=targetAmount;
-        this.title=title;
-        this.content=content;
-        this.imageUrls=imageUrls;
+                                   List<String> imageUrls) {
+        this.communityCategory = communityCategory;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.sharingMethod = sharingMethod;
+        this.targetNumberOfPeople = targetNumberOfPeople;
+        this.targetAmount = targetAmount;
+        this.title = title;
+        this.content = content;
+        this.imageUrls = imageUrls;
     }
 
-    public Community toEntity(){
+    public Community toEntity() {
         return Community.builder()
                 .communityCategory(communityCategory)
                 .productName(productName)

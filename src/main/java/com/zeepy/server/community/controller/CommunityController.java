@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RequestMapping("/api/community")
@@ -18,7 +19,7 @@ public class CommunityController {
     private final CommunityService communityService;
 
     @PostMapping
-    public ResponseEntity<Void> saveCommunity(@RequestBody SaveCommunityRequestDto saveCommunityRequestDto){
+    public ResponseEntity<Void> saveCommunity(@Valid @RequestBody SaveCommunityRequestDto saveCommunityRequestDto){
         Long saveId = communityService.save(saveCommunityRequestDto);
         return ResponseEntity.created(URI.create("/api/community/"+saveId)).build();
     }
