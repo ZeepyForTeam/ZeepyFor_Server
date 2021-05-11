@@ -15,7 +15,7 @@ public class ControllerExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> testException(MethodArgumentNotValidException e){
+    public ResponseEntity<ErrorResponse> invalidCommunitySaveDtoException(MethodArgumentNotValidException e){
         logger.error("InvalidBody_Exception!!: "+e);
 
         BindingResult bindingResult = e.getBindingResult();
