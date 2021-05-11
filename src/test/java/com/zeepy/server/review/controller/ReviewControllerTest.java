@@ -55,8 +55,25 @@ public class ReviewControllerTest extends ControllerTest {
     public void getReviewListTest() throws Exception{
         super.setUp(webApplicationContext);
 
+        ReviewDto requestDto = new ReviewDto(1L,
+                "sssss",
+                CommuncationTendency.BUSINESS,
+                LessorGender.MALE,
+                LessorAge.FOURTY,
+                "aaaaa",
+                RoomCount.THREEORMORE,
+                MultiChoiceReview.GOOD,
+                MultiChoiceReview.GOOD,
+                MultiChoiceReview.GOOD,
+                MultiChoiceReview.GOOD,
+                Arrays.asList(Furniture.AIRCONDITIONAL,Furniture.AIRCONDITIONAL),
+                "asda",
+                TotalEvaluation.GOOD,
+                Arrays.asList("1","2","3")
+        );
         String path = "/api/review/1";
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+
         super.doGet(path,params);
 
 

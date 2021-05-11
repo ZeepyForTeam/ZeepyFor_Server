@@ -24,8 +24,8 @@ public class ReviewService {
     }
 
     @Transactional
-    public void create(ReviewDto reviewDto) {
-        Review review = reviewDto.returnReviewEntity();
-        reviewInterface.save(review);
+    public Long create(ReviewDto reviewDto) {
+        Review reivew=reviewInterface.save(reviewDto.returnReviewEntity());
+        return reivew.getId();
     }
 }
