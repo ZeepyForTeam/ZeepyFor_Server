@@ -12,11 +12,11 @@ import com.zeepy.server.review.dto.ReviewDto;
 import com.zeepy.server.review.dto.ReviewResponseDto;
 import com.zeepy.server.review.dto.ReviewResponseDtos;
 import com.zeepy.server.review.repository.ReviewInterface;
-
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReviewService {
 	private final ReviewInterface reviewInterface;
 

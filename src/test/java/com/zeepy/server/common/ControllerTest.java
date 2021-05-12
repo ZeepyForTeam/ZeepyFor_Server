@@ -68,10 +68,9 @@ public abstract class ControllerTest {
                 .andExpect(status().isOk());
     }
 
-    protected <T> ResultActions doDelete(String path, T request) throws Exception {
-        return mockMvc.perform(delete(path)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(request))
+    protected <T> ResultActions doDelete(String path) throws Exception {
+		return mockMvc.perform(delete(path)
+			.contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isNoContent());
     }
