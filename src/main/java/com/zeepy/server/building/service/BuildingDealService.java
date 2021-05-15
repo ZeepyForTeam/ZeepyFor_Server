@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+
 /**
  * Created by Minky on 2021-05-15
  */
@@ -28,7 +30,7 @@ public class BuildingDealService {
     @Transactional
     public void update(Long id, BuildingDealRequestDto buildingDealRequestDto) {
         buildingDealRepository.findById(id).ifPresent(buildingDeal -> {
-            buildingDeal.setDealDate(buildingDealRequestDto.getDealDate());
+            buildingDeal.setDealDate(new Timestamp(buildingDealRequestDto.getDealDate()));
             buildingDeal.setDeposit(buildingDealRequestDto.getDeposit());
             buildingDeal.setMonthlyRent(buildingDealRequestDto.getMonthlyRent());
             buildingDealRepository.save(buildingDeal);

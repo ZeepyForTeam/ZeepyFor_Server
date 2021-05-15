@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Minky on 2021-05-15
@@ -15,13 +18,13 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class BuildingDealRequestDto {
-    private LocalDateTime dealDate;
+    private Long dealDate;
     private int deposit;
     private int monthlyRent;
     private int floor;
 
     public BuildingDealRequestDto(
-            LocalDateTime dealDate,
+            Long dealDate,
             int deposit,
             int monthlyRent,
             int floor
@@ -35,7 +38,7 @@ public class BuildingDealRequestDto {
     public BuildingDeal returnBuildingDealEntity() {
         return new BuildingDeal(
                 null,
-                this.dealDate,
+                new Timestamp(this.dealDate),
                 this.deposit,
                 this.monthlyRent,
                 this.floor

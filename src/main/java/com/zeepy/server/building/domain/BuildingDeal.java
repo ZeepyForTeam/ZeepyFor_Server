@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
@@ -29,7 +31,7 @@ public class BuildingDeal extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    private LocalDateTime dealDate;
+    private Timestamp dealDate;
 
     @NotNull
     private int deposit;
@@ -47,7 +49,7 @@ public class BuildingDeal extends BaseTimeEntity {
     @Builder
     public BuildingDeal(
             Long id,
-            LocalDateTime dealDate,
+            Timestamp dealDate,
             int deposit,
             int monthlyRent,
             int floor

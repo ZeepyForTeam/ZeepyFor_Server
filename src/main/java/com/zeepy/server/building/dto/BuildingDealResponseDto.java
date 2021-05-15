@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,14 +20,14 @@ import java.util.stream.Collectors;
 @Getter
 public class BuildingDealResponseDto {
     Long id;
-    LocalDateTime dealDate;
+    Timestamp dealDate;
     int deposit;
     int monthlyRent;
     int floor;
 
     public BuildingDealResponseDto(
             Long id,
-            LocalDateTime dealDate,
+            Timestamp dealDate,
             int deposit,
             int monthlyRent,
             int floor
