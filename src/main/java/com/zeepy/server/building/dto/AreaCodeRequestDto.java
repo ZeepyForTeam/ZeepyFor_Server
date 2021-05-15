@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class AreaCodeRequestDto {
-    private long areaCode;
+    private Long areaCode;
     private String name;
 
     public AreaCodeRequestDto(
@@ -26,7 +26,7 @@ public class AreaCodeRequestDto {
 
     public AreaCode returnAreaCodeEntity() {
         return new AreaCode(
-                null,
+                this.areaCode,
                 this.name
         );
     }

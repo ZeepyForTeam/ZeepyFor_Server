@@ -17,14 +17,14 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 public class BuildingDealResponseDto {
-    long id;
+    Long id;
     LocalDateTime dealDate;
     int deposit;
     int monthlyRent;
     int floor;
 
     public BuildingDealResponseDto(
-            long id,
+            Long id,
             LocalDateTime dealDate,
             int deposit,
             int monthlyRent,

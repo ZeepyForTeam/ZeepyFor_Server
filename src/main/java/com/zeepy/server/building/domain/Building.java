@@ -29,7 +29,7 @@ public class Building extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_sequence_gen")
     @SequenceGenerator(name = "building_sequence_gen", sequenceName = "building_sequence")
     @Column(name = "building_id")
-    private long id;
+    private Long id;
 
     private int buildYear; // Nullable
 

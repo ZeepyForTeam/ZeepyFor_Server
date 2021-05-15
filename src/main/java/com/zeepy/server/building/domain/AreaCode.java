@@ -22,7 +22,7 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 public class AreaCode extends BaseTimeEntity {
     @Id
-    private long areaCode;
+    private Long areaCode;
 
     @NotEmpty
     private String name;

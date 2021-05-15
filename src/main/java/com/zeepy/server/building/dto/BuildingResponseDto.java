@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 public class BuildingResponseDto {
-    long id;
+    Long id;
     int buildYear; // Null 이 될 가능성이 있음
     String address;
     float exclusivePrivateArea;
@@ -26,7 +26,7 @@ public class BuildingResponseDto {
     List<BuildingDealResponseDto> buildingDeals;
 
     public BuildingResponseDto(
-            long id,
+            Long id,
             int buildYear,
             String address,
             float exclusivePrivateArea,

@@ -23,13 +23,13 @@ public class AreaCodeController {
     public ResponseEntity<Void> uploadAreaCode(
             @RequestBody AreaCodeRequestDto areaCodeRequestDto
     ) {
-        long id = areaCodeService.create(areaCodeRequestDto);
+        Long id = areaCodeService.create(areaCodeRequestDto);
         return ResponseEntity.created(URI.create("api/code/" + id)).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateAreaCode(
-            @PathVariable long id,
+            @PathVariable Long id,
             @RequestBody AreaCodeRequestDto areaCodeRequestDto
     ) {
         areaCodeService.update(id, areaCodeRequestDto);
@@ -38,7 +38,7 @@ public class AreaCodeController {
 
     @DeleteMapping
     public ResponseEntity<Void> deleteAreaCode(
-            @PathVariable long id
+            @PathVariable Long id
     ) {
         areaCodeService.deleteById(id);
         return ResponseEntity.noContent().build();

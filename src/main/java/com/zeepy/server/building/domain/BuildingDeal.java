@@ -26,7 +26,7 @@ public class BuildingDeal extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_deal_sequence_gen")
     @SequenceGenerator(name = "building_deal_sequence_gen", sequenceName = "building_deal_sequence")
-    private long id;
+    private Long id;
 
     @NotNull
     private LocalDateTime dealDate;

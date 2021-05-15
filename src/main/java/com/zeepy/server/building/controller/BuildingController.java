@@ -30,13 +30,13 @@ public class BuildingController {
     public ResponseEntity<Void> uploadBuilding(
             @RequestBody BuildingRequestDto buildingRequestDto
     ) {
-        long id = buildingService.create(buildingRequestDto);
+        Long id = buildingService.create(buildingRequestDto);
         return ResponseEntity.created(URI.create("api/building/" + id)).build();
     }
 
     @PutMapping("{id}")
     public ResponseEntity<Void> updateBuilding(
-            @PathVariable long id,
+            @PathVariable Long id,
             @RequestBody BuildingRequestDto buildingRequestDto
     ) {
         buildingService.update(id, buildingRequestDto);
@@ -45,7 +45,7 @@ public class BuildingController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteBuilding(
-            @PathVariable long id
+            @PathVariable Long id
     ) {
         buildingService.deleteById(id);
         return ResponseEntity.noContent().build();
