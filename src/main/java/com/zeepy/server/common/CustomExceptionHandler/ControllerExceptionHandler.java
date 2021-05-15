@@ -1,5 +1,6 @@
 package com.zeepy.server.common.CustomExceptionHandler;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,16 @@ public class ControllerExceptionHandler {
                 errors(bindingResult);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoContentException.class)
+    public ResponseEntity<ErrorResponse> getNullResultSoNoContentException(NoContentException e){
+        final ErrorCode errorCode= e.getErrorCode();
+        final ErrorResponse response
+                =ErrorResponse.create().
+                status(errorCode.getStatus()).
+                message(errorCode.getMessage());
+
+        return new ResponseEntity<>(response,HttpStatus.NO_CONTENT);
     }
 }
