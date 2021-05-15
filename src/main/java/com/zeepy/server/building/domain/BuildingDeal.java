@@ -37,6 +37,9 @@ public class BuildingDeal extends BaseTimeEntity {
     @NotNull
     private int monthlyRent;
 
+    @NotNull
+    private int floor;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "building_id")
     private Building building;
@@ -46,11 +49,13 @@ public class BuildingDeal extends BaseTimeEntity {
             Long id,
             LocalDateTime dealDate,
             int deposit,
-            int monthlyRent
+            int monthlyRent,
+            int floor
     ) {
         this.id = id;
         this.dealDate = dealDate;
         this.deposit = deposit;
         this.monthlyRent = monthlyRent;
+        this.floor = floor;
     }
 }

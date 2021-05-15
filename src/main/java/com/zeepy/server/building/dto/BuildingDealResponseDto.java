@@ -21,17 +21,20 @@ public class BuildingDealResponseDto {
     LocalDateTime dealDate;
     int deposit;
     int monthlyRent;
+    int floor;
 
     public BuildingDealResponseDto(
             long id,
             LocalDateTime dealDate,
             int deposit,
-            int monthlyRent
+            int monthlyRent,
+            int floor
     ) {
         this.id = id;
         this.dealDate = dealDate;
         this.deposit = deposit;
         this.monthlyRent = monthlyRent;
+        this.floor = floor;
     }
 
     public static BuildingDealResponseDto of(BuildingDeal buildingDeal) {
@@ -39,7 +42,8 @@ public class BuildingDealResponseDto {
                 buildingDeal.getId(),
                 buildingDeal.getDealDate(),
                 buildingDeal.getDeposit(),
-                buildingDeal.getMonthlyRent()
+                buildingDeal.getMonthlyRent(),
+                buildingDeal.getFloor()
         );
     }
 

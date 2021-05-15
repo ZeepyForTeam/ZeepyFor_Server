@@ -4,6 +4,7 @@ import com.zeepy.server.building.domain.BuildingDeal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 /**
@@ -17,15 +18,18 @@ public class BuildingDealRequestDto {
     private LocalDateTime dealDate;
     private int deposit;
     private int monthlyRent;
+    private int floor;
 
     public BuildingDealRequestDto(
             LocalDateTime dealDate,
             int deposit,
-            int monthlyRent
+            int monthlyRent,
+            int floor
     ) {
         this.dealDate = dealDate;
         this.deposit = deposit;
         this.monthlyRent = monthlyRent;
+        this.floor = floor;
     }
 
     public BuildingDeal returnBuildingDealEntity() {
@@ -33,7 +37,8 @@ public class BuildingDealRequestDto {
                 null,
                 this.dealDate,
                 this.deposit,
-                this.monthlyRent
+                this.monthlyRent,
+                this.floor
         );
     }
 }
