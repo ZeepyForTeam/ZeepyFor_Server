@@ -18,7 +18,8 @@ public class AreaCodeRequestDto {
 
     public AreaCodeRequestDto(
             Long areaCode,
-            String name) {
+            String name
+    ) {
         this.areaCode = areaCode;
         this.name = name;
     }

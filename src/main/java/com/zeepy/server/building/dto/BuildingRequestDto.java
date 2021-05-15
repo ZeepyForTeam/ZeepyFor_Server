@@ -26,7 +26,8 @@ public class BuildingRequestDto {
             int buildYear,
             String address,
             float exclusivePrivateArea,
-            int areaCode) {
+            int areaCode
+    ) {
         this.buildYear = buildYear;
         this.address = address;
         this.exclusivePrivateArea = exclusivePrivateArea;

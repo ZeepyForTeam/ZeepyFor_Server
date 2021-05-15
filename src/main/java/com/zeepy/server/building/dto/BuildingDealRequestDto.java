@@ -1,6 +1,5 @@
 package com.zeepy.server.building.dto;
 
-import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.building.domain.BuildingDeal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +17,12 @@ public class BuildingDealRequestDto {
     LocalDateTime dealDate;
     int deposit;
     int monthlyRent;
-    Building building;
 
     public BuildingDealRequestDto(
             LocalDateTime dealDate,
             int deposit,
-            int monthlyRent) {
+            int monthlyRent
+    ) {
         this.dealDate = dealDate;
         this.deposit = deposit;
         this.monthlyRent = monthlyRent;
