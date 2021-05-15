@@ -2,10 +2,7 @@ package com.zeepy.server.building.domain;
 
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.review.domain.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -27,6 +24,7 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Entity
 public class Building extends BaseTimeEntity {
     @Id
