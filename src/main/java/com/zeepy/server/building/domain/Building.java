@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * DB 구조
- * 건설 날짜
+ * 건설 날짜? -> 널러블
  * 주소
  * 전용 면적
  * 지역 코드
@@ -35,7 +35,7 @@ public class Building extends BaseTimeEntity {
     @Column(name = "building_id")
     private long id;
 
-    private LocalDateTime buildYear; // Null 이 될 가능성이 있음
+    private int buildYear; // Nullable
 
     @NotEmpty
     private String address;
@@ -52,7 +52,7 @@ public class Building extends BaseTimeEntity {
     @Builder
     public Building(
             Long id,
-            LocalDateTime buildYear,
+            int buildYear,
             String address,
             float exclusivePrivateArea,
             int areaCode) {
