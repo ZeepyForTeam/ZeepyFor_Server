@@ -24,4 +24,20 @@ public class BuildingDealService {
         return buildingDeal.getId();
     }
 
+    // UPDATE
+    @Transactional
+    public void update(Long id, BuildingDealRequestDto buildingDealRequestDto) {
+        buildingDealRepository.findById(id).ifPresent(buildingDeal -> {
+            buildingDeal.setDealDate(buildingDealRequestDto.getDealDate());
+            buildingDeal.setDeposit(buildingDealRequestDto.getDeposit());
+            buildingDeal.setMonthlyRent(buildingDealRequestDto.getMonthlyRent());
+            buildingDealRepository.save(buildingDeal);
+        });
+    }
+
+    // DELETE
+    @Transactional
+    public void deleteById(Long id) {
+        buildingDealRepository.deleteById(id);
+    }
 }

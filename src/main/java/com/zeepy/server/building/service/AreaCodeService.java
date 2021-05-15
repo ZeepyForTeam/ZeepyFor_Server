@@ -23,4 +23,19 @@ public class AreaCodeService {
         AreaCode areaCode = areaCodeRepository.save(areaCodeRequestDto.returnAreaCodeEntity());
         return areaCode.getAreaCode();
     }
+
+    // UPDATE
+    @Transactional
+    public void update(Long id, AreaCodeRequestDto areaCodeRequestDto) {
+        areaCodeRepository.findById(id).ifPresent(areaCode -> {
+            areaCode.setName(areaCodeRequestDto.getName());
+            areaCodeRepository.save(areaCode);
+        });
+    }
+
+    // DELETE
+    @Transactional
+    public void deleteById(Long id) {
+        areaCodeRepository.deleteById(id);
+    }
 }
