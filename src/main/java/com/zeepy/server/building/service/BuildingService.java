@@ -24,8 +24,13 @@ public class BuildingService {
     // CREATE
     @Transactional
     public Long create(BuildingRequestDto buildingRequestDto) {
-        Building building = buildingRepository.save(buildingRequestDto.returnBuildingEntity());
-        return building.getId();
+        List<Building> buildingList = buildingRepository.findByAddress(buildingRequestDto.getAddress());
+        if (buildingList.isEmpty()) {
+            Building building = buildingRepository.save(buildingRequestDto.returnBuildingEntity());
+            return building.getId();
+        } else {
+            return buildingList.get(0).getId();
+        }
     }
 
     // READ
