@@ -3,6 +3,7 @@ package com.zeepy.server.review.controller;
 import com.zeepy.server.review.dto.ReviewResponseDtos;
 import com.zeepy.server.review.dto.ReviewDto;
 import com.zeepy.server.review.service.ReviewService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/review")
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReviewController {
     private final ReviewService reviewService;
 
@@ -30,7 +31,7 @@ public class ReviewController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
         reviewService.deleteReview(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 }

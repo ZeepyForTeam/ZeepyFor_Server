@@ -5,6 +5,7 @@ import com.zeepy.server.review.dto.ReviewResponseDto;
 import com.zeepy.server.review.dto.ReviewResponseDtos;
 import com.zeepy.server.review.dto.ReviewDto;
 import com.zeepy.server.review.repository.ReviewInterface;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReviewService {
     private final ReviewInterface reviewInterface;
 
