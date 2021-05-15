@@ -6,8 +6,7 @@ import com.zeepy.server.building.repository.BuildingDealRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Minky on 2021-05-15

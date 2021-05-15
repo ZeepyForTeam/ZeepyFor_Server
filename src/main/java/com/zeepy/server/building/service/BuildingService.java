@@ -2,12 +2,14 @@ package com.zeepy.server.building.service;
 
 import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.building.dto.BuildingRequestDto;
+import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.repository.BuildingRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Created by Minky on 2021-05-15
@@ -24,5 +26,4 @@ public class BuildingService {
         Building building = buildingRepository.save(buildingRequestDto.returnBuildingEntity());
         return building.getId();
     }
-
 }
