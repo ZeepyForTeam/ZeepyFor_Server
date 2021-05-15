@@ -1,0 +1,45 @@
+package com.zeepy.server.building.dto;
+
+import com.zeepy.server.building.domain.Building;
+import com.zeepy.server.building.domain.BuildingDeal;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * Created by Minky on 2021-05-15
+ */
+
+@NoArgsConstructor
+@Setter
+@Getter
+public class BuildingDto {
+    int buildYear; // Null 이 될 가능성이 있음
+    String address;
+    float exclusivePrivateArea;
+    int areaCode;
+
+    public BuildingDto(
+            int buildYear,
+            String address,
+            float exclusivePrivateArea,
+            int areaCode) {
+        this.buildYear = buildYear;
+        this.address = address;
+        this.exclusivePrivateArea = exclusivePrivateArea;
+        this.areaCode = areaCode;
+    }
+
+    public Building returnBuildingEntity() {
+        return new Building(
+                null,
+                this.buildYear,
+                this.address,
+                this.exclusivePrivateArea,
+                this.areaCode
+        );
+    }
+}
