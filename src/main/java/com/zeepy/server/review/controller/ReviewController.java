@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -22,7 +23,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveReview(@RequestBody ReviewDto reviewDto) {
+    public ResponseEntity<Void> saveReview(@Valid @RequestBody ReviewDto reviewDto) {
         Long saveId = reviewService.create(reviewDto);
         return ResponseEntity.created(URI.create("/api/review/"+saveId)).build();
     }
