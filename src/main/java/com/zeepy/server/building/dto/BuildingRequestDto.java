@@ -16,13 +16,13 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
-public class BuildingDto {
+public class BuildingRequestDto {
     int buildYear; // Null 이 될 가능성이 있음
     String address;
     float exclusivePrivateArea;
     int areaCode;
 
-    public BuildingDto(
+    public BuildingRequestDto(
             int buildYear,
             String address,
             float exclusivePrivateArea,

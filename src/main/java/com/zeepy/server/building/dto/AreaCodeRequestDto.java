@@ -1,7 +1,6 @@
 package com.zeepy.server.building.dto;
 
 import com.zeepy.server.building.domain.AreaCode;
-import com.zeepy.server.building.domain.BuildingDeal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,11 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class AreaCodeDto {
+public class AreaCodeRequestDto {
     private long areaCode;
     private String name;
 
-    public AreaCodeDto(
+    public AreaCodeRequestDto(
             Long areaCode,
             String name) {
         this.areaCode = areaCode;

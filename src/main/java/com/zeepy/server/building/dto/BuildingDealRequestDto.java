@@ -14,13 +14,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Setter
 @Getter
-public class BuildingDealDto {
+public class BuildingDealRequestDto {
     LocalDateTime dealDate;
     int deposit;
     int monthlyRent;
     Building building;
 
-    public BuildingDealDto(
+    public BuildingDealRequestDto(
             LocalDateTime dealDate,
             int deposit,
             int monthlyRent) {
