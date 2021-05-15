@@ -22,17 +22,20 @@ public class BuildingDealRequestDto {
     private int deposit;
     private int monthlyRent;
     private int floor;
+    private Long buildingId;
 
     public BuildingDealRequestDto(
             Long dealDate,
             int deposit,
             int monthlyRent,
-            int floor
+            int floor,
+            Long buildingId
     ) {
         this.dealDate = dealDate;
         this.deposit = deposit;
         this.monthlyRent = monthlyRent;
         this.floor = floor;
+        this.buildingId = buildingId;
     }
 
     public BuildingDeal returnBuildingDealEntity() {

@@ -1,14 +1,17 @@
 package com.zeepy.server.building.service;
 
+import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.building.domain.BuildingDeal;
 import com.zeepy.server.building.dto.BuildingDealRequestDto;
 import com.zeepy.server.building.repository.BuildingDealRepository;
+import com.zeepy.server.building.repository.BuildingRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 /**
  * Created by Minky on 2021-05-15
@@ -18,11 +21,15 @@ import java.sql.Timestamp;
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class BuildingDealService {
     private final BuildingDealRepository buildingDealRepository;
+    private final BuildingRepository buildingRepository;
 
     // CREATE
     @Transactional
     public Long create(BuildingDealRequestDto buildingDealRequestDto) {
-        BuildingDeal buildingDeal = buildingDealRepository.save(buildingDealRequestDto.returnBuildingDealEntity());
+        Building building = buildingRepository.findById(buildingDealRequestDto.getBuildingId()).get();
+        BuildingDeal buildingDealIsNotSave =buildingDealRequestDto.returnBuildingDealEntity();
+        buildingDealIsNotSave.setBuilding(building);
+        BuildingDeal buildingDeal = buildingDealRepository.save(buildingDealIsNotSave);
         return buildingDeal.getId();
     }
 
