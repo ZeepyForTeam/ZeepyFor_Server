@@ -1,5 +1,6 @@
 package com.zeepy.server.review.service;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import com.zeepy.server.review.domain.Review;
 import com.zeepy.server.review.dto.ReviewResponseDto;
 import com.zeepy.server.review.dto.ReviewResponseDtos;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,7 +20,9 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewResponseDtos getReviewList(String address) {
-        return new ReviewResponseDtos(reviewInterface.findAllByAddress(address).stream()
+        List<Review> reviewList = reviewInterface.findAllByAddress(address);
+        if(reviewList.isEmpty()) ThrowNoContentException();
+        return new ReviewResponseDtos(reviewList.stream()
                 .map(ReviewResponseDto::new)
                 .collect(Collectors.toList()));
     }
@@ -27,5 +31,9 @@ public class ReviewService {
     public Long create(ReviewDto reviewDto) {
         Review review = reviewInterface.save(reviewDto.returnReviewEntity());
         return review.getId();
+    }
+
+    private void ThrowNoContentException(){
+        throw new NoContentException();
     }
 }
