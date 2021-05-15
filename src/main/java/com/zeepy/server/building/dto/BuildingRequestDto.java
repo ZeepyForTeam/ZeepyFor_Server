@@ -1,13 +1,9 @@
 package com.zeepy.server.building.dto;
 
 import com.zeepy.server.building.domain.Building;
-import com.zeepy.server.building.domain.BuildingDeal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Created by Minky on 2021-05-15
@@ -21,17 +17,23 @@ public class BuildingRequestDto {
     private String address;
     private float exclusivePrivateArea;
     private int areaCode;
+    private double latitude;
+    private double longitude;
 
     public BuildingRequestDto(
             int buildYear,
             String address,
             float exclusivePrivateArea,
-            int areaCode
+            int areaCode,
+            double latitude,
+            double longitude
     ) {
         this.buildYear = buildYear;
         this.address = address;
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Building returnBuildingEntity() {
@@ -40,7 +42,9 @@ public class BuildingRequestDto {
                 this.buildYear,
                 this.address,
                 this.exclusivePrivateArea,
-                this.areaCode
+                this.areaCode,
+                this.latitude,
+                this.longitude
         );
     }
 }

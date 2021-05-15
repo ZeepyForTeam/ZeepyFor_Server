@@ -42,6 +42,12 @@ public class Building extends BaseTimeEntity {
     @NotNull
     private int areaCode;
 
+    @NotNull
+    private double latitude;
+
+    @NotNull
+    private double longitude;
+
     @OneToMany(mappedBy = "building", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<BuildingDeal> beadingDeals;
 
@@ -51,12 +57,16 @@ public class Building extends BaseTimeEntity {
             int buildYear,
             String address,
             float exclusivePrivateArea,
-            int areaCode
+            int areaCode,
+            double latitude,
+            double longitude
     ) {
         this.id = id;
         this.buildYear = buildYear;
         this.address = address;
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

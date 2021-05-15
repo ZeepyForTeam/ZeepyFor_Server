@@ -21,6 +21,8 @@ public class BuildingResponseDto {
     String address;
     float exclusivePrivateArea;
     int areaCode;
+    double latitude;
+    double longitude;
     List<BuildingDealResponseDto> buildingDeals;
 
     public BuildingResponseDto(
@@ -29,6 +31,8 @@ public class BuildingResponseDto {
             String address,
             float exclusivePrivateArea,
             int areaCode,
+            double latitude,
+            double longitude,
             List<BuildingDealResponseDto> buildingDeals
     ){
         this.id = id;
@@ -37,6 +41,8 @@ public class BuildingResponseDto {
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
         this.buildingDeals = buildingDeals;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public static BuildingResponseDto of(Building building){
@@ -46,6 +52,8 @@ public class BuildingResponseDto {
                 building.getAddress(),
                 building.getExclusivePrivateArea(),
                 building.getAreaCode(),
+                building.getLatitude(),
+                building.getLongitude(),
                 BuildingDealResponseDto.listOf(building.getBeadingDeals())
         );
     }
