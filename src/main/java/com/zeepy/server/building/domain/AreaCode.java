@@ -5,8 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 /**
  * Created by Minky on 2021-05-15
@@ -32,7 +30,8 @@ public class AreaCode extends BaseTimeEntity {
     @Builder
     public AreaCode(
             Long areaCode,
-            String name) {
+            String name
+    ) {
         this.areaCode = areaCode;
         this.name = name;
     }

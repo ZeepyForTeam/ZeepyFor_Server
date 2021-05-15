@@ -1,13 +1,11 @@
 package com.zeepy.server.building.domain;
 
 import com.zeepy.server.common.domain.BaseTimeEntity;
-import com.zeepy.server.review.domain.*;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -53,7 +51,8 @@ public class Building extends BaseTimeEntity {
             int buildYear,
             String address,
             float exclusivePrivateArea,
-            int areaCode) {
+            int areaCode
+    ) {
         this.id = id;
         this.buildYear = buildYear;
         this.address = address;

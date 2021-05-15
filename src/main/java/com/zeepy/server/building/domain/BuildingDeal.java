@@ -4,9 +4,7 @@ import com.zeepy.server.common.domain.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
@@ -48,7 +46,8 @@ public class BuildingDeal extends BaseTimeEntity {
             Long id,
             LocalDateTime dealDate,
             int deposit,
-            int monthlyRent) {
+            int monthlyRent
+    ) {
         this.id = id;
         this.dealDate = dealDate;
         this.deposit = deposit;
