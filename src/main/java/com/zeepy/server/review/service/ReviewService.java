@@ -17,7 +17,7 @@ public class ReviewService {
     private final ReviewInterface reviewInterface;
 
     @Transactional(readOnly = true)
-    public ReviewResponseDtos getReviewList(String address){
+    public ReviewResponseDtos getReviewList(String address) {
         return new ReviewResponseDtos(reviewInterface.findAllByAddress(address).stream()
                 .map(ReviewResponseDto::new)
                 .collect(Collectors.toList()));
@@ -25,7 +25,7 @@ public class ReviewService {
 
     @Transactional
     public Long create(ReviewDto reviewDto) {
-        Review reivew=reviewInterface.save(reviewDto.returnReviewEntity());
-        return reivew.getId();
+        Review review = reviewInterface.save(reviewDto.returnReviewEntity());
+        return review.getId();
     }
 }
