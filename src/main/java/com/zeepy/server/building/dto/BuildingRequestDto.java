@@ -17,10 +17,10 @@ import java.util.List;
 @Setter
 @Getter
 public class BuildingRequestDto {
-    int buildYear; // Null 이 될 가능성이 있음
-    String address;
-    float exclusivePrivateArea;
-    int areaCode;
+    private int buildYear; // Null 이 될 가능성이 있음
+    private String address;
+    private float exclusivePrivateArea;
+    private int areaCode;
 
     public BuildingRequestDto(
             int buildYear,

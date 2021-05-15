@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class BuildingDealRequestDto {
-    LocalDateTime dealDate;
-    int deposit;
-    int monthlyRent;
+    private LocalDateTime dealDate;
+    private int deposit;
+    private int monthlyRent;
 
     public BuildingDealRequestDto(
             LocalDateTime dealDate,
