@@ -1,7 +1,9 @@
 package com.zeepy.server.building.domain;
 
 import com.zeepy.server.common.domain.BaseTimeEntity;
+import com.zeepy.server.review.domain.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -46,4 +48,18 @@ public class Building extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "building", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<BuildingDeal> beadingDeals;
+
+    @Builder
+    public Building(
+            Long id,
+            LocalDateTime buildYear,
+            String address,
+            float exclusivePrivateArea,
+            int areaCode) {
+        this.id = id;
+        this.buildYear = buildYear;
+        this.address = address;
+        this.exclusivePrivateArea = exclusivePrivateArea;
+        this.areaCode = areaCode;
+    }
 }

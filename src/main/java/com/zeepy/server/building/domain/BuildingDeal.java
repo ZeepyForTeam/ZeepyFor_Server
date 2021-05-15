@@ -2,6 +2,7 @@ package com.zeepy.server.building.domain;
 
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,4 +44,16 @@ public class BuildingDeal extends BaseTimeEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "building_id")
     private Building building;
+
+    @Builder
+    public BuildingDeal(
+            Long id,
+            LocalDateTime dealDate,
+            int deposit,
+            int monthlyRent) {
+        this.id = id;
+        this.dealDate = dealDate;
+        this.deposit = deposit;
+        this.monthlyRent = monthlyRent;
+    }
 }

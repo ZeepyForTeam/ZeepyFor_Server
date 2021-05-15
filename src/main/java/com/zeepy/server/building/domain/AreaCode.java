@@ -2,6 +2,7 @@ package com.zeepy.server.building.domain;
 
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,10 +26,16 @@ import java.time.LocalDateTime;
 @Entity
 public class AreaCode extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "area_code_sequence_gen")
-    @SequenceGenerator(name = "area_code_sequence_gen", sequenceName = "area_code_sequence")
-    private long id;
+    private long areaCode;
 
     @NotEmpty
     private String name;
+
+    @Builder
+    public AreaCode(
+            Long areaCode,
+            String name) {
+        this.areaCode = areaCode;
+        this.name = name;
+    }
 }
