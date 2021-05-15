@@ -8,7 +8,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -33,19 +35,20 @@ public abstract class ControllerTest {
 
 	protected <T> ResultActions doPost(String path, T request) throws Exception {
 		return mockMvc.perform(post(path)
+				.content(objectMapper.writeValueAsBytes(request))
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(objectMapper.writeValueAsBytes(request))
-		)
+				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isCreated())
-			.andExpect(header().string(HttpHeaders.LOCATION, path + "/1"));
+			.andExpect(header().string(HttpHeaders.LOCATION, path + "/1"))
+			.andDo(MockMvcResultHandlers.print());
 	}
 
-	protected <T> ResultActions doGet(String path, T request) throws Exception {
+	protected ResultActions doGet(String path, MultiValueMap<String,String> params) throws Exception {
 		return mockMvc.perform(get(path)
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(objectMapper.writeValueAsBytes(request))
+				.params(params)
 		)
-			.andExpect(status().isOk());
+			.andExpect(status().isOk())
+				.andDo(MockMvcResultHandlers.print());
 	}
 
 	protected <T> ResultActions doPut(String path, T request) throws Exception {
