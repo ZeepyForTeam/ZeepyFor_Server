@@ -21,7 +21,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReviewResponseDtos getReviewList(String address) {
         List<Review> reviewList = reviewInterface.findAllByAddress(address);
-        if(reviewList.isEmpty()) ThrowNoContentException();
+        if(reviewList.isEmpty()) throw new NoContentException();
         return new ReviewResponseDtos(reviewList.stream()
                 .map(ReviewResponseDto::new)
                 .collect(Collectors.toList()));
@@ -31,9 +31,5 @@ public class ReviewService {
     public Long create(ReviewDto reviewDto) {
         Review review = reviewInterface.save(reviewDto.returnReviewEntity());
         return review.getId();
-    }
-
-    private void ThrowNoContentException(){
-        throw new NoContentException();
     }
 }
