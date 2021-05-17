@@ -54,6 +54,9 @@ public class Community {
     @Deprecated
     private String AchievementRate;
 
+    @OneToMany(mappedBy = "community")
+    private List<Participation> participationsList;
+
     @ElementCollection
     @JoinTable(name = "communityImageUrls",joinColumns = @JoinColumn(name = "communityID"))
     private List<String> imageUrls;   //사진

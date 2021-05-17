@@ -2,6 +2,7 @@ package com.zeepy.server.user.domain;
 
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityLike;
+import com.zeepy.server.community.domain.Participation;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<CommunityLike> likeCommunities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Participation> participatingCommunities = new ArrayList<>();
 
     @Builder
     public User(String name){
