@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 public class BuildingResponseDto {
-    Long id;
-    int buildYear; // Null 이 될 가능성이 있음
-    String address;
-    float exclusivePrivateArea;
-    int areaCode;
-    double latitude;
-    double longitude;
-    List<BuildingDealResponseDto> buildingDeals;
+    private Long id;
+    private int buildYear; // Null 이 될 가능성이 있음
+    private String address;
+    private float exclusivePrivateArea;
+    private int areaCode;
+    private double latitude;
+    private double longitude;
+    private List<BuildingDealResponseDto> buildingDeals;
 
     public BuildingResponseDto(
             Long id,

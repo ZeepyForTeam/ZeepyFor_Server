@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 public class BuildingDealResponseDto {
-    Long id;
-    Timestamp dealDate;
-    int deposit;
-    int monthlyRent;
-    int floor;
+    private Long id;
+    private Timestamp dealDate;
+    private int deposit;
+    private int monthlyRent;
+    private int floor;
 
     public BuildingDealResponseDto(
             Long id,

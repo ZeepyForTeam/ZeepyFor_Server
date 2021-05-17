@@ -27,7 +27,7 @@ public class BuildingDealService {
     @Transactional
     public Long create(BuildingDealRequestDto buildingDealRequestDto) {
         Building building = buildingRepository.findById(buildingDealRequestDto.getBuildingId()).get();
-        BuildingDeal buildingDealIsNotSave =buildingDealRequestDto.returnBuildingDealEntity();
+        BuildingDeal buildingDealIsNotSave = buildingDealRequestDto.returnBuildingDealEntity();
         buildingDealIsNotSave.setBuilding(building);
         BuildingDeal buildingDeal = buildingDealRepository.save(buildingDealIsNotSave);
         return buildingDeal.getId();

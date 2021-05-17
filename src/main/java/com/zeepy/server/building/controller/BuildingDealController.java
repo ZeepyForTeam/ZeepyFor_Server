@@ -27,7 +27,7 @@ public class BuildingDealController {
         return ResponseEntity.created(URI.create("api/deal/" + id)).build();
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> updateBuildingDeal(
             @PathVariable Long id,
             @RequestBody BuildingDealRequestDto buildingDealRequestDto
@@ -36,7 +36,7 @@ public class BuildingDealController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBuildingDeal(
             @PathVariable Long id
     ) {

@@ -34,7 +34,7 @@ public class BuildingController {
         return ResponseEntity.created(URI.create("api/building/" + id)).build();
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> updateBuilding(
             @PathVariable Long id,
             @RequestBody BuildingRequestDto buildingRequestDto
@@ -43,7 +43,7 @@ public class BuildingController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBuilding(
             @PathVariable Long id
     ) {
