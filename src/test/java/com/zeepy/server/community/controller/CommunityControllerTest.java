@@ -47,6 +47,6 @@ public class CommunityControllerTest extends ControllerTest {
 
         given(communityService.save(any(SaveCommunityRequestDto.class))).willReturn(1L);
 
-        super.doPost("/api/community", requestDto);
+        doPost("/api/community", requestDto);
     }
 }
