@@ -16,8 +16,8 @@ public class ControllerExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> invalidCommunitySaveDtoException(MethodArgumentNotValidException e){
-        logger.error("InvalidBody_Exception!!: "+e);
+    public ResponseEntity<ErrorResponse> invalidCommunitySaveDtoException(MethodArgumentNotValidException e) {
+        logger.error("InvalidBody_Exception!!: " + e);
 
         BindingResult bindingResult = e.getBindingResult();
         ErrorCode errorCode = ErrorCode.INVALID_BODY;
@@ -30,12 +30,12 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(NoContentException.class)
-    public ResponseEntity<ErrorResponse> getNullResultSoNoContentException(NoContentException e){
-        final ErrorCode errorCode= e.getErrorCode();
-        final ErrorResponse response =ErrorResponse.create()
+    public ResponseEntity<ErrorResponse> getNullResultSoNoContentException(NoContentException e) {
+        final ErrorCode errorCode = e.getErrorCode();
+        final ErrorResponse response = ErrorResponse.create()
                 .status(errorCode.getStatus())
                 .message(errorCode.getMessage());
 
-        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }

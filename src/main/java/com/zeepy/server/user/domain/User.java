@@ -29,7 +29,7 @@ public class User {
     private List<Participation> participatingCommunities = new ArrayList<>();
 
     @Builder
-    public User(String name){
+    public User(String name) {
         this.name = name;
     }
 }

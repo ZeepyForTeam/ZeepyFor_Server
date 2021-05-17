@@ -16,9 +16,9 @@ public class CommunityController {
     private final CommunityService communityService;
 
     @PostMapping
-    public ResponseEntity<Void> saveCommunity(@Valid @RequestBody SaveCommunityRequestDto saveCommunityRequestDto){
+    public ResponseEntity<Void> saveCommunity(@Valid @RequestBody SaveCommunityRequestDto saveCommunityRequestDto) {
         Long saveId = communityService.save(saveCommunityRequestDto);
-        return ResponseEntity.created(URI.create("/api/community/"+saveId)).build();
+        return ResponseEntity.created(URI.create("/api/community/" + saveId)).build();
     }
 
 

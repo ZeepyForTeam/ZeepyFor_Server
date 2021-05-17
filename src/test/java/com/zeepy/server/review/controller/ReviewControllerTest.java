@@ -43,17 +43,17 @@ public class ReviewControllerTest extends ControllerTest {
                 MultiChoiceReview.GOOD,
                 MultiChoiceReview.GOOD,
                 MultiChoiceReview.GOOD,
-                Arrays.asList(Furniture.AIRCONDITIONAL,Furniture.AIRCONDITIONAL),
+                Arrays.asList(Furniture.AIRCONDITIONAL, Furniture.AIRCONDITIONAL),
                 "asda",
                 TotalEvaluation.GOOD,
-                Arrays.asList("1","2","3")
-                );
-        doPost("/api/review",requestDto);
+                Arrays.asList("1", "2", "3")
+        );
+        doPost("/api/review", requestDto);
     }
 
     @Test
     @DisplayName("ReviewList_불러오기_테스트")
-    public void getReviewListTest() throws Exception{
+    public void getReviewListTest() throws Exception {
         ReviewDto requestDto = new ReviewDto(1L,
                 "sssss",
                 CommuncationTendency.BUSINESS,
@@ -65,15 +65,15 @@ public class ReviewControllerTest extends ControllerTest {
                 MultiChoiceReview.GOOD,
                 MultiChoiceReview.GOOD,
                 MultiChoiceReview.GOOD,
-                Arrays.asList(Furniture.AIRCONDITIONAL,Furniture.AIRCONDITIONAL),
+                Arrays.asList(Furniture.AIRCONDITIONAL, Furniture.AIRCONDITIONAL),
                 "asda",
                 TotalEvaluation.GOOD,
-                Arrays.asList("1","2","3")
+                Arrays.asList("1", "2", "3")
         );
         String path = "/api/review/1";
-        MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-        doGet(path,params);
+        doGet(path, params);
 
 
     }

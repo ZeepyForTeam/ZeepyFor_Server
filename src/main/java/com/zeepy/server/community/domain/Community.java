@@ -58,24 +58,24 @@ public class Community {
     private List<Participation> participationsList;
 
     @ElementCollection
-    @JoinTable(name = "communityImageUrls",joinColumns = @JoinColumn(name = "communityID"))
+    @JoinTable(name = "communityImageUrls", joinColumns = @JoinColumn(name = "communityID"))
     private List<String> imageUrls;   //사진
 
     @Builder
     public Community(
             CommunityCategory communityCategory,
-                     String productName,
-                     Integer productPrice,
-                     String sharingMethod,
-                     Integer targetNumberOfPeople,
-                     Integer targetAmount,
-                     String title,
-                     String content,
-                    List<String> imageUrls
-            ){
+            String productName,
+            Integer productPrice,
+            String sharingMethod,
+            Integer targetNumberOfPeople,
+            Integer targetAmount,
+            String title,
+            String content,
+            List<String> imageUrls
+    ) {
         this.communityCategory = communityCategory;
         this.productName = productName;
-        this.productPrice =productPrice;
+        this.productPrice = productPrice;
         this.sharingMethod = sharingMethod;
         this.targetNumberOfPeople = targetNumberOfPeople;
         this.targetAmount = targetAmount;

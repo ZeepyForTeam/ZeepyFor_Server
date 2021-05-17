@@ -25,7 +25,7 @@ public class ReviewResponseDto {
     private String review;
     private List<String> imageUrls;
 
-    public ReviewResponseDto(Review review){
+    public ReviewResponseDto(Review review) {
         this.id = review.getId();
         this.user = review.getUser();
         this.address = review.getAddress();

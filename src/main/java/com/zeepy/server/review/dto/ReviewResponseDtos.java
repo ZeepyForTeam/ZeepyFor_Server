@@ -10,7 +10,7 @@ import java.util.List;
 public class ReviewResponseDtos {
     private List<ReviewResponseDto> reviewResponseDtos;
 
-    public ReviewResponseDtos(List<ReviewResponseDto> reviewResponseDto){
+    public ReviewResponseDtos(List<ReviewResponseDto> reviewResponseDto) {
         this.reviewResponseDtos = reviewResponseDto;
     }
 }

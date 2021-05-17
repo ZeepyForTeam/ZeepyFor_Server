@@ -4,9 +4,9 @@ import com.zeepy.server.common.CustomExceptionHandler.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class NoContentException extends CustomException{
+public class NoContentException extends CustomException {
 
-    public NoContentException(){
+    public NoContentException() {
         super(ErrorCode.NO_CONTENT);
     }
 }
