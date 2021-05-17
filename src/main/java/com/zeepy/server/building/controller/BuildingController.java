@@ -26,6 +26,13 @@ public class BuildingController {
         return ResponseEntity.ok(buildingService.getAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<BuildingResponseDto> getBuildings(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(buildingService.getById(id));
+    }
+
     @PostMapping
     public ResponseEntity<Void> uploadBuilding(
             @RequestBody BuildingRequestDto buildingRequestDto

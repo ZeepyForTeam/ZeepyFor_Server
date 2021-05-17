@@ -1,6 +1,7 @@
 package com.zeepy.server.building.controller;
 
 import com.zeepy.server.building.dto.BuildingDealRequestDto;
+import com.zeepy.server.building.dto.BuildingDealResponseDto;
 import com.zeepy.server.building.service.BuildingDealService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * Created by Minky on 2021-05-15
@@ -18,6 +20,18 @@ import java.net.URI;
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class BuildingDealController {
     private final BuildingDealService buildingDealService;
+
+    @GetMapping
+    public ResponseEntity<List<BuildingDealResponseDto>> getBuildings() {
+        return ResponseEntity.ok(buildingDealService.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BuildingDealResponseDto> getBuildings(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(buildingDealService.getById(id));
+    }
 
     @PostMapping
     public ResponseEntity<Void> uploadBuildingDeal(

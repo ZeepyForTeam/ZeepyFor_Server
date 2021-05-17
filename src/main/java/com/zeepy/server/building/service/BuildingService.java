@@ -40,6 +40,13 @@ public class BuildingService {
         return BuildingResponseDto.listOf(buildingList);
     }
 
+    // READ
+    @Transactional(readOnly = true)
+    public BuildingResponseDto getById(Long id) {
+        Building building = buildingRepository.findById(id).get();
+        return BuildingResponseDto.of(building);
+    }
+
     // UPDATE
     @Transactional
     public void update(Long id, BuildingRequestDto buildingRequestDto) {

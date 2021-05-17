@@ -3,6 +3,7 @@ package com.zeepy.server.building.service;
 import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.building.domain.BuildingDeal;
 import com.zeepy.server.building.dto.BuildingDealRequestDto;
+import com.zeepy.server.building.dto.BuildingDealResponseDto;
 import com.zeepy.server.building.repository.BuildingDealRepository;
 import com.zeepy.server.building.repository.BuildingRepository;
 import lombok.AccessLevel;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.Optional;
+import java.util.List;
 
 /**
  * Created by Minky on 2021-05-15
@@ -31,6 +32,20 @@ public class BuildingDealService {
         buildingDealIsNotSave.setBuilding(building);
         BuildingDeal buildingDeal = buildingDealRepository.save(buildingDealIsNotSave);
         return buildingDeal.getId();
+    }
+
+    // READ
+    @Transactional(readOnly = true)
+    public List<BuildingDealResponseDto> getAll() {
+        List<BuildingDeal> buildingDealList = buildingDealRepository.findAll();
+        return BuildingDealResponseDto.listOf(buildingDealList);
+    }
+
+    // READ
+    @Transactional(readOnly = true)
+    public BuildingDealResponseDto getById(Long id) {
+        BuildingDeal buildingDeal = buildingDealRepository.findById(id).get();
+        return BuildingDealResponseDto.of(buildingDeal);
     }
 
     // UPDATE
