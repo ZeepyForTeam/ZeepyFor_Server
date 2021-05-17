@@ -27,7 +27,7 @@ public class BuildingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BuildingResponseDto> getBuildings(
+    public ResponseEntity<BuildingResponseDto> getBuilding(
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(buildingService.getById(id));

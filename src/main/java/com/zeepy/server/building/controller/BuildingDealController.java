@@ -22,12 +22,12 @@ public class BuildingDealController {
     private final BuildingDealService buildingDealService;
 
     @GetMapping
-    public ResponseEntity<List<BuildingDealResponseDto>> getBuildings() {
+    public ResponseEntity<List<BuildingDealResponseDto>> getBuildingDeals() {
         return ResponseEntity.ok(buildingDealService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BuildingDealResponseDto> getBuildings(
+    public ResponseEntity<BuildingDealResponseDto> getBuildingDeal(
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(buildingDealService.getById(id));
