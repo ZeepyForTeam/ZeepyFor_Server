@@ -37,6 +37,6 @@ public class ControllerExceptionHandler {
                 status(errorCode.getStatus()).
                 message(errorCode.getMessage());
 
-        return new ResponseEntity<>(response,HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
     }
 }
