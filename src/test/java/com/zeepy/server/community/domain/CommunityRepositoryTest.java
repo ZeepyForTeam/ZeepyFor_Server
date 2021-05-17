@@ -66,7 +66,7 @@ public class CommunityRepositoryTest {
         User joinUser = userRepository.save(User.builder().name("참여자").build());
 
         //when
-        ParticipationDto participationDto = new ParticipationDto(saveCommunity,joinUser);
+        ParticipationDto participationDto = new ParticipationDto(saveCommunity, joinUser);
         Participation participation = participationRepository.save(participationDto.toEntity());
 
         //then
@@ -75,7 +75,7 @@ public class CommunityRepositoryTest {
         assertThat(participation.getUser().getName()).isEqualTo("참여자");
     }
 
-    public Community jointpurchaseEntity(User user){
+    public Community jointpurchaseEntity(User user) {
         return Community.builder()
                 .communityCategory(CommunityCategory.JOINTPURCHASE)
                 .productName("공동구매물건")
@@ -90,7 +90,7 @@ public class CommunityRepositoryTest {
                 .build();
     }
 
-    public Community freesharingEntity(User user){
+    public Community freesharingEntity(User user) {
         return Community.builder()
                 .communityCategory(CommunityCategory.FREESHARING)
                 .productName("공동구매물건")
@@ -102,7 +102,7 @@ public class CommunityRepositoryTest {
                 .build();
     }
 
-    public Community neighborhoodfriend(User user){
+    public Community neighborhoodfriend(User user) {
         return Community.builder()
                 .communityCategory(CommunityCategory.NEIGHBORHOODFRIEND)
                 .user(user)

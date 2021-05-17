@@ -2,6 +2,7 @@ package com.zeepy.server.community.controller;
 
 import com.zeepy.server.common.ControllerTest;
 import com.zeepy.server.community.domain.CommunityCategory;
+import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.service.CommunityService;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @DisplayName("커뮤니티_컨트롤러_테스트")
-
 @WebMvcTest(controllers = CommunityController.class)
 public class CommunityControllerTest extends ControllerTest {
 
@@ -48,5 +48,20 @@ public class CommunityControllerTest extends ControllerTest {
         given(communityService.save(any(SaveCommunityRequestDto.class))).willReturn(1L);
 
         doPost("/api/community", requestDto);
+    }
+
+    @DisplayName("참가하기_테스트")
+    @Test
+    public void joinCommunity() throws Exception {
+        //given
+        long communityId = 1L;
+        long joinUserId = 2L;
+        JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, joinUserId);
+
+        given(communityService.joinCommunity(any(Long.class), any(JoinCommunityRequestDto.class))).willReturn(1L);
+
+        //when
+        //then
+        doPost("/api/community/" + communityId, requestDto);
     }
 }
