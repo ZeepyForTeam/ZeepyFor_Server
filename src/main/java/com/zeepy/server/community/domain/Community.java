@@ -1,5 +1,6 @@
 package com.zeepy.server.community.domain;
 
+import com.zeepy.server.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,25 +26,30 @@ public class Community {
     private CommunityCategory communityCategory;    //커뮤니티 카테고리
 
     @Nullable
-    private String productName; //상품명
+    private String productName;
 
     @Nullable
-    private Integer productPrice;    //상품가격
+    private Integer productPrice;
 
     @Nullable
-    private String sharingMethod;   //나눔방식
+    private String sharingMethod;
 
     @Nullable
-    private Integer targetNumberOfPeople;   //목표인원
+    private Integer targetNumberOfPeople;
 
     @Nullable
-    private Integer targetAmount;   //금액
+    private Integer targetAmount;
 
     @NotNull
-    private String title;   //제목
+    private String title;
 
     @NotNull
-    private String content; //내용
+    private String content;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "community")
     private List<CommunityLike> likeUsers = new ArrayList<>();

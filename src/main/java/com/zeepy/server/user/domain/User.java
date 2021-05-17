@@ -28,6 +28,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Participation> participatingCommunities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Community> communities = new ArrayList<>();
+
     @Builder
     public User(String name) {
         this.name = name;
