@@ -21,10 +21,10 @@ public class ControllerExceptionHandler {
 
         BindingResult bindingResult = e.getBindingResult();
         ErrorCode errorCode = ErrorCode.INVALID_BODY;
-        ErrorResponse errorResponse = ErrorResponse.create().
-                status(errorCode.getStatus()).
-                message(errorCode.getMessage()).
-                errors(bindingResult);
+        ErrorResponse errorResponse = ErrorResponse.create()
+                .status(errorCode.getStatus())
+                .message(errorCode.getMessage())
+                .errors(bindingResult);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -32,10 +32,9 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(NoContentException.class)
     public ResponseEntity<ErrorResponse> getNullResultSoNoContentException(NoContentException e){
         final ErrorCode errorCode= e.getErrorCode();
-        final ErrorResponse response
-                =ErrorResponse.create().
-                status(errorCode.getStatus()).
-                message(errorCode.getMessage());
+        final ErrorResponse response =ErrorResponse.create()
+                .status(errorCode.getStatus())
+                .message(errorCode.getMessage());
 
         return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
     }
