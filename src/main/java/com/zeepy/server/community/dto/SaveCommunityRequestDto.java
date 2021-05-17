@@ -35,7 +35,7 @@ public class SaveCommunityRequestDto {
     @NotEmpty(message = "내용은 필수입니다.")
     private String content;
 
-    List<String> imageUrls;
+    private List<String> imageUrls;
 
     @Builder
     public SaveCommunityRequestDto(CommunityCategory communityCategory,
