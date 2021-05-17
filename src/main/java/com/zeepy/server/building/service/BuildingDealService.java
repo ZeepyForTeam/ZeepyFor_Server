@@ -48,6 +48,13 @@ public class BuildingDealService {
         return BuildingDealResponseDto.of(buildingDeal);
     }
 
+    // READ
+    @Transactional(readOnly = true)
+    public BuildingDealResponseDto getByIdAndBuildingId(int floor, Long id) {
+        BuildingDeal buildingDeal = buildingDealRepository.findByFloorAndBuilding_Id(floor, id);
+        return BuildingDealResponseDto.of(buildingDeal);
+    }
+
     // UPDATE
     @Transactional
     public void update(Long id, BuildingDealRequestDto buildingDealRequestDto) {

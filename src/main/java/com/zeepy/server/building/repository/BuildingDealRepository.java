@@ -9,5 +9,5 @@ import java.util.List;
  * Created by Minky on 2021-05-15
  */
 public interface BuildingDealRepository extends JpaRepository<BuildingDeal, Long> {
-    List<BuildingDeal> findByFloor(int floor);
+    BuildingDeal findByFloorAndBuilding_Id(int floor, Long id);
 }

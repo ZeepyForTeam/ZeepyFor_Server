@@ -5,6 +5,8 @@ import com.zeepy.server.building.dto.BuildingDealResponseDto;
 import com.zeepy.server.building.service.BuildingDealService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.repository.query.Parameter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +33,14 @@ public class BuildingDealController {
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(buildingDealService.getById(id));
+    }
+
+    @GetMapping("/floor/{floor}/building/{id}")
+    public ResponseEntity<BuildingDealResponseDto> getBuildingDealByFloorAndBuildingId(
+            @PathVariable int floor,
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(buildingDealService.getByIdAndBuildingId(floor, id));
     }
 
     @PostMapping
