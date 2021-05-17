@@ -55,7 +55,7 @@ public class Community {
     private List<CommunityLike> likeUsers = new ArrayList<>();
 
     @Deprecated
-    private String Comments;
+    private String comment;
 
     @Deprecated
     private String AchievementRate;
@@ -75,6 +75,7 @@ public class Community {
             String sharingMethod,
             Integer targetNumberOfPeople,
             Integer targetAmount,
+            User user,
             String title,
             String content,
             List<String> imageUrls
@@ -85,8 +86,13 @@ public class Community {
         this.sharingMethod = sharingMethod;
         this.targetNumberOfPeople = targetNumberOfPeople;
         this.targetAmount = targetAmount;
+        this.user = user;
         this.title = title;
         this.content = content;
         this.imageUrls = imageUrls;
+    }
+
+    public void update(String comment) {
+        this.comment = comment;
     }
 }

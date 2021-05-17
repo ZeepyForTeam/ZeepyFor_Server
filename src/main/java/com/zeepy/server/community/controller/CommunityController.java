@@ -1,5 +1,6 @@
 package com.zeepy.server.community.controller;
 
+import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.service.CommunityService;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,12 @@ public class CommunityController {
         return ResponseEntity.created(URI.create("/api/community/" + saveId)).build();
     }
 
-
+    @PostMapping("/{id}")
+    public ResponseEntity<Void> toJoinCommunity(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody JoinCommunityRequestDto joinCommunityRequestDto
+    ){
+        Long participationId = communityService.joinCommunity(id,joinCommunityRequestDto);
+        return ResponseEntity.ok().build();
+    }
 }
