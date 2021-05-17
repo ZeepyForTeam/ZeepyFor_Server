@@ -4,6 +4,7 @@ import com.zeepy.server.common.ControllerTest;
 import com.zeepy.server.review.domain.*;
 import com.zeepy.server.review.dto.ReviewDto;
 import com.zeepy.server.review.service.ReviewService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -21,16 +22,16 @@ import java.util.Arrays;
 @RunWith(SpringRunner.class)
 @WebMvcTest(ReviewController.class)
 public class ReviewControllerTest extends ControllerTest {
-    @Autowired
-    private WebApplicationContext webApplicationContext;
 
-    @MockBean
-    private ReviewService reviewService;
+    @Override
+    @BeforeEach
+    public void setUp(WebApplicationContext webApplicationContext) {
+        super.setUp(webApplicationContext);
+    }
 
     @DisplayName("Review_생성_테스트")
     @Test
     public void saveTest() throws Exception {
-        super.setUp(webApplicationContext);
         ReviewDto requestDto = new ReviewDto(1L,
                 "sssss",
                 CommuncationTendency.BUSINESS,
@@ -47,14 +48,12 @@ public class ReviewControllerTest extends ControllerTest {
                 TotalEvaluation.GOOD,
                 Arrays.asList("1","2","3")
                 );
-        super.doPost("/api/review",requestDto);
+        doPost("/api/review",requestDto);
     }
 
     @Test
     @DisplayName("ReviewList_불러오기_테스트")
     public void getReviewListTest() throws Exception{
-        super.setUp(webApplicationContext);
-
         ReviewDto requestDto = new ReviewDto(1L,
                 "sssss",
                 CommuncationTendency.BUSINESS,
@@ -74,7 +73,7 @@ public class ReviewControllerTest extends ControllerTest {
         String path = "/api/review/1";
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
 
-        super.doGet(path,params);
+        doGet(path,params);
 
 
     }
