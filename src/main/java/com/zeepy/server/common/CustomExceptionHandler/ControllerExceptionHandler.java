@@ -1,6 +1,6 @@
 package com.zeepy.server.common.CustomExceptionHandler;
 
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,11 +31,36 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(NoContentException.class)
     public ResponseEntity<ErrorResponse> getNullResultSoNoContentException(NoContentException e) {
-        final ErrorCode errorCode = e.getErrorCode();
-        final ErrorResponse response = ErrorResponse.create()
-                .status(errorCode.getStatus())
-                .message(errorCode.getMessage());
+        ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NotFoundCommunityException.class)
+    public ResponseEntity<ErrorResponse> notfoundCommunityException(NotFoundCommunityException e) {
+        ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NotFoundParticipationException.class)
+    public ResponseEntity<ErrorResponse> notfoundParticipationException(NotFoundParticipationException e) {
+        ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NotFoundUserException.class)
+    public ResponseEntity<ErrorResponse> notfoundUserException(NotFoundUserException e) {
+        ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
+        final ErrorCode errorCode = e.getErrorCode();
+        return ErrorResponse.create()
+                .status(errorCode.getStatus())
+                .message(errorCode.getMessage());
     }
 }

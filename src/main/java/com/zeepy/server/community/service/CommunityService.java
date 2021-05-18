@@ -1,5 +1,7 @@
 package com.zeepy.server.community.service;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.ParticipationDto;
@@ -27,11 +29,11 @@ public class CommunityService {
 
     @Transactional
     public Long joinCommunity(Long id, JoinCommunityRequestDto joinCommunityRequestDto) {
-        Community community = communityRepository.findById(id).orElseThrow(RuntimeException::new);//커뮤니티없음 익셉션 해줘야함
+        Community community = communityRepository.findById(id).orElseThrow(NotFoundCommunityException::new);//커뮤니티없음 익셉션 해줘야함
         if (joinCommunityRequestDto.isCommentExist()) {
             community.update(joinCommunityRequestDto.getComment());
         }
-        User user = userRepository.findById(joinCommunityRequestDto.getParticipationUserId()).orElseThrow(RuntimeException::new);//사용자없음 익셉션
+        User user = userRepository.findById(joinCommunityRequestDto.getParticipationUserId()).orElseThrow(NotFoundUserException::new);//사용자없음 익셉션
         ParticipationDto participationDto = new ParticipationDto(community, user);
         return participationRepository.save(participationDto.toEntity()).getId();
     }
