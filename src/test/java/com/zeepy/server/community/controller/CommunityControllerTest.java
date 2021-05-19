@@ -4,9 +4,7 @@ import com.zeepy.server.common.ControllerTest;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
-import com.zeepy.server.community.dto.JoinCommunityRequestDto;
-import com.zeepy.server.community.dto.ParticipationResDto;
-import com.zeepy.server.community.dto.SaveCommunityRequestDto;
+import com.zeepy.server.community.dto.*;
 import com.zeepy.server.community.service.CommunityService;
 import com.zeepy.server.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,20 +77,26 @@ public class CommunityControllerTest extends ControllerTest {
         //given
         long joinUserId = 2L;
         User writerUser = User.builder().id(1L).name("작성자").build();
+        User writerUser2 = User.builder().id(3L).name("작성자2").build();
         User joinUser = User.builder().id(2L).name("참여자").build();
-        Community community = Community.builder().id(1L).communityCategory(CommunityCategory.NEIGHBORHOODFRIEND).title("제목1").content("내용").user(writerUser).build();
+        Community writeCommunity = Community.builder().id(1L).communityCategory(CommunityCategory.NEIGHBORHOODFRIEND).title("제목1").content("내용").user(writerUser).build();
+        Community otherCommunity = Community.builder().id(2L).communityCategory(CommunityCategory.NEIGHBORHOODFRIEND).title("제목2").content("내용2").user(writerUser2).build();
+        Participation participation = Participation.builder().id(1L).community(otherCommunity).user(joinUser).build();
+        ParticipationResDto participationResDto = new ParticipationResDto(participation);
+        WriteOutResDto writeOutResDto = new WriteOutResDto(writeCommunity);
 
-        Participation participation = Participation.builder().id(1L).community(community).user(joinUser).build();
-        ParticipationResDto resDto = new ParticipationResDto(participation);
+        List<ParticipationResDto> participationResDtoList = new ArrayList<>();
+        participationResDtoList.add(participationResDto);
 
-        List<ParticipationResDto> joinList = new ArrayList<>();
-        joinList.add(resDto);
+        List<WriteOutResDto> writeOutResDtoList = new ArrayList<>();
+        writeOutResDtoList.add(writeOutResDto);
 
-        given(communityService.getJoinList(joinUserId)).willReturn(joinList);
+        MyZipJoinResDto resultResDto = new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        given(communityService.getJoinList(joinUserId)).willReturn(resultResDto);
 
         //when
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-
         //then
         doGet("/api/community/participation/1", params);
     }
