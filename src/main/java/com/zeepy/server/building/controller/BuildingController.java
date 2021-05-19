@@ -26,6 +26,13 @@ public class BuildingController {
         return ResponseEntity.ok(buildingService.getAll());
     }
 
+    @GetMapping("/address")
+    public ResponseEntity<BuildingResponseDto> getBuildingByAddress(
+            @RequestParam("address") String address
+    ) {
+        return ResponseEntity.ok(buildingService.getByAddress(address));
+    }
+
     @GetMapping("/auto")
     public ResponseEntity<List<String>> getBuildingAddresses(
             @RequestParam("address") String address

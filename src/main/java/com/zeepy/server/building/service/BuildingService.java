@@ -38,6 +38,14 @@ public class BuildingService {
     }
 
     // READ
+    @Transactional(readOnly = true)
+    @ExceptionHandler(NoContentException.class)
+    public BuildingResponseDto getByAddress(String address) {
+        Building building = buildingRepository.findByAddress(address).orElseThrow(() -> new NoContentException());
+        return BuildingResponseDto.of(building);
+    }
+
+    // READ
     // TODO : 추후에 ZoomLevel에 따른 위도 경도 범위 지정 기능 추가
     @Transactional(readOnly = true)
     public List<BuildingResponseDto> getByLatitudeAndLongitude(double latitude, double longitude) {
