@@ -40,7 +40,7 @@ public class BuildingDealController {
             @PathVariable int floor,
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(buildingDealService.getByIdAndBuildingId(floor, id));
+        return ResponseEntity.ok(buildingDealService.getByFloorAndBuildingId(floor, id));
     }
 
     @PostMapping

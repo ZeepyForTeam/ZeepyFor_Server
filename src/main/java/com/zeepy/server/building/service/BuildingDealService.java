@@ -59,7 +59,7 @@ public class BuildingDealService {
     // READ
     @Transactional(readOnly = true)
     @ExceptionHandler(NoContentException.class)
-    public BuildingDealResponseDto getByIdAndBuildingId(int floor, Long id) {
+    public BuildingDealResponseDto getByFloorAndBuildingId(int floor, Long id) {
         BuildingDeal buildingDeal = buildingDealRepository
                 .findByFloorAndBuilding_Id(floor, id)
                 .orElseThrow(() -> new NoContentException());
