@@ -13,7 +13,7 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
 
     @Transactional
-    public Long save(SaveCommunityRequestDto requestDto){
+    public Long save(SaveCommunityRequestDto requestDto) {
         Community community = communityRepository.save(requestDto.toEntity());
         return community.getId();
     }

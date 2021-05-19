@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -32,10 +31,11 @@ public class SaveCommunityRequestDto {
 
     @NotEmpty(message = "제목은 필수입니다.")
     private String title;
+
     @NotEmpty(message = "내용은 필수입니다.")
     private String content;
 
-    List<String> imageUrls;
+    private List<String> imageUrls;
 
     @Builder
     public SaveCommunityRequestDto(CommunityCategory communityCategory,

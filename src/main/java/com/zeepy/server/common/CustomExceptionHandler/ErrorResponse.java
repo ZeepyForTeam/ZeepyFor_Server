@@ -21,42 +21,42 @@ public class ErrorResponse {
 
     private List<CustomFieldError> customFieldErrors;
 
-    public static ErrorResponse create(){
+    public static ErrorResponse create() {
         return new ErrorResponse();
     }
 
-    public ErrorResponse status(int status){
+    public ErrorResponse status(int status) {
         this.status = status;
         return this;
     }
 
-    public ErrorResponse message(String message){
+    public ErrorResponse message(String message) {
         this.message = message;
         return this;
     }
 
-    public ErrorResponse errors(Errors errors){
+    public ErrorResponse errors(Errors errors) {
         setCustomFieldErrors(errors.getFieldErrors());
         return this;
     }
 
-    public void setCustomFieldErrors(List<FieldError> fieldErrors){
+    public void setCustomFieldErrors(List<FieldError> fieldErrors) {
         customFieldErrors = new ArrayList<>();
 
-        fieldErrors.forEach(error-> customFieldErrors.add(new CustomFieldError(
-                    Objects.requireNonNull(error.getCodes())[0],
-                    error.getRejectedValue(),
+        fieldErrors.forEach(error -> customFieldErrors.add(new CustomFieldError(
+                Objects.requireNonNull(error.getCodes())[0],
+                error.getRejectedValue(),
                 error.getDefaultMessage()
         )));
     }
 
     @Getter
-    public static class CustomFieldError{
+    public static class CustomFieldError {
         private final String field;
         private final Object value;
         private final String reason;
 
-        public CustomFieldError(String field,Object value,String reason){
+        public CustomFieldError(String field, Object value, String reason) {
             this.field = field;
             this.value = value;
             this.reason = reason;
