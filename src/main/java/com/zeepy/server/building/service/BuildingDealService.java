@@ -6,10 +6,12 @@ import com.zeepy.server.building.dto.BuildingDealRequestDto;
 import com.zeepy.server.building.dto.BuildingDealResponseDto;
 import com.zeepy.server.building.repository.BuildingDealRepository;
 import com.zeepy.server.building.repository.BuildingRepository;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -26,11 +28,14 @@ public class BuildingDealService {
 
     // CREATE
     @Transactional
+    @ExceptionHandler(NoContentException.class)
     public Long create(BuildingDealRequestDto buildingDealRequestDto) {
-        Building building = buildingRepository.findById(buildingDealRequestDto.getBuildingId()).get();
-        BuildingDeal buildingDealIsNotSave = buildingDealRequestDto.returnBuildingDealEntity();
-        buildingDealIsNotSave.setBuilding(building);
-        BuildingDeal buildingDeal = buildingDealRepository.save(buildingDealIsNotSave);
+        Building building = buildingRepository
+                .findById(buildingDealRequestDto.getBuildingId())
+                .orElseThrow(() -> new NoContentException());
+        BuildingDeal buildingDeal = buildingDealRequestDto.returnBuildingDealEntity();
+        buildingDeal.setBuilding(building);
+        buildingDealRepository.save(buildingDeal);
         return buildingDeal.getId();
     }
 
@@ -43,27 +48,35 @@ public class BuildingDealService {
 
     // READ
     @Transactional(readOnly = true)
+    @ExceptionHandler(NoContentException.class)
     public BuildingDealResponseDto getById(Long id) {
-        BuildingDeal buildingDeal = buildingDealRepository.findById(id).get();
+        BuildingDeal buildingDeal = buildingDealRepository
+                .findById(id)
+                .orElseThrow(() -> new NoContentException());
         return BuildingDealResponseDto.of(buildingDeal);
     }
 
     // READ
     @Transactional(readOnly = true)
+    @ExceptionHandler(NoContentException.class)
     public BuildingDealResponseDto getByIdAndBuildingId(int floor, Long id) {
-        BuildingDeal buildingDeal = buildingDealRepository.findByFloorAndBuilding_Id(floor, id);
+        BuildingDeal buildingDeal = buildingDealRepository
+                .findByFloorAndBuilding_Id(floor, id)
+                .orElseThrow(() -> new NoContentException());
         return BuildingDealResponseDto.of(buildingDeal);
     }
 
     // UPDATE
     @Transactional
+    @ExceptionHandler(NoContentException.class)
     public void update(Long id, BuildingDealRequestDto buildingDealRequestDto) {
-        buildingDealRepository.findById(id).ifPresent(buildingDeal -> {
-            buildingDeal.setDealDate(new Timestamp(buildingDealRequestDto.getDealDate()));
-            buildingDeal.setDeposit(buildingDealRequestDto.getDeposit());
-            buildingDeal.setMonthlyRent(buildingDealRequestDto.getMonthlyRent());
-            buildingDealRepository.save(buildingDeal);
-        });
+        BuildingDeal buildingDeal = buildingDealRepository
+                .findById(id)
+                .orElseThrow(() -> new NoContentException());
+        buildingDeal.setDealDate(new Timestamp(buildingDealRequestDto.getDealDate()));
+        buildingDeal.setDeposit(buildingDealRequestDto.getDeposit());
+        buildingDeal.setMonthlyRent(buildingDealRequestDto.getMonthlyRent());
+        buildingDealRepository.save(buildingDeal);
     }
 
     // DELETE

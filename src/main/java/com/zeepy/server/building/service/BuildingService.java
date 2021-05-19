@@ -4,10 +4,12 @@ import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.repository.BuildingRepository;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,13 +26,8 @@ public class BuildingService {
     // CREATE
     @Transactional
     public Long create(BuildingRequestDto buildingRequestDto) {
-        List<Building> buildingList = buildingRepository.findByAddress(buildingRequestDto.getAddress());
-        if (buildingList.isEmpty()) {
-            Building building = buildingRepository.save(buildingRequestDto.returnBuildingEntity());
-            return building.getId();
-        } else {
-            return buildingList.get(0).getId();
-        }
+        Building building = buildingRepository.save(buildingRequestDto.returnBuildingEntity());
+        return building.getId();
     }
 
     // READ
@@ -42,21 +39,26 @@ public class BuildingService {
 
     // READ
     @Transactional(readOnly = true)
+    @ExceptionHandler(NoContentException.class)
     public BuildingResponseDto getById(Long id) {
-        Building building = buildingRepository.findById(id).get();
+        Building building = buildingRepository
+                .findById(id)
+                .orElseThrow(() -> new NoContentException());
         return BuildingResponseDto.of(building);
     }
 
     // UPDATE
     @Transactional
+    @ExceptionHandler(NoContentException.class)
     public void update(Long id, BuildingRequestDto buildingRequestDto) {
-        buildingRepository.findById(id).ifPresent(building -> {
-            building.setBuildYear(buildingRequestDto.getBuildYear());
-            building.setAddress(buildingRequestDto.getAddress());
-            building.setExclusivePrivateArea(buildingRequestDto.getExclusivePrivateArea());
-            building.setAreaCode(buildingRequestDto.getAreaCode());
-            buildingRepository.save(building);
-        });
+        Building building = buildingRepository
+                .findById(id)
+                .orElseThrow(() -> new NoContentException());
+        building.setBuildYear(buildingRequestDto.getBuildYear());
+        building.setAddress(buildingRequestDto.getAddress());
+        building.setExclusivePrivateArea(buildingRequestDto.getExclusivePrivateArea());
+        building.setAreaCode(buildingRequestDto.getAreaCode());
+        buildingRepository.save(building);
     }
 
     // DELETE
