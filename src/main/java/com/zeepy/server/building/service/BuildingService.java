@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by Minky on 2021-05-15
@@ -35,6 +36,16 @@ public class BuildingService {
     public List<BuildingResponseDto> getAll() {
         List<Building> buildingList = buildingRepository.findAll();
         return BuildingResponseDto.listOf(buildingList);
+    }
+
+    // READ
+    @Transactional(readOnly = true)
+    public List<String> getBuildingAddressesByAddress(String address) {
+        List<Building> buildingList = buildingRepository.findByAddressContaining(address);
+        return buildingList
+                .stream()
+                .map(building -> building.getAddress())
+                .collect(Collectors.toList());
     }
 
     // READ

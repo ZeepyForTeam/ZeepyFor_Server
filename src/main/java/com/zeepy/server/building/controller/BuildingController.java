@@ -26,6 +26,13 @@ public class BuildingController {
         return ResponseEntity.ok(buildingService.getAll());
     }
 
+    @GetMapping("/auto")
+    public ResponseEntity<List<String>> getBuildingAddresses(
+            @RequestParam("address") String address
+    ) {
+        return ResponseEntity.ok(buildingService.getBuildingAddressesByAddress(address));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<BuildingResponseDto> getBuilding(
             @PathVariable Long id

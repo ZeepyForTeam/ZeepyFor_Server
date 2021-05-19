@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface BuildingRepository extends JpaRepository<Building, Long> {
     List<Building> findByAddress(String address);
+    List<Building> findByAddressContaining(String address);
 }
