@@ -72,7 +72,19 @@ class BuildingControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("GET Building By Address Test")
     void getBuildingByAddress() throws Exception {
+        given(buildingService.getByAddress(any(String.class)))
+                .willReturn(makeBuildingResponseDto());
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("address", "test");
+        doGet("/api/building/address", params);
+
+    }
+
+    @Test
+    @DisplayName("GET Building Addresses (AutoComplete) Test")
+    void getBuildingAddresses() throws Exception {
         given(buildingService.getBuildingAddressesByAddress(any(String.class)))
                 .willReturn(Arrays.asList("test", "test"));
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -81,15 +93,7 @@ class BuildingControllerTest extends ControllerTest {
     }
 
     @Test
-    void getBuildingAddresses() throws Exception {
-        given(buildingService.getByAddress(any(String.class)))
-                .willReturn(makeBuildingResponseDto());
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("address", "test");
-        doGet("/api/building/address", params);
-    }
-
-    @Test
+    @DisplayName("GET Buildings By Location Test")
     void getBuildingsByLocation() throws Exception {
         given(buildingService.getByLatitudeAndLongitude(anyDouble(), anyDouble()))
                 .willReturn(makeBuildingResponseDtoList());
@@ -100,6 +104,7 @@ class BuildingControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("GET Building Test")
     void getBuilding() throws Exception {
         given(buildingService.getById(anyLong()))
                 .willReturn(makeBuildingResponseDto());
@@ -116,6 +121,7 @@ class BuildingControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("UPDATE Building Test")
     void updateBuilding() throws Exception {
         BuildingRequestDto buildingRequestDto = makeBuildingRequestDto();
         doNothing().when(buildingService).update(1L, buildingRequestDto);
@@ -123,6 +129,7 @@ class BuildingControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("DELETE Building Test")
     void deleteBuilding() throws Exception {
         doNothing().when(buildingService).deleteById(1L);
         doDelete("/api/building/1");
