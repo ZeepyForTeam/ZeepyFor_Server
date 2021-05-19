@@ -15,9 +15,10 @@ public class ParticipationDto {
 
     @Builder
     public Participation toEntity(){
-        return Participation.builder()
-                .community(community)
-                .user(user)
+        Participation participation = Participation.builder()
                 .build();
+        participation.setCommunity(this.community);
+        participation.setUser(this.user);
+        return participation;
     }
 }

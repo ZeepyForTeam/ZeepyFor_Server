@@ -1,6 +1,5 @@
 package com.zeepy.server.community.domain;
 
-import com.zeepy.server.community.repository.ParticipationRepository;
 import com.zeepy.server.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,9 +25,25 @@ public class Participation {
     private User user;
 
     @Builder
-    public Participation(Long id,Community community, User user){
+    public Participation(Long id, Community community, User user) {
         this.id = id;
         this.community = community;
         this.user = user;
+    }
+
+    public void setCommunity(Community community) {
+        if (this.community != null) {
+            this.community.getParticipationsList().remove(this);
+        }
+        this.community = community;
+        community.getParticipationsList().add(this);
+    }
+
+    public void setUser(User user) {
+        if (this.user != null) {
+            this.user.getParticipatingCommunities().remove(this);
+        }
+        this.user = user;
+        user.getParticipatingCommunities().add(this);
     }
 }

@@ -61,7 +61,7 @@ public class Community {
     private String AchievementRate;
 
     @OneToMany(mappedBy = "community")
-    private List<Participation> participationsList;
+    private List<Participation> participationsList = new ArrayList<>();
 
     @ElementCollection
     @JoinTable(name = "communityImageUrls", joinColumns = @JoinColumn(name = "communityID"))
