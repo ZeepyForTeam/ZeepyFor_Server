@@ -26,7 +26,8 @@ public class Participation {
     private User user;
 
     @Builder
-    public Participation(Community community, User user){
+    public Participation(Long id,Community community, User user){
+        this.id = id;
         this.community = community;
         this.user = user;
     }

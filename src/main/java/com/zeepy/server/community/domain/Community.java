@@ -69,6 +69,7 @@ public class Community {
 
     @Builder
     public Community(
+            Long id,
             CommunityCategory communityCategory,
             String productName,
             Integer productPrice,
@@ -80,6 +81,7 @@ public class Community {
             String content,
             List<String> imageUrls
     ) {
+        this.id = id;
         this.communityCategory = communityCategory;
         this.productName = productName;
         this.productPrice = productPrice;

@@ -32,7 +32,8 @@ public class User {
     private List<Community> communities = new ArrayList<>();
 
     @Builder
-    public User(String name) {
+    public User(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 }
