@@ -6,8 +6,9 @@ import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -30,6 +31,13 @@ public class CommunityRepositoryTest {
     UserRepository userRepository;
     @Autowired
     ParticipationRepository participationRepository;
+
+    @AfterEach
+    public void reset() {
+        communityRepository.deleteAll();
+        userRepository.deleteAll();
+        participationRepository.deleteAll();
+    }
 
 
     @DisplayName("커뮤니티 저장하기 테스트")
@@ -73,6 +81,27 @@ public class CommunityRepositoryTest {
         assertThat(participation.getCommunity().getId()).isEqualTo(saveCommunity.getId());
         assertThat(participation.getUser().getId()).isEqualTo(joinUser.getId());
         assertThat(participation.getUser().getName()).isEqualTo("참여자");
+    }
+
+    @DisplayName("MyZip참여리스트 불러오기 테스트")
+    @Test
+    public void getZipList() {
+        //given
+        User writer = userRepository.save(User.builder().name("작성자2").build());
+        User joinUser = userRepository.save(User.builder().name("참여자2").build());
+        Community community = communityRepository.save(jointpurchaseEntity(writer));
+
+        ParticipationDto requestDto = new ParticipationDto(community, joinUser);
+        Participation participation = participationRepository.save(requestDto.toEntity());
+
+        //when
+        List<Participation> findParticipationList = participationRepository.findAllByUserId(joinUser.getId());
+
+        //then
+        assertThat(findParticipationList.get(0).getUser().getId()).isEqualTo(joinUser.getId());
+        assertThat(findParticipationList.get(0).getUser().getName()).isEqualTo(joinUser.getName());
+        assertThat(findParticipationList.get(0).getCommunity().getProductName()).isEqualTo(community.getProductName());
+        assertThat(findParticipationList.get(0)).isEqualTo(participation);
     }
 
     public Community jointpurchaseEntity(User user) {
