@@ -11,9 +11,10 @@ import lombok.Getter;
 /**
  * Created by KimGyeong 4/19/20.
  */
+
 @Getter
 @MappedSuperclass
 public abstract class BaseTimeEntity {
-	@CreatedDate
-	private LocalDateTime createdDate;
+    @CreatedDate
+    private LocalDateTime createdDate;
 }
