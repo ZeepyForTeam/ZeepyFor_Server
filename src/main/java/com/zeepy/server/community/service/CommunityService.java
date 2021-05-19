@@ -4,10 +4,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCo
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.Participation;
-import com.zeepy.server.community.dto.JoinCommunityRequestDto;
-import com.zeepy.server.community.dto.ParticipationDto;
-import com.zeepy.server.community.dto.ParticipationResDto;
-import com.zeepy.server.community.dto.SaveCommunityRequestDto;
+import com.zeepy.server.community.dto.*;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
 import com.zeepy.server.user.domain.User;
@@ -43,11 +40,16 @@ public class CommunityService {
         return participationRepository.save(participationDto.toEntity()).getId();
     }
 
-    public List<ParticipationResDto> getJoinList(Long id) {
-        List<Participation> participationList = participationRepository.findAllByUserId(id);//오버플로우발생
-        return participationList.stream()
+    public MyZipJoinResDto getJoinList(Long id) {
+        List<Participation> participationList = participationRepository.findAllByUserId(id);
+        List<Community> communityList = communityRepository.findAllByUserId(id);
+        List<ParticipationResDto> participationResDtoList = participationList.stream()
                 .map(ParticipationResDto::new)
                 .collect(Collectors.toList());
+        List<WriteOutResDto> writeOutResDtoList = communityList.stream()
+                .map(WriteOutResDto::new)
+                .collect(Collectors.toList());
+        return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
     }
 }
 
