@@ -38,6 +38,7 @@ public class BuildingService {
     }
 
     // READ
+    // TODO : 추후에 ZoomLevel에 따른 위도 경도 범위 지정 기능 추가
     @Transactional(readOnly = true)
     public List<BuildingResponseDto> getByLatitudeAndLongitude(double latitude, double longitude) {
         List<Building> buildingList = buildingRepository
@@ -51,6 +52,7 @@ public class BuildingService {
     }
 
     // READ
+    // TODO : 추후에 페이징 기능 탑제
     @Transactional(readOnly = true)
     public List<String> getBuildingAddressesByAddress(String address) {
         List<Building> buildingList = buildingRepository.findByAddressContaining(address);
