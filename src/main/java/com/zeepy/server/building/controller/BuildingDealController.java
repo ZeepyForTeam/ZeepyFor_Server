@@ -5,8 +5,6 @@ import com.zeepy.server.building.dto.BuildingDealResponseDto;
 import com.zeepy.server.building.service.BuildingDealService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.repository.query.Parameter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +46,7 @@ public class BuildingDealController {
             @RequestBody BuildingDealRequestDto buildingDealRequestDto
     ) {
         Long id = buildingDealService.create(buildingDealRequestDto);
-        return ResponseEntity.created(URI.create("api/deal/" + id)).build();
+        return ResponseEntity.created(URI.create("/api/deal/" + id)).build();
     }
 
     @PutMapping("/{id}")

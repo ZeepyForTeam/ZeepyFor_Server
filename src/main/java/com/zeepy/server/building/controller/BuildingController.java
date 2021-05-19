@@ -60,7 +60,7 @@ public class BuildingController {
             @RequestBody BuildingRequestDto buildingRequestDto
     ) {
         Long id = buildingService.create(buildingRequestDto);
-        return ResponseEntity.created(URI.create("api/building/" + id)).build();
+        return ResponseEntity.created(URI.create("/api/building/" + id)).build();
     }
 
     @PutMapping("/{id}")
