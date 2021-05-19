@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +34,19 @@ public class BuildingService {
     @Transactional(readOnly = true)
     public List<BuildingResponseDto> getAll() {
         List<Building> buildingList = buildingRepository.findAll();
+        return BuildingResponseDto.listOf(buildingList);
+    }
+
+    // READ
+    @Transactional(readOnly = true)
+    public List<BuildingResponseDto> getByLatitudeAndLongitude(double latitude, double longitude) {
+        List<Building> buildingList = buildingRepository
+                .findByLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(
+                        latitude - 0.0001,
+                        latitude + 0.0001,
+                        longitude - 0.001,
+                        longitude + 0.001
+                );
         return BuildingResponseDto.listOf(buildingList);
     }
 

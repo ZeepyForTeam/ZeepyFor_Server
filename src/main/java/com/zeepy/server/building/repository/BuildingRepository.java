@@ -10,5 +10,13 @@ import java.util.List;
  */
 public interface BuildingRepository extends JpaRepository<Building, Long> {
     List<Building> findByAddress(String address);
+
     List<Building> findByAddressContaining(String address);
+
+    List<Building> findByLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(
+            double latitudeGreater,
+            double latitudeLess,
+            double longitudeGreater,
+            double longitudeLess
+    );
 }

@@ -33,6 +33,14 @@ public class BuildingController {
         return ResponseEntity.ok(buildingService.getBuildingAddressesByAddress(address));
     }
 
+    @GetMapping("/location")
+    public ResponseEntity<List<BuildingResponseDto>> getBuildingsByLocation(
+            @RequestParam("latitude") double latitude,
+            @RequestParam("longitude") double longitude
+    ) {
+        return ResponseEntity.ok(buildingService.getByLatitudeAndLongitude(latitude, longitude));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<BuildingResponseDto> getBuilding(
             @PathVariable Long id
