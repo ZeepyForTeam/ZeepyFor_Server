@@ -22,7 +22,7 @@ public class CommunityController {
         return ResponseEntity.created(URI.create("/api/community/" + saveId)).build();
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/participation/{id}")
     public ResponseEntity<Void> toJoinCommunity(
             @PathVariable("id") Long id,
             @Valid @RequestBody JoinCommunityRequestDto joinCommunityRequestDto
