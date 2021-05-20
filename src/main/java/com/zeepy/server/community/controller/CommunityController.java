@@ -1,5 +1,6 @@
 package com.zeepy.server.community.controller;
 
+import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
@@ -29,6 +30,15 @@ public class CommunityController {
             @Valid @RequestBody JoinCommunityRequestDto joinCommunityRequestDto
     ) {
         Long participationId = communityService.joinCommunity(id, joinCommunityRequestDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/participation/{id}")
+    public ResponseEntity<Void> cancelJoinCommunity(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto
+    ) {
+        communityService.cancelJoinCommunity(id, cancelJoinCommunityRequestDto);
         return ResponseEntity.ok().build();
     }
 

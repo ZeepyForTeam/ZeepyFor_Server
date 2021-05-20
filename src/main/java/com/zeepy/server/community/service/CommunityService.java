@@ -40,6 +40,13 @@ public class CommunityService {
         return participationRepository.save(participationDto.toEntity()).getId();
     }
 
+    @Transactional()
+    public void cancelJoinCommunity(Long id, CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto) {
+        User findUser = userRepository.findById(cancelJoinCommunityRequestDto.getCancelUserId()).orElseThrow(NotFoundUserException::new);
+        Community findCommunity = communityRepository.findById(id).orElseThrow(NotFoundCommunityException::new);
+        participationRepository.deleteByUserIdAndCommunityId(findUser.getId(), findCommunity.getId());
+    }
+
     public MyZipJoinResDto getJoinList(Long id) {
         List<Participation> participationList = participationRepository.findAllByUserId(id);
         List<Community> communityList = communityRepository.findAllByUserId(id);

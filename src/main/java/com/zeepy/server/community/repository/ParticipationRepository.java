@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ParticipationRepository extends JpaRepository<Participation, Long> {
     List<Participation> findAllByUserId(Long userId);
+
+    void deleteByUserIdAndCommunityId(Long userId, Long communityId);
 }
