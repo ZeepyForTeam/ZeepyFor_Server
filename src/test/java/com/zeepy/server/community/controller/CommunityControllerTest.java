@@ -22,6 +22,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 
 @DisplayName("커뮤니티_컨트롤러_테스트")
 @WebMvcTest(controllers = CommunityController.class)
@@ -99,5 +100,21 @@ public class CommunityControllerTest extends ControllerTest {
         //when
         //then
         doGet("/api/community/participation/1", params);
+    }
+
+    @DisplayName("참여취소하기")
+    @Test
+    public void cancelParticipation() throws Exception {
+        //given
+        long communityId = 1L;
+        String url = "/api/community/participation/" + communityId;
+        long userId = 2L;
+
+        CancelJoinCommunityRequestDto requestDto = new CancelJoinCommunityRequestDto(userId);
+        doNothing().when(communityService).cancelJoinCommunity(communityId, requestDto);
+
+        //when
+        //then
+        doPut(url, requestDto);
     }
 }
