@@ -68,7 +68,7 @@ class BuildingControllerTest extends ControllerTest {
     @DisplayName("GET Buildings Test")
     void getBuildings() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        doGet("/api/building", params);
+        doGet("/api/buildings", params);
     }
 
     @Test
@@ -78,7 +78,7 @@ class BuildingControllerTest extends ControllerTest {
                 .willReturn(makeBuildingResponseDto());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("address", "test");
-        doGet("/api/building/address", params);
+        doGet("/api/buildings/address", params);
 
     }
 
@@ -89,7 +89,7 @@ class BuildingControllerTest extends ControllerTest {
                 .willReturn(Arrays.asList("test", "test"));
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("address", "test");
-        doGet("/api/building/auto", params);
+        doGet("/api/buildings/addresses", params);
     }
 
     @Test
@@ -100,7 +100,7 @@ class BuildingControllerTest extends ControllerTest {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("latitude", "32.0");
         params.add("longitude", "124.0");
-        doGet("/api/building/location", params);
+        doGet("/api/buildings/location", params);
     }
 
     @Test
@@ -109,7 +109,7 @@ class BuildingControllerTest extends ControllerTest {
         given(buildingService.getById(anyLong()))
                 .willReturn(makeBuildingResponseDto());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        doGet("/api/building/1", params);
+        doGet("/api/buildings/1", params);
     }
 
     @Test
@@ -117,7 +117,7 @@ class BuildingControllerTest extends ControllerTest {
     void uploadBuilding() throws Exception {
         BuildingRequestDto buildingRequestDto = makeBuildingRequestDto();
         given(buildingService.create(any(BuildingRequestDto.class))).willReturn(1L);
-        doPost("/api/building", buildingRequestDto);
+        doPost("/api/buildings", buildingRequestDto);
     }
 
     @Test
@@ -125,13 +125,13 @@ class BuildingControllerTest extends ControllerTest {
     void updateBuilding() throws Exception {
         BuildingRequestDto buildingRequestDto = makeBuildingRequestDto();
         doNothing().when(buildingService).update(1L, buildingRequestDto);
-        doPut("/api/building/1", buildingRequestDto);
+        doPut("/api/buildings/1", buildingRequestDto);
     }
 
     @Test
     @DisplayName("DELETE Building Test")
     void deleteBuilding() throws Exception {
         doNothing().when(buildingService).deleteById(1L);
-        doDelete("/api/building/1");
+        doDelete("/api/buildings/1");
     }
 }

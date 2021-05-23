@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/deal")
+@RequestMapping("/api/deals")
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class BuildingDealController {
     private final BuildingDealService buildingDealService;
@@ -33,10 +33,10 @@ public class BuildingDealController {
         return ResponseEntity.ok(buildingDealService.getById(id));
     }
 
-    @GetMapping("/floor/{floor}/building/{id}")
+    @GetMapping("/floors")
     public ResponseEntity<BuildingDealResponseDto> getBuildingDealByFloorAndBuildingId(
-            @PathVariable int floor,
-            @PathVariable Long id
+            @RequestParam("floor") int floor,
+            @RequestParam("id") Long id
     ) {
         return ResponseEntity.ok(buildingDealService.getByFloorAndBuildingId(floor, id));
     }
@@ -46,7 +46,7 @@ public class BuildingDealController {
             @RequestBody BuildingDealRequestDto buildingDealRequestDto
     ) {
         Long id = buildingDealService.create(buildingDealRequestDto);
-        return ResponseEntity.created(URI.create("/api/deal/" + id)).build();
+        return ResponseEntity.created(URI.create("/api/deals/" + id)).build();
     }
 
     @PutMapping("/{id}")

@@ -59,7 +59,7 @@ class BuildingDealControllerTest extends ControllerTest {
     @DisplayName("GET Building Deals Test")
     void getBuildingDeals() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        doGet("/api/deal", params);
+        doGet("/api/deals", params);
     }
 
     @Test
@@ -68,7 +68,7 @@ class BuildingDealControllerTest extends ControllerTest {
         given(buildingDealService.getById(anyLong()))
                 .willReturn(makeBuildingDealResponseDto());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        doGet("/api/deal/1", params);
+        doGet("/api/deals/1", params);
     }
 
     @Test
@@ -77,7 +77,9 @@ class BuildingDealControllerTest extends ControllerTest {
         given(buildingDealService.getByFloorAndBuildingId(anyInt(), anyLong()))
                 .willReturn(makeBuildingDealResponseDto());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        doGet("/api/deal/floor/1/building/1", params);
+        params.add("floor", "1");
+        params.add("id", "1");
+        doGet("/api/deals/floors", params);
     }
 
     @Test
@@ -85,7 +87,7 @@ class BuildingDealControllerTest extends ControllerTest {
     void uploadBuildingDeal() throws Exception {
         BuildingDealRequestDto buildingDealRequestDto = makeBuildingDealRequestDto();
         given(buildingDealService.create(any(BuildingDealRequestDto.class))).willReturn(1L);
-        doPost("/api/deal", buildingDealRequestDto);
+        doPost("/api/deals", buildingDealRequestDto);
     }
 
     @Test
@@ -93,13 +95,13 @@ class BuildingDealControllerTest extends ControllerTest {
     void updateBuildingDeal() throws Exception {
         BuildingDealRequestDto buildingDealRequestDto = makeBuildingDealRequestDto();
         doNothing().when(buildingDealService).update(1L, buildingDealRequestDto);
-        doPut("/api/deal/1", buildingDealRequestDto);
+        doPut("/api/deals/1", buildingDealRequestDto);
     }
 
     @Test
     @DisplayName("DELETE Building Deal Test")
     void deleteBuildingDeal() throws Exception {
         doNothing().when(buildingDealService).deleteById(1L);
-        doDelete("/api/deal/1");
+        doDelete("/api/deals/1");
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/building")
+@RequestMapping("/api/buildings")
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class BuildingController {
     private final BuildingService buildingService;
@@ -33,7 +33,7 @@ public class BuildingController {
         return ResponseEntity.ok(buildingService.getByAddress(address));
     }
 
-    @GetMapping("/auto")
+    @GetMapping("/addresses")
     public ResponseEntity<List<String>> getBuildingAddresses(
             @RequestParam("address") String address
     ) {
@@ -60,7 +60,7 @@ public class BuildingController {
             @RequestBody BuildingRequestDto buildingRequestDto
     ) {
         Long id = buildingService.create(buildingRequestDto);
-        return ResponseEntity.created(URI.create("/api/building/" + id)).build();
+        return ResponseEntity.created(URI.create("/api/buildings/" + id)).build();
     }
 
     @PutMapping("/{id}")

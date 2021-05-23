@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,9 +38,9 @@ public class BuildingService {
 
     // READ
     @Transactional(readOnly = true)
-    @ExceptionHandler(NoContentException.class)
     public BuildingResponseDto getByAddress(String address) {
-        Building building = buildingRepository.findByAddress(address).orElseThrow(() -> new NoContentException());
+        Building building = buildingRepository.findByAddress(address)
+                .orElseThrow(NoContentException::new);
         return BuildingResponseDto.of(building);
     }
 
@@ -72,21 +71,19 @@ public class BuildingService {
 
     // READ
     @Transactional(readOnly = true)
-    @ExceptionHandler(NoContentException.class)
     public BuildingResponseDto getById(Long id) {
         Building building = buildingRepository
                 .findById(id)
-                .orElseThrow(() -> new NoContentException());
+                .orElseThrow(NoContentException::new);
         return BuildingResponseDto.of(building);
     }
 
     // UPDATE
     @Transactional
-    @ExceptionHandler(NoContentException.class)
     public void update(Long id, BuildingRequestDto buildingRequestDto) {
         Building building = buildingRepository
                 .findById(id)
-                .orElseThrow(() -> new NoContentException());
+                .orElseThrow(NoContentException::new);
         building.setBuildYear(buildingRequestDto.getBuildYear());
         building.setAddress(buildingRequestDto.getAddress());
         building.setExclusivePrivateArea(buildingRequestDto.getExclusivePrivateArea());

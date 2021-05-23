@@ -14,7 +14,7 @@ import java.net.URI;
  */
 
 @RestController
-@RequestMapping("/api/code")
+@RequestMapping("/api/codes")
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class AreaCodeController {
     private final AreaCodeService areaCodeService;
@@ -24,7 +24,7 @@ public class AreaCodeController {
             @RequestBody AreaCodeRequestDto areaCodeRequestDto
     ) {
         Long id = areaCodeService.create(areaCodeRequestDto);
-        return ResponseEntity.created(URI.create("/api/code/" + id)).build();
+        return ResponseEntity.created(URI.create("/api/codes/" + id)).build();
     }
 
     @PutMapping("/{id}")

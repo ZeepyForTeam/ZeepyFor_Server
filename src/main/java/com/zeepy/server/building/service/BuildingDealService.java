@@ -11,7 +11,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -28,11 +27,10 @@ public class BuildingDealService {
 
     // CREATE
     @Transactional
-    @ExceptionHandler(NoContentException.class)
     public Long create(BuildingDealRequestDto buildingDealRequestDto) {
         Building building = buildingRepository
                 .findById(buildingDealRequestDto.getBuildingId())
-                .orElseThrow(() -> new NoContentException());
+                .orElseThrow(NoContentException::new);
         BuildingDeal buildingDeal = buildingDealRequestDto.returnBuildingDealEntity();
         buildingDeal.setBuilding(building);
         buildingDealRepository.save(buildingDeal);
@@ -48,31 +46,28 @@ public class BuildingDealService {
 
     // READ
     @Transactional(readOnly = true)
-    @ExceptionHandler(NoContentException.class)
     public BuildingDealResponseDto getById(Long id) {
         BuildingDeal buildingDeal = buildingDealRepository
                 .findById(id)
-                .orElseThrow(() -> new NoContentException());
+                .orElseThrow(NoContentException::new);
         return BuildingDealResponseDto.of(buildingDeal);
     }
 
     // READ
     @Transactional(readOnly = true)
-    @ExceptionHandler(NoContentException.class)
     public BuildingDealResponseDto getByFloorAndBuildingId(int floor, Long id) {
         BuildingDeal buildingDeal = buildingDealRepository
                 .findByFloorAndBuilding_Id(floor, id)
-                .orElseThrow(() -> new NoContentException());
+                .orElseThrow(NoContentException::new);
         return BuildingDealResponseDto.of(buildingDeal);
     }
 
     // UPDATE
     @Transactional
-    @ExceptionHandler(NoContentException.class)
     public void update(Long id, BuildingDealRequestDto buildingDealRequestDto) {
         BuildingDeal buildingDeal = buildingDealRepository
                 .findById(id)
-                .orElseThrow(() -> new NoContentException());
+                .orElseThrow(NoContentException::new);
         buildingDeal.setDealDate(new Timestamp(buildingDealRequestDto.getDealDate()));
         buildingDeal.setDeposit(buildingDealRequestDto.getDeposit());
         buildingDeal.setMonthlyRent(buildingDealRequestDto.getMonthlyRent());

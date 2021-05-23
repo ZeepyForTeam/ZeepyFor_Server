@@ -42,7 +42,7 @@ class AreaCodeControllerTest extends ControllerTest {
     void uploadAreaCode() throws Exception {
         AreaCodeRequestDto areaCodeRequestDto = makeAreaCodeRequestDto();
         given(areaCodeService.create(any(AreaCodeRequestDto.class))).willReturn(1L);
-        doPost("/api/code", areaCodeRequestDto);
+        doPost("/api/codes", areaCodeRequestDto);
     }
 
     @Test
@@ -50,13 +50,13 @@ class AreaCodeControllerTest extends ControllerTest {
     void updateAreaCode() throws Exception {
         AreaCodeRequestDto areaCodeRequestDto = makeAreaCodeRequestDto();
         doNothing().when(areaCodeService).update(1L, areaCodeRequestDto);
-        doPut("/api/code/1", areaCodeRequestDto);
+        doPut("/api/codes/1", areaCodeRequestDto);
     }
 
     @Test
     @DisplayName("DELETE AreaCode Test")
     void deleteAreaCode() throws Exception {
         doNothing().when(areaCodeService).deleteById(1L);
-        doDelete("/api/code/1");
+        doDelete("/api/codes/1");
     }
 }
