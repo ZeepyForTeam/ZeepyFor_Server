@@ -1,5 +1,6 @@
 package com.zeepy.server.community.dto;
 
+import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
 import lombok.Builder;
@@ -16,9 +17,14 @@ public class ParticipationResDto {
 
     @Builder
     public ParticipationResDto(Participation participation) {
-        this.id = participation.getCommunity().getId();
-        this.communityCategory = participation.getCommunity().getCommunityCategory();
-        this.title = participation.getCommunity().getTitle();
-        this.content = participation.getCommunity().getContent();
+        Community thisCommunity = getCommunityInParticipation(participation);
+        this.id = thisCommunity.getId();
+        this.communityCategory = thisCommunity.getCommunityCategory();
+        this.title = thisCommunity.getTitle();
+        this.content = thisCommunity.getContent();
+    }
+
+    private Community getCommunityInParticipation(Participation participation) {
+        return participation.getCommunity();
     }
 }

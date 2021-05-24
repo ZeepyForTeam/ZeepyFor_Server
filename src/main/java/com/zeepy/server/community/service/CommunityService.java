@@ -25,7 +25,9 @@ public class CommunityService {
 
     @Transactional
     public Long save(SaveCommunityRequestDto requestDto) {
-        Community community = communityRepository.save(requestDto.toEntity());
+        Community communityToSave = requestDto.toEntity();
+        Community community = communityRepository.save(communityToSave);
+
         return community.getId();
     }
 
@@ -33,29 +35,41 @@ public class CommunityService {
     public Long joinCommunity(Long id, JoinCommunityRequestDto joinCommunityRequestDto) {
         Community community = communityRepository.findById(id).orElseThrow(NotFoundCommunityException::new);
         if (joinCommunityRequestDto.isCommentExist()) {
-            community.update(joinCommunityRequestDto.getComment());
+            String commentToUpdate = joinCommunityRequestDto.getComment();
+            community.update(commentToUpdate);
         }
         User user = userRepository.findById(joinCommunityRequestDto.getParticipationUserId()).orElseThrow(NotFoundUserException::new);
+
         ParticipationDto participationDto = new ParticipationDto(community, user);
-        return participationRepository.save(participationDto.toEntity()).getId();
+        Participation participationToSave = participationDto.toEntity();
+        Participation saveParticipation = participationRepository.save(participationToSave);
+
+        return saveParticipation.getId();
     }
 
-    @Transactional()
+    @Transactional
     public void cancelJoinCommunity(Long id, CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto) {
-        User findUser = userRepository.findById(cancelJoinCommunityRequestDto.getCancelUserId()).orElseThrow(NotFoundUserException::new);
+        Long cancelJoinUserId = cancelJoinCommunityRequestDto.getCancelUserId();
+
+        User findUser = userRepository.findById(cancelJoinUserId).orElseThrow(NotFoundUserException::new);
         Community findCommunity = communityRepository.findById(id).orElseThrow(NotFoundCommunityException::new);
-        participationRepository.deleteByUserIdAndCommunityId(findUser.getId(), findCommunity.getId());
+
+        Long findUserId = findUser.getId();
+        Long findCommunityId = findCommunity.getId();
+        participationRepository.deleteByUserIdAndCommunityId(findUserId, findCommunityId);
     }
 
     public MyZipJoinResDto getJoinList(Long id) {
         List<Participation> participationList = participationRepository.findAllByUserId(id);
         List<Community> communityList = communityRepository.findAllByUserId(id);
+
         List<ParticipationResDto> participationResDtoList = participationList.stream()
                 .map(ParticipationResDto::new)
                 .collect(Collectors.toList());
         List<WriteOutResDto> writeOutResDtoList = communityList.stream()
                 .map(WriteOutResDto::new)
                 .collect(Collectors.toList());
+
         return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
     }
 }
