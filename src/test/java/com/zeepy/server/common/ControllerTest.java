@@ -52,6 +52,13 @@ public abstract class ControllerTest {
             .andDo(MockMvcResultHandlers.print());
     }
 
+	protected <T> ResultActions doGet(String path) throws Exception {
+		return mockMvc.perform(get(path)
+			.contentType(MediaType.APPLICATION_JSON)
+		)
+			.andExpect(status().isOk());
+	}
+
     protected ResultActions doGet(String path, MultiValueMap<String, String> params) throws Exception {
         return mockMvc.perform(get(path)
             .params(params)

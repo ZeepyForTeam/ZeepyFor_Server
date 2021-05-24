@@ -21,37 +21,39 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewDto {
+
 	private Long user; // 변경 될 겁니다.
 
 	@NotNull
 	private String address;
 
-	@NotNull
+	@NotNull(message = "소통경향은 필수값입니다.")
 	private CommuncationTendency communcationTendency;
 
-	@NotNull
+	@NotNull(message = "임대인 성별은 필수값입니다.")
 	private LessorGender lessorGender;
 
-	@NotNull
+	@NotNull(message = "임대인 나이는 필수값입니다.")
 	private LessorAge lessorAge;
 
 	@NotNull
 	private String lessorReview;
 
-	@NotNull
+	@NotNull(message = "방갯수 필수값입니다.")
 	private RoomCount roomCount;
 
-	@NotNull
+	@NotNull(message = "방음은 필수값입니다.")
 	private MultiChoiceReview soundInsulation;
 
-	@NotNull
+	@NotNull(message = "해충은 필수값입니다.")
 	private MultiChoiceReview pest;
 
-	@NotNull
+	@NotNull(message = "채광은 필수값입니다.")
 	private MultiChoiceReview lightning;
 
-	@NotNull
+	@NotNull(message = "수압은 필수값입니다.")
 	private MultiChoiceReview waterPressure;
 
 	private List<Furniture> furnitures;
@@ -59,11 +61,12 @@ public class ReviewDto {
 	@NotBlank(message = "상세리뷰는 필수값입니다.")
 	private String review;
 
-	@NotNull
+	@NotNull(message = "종합평가는 필수값입니다.")
 	private TotalEvaluation totalEvaluation;
 
 	private List<String> imageUrls;
 
+	@Builder
 	public ReviewDto(
 		Long user, String address,
 		CommuncationTendency communcationTendency,

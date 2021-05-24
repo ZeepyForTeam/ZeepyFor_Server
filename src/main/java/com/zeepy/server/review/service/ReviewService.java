@@ -6,7 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.zeepy.server.review.domain.Review;
 import com.zeepy.server.review.dto.ReviewDto;
 import com.zeepy.server.review.dto.ReviewResponseDto;
@@ -18,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReviewService {
-	private final ReviewInterface reviewInterface;
+	private final ReviewRepository reviewRepository;
 
 	@Transactional(readOnly = true)
 	public ReviewResponseDtos getReviewList(String address) {
@@ -33,12 +36,13 @@ public class ReviewService {
 
 	@Transactional
 	public Long create(ReviewDto reviewDto) {
-		Review review = reviewInterface.save(reviewDto.returnReviewEntity());
-		return review.getId();
+		Review review = reviewDto.returnReviewEntity();
+		Review save = reviewRepository.save(review);
+		return save.getId();
 	}
 
-    @Transactional
-    public void deleteReview(Long id) {
-        reviewInterface.deleteById(id);
-    }
+	@Transactional
+	public void deleteReview(Long id) {
+		reviewRepository.deleteById(id);
+	}
 }

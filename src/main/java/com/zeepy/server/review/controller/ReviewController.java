@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zeepy.server.review.dto.ReviewDto;
 import com.zeepy.server.review.dto.ReviewResponseDtos;
 import com.zeepy.server.review.service.ReviewService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -36,10 +37,9 @@ public class ReviewController {
 		return ResponseEntity.created(URI.create("/api/review/" + saveId)).build();
 	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
-        reviewService.deleteReview(id);
-        return ResponseEntity.noContent().build();
-    }
-
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
+		reviewService.deleteReview(id);
+		return ResponseEntity.noContent().build();
+	}
 }
