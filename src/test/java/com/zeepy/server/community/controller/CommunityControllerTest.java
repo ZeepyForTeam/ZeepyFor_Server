@@ -69,7 +69,7 @@ public class CommunityControllerTest extends ControllerTest {
 
         //when
         //then
-        doPost("/api/community/" + communityId, requestDto);
+        doPost("/api/community/participation/" + communityId, requestDto);
     }
 
     @DisplayName("나의ZIP참여목록_테스트")
