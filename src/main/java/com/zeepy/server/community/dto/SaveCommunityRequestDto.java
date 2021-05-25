@@ -2,6 +2,7 @@ package com.zeepy.server.community.dto;
 
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
+import com.zeepy.server.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,10 @@ public class SaveCommunityRequestDto {
 
     private List<String> imageUrls;
 
+    private User user;
+
+    private Long writerId;//작성자ID인데 토큰작업되면 지울꺼
+
     @Builder
     public SaveCommunityRequestDto(CommunityCategory communityCategory,
                                    String productName,
@@ -46,6 +51,7 @@ public class SaveCommunityRequestDto {
                                    Integer targetAmount,
                                    String title,
                                    String content,
+                                   User user,
                                    List<String> imageUrls) {
         this.communityCategory = communityCategory;
         this.productName = productName;
@@ -55,6 +61,7 @@ public class SaveCommunityRequestDto {
         this.targetAmount = targetAmount;
         this.title = title;
         this.content = content;
+        this.user = user;
         this.imageUrls = imageUrls;
     }
 
@@ -67,7 +74,12 @@ public class SaveCommunityRequestDto {
                 .targetAmount(targetAmount)
                 .title(title)
                 .content(content)
+                .user(user)
                 .imageUrls(imageUrls)
                 .build();
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

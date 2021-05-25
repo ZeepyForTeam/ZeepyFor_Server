@@ -25,8 +25,15 @@ public class CommunityService {
 
     @Transactional
     public Long save(SaveCommunityRequestDto requestDto) {
+        Long writerId = requestDto.getWriterId();
+        User writer = userRepository.findById(writerId).orElseThrow(NotFoundUserException::new);
+        requestDto.setUser(writer);
         Community communityToSave = requestDto.toEntity();
         Community community = communityRepository.save(communityToSave);
+
+        ParticipationDto participationDto = new ParticipationDto(community, writer);
+        Participation participationToSave = participationDto.toEntity();
+        Participation testParticipation = participationRepository.save(participationToSave);
 
         return community.getId();
     }
