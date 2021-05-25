@@ -38,7 +38,9 @@ public class CommunityService {
             String commentToUpdate = joinCommunityRequestDto.getComment();
             community.update(commentToUpdate);
         }
-        User user = userRepository.findById(joinCommunityRequestDto.getParticipationUserId()).orElseThrow(NotFoundUserException::new);
+
+        Long participationUserId = joinCommunityRequestDto.getParticipationUserId();
+        User user = userRepository.findById(participationUserId).orElseThrow(NotFoundUserException::new);
 
         ParticipationDto participationDto = new ParticipationDto(community, user);
         Participation participationToSave = participationDto.toEntity();
@@ -59,6 +61,7 @@ public class CommunityService {
         participationRepository.deleteByUserIdAndCommunityId(findUserId, findCommunityId);
     }
 
+    @Transactional(readOnly = true)
     public MyZipJoinResDto getJoinList(Long id) {
         List<Participation> participationList = participationRepository.findAllByUserId(id);
         List<Community> communityList = communityRepository.findAllByUserId(id);
