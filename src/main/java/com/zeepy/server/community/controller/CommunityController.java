@@ -1,5 +1,6 @@
 package com.zeepy.server.community.controller;
 
+import com.zeepy.server.community.dto.LikeRequestDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.service.CommunityService;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,10 @@ public class CommunityController {
         return ResponseEntity.created(URI.create("/api/community/" + saveId)).build();
     }
 
-
+    @PostMapping("/like")
+    public ResponseEntity<Void> likeCommunity(@RequestBody LikeRequestDto likeRequestDto
+    ) {
+        Long likeId = communityService.like(likeRequestDto);
+        return ResponseEntity.created(URI.create("/api/community/like" + likeId)).build();
+    }
 }

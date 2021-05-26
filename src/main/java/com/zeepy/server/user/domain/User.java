@@ -23,7 +23,7 @@ public class User {
     private String name;
 
     @OneToMany(mappedBy = "user")
-    private List<CommunityLike> likeCommunities = new ArrayList<>();
+    private List<CommunityLike> likedCommunities = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Participation> participatingCommunities = new ArrayList<>();
