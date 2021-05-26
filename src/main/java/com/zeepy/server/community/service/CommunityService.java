@@ -1,10 +1,13 @@
 package com.zeepy.server.community.service;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
+import com.zeepy.server.community.domain.Comment;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.*;
+import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
 import com.zeepy.server.user.domain.User;
@@ -22,6 +25,7 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final ParticipationRepository participationRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public Long save(SaveCommunityRequestDto requestDto) {
@@ -43,7 +47,7 @@ public class CommunityService {
         Community community = communityRepository.findById(id).orElseThrow(NotFoundCommunityException::new);
         if (joinCommunityRequestDto.isCommentExist()) {
             String commentToUpdate = joinCommunityRequestDto.getComment();
-            community.update(commentToUpdate);
+            //community.update(commentToUpdate);
         }
 
         Long participationUserId = joinCommunityRequestDto.getParticipationUserId();
@@ -66,6 +70,26 @@ public class CommunityService {
         Long findUserId = findUser.getId();
         Long findCommunityId = findCommunity.getId();
         participationRepository.deleteByUserIdAndCommunityId(findUserId, findCommunityId);
+    }
+
+    @Transactional
+    public void saveComment(Long communityId, WriteCommentRequestDto writeCommentRequestDto) {
+        Long writerUserId = writeCommentRequestDto.getWriteUserId();
+        Long superCommentId = writeCommentRequestDto.getSuperCommentId();
+        User writer = userRepository.findById(writerUserId).orElseThrow(NotFoundUserException::new);
+        Community community = communityRepository.findById(communityId).orElseThrow(NotFoundCommunityException::new);
+
+        Comment superComment = null;
+        if (superCommentId != null) {//superCommentId가 존재하면 대댓글
+            superComment = commentRepository.findById(superCommentId).orElseThrow(BadRequestCommentException::new);
+        }
+        CommentDto commentDto = CommentDto.builder()
+                .comment(writeCommentRequestDto.getComment())
+                .superComment(superComment)
+                .community(community)
+                .writer(writer)
+                .build();
+        commentRepository.save(commentDto.toEntity());
     }
 
     @Transactional(readOnly = true)

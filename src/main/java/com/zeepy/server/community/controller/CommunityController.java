@@ -1,9 +1,6 @@
 package com.zeepy.server.community.controller;
 
-import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
-import com.zeepy.server.community.dto.JoinCommunityRequestDto;
-import com.zeepy.server.community.dto.MyZipJoinResDto;
-import com.zeepy.server.community.dto.SaveCommunityRequestDto;
+import com.zeepy.server.community.dto.*;
 import com.zeepy.server.community.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +36,15 @@ public class CommunityController {
             @Valid @RequestBody CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto
     ) {
         communityService.cancelJoinCommunity(id, cancelJoinCommunityRequestDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/comment/{id}")
+    public ResponseEntity<Void> writeComment(
+            @PathVariable("id") Long communityId,
+            @Valid @RequestBody WriteCommentRequestDto writeCommentRequestDto
+    ) {
+        communityService.saveComment(communityId, writeCommentRequestDto);
         return ResponseEntity.ok().build();
     }
 

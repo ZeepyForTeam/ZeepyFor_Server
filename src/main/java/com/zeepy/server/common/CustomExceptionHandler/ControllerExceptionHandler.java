@@ -57,6 +57,13 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BadRequestCommentException.class)
+    public ResponseEntity<ErrorResponse> badRequestComment(BadRequestCommentException e) {
+        ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
         final ErrorCode errorCode = e.getErrorCode();
         return ErrorResponse.create()

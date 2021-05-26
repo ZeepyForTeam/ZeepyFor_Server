@@ -54,8 +54,8 @@ public class Community {
     @OneToMany(mappedBy = "community")
     private List<CommunityLike> likeUsers = new ArrayList<>();
 
-    @Deprecated
-    private String comment;
+    @OneToMany(mappedBy = "community")
+    private List<Comment> comments = new ArrayList<>();
 
     @Deprecated
     private String AchievementRate;
@@ -92,9 +92,5 @@ public class Community {
         this.title = title;
         this.content = content;
         this.imageUrls = imageUrls;
-    }
-
-    public void update(String comment) {
-        this.comment = comment;
     }
 }
