@@ -1,6 +1,7 @@
 package com.zeepy.server.community.domain;
 
 import com.zeepy.server.community.dto.ParticipationDto;
+import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
@@ -31,12 +32,15 @@ public class CommunityRepositoryTest {
     UserRepository userRepository;
     @Autowired
     ParticipationRepository participationRepository;
+    @Autowired
+    CommentRepository commentRepository;
 
     @AfterEach
     public void reset() {
         communityRepository.deleteAll();
         userRepository.deleteAll();
         participationRepository.deleteAll();
+        commentRepository.deleteAll();
     }
 
 
@@ -104,8 +108,59 @@ public class CommunityRepositoryTest {
         assertThat(findParticipationList.get(0)).isEqualTo(participation);
     }
 
+    @DisplayName("댓글달기 테스트")
+    @Test
+    public void setComment() {
+        //given
+        User writer = User.builder().id(1L).name("작성자").build();
+        User user = User.builder().id(2L).name("사용자2").build();
+        User user2 = User.builder().id(3L).name("사용자2").build();
+        Community community = jointpurchaseEntity(writer);
+
+        Comment subComment1 = Comment.builder()
+                .comment("댓글1")
+                .user(user)
+                .build();
+        subComment1.setCommunity(community);
+
+        Comment subComment2 = Comment.builder()
+                .comment("댓글2")
+                .user(user2)
+                .build();
+        subComment2.setCommunity(community);
+
+        Comment subSubComment = Comment.builder()
+                .comment("대댓글")
+                .user(writer)
+                .build();
+        subSubComment.setSuperComment(subComment1);
+        subSubComment.setCommunity(community);
+
+        //when
+        Comment saveSubComment1 = commentRepository.save(subComment1);
+
+        Comment saveSubComment2 = commentRepository.save(subComment2);
+
+        Comment saveSubSubComment = commentRepository.save(subSubComment);
+
+        //then
+
+        assertThat(saveSubComment1.getSubComments().size()).isEqualTo(1);
+        assertThat(saveSubComment1.getSubComments().get(0)).isEqualTo(saveSubSubComment);
+
+        assertThat(subComment1.getSuperComment()).isNull();
+        assertThat(subComment1.getCommunity()).isEqualTo(community);
+
+        assertThat(community.getComments().size()).isEqualTo(2);
+        assertThat(community.getComments().get(1)).isEqualTo(saveSubComment2);
+
+        assertThat(saveSubSubComment.getSuperComment()).isEqualTo(saveSubComment1);
+        assertThat(saveSubSubComment.getSubComments().size()).isEqualTo(0);
+    }
+
     public Community jointpurchaseEntity(User user) {
         return Community.builder()
+                .id(1L)
                 .communityCategory(CommunityCategory.JOINTPURCHASE)
                 .productName("공동구매물건")
                 .productPrice(10000)
@@ -121,6 +176,7 @@ public class CommunityRepositoryTest {
 
     public Community freesharingEntity(User user) {
         return Community.builder()
+                .id(2L)
                 .communityCategory(CommunityCategory.FREESHARING)
                 .productName("공동구매물건")
                 .sharingMethod("만나서")
@@ -133,6 +189,7 @@ public class CommunityRepositoryTest {
 
     public Community neighborhoodfriend(User user) {
         return Community.builder()
+                .id(3L)
                 .communityCategory(CommunityCategory.NEIGHBORHOODFRIEND)
                 .user(user)
                 .targetAmount(10000)
