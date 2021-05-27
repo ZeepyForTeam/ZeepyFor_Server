@@ -42,11 +42,7 @@ public class CommunityControllerTest extends ControllerTest {
     public void save() throws Exception {
         SaveCommunityRequestDto requestDto = SaveCommunityRequestDto.builder()
                 .communityCategory(CommunityCategory.FREESHARING)
-                .productName("인프런 springboot 강의")
-                .productPrice(80000)
-                .sharingMethod("카카오톡")
-                .targetNumberOfPeople(3)
-                .targetAmount(null)
+                .user(User.builder().id(1L).name("작성자").build())
                 .title("강의 공동 구매해요!")
                 .content("제곧내")
                 .imageUrls(Arrays.asList("asdasd", "aaaaaaa", "ccccccccc"))

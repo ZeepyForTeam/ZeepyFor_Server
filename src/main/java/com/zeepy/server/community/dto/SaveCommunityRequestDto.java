@@ -24,11 +24,11 @@ public class SaveCommunityRequestDto {
 
     private Integer productPrice;
 
+    private String purchasePlace;
+
     private String sharingMethod;
 
     private Integer targetNumberOfPeople;
-
-    private Integer targetAmount;
 
     @NotEmpty(message = "제목은 필수입니다.")
     private String title;
@@ -46,9 +46,9 @@ public class SaveCommunityRequestDto {
     public SaveCommunityRequestDto(CommunityCategory communityCategory,
                                    String productName,
                                    Integer productPrice,
+                                   String purchasePlace,
                                    String sharingMethod,
                                    Integer targetNumberOfPeople,
-                                   Integer targetAmount,
                                    String title,
                                    String content,
                                    User user,
@@ -56,9 +56,9 @@ public class SaveCommunityRequestDto {
         this.communityCategory = communityCategory;
         this.productName = productName;
         this.productPrice = productPrice;
+        this.purchasePlace = purchasePlace;
         this.sharingMethod = sharingMethod;
         this.targetNumberOfPeople = targetNumberOfPeople;
-        this.targetAmount = targetAmount;
         this.title = title;
         this.content = content;
         this.user = user;
@@ -69,9 +69,9 @@ public class SaveCommunityRequestDto {
         return Community.builder()
                 .communityCategory(communityCategory)
                 .productName(productName)
+                .purchasePlace(purchasePlace)
                 .sharingMethod(sharingMethod)
                 .targetNumberOfPeople(targetNumberOfPeople)
-                .targetAmount(targetAmount)
                 .title(title)
                 .content(content)
                 .user(user)

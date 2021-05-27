@@ -19,11 +19,11 @@ public class Community {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "community_sequence_gen")
     @SequenceGenerator(name = "community_sequence_gen", sequenceName = "community_sequence")
-    private Long id;    //id
+    private Long id;
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private CommunityCategory communityCategory;    //커뮤니티 카테고리
+    private CommunityCategory communityCategory;
 
     @Nullable
     private String productName;
@@ -32,13 +32,13 @@ public class Community {
     private Integer productPrice;
 
     @Nullable
+    private String purchasePlace;
+
+    @Nullable
     private String sharingMethod;
 
     @Nullable
     private Integer targetNumberOfPeople;
-
-    @Nullable
-    private Integer targetAmount;
 
     @NotNull
     private String title;
@@ -58,7 +58,7 @@ public class Community {
     private List<Comment> comments = new ArrayList<>();
 
     @Deprecated
-    private String AchievementRate;
+    private String achievementRate;
 
     @OneToMany(mappedBy = "community")
     private List<Participation> participationsList = new ArrayList<>();
@@ -73,9 +73,9 @@ public class Community {
             CommunityCategory communityCategory,
             String productName,
             Integer productPrice,
+            String purchasePlace,
             String sharingMethod,
             Integer targetNumberOfPeople,
-            Integer targetAmount,
             User user,
             String title,
             String content,
@@ -87,7 +87,7 @@ public class Community {
         this.productPrice = productPrice;
         this.sharingMethod = sharingMethod;
         this.targetNumberOfPeople = targetNumberOfPeople;
-        this.targetAmount = targetAmount;
+        this.purchasePlace = purchasePlace;
         this.user = user;
         this.title = title;
         this.content = content;
