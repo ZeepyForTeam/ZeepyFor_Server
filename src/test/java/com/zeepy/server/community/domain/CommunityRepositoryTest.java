@@ -115,18 +115,21 @@ public class CommunityRepositoryTest {
         User writer = User.builder().id(1L).name("작성자").build();
         User user = User.builder().id(2L).name("사용자2").build();
         User user2 = User.builder().id(3L).name("사용자2").build();
+
         Community community = jointpurchaseEntity(writer);
 
         Comment subComment1 = Comment.builder()
                 .comment("댓글1")
                 .user(user)
                 .build();
+        subComment1.setSuperComment(null);
         subComment1.setCommunity(community);
 
         Comment subComment2 = Comment.builder()
                 .comment("댓글2")
                 .user(user2)
                 .build();
+        subComment2.setSuperComment(null);
         subComment2.setCommunity(community);
 
         Comment subSubComment = Comment.builder()
@@ -137,6 +140,7 @@ public class CommunityRepositoryTest {
         subSubComment.setCommunity(community);
 
         //when
+
         Comment saveSubComment1 = commentRepository.save(subComment1);
 
         Comment saveSubComment2 = commentRepository.save(subComment2);
@@ -144,18 +148,27 @@ public class CommunityRepositoryTest {
         Comment saveSubSubComment = commentRepository.save(subSubComment);
 
         //then
+        List<Comment> saveSubComment1sSubComments = saveSubComment1.getSubComments();
+        Integer comment1sSubCommentsSize = saveSubComment1sSubComments.size();
+        Comment comment1sSubComment = saveSubComment1sSubComments.get(0);
+        assertThat(comment1sSubCommentsSize).isEqualTo(1);
+        assertThat(comment1sSubComment).isEqualTo(saveSubSubComment);
 
-        assertThat(saveSubComment1.getSubComments().size()).isEqualTo(1);
-        assertThat(saveSubComment1.getSubComments().get(0)).isEqualTo(saveSubSubComment);
+        Comment comment1sSuperComment = saveSubComment1.getSuperComment();
+        Community comment1sCommunity = saveSubComment1.getCommunity();
+        assertThat(comment1sSuperComment).isNull();
+        assertThat(comment1sCommunity).isEqualTo(community);
 
-        assertThat(subComment1.getSuperComment()).isNull();
-        assertThat(subComment1.getCommunity()).isEqualTo(community);
+        List<Comment> communitysComments = community.getComments();
+        Integer communitysCommentsSzie = communitysComments.size();
+        Comment communitysComment = communitysComments.get(1);
+        assertThat(communitysCommentsSzie).isEqualTo(2);
+        assertThat(communitysComment).isEqualTo(saveSubComment2);
 
-        assertThat(community.getComments().size()).isEqualTo(2);
-        assertThat(community.getComments().get(1)).isEqualTo(saveSubComment2);
-
-        assertThat(saveSubSubComment.getSuperComment()).isEqualTo(saveSubComment1);
-        assertThat(saveSubSubComment.getSubComments().size()).isEqualTo(0);
+        Comment subSubCommentsSuperComment = saveSubSubComment.getSuperComment();
+        Integer subSubCommentsSubCommentSize = saveSubSubComment.getSubComments().size();
+        assertThat(subSubCommentsSuperComment).isEqualTo(saveSubComment1);
+        assertThat(subSubCommentsSubCommentSize).isEqualTo(0);
     }
 
     public Community jointpurchaseEntity(User user) {
