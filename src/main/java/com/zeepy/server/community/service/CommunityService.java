@@ -2,6 +2,7 @@ package com.zeepy.server.community.service;
 
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityLike;
+import com.zeepy.server.community.dto.CommunityLikeDto;
 import com.zeepy.server.community.dto.LikeRequestDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
@@ -33,12 +34,8 @@ public class CommunityService {
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 id의 유저는 없습니다."));
 
-        CommunityLike communityLike = communityLikeRepository.save(
-                CommunityLike.builder()
-                        .id(null)
-                        .user(user)
-                        .community(community)
-                        .build());
+        CommunityLikeDto communityLikeDto = new CommunityLikeDto(user, community);
+        CommunityLike communityLike = communityLikeRepository.save(communityLikeDto.toEntity());
 
         return communityLike.getId();
     }
