@@ -28,4 +28,10 @@ public class CommunityController {
         Long likeId = communityService.like(likeRequestDto);
         return ResponseEntity.created(URI.create("/api/community/like" + likeId)).build();
     }
+
+    @DeleteMapping("/like-cancel")
+    public ResponseEntity<Void> cancelLikeCommunity(@RequestBody LikeRequestDto likeRequestDto) {
+        communityService.cancelLike(likeRequestDto);
+        return ResponseEntity.noContent().build();
+    }
 }

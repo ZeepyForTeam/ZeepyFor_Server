@@ -42,5 +42,17 @@ public class CommunityService {
 
         return communityLike.getId();
     }
+
+    @Transactional
+    public void cancelLike(LikeRequestDto requestDto) {
+        Community community = communityRepository.findById(requestDto.getCommunityId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 id의 커뮤니티는 없습니다."));
+
+        User user = userRepository.findById(requestDto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 id의 유저는 없습니다."));
+
+        CommunityLike communityLike = communityLikeRepository.findByCommunityAndUser(community, user);
+        communityLikeRepository.deleteById(communityLike.getId());
+    }
 }
 
