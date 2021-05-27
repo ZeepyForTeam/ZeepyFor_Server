@@ -36,6 +36,8 @@ public class SaveCommunityRequestDto {
     @NotEmpty(message = "내용은 필수입니다.")
     private String content;
 
+    private String place;
+
     private List<String> imageUrls;
 
     private User user;
@@ -74,6 +76,7 @@ public class SaveCommunityRequestDto {
                 .targetNumberOfPeople(targetNumberOfPeople)
                 .title(title)
                 .content(content)
+                .place(user.getPlace())
                 .user(user)
                 .imageUrls(imageUrls)
                 .build();

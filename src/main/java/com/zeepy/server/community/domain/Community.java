@@ -46,6 +46,9 @@ public class Community {
     @NotNull
     private String content;
 
+    @Nullable
+    private String place;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -64,7 +67,7 @@ public class Community {
     private List<Participation> participationsList = new ArrayList<>();
 
     @ElementCollection
-    @JoinTable(name = "communityImageUrls", joinColumns = @JoinColumn(name = "communityID"))
+    @JoinTable(name = "communityImageUrls", joinColumns = @JoinColumn(name = "community_id"))
     private List<String> imageUrls;   //사진
 
     @Builder
@@ -79,6 +82,7 @@ public class Community {
             User user,
             String title,
             String content,
+            String place,
             List<String> imageUrls
     ) {
         this.id = id;
@@ -90,6 +94,7 @@ public class Community {
         this.purchasePlace = purchasePlace;
         this.user = user;
         this.title = title;
+        this.place = place;
         this.content = content;
         this.imageUrls = imageUrls;
     }
