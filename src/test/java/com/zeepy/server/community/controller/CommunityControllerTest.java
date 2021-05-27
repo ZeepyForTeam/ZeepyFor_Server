@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 
 @DisplayName("커뮤니티_컨트롤러_테스트")
 
@@ -60,5 +61,16 @@ public class CommunityControllerTest extends ControllerTest {
                 .build();
         given(communityService.like(any(LikeRequestDto.class))).willReturn(1L);
         doPost("/api/community/like", likeRequestDto);
+    }
+
+    @DisplayName("좋아요_취소_테스트")
+    @Test
+    public void cancelLike() throws Exception {
+        LikeRequestDto likeRequestDto = LikeRequestDto.builder()
+                .userId(1L)
+                .communityId(1L)
+                .build();
+        doNothing().when(communityService).cancelLike(likeRequestDto);
+        doDelete("/api/community/like-cancel", likeRequestDto);
     }
 }
