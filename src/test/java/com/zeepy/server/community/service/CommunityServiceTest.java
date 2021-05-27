@@ -5,6 +5,7 @@ import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
+import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
 import com.zeepy.server.user.domain.User;
@@ -34,6 +35,8 @@ public class CommunityServiceTest {
     private ParticipationRepository participationRepository;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private CommentRepository commentRepository;
 
     @DisplayName("참여하기_서비스로직_테스트")
     @Test

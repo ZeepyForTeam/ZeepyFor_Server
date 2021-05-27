@@ -133,6 +133,21 @@ public class CommunityControllerTest extends ControllerTest {
         //when
         //then
         doPost(url, requestDto);
+    }
 
+    @DisplayName("대댓글작성하기")
+    @Test
+    public void setSubComment() throws Exception {
+        //given
+        long communityId = 1L;
+        String url = "/api/community/comment/" + communityId;
+
+        User commentUser = User.builder().id(2L).name("댓글작성자").build();
+
+        WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", 1L, commentUser.getId());
+        doNothing().when(communityService).saveComment(communityId, requestDto);
+        //when
+        //then
+        doPost(url, requestDto);
     }
 }
