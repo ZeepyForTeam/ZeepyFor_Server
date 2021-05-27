@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class JoinCommunityRequestDto {
+    @NotBlank
     private String comment;
 
     private Long participationUserId;
-
-    public boolean isCommentExist(){
-        return comment != null && !comment.isEmpty();
-    }
 }

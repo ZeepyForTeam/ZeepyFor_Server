@@ -43,10 +43,10 @@ public class Comment {
         this.user = user;
     }
 
-    public void setSuperComment(Comment comment) {
-        this.superComment = comment;
-        if (comment != null) {
-            comment.getSubComments().add(this);
+    public void setSuperComment(Comment superComment) {
+        this.superComment = superComment;
+        if (superComment != null) {
+            superComment.getSubComments().add(this);
         }
     }
 
