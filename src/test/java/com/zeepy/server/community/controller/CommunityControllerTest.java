@@ -2,6 +2,7 @@ package com.zeepy.server.community.controller;
 
 import com.zeepy.server.common.ControllerTest;
 import com.zeepy.server.community.domain.CommunityCategory;
+import com.zeepy.server.community.dto.LikeRequestDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.service.CommunityService;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,5 +49,16 @@ public class CommunityControllerTest extends ControllerTest {
         given(communityService.save(any(SaveCommunityRequestDto.class))).willReturn(1L);
 
         doPost("/api/community", requestDto);
+    }
+
+    @DisplayName("좋아요_추가_테스트")
+    @Test
+    public void like() throws Exception {
+        LikeRequestDto likeRequestDto = LikeRequestDto.builder()
+                .communityId(1L)
+                .userId(1L)
+                .build();
+        given(communityService.like(any(LikeRequestDto.class))).willReturn(1L);
+        doPost("/api/community/like", likeRequestDto);
     }
 }
