@@ -1,6 +1,6 @@
 package com.zeepy.server.community.domain;
 
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
 import com.zeepy.server.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -107,7 +107,7 @@ public class Community {
             this.currentNumberOfPeople++;
         }
         if (targetNumberOfPeople != null && targetNumberOfPeople < currentNumberOfPeople) {
-            throw new NoContentException();
+            throw new OverflowAchievementRateException();
         }
     }
 }

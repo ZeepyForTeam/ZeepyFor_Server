@@ -64,6 +64,13 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(OverflowAchievementRateException.class)
+    public ResponseEntity<ErrorResponse> overflowAchievementRate(OverflowAchievementRateException e) {
+        ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
         final ErrorCode errorCode = e.getErrorCode();
         return ErrorResponse.create()

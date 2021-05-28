@@ -10,7 +10,8 @@ public enum ErrorCode {
     NOT_FOUND_COMMUNITY(404, "찾고자하는 커뮤니티를 찾을수 없습니다."),
     NOT_FOUND_PARTICIPATION(404, "찾고자하는 참여자 목록을 찾을수 없습니다."),
     NOT_FOUND_USER(404, "찾고자하나는 사용자를 찾을수 없습니다"),
-    BAD_REQUEST_COMMENT(400, "정상적이지 못한 comment_id 입니다.");
+    BAD_REQUEST_COMMENT(400, "정상적이지 못한 comment_id 입니다."),
+    OVERFLOW_ACHIEVEMENT(404, "더이상 참여할수 없습니다.");
 
     private final int status;
     private final String message;
