@@ -1,5 +1,7 @@
 package com.zeepy.server.community.domain;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
+import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.ParticipationDto;
 import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
@@ -169,6 +171,52 @@ public class CommunityRepositoryTest {
         Integer subSubCommentsSubCommentSize = saveSubSubComment.getSubComments().size();
         assertThat(subSubCommentsSuperComment).isEqualTo(saveSubComment1);
         assertThat(subSubCommentsSubCommentSize).isEqualTo(0);
+    }
+
+    @DisplayName("community의 commnets 테스트")
+    @Test
+    public void setSubComment() {
+        //given
+        //사용자3명(작성자, 사용자1, 사용자2)
+        User writer = User.builder().id(1L).name("작성자").place("구월동").build();
+        User user1 = User.builder().id(2L).name("사용자2").place("구월동").build();
+        User user2 = User.builder().id(3L).name("사용자2").place("구월동").build();
+        userRepository.save(writer);
+        userRepository.save(user1);
+        userRepository.save(user2);
+        //커뮤니티1개
+        Community community = jointpurchaseEntity(writer);
+        //when
+        Community saveCommunity = communityRepository.save(community);
+        //사용자1,사용자2 참여
+        ParticipationDto user1ParticipationDto = new ParticipationDto(saveCommunity, user1);
+        Participation user1Participation = user1ParticipationDto.toEntity();
+        participationRepository.save(user1Participation);
+        CommentDto user1CommentDto = CommentDto.builder().comment("댓글1").writer(user1).superComment(null).community(saveCommunity).build();
+        Comment user1Comment = user1CommentDto.toEntity();
+        commentRepository.save(user1Comment);
+        Community findCommunity1 = communityRepository.findById(1L).orElseThrow(NotFoundCommunityException::new);
+
+        ParticipationDto user2ParticipationDto = new ParticipationDto(saveCommunity, user2);
+        Participation user2Participation = user2ParticipationDto.toEntity();
+        participationRepository.save(user2Participation);
+        CommentDto user2CommentDto = CommentDto.builder().comment("댓글2").writer(user2).superComment(null).community(saveCommunity).build();
+        Comment user2Comment = user2CommentDto.toEntity();
+        commentRepository.save(user2Comment);
+        Community findCommunity2 = communityRepository.findById(1L).orElseThrow(NotFoundCommunityException::new);
+
+        //작성자가 사용자1 댓글에 대댓글
+        CommentDto subCommentDto = CommentDto.builder().comment("대댓글").superComment(user1Comment).community(saveCommunity).writer(writer).build();
+        commentRepository.save(subCommentDto.toEntity());
+        Community findCommunity3 = communityRepository.findById(1L).orElseThrow(NotFoundCommunityException::new);
+
+        //then
+        //모든 영속성이 끝나고 community의 comments에는 대댓글이 포함되어있을까?
+        assertThat(saveCommunity.getComments().size()).isEqualTo(2);
+        //findById로 찾을때
+        assertThat(findCommunity1.getComments().size()).isEqualTo(1);
+        assertThat(findCommunity2.getComments().size()).isEqualTo(2);
+        assertThat(findCommunity3.getComments().size()).isEqualTo(3);
     }
 
     public Community jointpurchaseEntity(User user) {

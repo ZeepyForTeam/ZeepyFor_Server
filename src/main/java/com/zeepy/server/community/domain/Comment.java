@@ -36,11 +36,12 @@ public class Comment {
     private User user;
 
     @Builder
-    public Comment(Long id, String comment, Community community, User user) {
+    public Comment(Long id, String comment, Community community, User user, Comment superComment) {
         this.id = id;
         this.comment = comment;
         this.community = community;
         this.user = user;
+        this.superComment = superComment;
     }
 
     public void setSuperComment(Comment superComment) {

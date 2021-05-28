@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.when;
 
 @DisplayName("커뮤니티_서비스_테스트")
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class CommunityServiceTest {
     @InjectMocks
     private CommunityService communityService;
@@ -63,17 +65,16 @@ public class CommunityServiceTest {
         assertThat(newParticipation.getCommunity().getId()).isEqualTo(community.getId());
         assertThat(newParticipation.getUser().getId()).isEqualTo(user.getId());
     }
-
     public Community createCommunity() {
         return Community.builder()
                 .id(1L)
                 .communityCategory(CommunityCategory.JOINTPURCHASE)
                 .productName("공동구매물건")
                 .productPrice(10000)
+                .place("구월동")
                 .sharingMethod("만나서")
                 .targetNumberOfPeople(2)
-                .targetAmount(10000)
-                .user(User.builder().name("작성자").build())
+                .user(createJoinUser())
                 .title("같이 살사람")
                 .content("구해요")
                 .imageUrls(Arrays.asList("1", "2", "3"))
@@ -84,6 +85,7 @@ public class CommunityServiceTest {
         return User.builder()
                 .id(1L)
                 .name("참여자")
+                .place("구월동")
                 .build();
     }
 
