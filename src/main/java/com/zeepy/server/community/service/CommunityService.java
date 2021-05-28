@@ -49,7 +49,7 @@ public class CommunityService {
         User participants = userRepository.findById(participationUserId).orElseThrow(NotFoundUserException::new);
 
         ParticipationDto participationDto = new ParticipationDto(community, participants);
-        Participation participationToSave = participationDto.toEntity();
+        Participation participationToSave = participationDto.toUpdateEntity();
         Participation saveParticipation = participationRepository.save(participationToSave);
 
         CommentDto commentDto = new CommentDto(joinCommunityRequestDto.getComment(), null, community, participants);

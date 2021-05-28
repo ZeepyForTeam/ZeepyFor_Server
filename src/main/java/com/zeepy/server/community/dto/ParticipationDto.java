@@ -12,7 +12,16 @@ public class ParticipationDto {
     private Community community;
     private User user;
 
-    public Participation toEntity(){
+    public Participation toUpdateEntity() {
+        Participation participation = Participation.builder()
+                .build();
+        community.setCurrentNumberOfPeople();
+        participation.setCommunity(this.community);
+        participation.setUser(this.user);
+        return participation;
+    }
+
+    public Participation toEntity() {
         Participation participation = Participation.builder()
                 .build();
         participation.setCommunity(this.community);

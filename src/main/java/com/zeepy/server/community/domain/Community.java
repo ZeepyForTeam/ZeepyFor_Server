@@ -69,7 +69,7 @@ public class Community {
 
     @ElementCollection
     @JoinTable(name = "communityImageUrls", joinColumns = @JoinColumn(name = "community_id"))
-    private List<String> imageUrls;   //사진
+    private List<String> imageUrls;
 
     @Builder
     public Community(
@@ -100,5 +100,14 @@ public class Community {
         this.place = place;
         this.content = content;
         this.imageUrls = imageUrls;
+    }
+
+    public void setCurrentNumberOfPeople() {
+        if (communityCategory == CommunityCategory.JOINTPURCHASE && targetNumberOfPeople != null) {
+            this.currentNumberOfPeople++;
+        }
+        if (targetNumberOfPeople != null && targetNumberOfPeople < currentNumberOfPeople) {
+            throw new NoContentException();
+        }
     }
 }
