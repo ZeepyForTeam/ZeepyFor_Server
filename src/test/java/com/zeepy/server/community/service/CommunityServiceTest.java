@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.when;
 @DisplayName("커뮤니티_서비스_테스트")
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
+@Transactional
 public class CommunityServiceTest {
     @InjectMocks
     private CommunityService communityService;

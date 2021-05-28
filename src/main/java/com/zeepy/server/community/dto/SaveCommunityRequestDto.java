@@ -30,6 +30,8 @@ public class SaveCommunityRequestDto {
 
     private Integer targetNumberOfPeople;
 
+    private Integer currentNumberOfPeople = 0;
+
     @NotEmpty(message = "제목은 필수입니다.")
     private String title;
 
@@ -74,6 +76,7 @@ public class SaveCommunityRequestDto {
                 .purchasePlace(purchasePlace)
                 .sharingMethod(sharingMethod)
                 .targetNumberOfPeople(targetNumberOfPeople)
+                .currentNumberOfPeople(currentNumberOfPeople)
                 .title(title)
                 .content(content)
                 .place(user.getPlace())

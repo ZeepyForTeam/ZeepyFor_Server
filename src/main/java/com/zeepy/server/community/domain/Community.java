@@ -1,5 +1,6 @@
 package com.zeepy.server.community.domain;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import com.zeepy.server.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -40,6 +41,9 @@ public class Community {
     @Nullable
     private Integer targetNumberOfPeople;
 
+    @Column(columnDefinition = "integer default 0")
+    private Integer currentNumberOfPeople;
+
     @NotNull
     private String title;
 
@@ -60,9 +64,6 @@ public class Community {
     @OneToMany(mappedBy = "community")
     private List<Comment> comments = new ArrayList<>();
 
-    @Deprecated
-    private String achievementRate;
-
     @OneToMany(mappedBy = "community")
     private List<Participation> participationsList = new ArrayList<>();
 
@@ -79,6 +80,7 @@ public class Community {
             String purchasePlace,
             String sharingMethod,
             Integer targetNumberOfPeople,
+            Integer currentNumberOfPeople,
             User user,
             String title,
             String content,
@@ -91,6 +93,7 @@ public class Community {
         this.productPrice = productPrice;
         this.sharingMethod = sharingMethod;
         this.targetNumberOfPeople = targetNumberOfPeople;
+        this.currentNumberOfPeople = currentNumberOfPeople;
         this.purchasePlace = purchasePlace;
         this.user = user;
         this.title = title;

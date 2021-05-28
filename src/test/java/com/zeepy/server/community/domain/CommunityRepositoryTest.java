@@ -219,6 +219,17 @@ public class CommunityRepositoryTest {
         assertThat(findCommunity3.getComments().size()).isEqualTo(3);
     }
 
+    @DisplayName("community_currentNumberOfPeople_create Deafault 0")
+    @Test
+    public void defaultCurrentNumberOfPeople_zero() {
+        User writer = User.builder().id(1L).name("작성자").build();
+        userRepository.save(writer);
+        Community community = jointpurchaseEntity(writer);
+        Community saveCommunity = communityRepository.save(community);
+
+        assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(0);
+    }
+
     public Community jointpurchaseEntity(User user) {
         return Community.builder()
                 .id(1L)
@@ -228,9 +239,11 @@ public class CommunityRepositoryTest {
                 .purchasePlace("매장")
                 .sharingMethod("만나서")
                 .targetNumberOfPeople(2)
+                .currentNumberOfPeople(0)
                 .user(user)
                 .title("같이 살사람")
                 .content("구해요")
+                .place("구월동")
                 .imageUrls(Arrays.asList("1", "2", "3"))
                 .build();
     }

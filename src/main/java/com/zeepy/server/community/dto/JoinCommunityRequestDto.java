@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Getter
 public class JoinCommunityRequestDto {
-    @NotBlank
+    @NotBlank(message = "빈 댓글은 사용할수 없습니다.")
     private String comment;
 
     private Long participationUserId;
