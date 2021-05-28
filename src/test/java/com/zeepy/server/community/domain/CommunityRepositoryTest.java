@@ -1,6 +1,7 @@
 package com.zeepy.server.community.domain;
 
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.ParticipationDto;
 import com.zeepy.server.community.repository.CommentRepository;
@@ -16,11 +17,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 @DisplayName("CommunityDomain_테스트_클래스")
 @RunWith(SpringRunner.class)
@@ -81,7 +84,7 @@ public class CommunityRepositoryTest {
 
         //when
         ParticipationDto participationDto = new ParticipationDto(saveCommunity, joinUser);
-        Participation participation = participationRepository.save(participationDto.toEntity());
+        Participation participation = participationRepository.save(participationDto.toUpdateEntity());
 
         //then
         assertThat(participation.getCommunity().getId()).isEqualTo(saveCommunity.getId());
@@ -230,6 +233,46 @@ public class CommunityRepositoryTest {
         assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(0);
     }
 
+    @DisplayName("달성률_에러_테스트")
+    @Test(expected = OverflowAchievementRateException.class)
+    @Transactional
+    public void achievementRate_Error() {
+        User writer = User.builder().id(1L).name("작성자").build();
+        User user1 = User.builder().id(2L).name("참여자1").build();
+        User user2 = User.builder().id(3L).name("참여자2").build();
+        userRepository.save(writer);
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        Community community = jointpurchaseEntity(writer);
+        Community saveCommunity = communityRepository.save(community);
+
+        saveCommunity.setCurrentNumberOfPeople();
+        saveCommunity.setCurrentNumberOfPeople();
+
+        assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(1);
+        assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(2);
+
+        fail("여까지 오면 실패");
+    }
+
+    @DisplayName("달성률_테스트")
+    @Test
+    @Transactional
+    public void achievementRate() {
+        User writer = User.builder().id(1L).name("작성자").build();
+        User user1 = User.builder().id(2L).name("참여자1").build();
+        userRepository.save(writer);
+        userRepository.save(user1);
+
+        Community community = jointpurchaseEntity(writer);
+        Community saveCommunity = communityRepository.save(community);
+
+        saveCommunity.setCurrentNumberOfPeople();
+
+        assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(1);
+    }
+
     public Community jointpurchaseEntity(User user) {
         return Community.builder()
                 .id(1L)
@@ -238,7 +281,7 @@ public class CommunityRepositoryTest {
                 .productPrice(10000)
                 .purchasePlace("매장")
                 .sharingMethod("만나서")
-                .targetNumberOfPeople(2)
+                .targetNumberOfPeople(1)
                 .currentNumberOfPeople(0)
                 .user(user)
                 .title("같이 살사람")
