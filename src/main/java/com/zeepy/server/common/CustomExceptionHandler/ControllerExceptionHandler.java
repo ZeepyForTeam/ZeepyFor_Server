@@ -1,6 +1,8 @@
 package com.zeepy.server.common.CustomExceptionHandler;
 
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoSuchCommunityException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoSuchUserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,26 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(NoContentException.class)
     public ResponseEntity<ErrorResponse> getNullResultSoNoContentException(NoContentException e) {
+        final ErrorCode errorCode = e.getErrorCode();
+        final ErrorResponse response = ErrorResponse.create()
+                .status(errorCode.getStatus())
+                .message(errorCode.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoSuchUserException.class)
+    public ResponseEntity<ErrorResponse> noSuchUserException(NoSuchUserException e) {
+        final ErrorCode errorCode = e.getErrorCode();
+        final ErrorResponse response = ErrorResponse.create()
+                .status(errorCode.getStatus())
+                .message(errorCode.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoSuchCommunityException.class)
+    public ResponseEntity<ErrorResponse> noSuchCommunityException(NoSuchCommunityException e) {
         final ErrorCode errorCode = e.getErrorCode();
         final ErrorResponse response = ErrorResponse.create()
                 .status(errorCode.getStatus())

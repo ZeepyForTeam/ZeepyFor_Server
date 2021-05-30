@@ -13,10 +13,10 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class LikeRequestDto {
 
-    @NotNull(message = "Dto_communityId value shouldn't be null")
+    @NotNull(message = "communityId값은 필수입니다.")
     private Long communityId;
 
-    @NotNull(message = "Dto_userId value shouldn't be null")
+    @NotNull(message = "userId값은 필수입니다.")
     private Long userId;
 
     @Builder
