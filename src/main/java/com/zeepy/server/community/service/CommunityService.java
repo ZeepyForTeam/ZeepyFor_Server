@@ -30,7 +30,7 @@ public class CommunityService {
     }
 
     @Transactional
-    public Long like(LikeRequestDto requestDto) {
+    public Long like(CommunityLikeRequestDto requestDto) {
         Community community = communityRepository.findById(requestDto.getCommunityId())
                 .orElseThrow(NoSuchCommunityException::new);
 
@@ -44,7 +44,7 @@ public class CommunityService {
     }
 
     @Transactional
-    public void cancelLike(LikeRequestDto requestDto) {
+    public void cancelLike(CommunityLikeRequestDto requestDto) {
         Community community = communityRepository.findById(requestDto.getCommunityId())
                 .orElseThrow(NoSuchCommunityException::new);
 

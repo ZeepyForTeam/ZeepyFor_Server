@@ -1,8 +1,7 @@
 package com.zeepy.server.community.controller;
 
-import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.CommunityResponseDtos;
-import com.zeepy.server.community.dto.LikeRequestDto;
+import com.zeepy.server.community.dto.CommunityLikeRequestDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.service.CommunityService;
 import lombok.RequiredArgsConstructor;
@@ -26,15 +25,15 @@ public class CommunityController {
     }
 
     @PostMapping("/like")
-    public ResponseEntity<Void> likeCommunity(@Valid @RequestBody LikeRequestDto likeRequestDto
+    public ResponseEntity<Void> likeCommunity(@Valid @RequestBody CommunityLikeRequestDto communityLikeRequestDto
     ) {
-        Long likeId = communityService.like(likeRequestDto);
+        Long likeId = communityService.like(communityLikeRequestDto);
         return ResponseEntity.created(URI.create("/api/community/like/" + likeId)).build();
     }
 
     @DeleteMapping("/like-cancel")
-    public ResponseEntity<Void> cancelLikeCommunity(@Valid @RequestBody LikeRequestDto likeRequestDto) {
-        communityService.cancelLike(likeRequestDto);
+    public ResponseEntity<Void> cancelLikeCommunity(@Valid @RequestBody CommunityLikeRequestDto communityLikeRequestDto) {
+        communityService.cancelLike(communityLikeRequestDto);
         return ResponseEntity.noContent().build();
     }
 

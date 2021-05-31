@@ -2,7 +2,7 @@ package com.zeepy.server.community.controller;
 
 import com.zeepy.server.common.ControllerTest;
 import com.zeepy.server.community.domain.CommunityCategory;
-import com.zeepy.server.community.dto.LikeRequestDto;
+import com.zeepy.server.community.dto.CommunityLikeRequestDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.service.CommunityService;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,22 +55,22 @@ public class CommunityControllerTest extends ControllerTest {
     @DisplayName("좋아요_추가_테스트")
     @Test
     public void like() throws Exception {
-        LikeRequestDto likeRequestDto = LikeRequestDto.builder()
+        CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
                 .communityId(1L)
                 .userId(1L)
                 .build();
-        given(communityService.like(any(LikeRequestDto.class))).willReturn(1L);
-        doPost("/api/community/like", likeRequestDto);
+        given(communityService.like(any(CommunityLikeRequestDto.class))).willReturn(1L);
+        doPost("/api/community/like", communityLikeRequestDto);
     }
 
     @DisplayName("좋아요_취소_테스트")
     @Test
     public void cancelLike() throws Exception {
-        LikeRequestDto likeRequestDto = LikeRequestDto.builder()
+        CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
                 .userId(1L)
                 .communityId(1L)
                 .build();
-        doNothing().when(communityService).cancelLike(likeRequestDto);
-        doDelete("/api/community/like-cancel", likeRequestDto);
+        doNothing().when(communityService).cancelLike(communityLikeRequestDto);
+        doDelete("/api/community/like-cancel", communityLikeRequestDto);
     }
 }
