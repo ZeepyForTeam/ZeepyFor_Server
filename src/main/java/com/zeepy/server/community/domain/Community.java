@@ -52,7 +52,7 @@ public class Community {
     private User user;
 
     @OneToMany(mappedBy = "community")
-    private List<CommunityLike> likeUsers = new ArrayList<>();
+    private List<CommunityLike> likes = new ArrayList<>();
 
     @Deprecated
     private String Comments;
@@ -89,4 +89,5 @@ public class Community {
         this.content = content;
         this.imageUrls = imageUrls;
     }
+
 }
