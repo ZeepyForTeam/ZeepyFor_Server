@@ -10,8 +10,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 @Entity
+@Getter
 public class CommunityLike {
 
     @Id
@@ -35,5 +35,21 @@ public class CommunityLike {
         this.id = id;
         this.community = community;
         this.user = user;
+    }
+
+    public void setCommunity(Community community) {
+        if (this.community != null) {
+            this.community.getLikes().remove(this);
+        }
+        this.community = community;
+        community.getLikes().add(this);
+    }
+
+    public void setUser(User user) {
+        if (this.user != null) {
+            this.user.getLikedCommunities().remove(this);
+        }
+        this.user = user;
+        user.getLikedCommunities().add(this);
     }
 }

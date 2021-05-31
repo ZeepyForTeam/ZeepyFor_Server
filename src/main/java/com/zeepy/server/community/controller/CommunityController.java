@@ -1,9 +1,12 @@
 package com.zeepy.server.community.controller;
 
+import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.LikeRequestDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.service.CommunityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,5 +36,10 @@ public class CommunityController {
     public ResponseEntity<Void> cancelLikeCommunity(@Valid @RequestBody LikeRequestDto likeRequestDto) {
         communityService.cancelLike(likeRequestDto);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/likes")
+    public ResponseEntity<CommunityResponseDtos> getLikeList(@RequestParam Long id) {
+        return new ResponseEntity<CommunityResponseDtos>(communityService.getLikeList(id), HttpStatus.OK);
     }
 }
