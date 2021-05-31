@@ -5,11 +5,15 @@ import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.user.domain.User;
+import com.zeepy.server.user.dto.UserDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -23,8 +27,7 @@ public class CommunityResponseDto {
     private Integer targetAmount;
     private String title;
     private String content;
-    private User user;
-    private List<CommunityLike> likes;
+    private UserDto user;
     private String comments;
     private String achievementRate;
     private List<Participation> participationList;
@@ -32,7 +35,7 @@ public class CommunityResponseDto {
 
     public CommunityResponseDto(Community community) {
         this.id = community.getId();
-        this.user = community.getUser();
+        this.user = new UserDto(community.getUser().getId(), community.getUser().getName());
         this.communityCategory = community.getCommunityCategory();
         this.productName = community.getProductName();
         this.productPrice = community.getProductPrice();
@@ -41,7 +44,6 @@ public class CommunityResponseDto {
         this.targetAmount = community.getTargetAmount();
         this.title = community.getTitle();
         this.content = community.getContent();
-        this.likes = community.getLikes();
         this.comments = community.getComments();
         this.achievementRate = community.getAchievementRate();
         this.participationList = community.getParticipationsList();
