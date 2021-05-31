@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.zeepy.server.common.annotation.Enum;
 import com.zeepy.server.review.domain.CommuncationTendency;
 import com.zeepy.server.review.domain.Furniture;
 import com.zeepy.server.review.domain.LessorAge;
@@ -29,31 +30,31 @@ public class ReviewDto {
 	@NotNull
 	private String address;
 
-	@NotNull(message = "소통경향은 필수값입니다.")
+	@Enum(enumClass = CommuncationTendency.class, message = "소통경향은 필수값입니다.")
 	private CommuncationTendency communcationTendency;
 
-	@NotNull(message = "임대인 성별은 필수값입니다.")
+	@Enum(enumClass = LessorGender.class, message = "임대인 성별은 필수값입니다.")
 	private LessorGender lessorGender;
 
-	@NotNull(message = "임대인 나이는 필수값입니다.")
+	@Enum(enumClass = LessorAge.class, message = "임대인 나이는 필수값입니다.")
 	private LessorAge lessorAge;
 
 	@NotNull
 	private String lessorReview;
 
-	@NotNull(message = "방갯수 필수값입니다.")
+	@Enum(enumClass = RoomCount.class, message = "방갯수 필수값입니다.")
 	private RoomCount roomCount;
 
-	@NotNull(message = "방음은 필수값입니다.")
+	@Enum(enumClass = MultiChoiceReview.class, message = "방음은 필수값입니다.")
 	private MultiChoiceReview soundInsulation;
 
-	@NotNull(message = "해충은 필수값입니다.")
+	@Enum(enumClass = MultiChoiceReview.class, message = "해충은 필수값입니다.")
 	private MultiChoiceReview pest;
 
-	@NotNull(message = "채광은 필수값입니다.")
+	@Enum(enumClass = MultiChoiceReview.class, message = "채광은 필수값입니다.")
 	private MultiChoiceReview lightning;
 
-	@NotNull(message = "수압은 필수값입니다.")
+	@Enum(enumClass = MultiChoiceReview.class, message = "수압은 필수값입니다.")
 	private MultiChoiceReview waterPressure;
 
 	private List<Furniture> furnitures;
@@ -61,7 +62,7 @@ public class ReviewDto {
 	@NotBlank(message = "상세리뷰는 필수값입니다.")
 	private String review;
 
-	@NotNull(message = "종합평가는 필수값입니다.")
+	@Enum(enumClass = TotalEvaluation.class, message = "종합평가는 필수값입니다.")
 	private TotalEvaluation totalEvaluation;
 
 	private List<String> imageUrls;
