@@ -74,6 +74,13 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(AlreadyParticipationException.class)
+    public ResponseEntity<ErrorResponse> alreadyParticipationException(AlreadyParticipationException e) {
+        ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
         final ErrorCode errorCode = e.getErrorCode();
         int errorStatus = errorCode.getStatus();

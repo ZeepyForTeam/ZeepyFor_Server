@@ -1,5 +1,6 @@
 package com.zeepy.server.community.service;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.community.domain.Comment;
@@ -47,6 +48,10 @@ public class CommunityService {
 
         Long participationUserId = joinCommunityRequestDto.getParticipationUserId();
         User participants = userRepository.findById(participationUserId).orElseThrow(NotFoundUserException::new);
+
+        participationRepository.findByCommunityIdAndUserId(id, participationUserId).ifPresent(v -> {
+            throw new AlreadyParticipationException();
+        });
 
         ParticipationDto participationDto = new ParticipationDto(community, participants);
         Participation participationToSave = participationDto.toUpdateEntity();
