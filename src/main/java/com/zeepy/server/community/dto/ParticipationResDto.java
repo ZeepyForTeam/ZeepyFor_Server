@@ -17,14 +17,10 @@ public class ParticipationResDto {
 
     @Builder
     public ParticipationResDto(Participation participation) {
-        Community thisCommunity = getCommunityInParticipation(participation);
+        Community thisCommunity = participation.getCommunity();
         this.id = thisCommunity.getId();
         this.communityCategory = thisCommunity.getCommunityCategory();
         this.title = thisCommunity.getTitle();
         this.content = thisCommunity.getContent();
-    }
-
-    private Community getCommunityInParticipation(Participation participation) {
-        return participation.getCommunity();
     }
 }
