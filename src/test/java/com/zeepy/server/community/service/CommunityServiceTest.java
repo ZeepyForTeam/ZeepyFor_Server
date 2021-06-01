@@ -42,13 +42,34 @@ public class CommunityServiceTest {
     @Mock
     private CommentRepository commentRepository;
 
+    private final User joinUser = User.builder()
+            .id(1L)
+            .name("참여자")
+            .place("구월동")
+            .build();
+
+    private final Community joinPurhcaseCommunity = Community.builder()
+            .id(1L)
+            .communityCategory(CommunityCategory.JOINTPURCHASE)
+            .productName("공동구매물건")
+            .productPrice(10000)
+            .place("구월동")
+            .sharingMethod("만나서")
+            .targetNumberOfPeople(2)
+            .currentNumberOfPeople(0)
+            .user(joinUser)
+            .title("같이 살사람")
+            .content("구해요")
+            .imageUrls(Arrays.asList("1", "2", "3"))
+            .build();
+
     @DisplayName("참여하기_서비스로직_테스트")
     @Test
     public void joinCommunity() {
         //given
-        User user = createJoinUser();
+        User user = joinUser;
         Long userId = user.getId();
-        Community community = createCommunity(user);
+        Community community = joinPurhcaseCommunity;
         Long communityId = community.getId();
         Participation participation = createParticipation(community, user);
 
@@ -64,31 +85,6 @@ public class CommunityServiceTest {
         //then
         List<Participation> participationList = participationRepository.findAll();
         assertThat(participationList.size()).isEqualTo(1);
-    }
-
-    public Community createCommunity(User user) {
-        return Community.builder()
-                .id(1L)
-                .communityCategory(CommunityCategory.JOINTPURCHASE)
-                .productName("공동구매물건")
-                .productPrice(10000)
-                .place("구월동")
-                .sharingMethod("만나서")
-                .targetNumberOfPeople(2)
-                .currentNumberOfPeople(0)
-                .user(user)
-                .title("같이 살사람")
-                .content("구해요")
-                .imageUrls(Arrays.asList("1", "2", "3"))
-                .build();
-    }
-
-    public User createJoinUser() {
-        return User.builder()
-                .id(1L)
-                .name("참여자")
-                .place("구월동")
-                .build();
     }
 
     public Participation createParticipation(Community community, User user) {
