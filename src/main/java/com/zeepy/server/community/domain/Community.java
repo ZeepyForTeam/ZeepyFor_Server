@@ -53,6 +53,9 @@ public class Community {
     @Nullable
     private String place;
 
+    @Nullable
+    private String instructions;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -85,6 +88,7 @@ public class Community {
             String title,
             String content,
             String place,
+            String instructions,
             List<String> imageUrls
     ) {
         this.id = id;
@@ -99,6 +103,7 @@ public class Community {
         this.title = title;
         this.place = place;
         this.content = content;
+        this.instructions = instructions;
         this.imageUrls = imageUrls;
     }
 

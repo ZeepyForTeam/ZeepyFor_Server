@@ -38,7 +38,7 @@ public class SaveCommunityRequestDto {
     @NotEmpty(message = "내용은 필수입니다.")
     private String content;
 
-    private String place;
+    private String instructions;
 
     private List<String> imageUrls;
 
@@ -55,6 +55,7 @@ public class SaveCommunityRequestDto {
                                    Integer targetNumberOfPeople,
                                    String title,
                                    String content,
+                                   String instructions,
                                    User user,
                                    List<String> imageUrls) {
         this.communityCategory = communityCategory;
@@ -65,6 +66,7 @@ public class SaveCommunityRequestDto {
         this.targetNumberOfPeople = targetNumberOfPeople;
         this.title = title;
         this.content = content;
+        this.instructions = instructions;
         this.user = user;
         this.imageUrls = imageUrls;
     }
@@ -73,6 +75,7 @@ public class SaveCommunityRequestDto {
         return Community.builder()
                 .communityCategory(communityCategory)
                 .productName(productName)
+                .productPrice(productPrice)
                 .purchasePlace(purchasePlace)
                 .sharingMethod(sharingMethod)
                 .targetNumberOfPeople(targetNumberOfPeople)
@@ -80,6 +83,7 @@ public class SaveCommunityRequestDto {
                 .title(title)
                 .content(content)
                 .place(user.getPlace())
+                .instructions(instructions)
                 .user(user)
                 .imageUrls(imageUrls)
                 .build();
