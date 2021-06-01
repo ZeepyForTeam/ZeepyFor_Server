@@ -254,9 +254,6 @@ public class CommunityRepositoryTest {
         saveCommunity.setCurrentNumberOfPeople();
         communityRepository.saveAndFlush(saveCommunity);
 
-        assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(1);
-        assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(2);
-
         fail("여까지 오면 실패");
     }
 
