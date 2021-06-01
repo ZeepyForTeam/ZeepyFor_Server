@@ -61,8 +61,7 @@ public class CommunityControllerTest extends ControllerTest {
         long joinUserId = 2L;
         JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, joinUserId);
 
-        given(communityService.joinCommunity(any(Long.class), any(JoinCommunityRequestDto.class))).willReturn(1L);
-
+        doNothing().when(communityService).joinCommunity(communityId, requestDto);
         //when
         //then
         doPost("/api/community/participation/" + communityId, requestDto);

@@ -1,6 +1,5 @@
 package com.zeepy.server.community.service;
 
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundParticipationException;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
@@ -12,14 +11,15 @@ import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @DisplayName("커뮤니티_서비스_테스트")
-@ExtendWith(MockitoExtension.class)
+@RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 @Transactional
 public class CommunityServiceTest {
@@ -46,28 +46,27 @@ public class CommunityServiceTest {
     @Test
     public void joinCommunity() {
         //given
-        long communityId = 1L;
-        JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, 2L);
-
-        Community community = createCommunity();
         User user = createJoinUser();
+        Long userId = user.getId();
+        Community community = createCommunity(user);
+        Long communityId = community.getId();
         Participation participation = createParticipation(community, user);
+
+        JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, userId);
 
         when(communityRepository.findById(any(Long.class))).thenReturn(Optional.of(community));
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
-        when(participationRepository.save(any(Participation.class))).thenReturn(participation);
         when(participationRepository.findById(any(Long.class))).thenReturn(Optional.of(participation));
 
         //when
-        Long participationId = communityService.joinCommunity(communityId, requestDto);
+        communityService.joinCommunity(communityId, requestDto);
 
         //then
-        Participation newParticipation = participationRepository.findById(participationId).orElseThrow(NotFoundParticipationException::new);
-
-        assertThat(newParticipation.getCommunity().getId()).isEqualTo(community.getId());
-        assertThat(newParticipation.getUser().getId()).isEqualTo(user.getId());
+        List<Participation> participationList = participationRepository.findAll();
+        assertThat(participationList.size()).isEqualTo(1);
     }
-    public Community createCommunity() {
+
+    public Community createCommunity(User user) {
         return Community.builder()
                 .id(1L)
                 .communityCategory(CommunityCategory.JOINTPURCHASE)
@@ -76,7 +75,8 @@ public class CommunityServiceTest {
                 .place("구월동")
                 .sharingMethod("만나서")
                 .targetNumberOfPeople(2)
-                .user(createJoinUser())
+                .currentNumberOfPeople(0)
+                .user(user)
                 .title("같이 살사람")
                 .content("구해요")
                 .imageUrls(Arrays.asList("1", "2", "3"))

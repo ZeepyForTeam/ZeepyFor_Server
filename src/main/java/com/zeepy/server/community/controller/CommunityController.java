@@ -26,7 +26,7 @@ public class CommunityController {
             @PathVariable("id") Long id,
             @Valid @RequestBody JoinCommunityRequestDto joinCommunityRequestDto
     ) {
-        Long participationId = communityService.joinCommunity(id, joinCommunityRequestDto);
+        communityService.joinCommunity(id, joinCommunityRequestDto);
         return ResponseEntity.ok().build();
     }
 

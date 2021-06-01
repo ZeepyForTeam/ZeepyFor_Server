@@ -36,13 +36,13 @@ public class CommunityService {
 
         ParticipationDto participationDto = new ParticipationDto(community, writer);
         Participation participationToSave = participationDto.toEntity();
-        Participation testParticipation = participationRepository.save(participationToSave);
+        participationRepository.save(participationToSave);
 
         return community.getId();
     }
 
     @Transactional
-    public Long joinCommunity(Long id, JoinCommunityRequestDto joinCommunityRequestDto) {
+    public void joinCommunity(Long id, JoinCommunityRequestDto joinCommunityRequestDto) {
         Community community = communityRepository.findById(id).orElseThrow(NotFoundCommunityException::new);
 
         Long participationUserId = joinCommunityRequestDto.getParticipationUserId();
@@ -50,12 +50,10 @@ public class CommunityService {
 
         ParticipationDto participationDto = new ParticipationDto(community, participants);
         Participation participationToSave = participationDto.toUpdateEntity();
-        Participation saveParticipation = participationRepository.save(participationToSave);
+        participationRepository.save(participationToSave);
 
         CommentDto commentDto = new CommentDto(joinCommunityRequestDto.getComment(), null, community, participants);
         commentRepository.save(commentDto.toEntity());
-
-        return saveParticipation.getId();
     }
 
     @Transactional
