@@ -21,9 +21,12 @@ public class ControllerExceptionHandler {
 
         BindingResult bindingResult = e.getBindingResult();
         ErrorCode errorCode = ErrorCode.INVALID_BODY;
+        int errorStatus = errorCode.getStatus();
+        String errorMessage = errorCode.getMessage();
+
         ErrorResponse errorResponse = ErrorResponse.create()
-                .status(errorCode.getStatus())
-                .message(errorCode.getMessage())
+                .status(errorStatus)
+                .message(errorMessage)
                 .errors(bindingResult);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
@@ -73,8 +76,11 @@ public class ControllerExceptionHandler {
 
     public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
         final ErrorCode errorCode = e.getErrorCode();
+        int errorStatus = errorCode.getStatus();
+        String errorMessage = errorCode.getMessage();
+
         return ErrorResponse.create()
-                .status(errorCode.getStatus())
-                .message(errorCode.getMessage());
+                .status(errorStatus)
+                .message(errorMessage);
     }
 }

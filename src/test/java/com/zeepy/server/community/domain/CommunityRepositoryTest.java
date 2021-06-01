@@ -245,10 +245,14 @@ public class CommunityRepositoryTest {
         userRepository.save(user2);
 
         Community community = jointpurchaseEntity(writer);
+        Community community2 = freesharingEntity(writer);
         Community saveCommunity = communityRepository.save(community);
+        communityRepository.save(community2);
 
         saveCommunity.setCurrentNumberOfPeople();
+        communityRepository.saveAndFlush(saveCommunity);
         saveCommunity.setCurrentNumberOfPeople();
+        communityRepository.saveAndFlush(saveCommunity);
 
         assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(1);
         assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(2);
