@@ -100,11 +100,5 @@ public class CommunityService {
 
         return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
     }
-
-    @Transactional
-    public CommunityListResDto getCommunities() {
-        Community community = communityRepository.findById(1L).orElseThrow(NotFoundCommunityException::new);
-        return new CommunityListResDto(community);
-    }
 }
 

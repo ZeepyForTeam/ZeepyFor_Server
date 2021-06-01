@@ -53,10 +53,4 @@ public class CommunityController {
         MyZipJoinResDto myZipJoinList = communityService.getJoinList(id);
         return ResponseEntity.ok().body(myZipJoinList);
     }
-
-    @GetMapping("/community")//삭제할거(테스트용)
-    public ResponseEntity<CommunityListResDto> getCommunityList() {
-        CommunityListResDto communityListResDto = communityService.getCommunities();
-        return ResponseEntity.ok().body(communityListResDto);
-    }
 }
