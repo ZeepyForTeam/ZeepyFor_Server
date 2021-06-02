@@ -1,5 +1,6 @@
 package com.zeepy.server.building.controller;
 
+import com.zeepy.server.building.dto.BuildingAddressResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.service.BuildingService;
@@ -34,7 +35,7 @@ public class BuildingController {
     }
 
     @GetMapping("/addresses")
-    public ResponseEntity<List<String>> getBuildingAddresses(
+    public ResponseEntity<List<BuildingAddressResponseDto>> getBuildingAddresses(
             @RequestParam("address") String address
     ) {
         return ResponseEntity.ok(buildingService.getBuildingAddressesByAddress(address));

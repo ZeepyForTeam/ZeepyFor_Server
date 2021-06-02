@@ -1,6 +1,7 @@
 package com.zeepy.server.building.service;
 
 import com.zeepy.server.building.domain.Building;
+import com.zeepy.server.building.dto.BuildingAddressResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.repository.BuildingRepository;
@@ -65,12 +66,9 @@ public class BuildingService {
     // READ
     // TODO : 추후에 페이징 기능 탑제
     @Transactional(readOnly = true)
-    public List<String> getBuildingAddressesByAddress(String address) {
+    public List<BuildingAddressResponseDto> getBuildingAddressesByAddress(String address) {
         List<Building> buildingList = buildingRepository.findByAddressContaining(address);
-        return buildingList
-                .stream()
-                .map(building -> building.getAddress())
-                .collect(Collectors.toList());
+        return BuildingAddressResponseDto.listOf(buildingList);
     }
 
     // READ
