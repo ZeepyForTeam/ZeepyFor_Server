@@ -110,5 +110,11 @@ public class CommunityService {
 
         return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
     }
+
+    @Transactional
+    public void updateCommunity(Long communityId, UpdateCommunityReqDto updateCommunityReqDto) {
+        Community findCommunity = communityRepository.findById(communityId).orElseThrow(NotFoundCommunityException::new);
+        updateCommunityReqDto.setUpdateCommunity(findCommunity);
+    }
 }
 

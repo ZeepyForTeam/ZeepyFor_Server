@@ -115,4 +115,20 @@ public class Community {
             throw new OverflowAchievementRateException();
         }
     }
+
+    public void setUpdate(String title,
+                          String productName,
+                          Integer productPrice,
+                          String purchasePlace,
+                          String sharingMethod,
+                          Integer targetNumberOfPeople,
+                          String instructions) {
+        this.title = title;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.purchasePlace = purchasePlace;
+        this.sharingMethod = sharingMethod;
+        this.targetNumberOfPeople = targetNumberOfPeople;
+        this.instructions = instructions;
+    }
 }

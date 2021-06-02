@@ -53,4 +53,13 @@ public class CommunityController {
         MyZipJoinResDto myZipJoinList = communityService.getJoinList(id);
         return ResponseEntity.ok().body(myZipJoinList);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateCommunity(
+            @PathVariable("id") Long communityId,
+            @Valid @RequestBody UpdateCommunityReqDto updateCommunityReqDto
+    ) {
+        communityService.updateCommunity(communityId, updateCommunityReqDto);
+        return ResponseEntity.ok().build();
+    }
 }
