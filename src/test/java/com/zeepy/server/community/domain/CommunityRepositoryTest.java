@@ -40,6 +40,46 @@ public class CommunityRepositoryTest {
     @Autowired
     CommentRepository commentRepository;
 
+    private final User writer = User.builder().id(1L).name("작성자").place("구월동").build();
+
+    private final Community joinPurchaseCommunity = Community.builder()
+            .id(1L)
+            .communityCategory(CommunityCategory.JOINTPURCHASE)
+            .productName("공동구매물건")
+            .productPrice(10000)
+            .purchasePlace("매장")
+            .sharingMethod("만나서")
+            .targetNumberOfPeople(1)
+            .currentNumberOfPeople(0)
+            .user(writer)
+            .title("같이 살사람")
+            .content("구해요")
+            .place("구월동")
+            .imageUrls(Arrays.asList("1", "2", "3"))
+            .build();
+
+    private final Community freeSharingCommunity = Community.builder()
+            .id(2L)
+            .communityCategory(CommunityCategory.FREESHARING)
+            .user(writer)
+            .title("같이 살사람")
+            .content("구해요")
+            .imageUrls(Arrays.asList("1", "2", "3"))
+            .build();
+
+    private final Community neighborhoodfriendCommunity = Community.builder()
+            .id(3L)
+            .communityCategory(CommunityCategory.NEIGHBORHOODFRIEND)
+            .user(writer)
+            .title("같이 살사람")
+            .content("구해요")
+            .imageUrls(Arrays.asList("1", "2", "3"))
+            .build();
+
+    private final User user1 = User.builder().id(2L).name("참여자1").build();
+
+    private final User user2 = User.builder().id(3L).name("참여자2").build();
+
     @AfterEach
     public void reset() {
         communityRepository.deleteAll();
@@ -78,27 +118,35 @@ public class CommunityRepositoryTest {
     @Test
     public void joinCommunity() {
         //given
-        User user = userRepository.save(User.builder().name("작성자").build());
-        Community saveCommunity = communityRepository.save(neighborhoodfriend(user));
-        User joinUser = userRepository.save(User.builder().name("참여자").build());
+        Community saveCommunity = communityRepository.save(neighborhoodfriendCommunity);
+        User joinUser = userRepository.save(user1);
+
+        Long saveCommunityId = saveCommunity.getId();
+        Long joinUserId = joinUser.getId();
 
         //when
         ParticipationDto participationDto = new ParticipationDto(saveCommunity, joinUser);
         Participation participation = participationRepository.save(participationDto.toUpdateEntity());
 
         //then
-        assertThat(participation.getCommunity().getId()).isEqualTo(saveCommunity.getId());
-        assertThat(participation.getUser().getId()).isEqualTo(joinUser.getId());
-        assertThat(participation.getUser().getName()).isEqualTo("참여자");
+        Community participationsCommunity = participation.getCommunity();
+        User participationsUser = participation.getUser();
+
+        assertThat(participationsCommunity.getId()).isEqualTo(saveCommunityId);
+        assertThat(participationsUser.getId()).isEqualTo(joinUserId);
+        assertThat(participationsUser.getName()).isEqualTo("참여자");
     }
 
     @DisplayName("MyZip참여리스트 불러오기 테스트")
     @Test
     public void getZipList() {
         //given
-        User writer = userRepository.save(User.builder().name("작성자2").build());
-        User joinUser = userRepository.save(User.builder().name("참여자2").build());
-        Community community = communityRepository.save(jointpurchaseEntity(writer));
+        User joinUser = userRepository.save(user1);
+        Community community = communityRepository.save(joinPurchaseCommunity);
+
+        String joinUserName = joinUser.getName();
+        Long joinUserId = joinUser.getId();
+        String communityProductName = community.getProductName();
 
         ParticipationDto requestDto = new ParticipationDto(community, joinUser);
         Participation participation = participationRepository.save(requestDto.toEntity());
@@ -107,25 +155,25 @@ public class CommunityRepositoryTest {
         List<Participation> findParticipationList = participationRepository.findAllByUserId(joinUser.getId());
 
         //then
-        assertThat(findParticipationList.get(0).getUser().getId()).isEqualTo(joinUser.getId());
-        assertThat(findParticipationList.get(0).getUser().getName()).isEqualTo(joinUser.getName());
-        assertThat(findParticipationList.get(0).getCommunity().getProductName()).isEqualTo(community.getProductName());
-        assertThat(findParticipationList.get(0)).isEqualTo(participation);
+        Participation firstParticipation = findParticipationList.get(0);
+        User participationsUser = firstParticipation.getUser();
+        Community participationsCommunity = firstParticipation.getCommunity();
+
+        assertThat(participationsUser.getId()).isEqualTo(joinUserId);
+        assertThat(participationsUser.getName()).isEqualTo(joinUserName);
+        assertThat(participationsCommunity.getProductName()).isEqualTo(communityProductName);
+        assertThat(firstParticipation).isEqualTo(participation);
     }
 
     @DisplayName("댓글달기 테스트")
     @Test
     public void setComment() {
         //given
-        User writer = User.builder().id(1L).name("작성자").build();
-        User user = User.builder().id(2L).name("사용자2").build();
-        User user2 = User.builder().id(3L).name("사용자2").build();
-
-        Community community = jointpurchaseEntity(writer);
+        Community community = joinPurchaseCommunity;
 
         Comment subComment1 = Comment.builder()
                 .comment("댓글1")
-                .user(user)
+                .user(user1)
                 .build();
         subComment1.setSuperComment(null);
         subComment1.setCommunity(community);
@@ -181,16 +229,12 @@ public class CommunityRepositoryTest {
     public void setSubComment() {
         //given
         //사용자3명(작성자, 사용자1, 사용자2)
-        User writer = User.builder().id(1L).name("작성자").place("구월동").build();
-        User user1 = User.builder().id(2L).name("사용자2").place("구월동").build();
-        User user2 = User.builder().id(3L).name("사용자2").place("구월동").build();
         userRepository.save(writer);
         userRepository.save(user1);
         userRepository.save(user2);
         //커뮤니티1개
-        Community community = jointpurchaseEntity(writer);
         //when
-        Community saveCommunity = communityRepository.save(community);
+        Community saveCommunity = communityRepository.save(joinPurchaseCommunity);
         //사용자1,사용자2 참여
         ParticipationDto user1ParticipationDto = new ParticipationDto(saveCommunity, user1);
         Participation user1Participation = user1ParticipationDto.toEntity();
@@ -225,10 +269,8 @@ public class CommunityRepositoryTest {
     @DisplayName("community_currentNumberOfPeople_create Deafault 0")
     @Test
     public void defaultCurrentNumberOfPeople_zero() {
-        User writer = User.builder().id(1L).name("작성자").build();
         userRepository.save(writer);
-        Community community = jointpurchaseEntity(writer);
-        Community saveCommunity = communityRepository.save(community);
+        Community saveCommunity = communityRepository.save(joinPurchaseCommunity);
 
         assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(0);
     }
@@ -237,17 +279,14 @@ public class CommunityRepositoryTest {
     @Test(expected = OverflowAchievementRateException.class)
     @Transactional
     public void achievementRate_Error() {
-        User writer = User.builder().id(1L).name("작성자").build();
         User user1 = User.builder().id(2L).name("참여자1").build();
         User user2 = User.builder().id(3L).name("참여자2").build();
         userRepository.save(writer);
         userRepository.save(user1);
         userRepository.save(user2);
 
-        Community community = jointpurchaseEntity(writer);
-        Community community2 = freesharingEntity(writer);
-        Community saveCommunity = communityRepository.save(community);
-        communityRepository.save(community2);
+        Community saveCommunity = communityRepository.save(joinPurchaseCommunity);
+        communityRepository.save(freeSharingCommunity);
 
         saveCommunity.setCurrentNumberOfPeople();
         communityRepository.saveAndFlush(saveCommunity);
@@ -261,56 +300,14 @@ public class CommunityRepositoryTest {
     @Test
     @Transactional
     public void achievementRate() {
-        User writer = User.builder().id(1L).name("작성자").build();
         User user1 = User.builder().id(2L).name("참여자1").build();
         userRepository.save(writer);
         userRepository.save(user1);
 
-        Community community = jointpurchaseEntity(writer);
-        Community saveCommunity = communityRepository.save(community);
+        Community saveCommunity = communityRepository.save(joinPurchaseCommunity);
 
         saveCommunity.setCurrentNumberOfPeople();
 
         assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(1);
-    }
-
-    public Community jointpurchaseEntity(User user) {
-        return Community.builder()
-                .id(1L)
-                .communityCategory(CommunityCategory.JOINTPURCHASE)
-                .productName("공동구매물건")
-                .productPrice(10000)
-                .purchasePlace("매장")
-                .sharingMethod("만나서")
-                .targetNumberOfPeople(1)
-                .currentNumberOfPeople(0)
-                .user(user)
-                .title("같이 살사람")
-                .content("구해요")
-                .place("구월동")
-                .imageUrls(Arrays.asList("1", "2", "3"))
-                .build();
-    }
-
-    public Community freesharingEntity(User user) {
-        return Community.builder()
-                .id(2L)
-                .communityCategory(CommunityCategory.FREESHARING)
-                .user(user)
-                .title("같이 살사람")
-                .content("구해요")
-                .imageUrls(Arrays.asList("1", "2", "3"))
-                .build();
-    }
-
-    public Community neighborhoodfriend(User user) {
-        return Community.builder()
-                .id(3L)
-                .communityCategory(CommunityCategory.NEIGHBORHOODFRIEND)
-                .user(user)
-                .title("같이 살사람")
-                .content("구해요")
-                .imageUrls(Arrays.asList("1", "2", "3"))
-                .build();
     }
 }
