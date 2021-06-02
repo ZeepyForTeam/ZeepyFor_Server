@@ -23,19 +23,19 @@ public class BuildingLikeController {
 
 
     @GetMapping
-    public ResponseEntity<List<BuildingLikeResponseDto>> getBuildingDeals() {
+    public ResponseEntity<List<BuildingLikeResponseDto>> getBuildingLikes() {
         return ResponseEntity.ok(buildingLikeService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BuildingLikeResponseDto> getBuildingDeal(
+    public ResponseEntity<BuildingLikeResponseDto> getBuildingLike(
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(buildingLikeService.getById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Void> uploadBuildingDeal(
+    public ResponseEntity<Void> uploadBuildingLike(
             @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
     ) {
         Long id = buildingLikeService.create(buildingLikeRequestDto);
@@ -43,7 +43,7 @@ public class BuildingLikeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateBuildingDeal(
+    public ResponseEntity<Void> updateBuildingLike(
             @PathVariable Long id,
             @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
     ) {
@@ -52,7 +52,7 @@ public class BuildingLikeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBuildingDeal(
+    public ResponseEntity<Void> deleteBuildingLike(
             @PathVariable Long id
     ) {
         buildingLikeService.deleteById(id);
