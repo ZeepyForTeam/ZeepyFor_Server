@@ -34,13 +34,20 @@ public class BuildingDeal extends BaseTimeEntity {
     private Timestamp dealDate;
 
     @NotNull
-    private int deposit;
+    private int deposit; // 보증금
 
     @NotNull
-    private int monthlyRent;
+    private int monthlyRent; // 월세
+
+    @NotNull
+    private int dealCost; // 매매 금액
 
     @NotNull
     private int floor;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private DealType dealType;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "building_id")
@@ -52,12 +59,16 @@ public class BuildingDeal extends BaseTimeEntity {
             Timestamp dealDate,
             int deposit,
             int monthlyRent,
-            int floor
+            int dealCost,
+            int floor,
+            DealType dealType
     ) {
         this.id = id;
         this.dealDate = dealDate;
         this.deposit = deposit;
         this.monthlyRent = monthlyRent;
+        this.dealCost = dealCost;
         this.floor = floor;
+        this.dealType = dealType;
     }
 }

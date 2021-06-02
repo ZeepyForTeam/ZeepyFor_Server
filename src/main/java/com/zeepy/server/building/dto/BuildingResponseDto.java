@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class BuildingResponseDto {
     private Long id;
     private int buildYear; // Null 이 될 가능성이 있음
+    private String apartmentName;
     private String address;
     private float exclusivePrivateArea;
     private int areaCode;
@@ -28,6 +29,7 @@ public class BuildingResponseDto {
     public BuildingResponseDto(
             Long id,
             int buildYear,
+            String apartmentName,
             String address,
             float exclusivePrivateArea,
             int areaCode,
@@ -37,6 +39,7 @@ public class BuildingResponseDto {
     ){
         this.id = id;
         this.buildYear = buildYear;
+        this.apartmentName = apartmentName;
         this.address = address;
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
@@ -49,6 +52,7 @@ public class BuildingResponseDto {
         return new BuildingResponseDto(
                 building.getId(),
                 building.getBuildYear(),
+                building.getApartmentName(),
                 building.getAddress(),
                 building.getExclusivePrivateArea(),
                 building.getAreaCode(),

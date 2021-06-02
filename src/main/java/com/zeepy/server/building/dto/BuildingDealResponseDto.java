@@ -1,6 +1,7 @@
 package com.zeepy.server.building.dto;
 
 import com.zeepy.server.building.domain.BuildingDeal;
+import com.zeepy.server.building.domain.DealType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,20 +24,26 @@ public class BuildingDealResponseDto {
     private Timestamp dealDate;
     private int deposit;
     private int monthlyRent;
+    private int dealCost;
     private int floor;
+    private DealType dealType;
 
     public BuildingDealResponseDto(
             Long id,
             Timestamp dealDate,
             int deposit,
             int monthlyRent,
-            int floor
+            int dealCost,
+            int floor,
+            DealType dealType
     ) {
         this.id = id;
         this.dealDate = dealDate;
         this.deposit = deposit;
         this.monthlyRent = monthlyRent;
+        this.dealCost = dealCost;
         this.floor = floor;
+        this.dealType = dealType;
     }
 
     public static BuildingDealResponseDto of(BuildingDeal buildingDeal) {
@@ -45,7 +52,9 @@ public class BuildingDealResponseDto {
                 buildingDeal.getDealDate(),
                 buildingDeal.getDeposit(),
                 buildingDeal.getMonthlyRent(),
-                buildingDeal.getFloor()
+                buildingDeal.getDealCost(),
+                buildingDeal.getFloor(),
+                buildingDeal.getDealType()
         );
     }
 

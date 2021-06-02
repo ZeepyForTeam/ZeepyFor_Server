@@ -14,6 +14,7 @@ import lombok.Setter;
 @Getter
 public class BuildingRequestDto {
     private int buildYear; // Null 이 될 가능성이 있음
+    private String apartmentName;
     private String address;
     private float exclusivePrivateArea;
     private int areaCode;
@@ -22,6 +23,7 @@ public class BuildingRequestDto {
 
     public BuildingRequestDto(
             int buildYear,
+            String apartmentName,
             String address,
             float exclusivePrivateArea,
             int areaCode,
@@ -29,6 +31,7 @@ public class BuildingRequestDto {
             double longitude
     ) {
         this.buildYear = buildYear;
+        this.apartmentName = apartmentName;
         this.address = address;
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
@@ -40,6 +43,7 @@ public class BuildingRequestDto {
         return new Building(
                 null,
                 this.buildYear,
+                this.apartmentName,
                 this.address,
                 this.exclusivePrivateArea,
                 this.areaCode,
