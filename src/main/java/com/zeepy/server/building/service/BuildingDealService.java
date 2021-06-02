@@ -68,9 +68,15 @@ public class BuildingDealService {
         BuildingDeal buildingDeal = buildingDealRepository
                 .findById(id)
                 .orElseThrow(NoContentException::new);
-        buildingDeal.setDealDate(new Timestamp(buildingDealRequestDto.getDealDate()));
-        buildingDeal.setDeposit(buildingDealRequestDto.getDeposit());
-        buildingDeal.setMonthlyRent(buildingDealRequestDto.getMonthlyRent());
+        BuildingDeal buildingDealEntity = buildingDealRequestDto.returnBuildingDealEntity();
+
+        buildingDeal.setDealDate(buildingDealEntity.getDealDate());
+        buildingDeal.setDeposit(buildingDealEntity.getDeposit());
+        buildingDeal.setMonthlyRent(buildingDealEntity.getMonthlyRent());
+        buildingDeal.setDealCost(buildingDealEntity.getDealCost());
+        buildingDeal.setFloor(buildingDealEntity.getFloor());
+        buildingDeal.setDealType(buildingDealEntity.getDealType());
+
         buildingDealRepository.save(buildingDeal);
     }
 

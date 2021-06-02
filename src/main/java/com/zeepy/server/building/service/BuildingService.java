@@ -85,6 +85,7 @@ public class BuildingService {
                 .findById(id)
                 .orElseThrow(NoContentException::new);
         building.setBuildYear(buildingRequestDto.getBuildYear());
+        building.setApartmentName(buildingRequestDto.getApartmentName());
         building.setAddress(buildingRequestDto.getAddress());
         building.setExclusivePrivateArea(buildingRequestDto.getExclusivePrivateArea());
         building.setAreaCode(buildingRequestDto.getAreaCode());
