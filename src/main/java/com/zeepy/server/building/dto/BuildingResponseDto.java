@@ -26,6 +26,7 @@ public class BuildingResponseDto {
     private double latitude;
     private double longitude;
     private List<BuildingDealResponseDto> buildingDeals;
+    private List<BuildingLikeResponseDto> buildingLikes;
 
     public BuildingResponseDto(
             Long id,
@@ -37,7 +38,8 @@ public class BuildingResponseDto {
             int areaCode,
             double latitude,
             double longitude,
-            List<BuildingDealResponseDto> buildingDeals
+            List<BuildingDealResponseDto> buildingDeals,
+            List<BuildingLikeResponseDto> buildingLikes
     ){
         this.id = id;
         this.buildYear = buildYear;
@@ -46,9 +48,10 @@ public class BuildingResponseDto {
         this.address = address;
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
-        this.buildingDeals = buildingDeals;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.buildingDeals = buildingDeals;
+        this.buildingLikes = buildingLikes;
     }
 
     public static BuildingResponseDto of(Building building){
@@ -62,7 +65,8 @@ public class BuildingResponseDto {
                 building.getAreaCode(),
                 building.getLatitude(),
                 building.getLongitude(),
-                BuildingDealResponseDto.listOf(building.getBeadingDeals())
+                BuildingDealResponseDto.listOf(building.getBeadingDeals()),
+                BuildingLikeResponseDto.listOf(building.getBeadingLikes())
         );
     }
 
