@@ -1,5 +1,6 @@
 package com.zeepy.server.community.domain;
 
+import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.user.domain.User;
 import lombok.Getter;
 
@@ -7,7 +8,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-public class CommunityLike {
+public class CommunityLike extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

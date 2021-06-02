@@ -1,6 +1,7 @@
 package com.zeepy.server.community.domain;
 
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
+import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Community {
+public class Community extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "community_sequence_gen")
     @SequenceGenerator(name = "community_sequence_gen", sequenceName = "community_sequence")

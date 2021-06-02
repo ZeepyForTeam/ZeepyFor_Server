@@ -1,5 +1,6 @@
 package com.zeepy.server.community.domain;
 
+import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Comment {
+public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

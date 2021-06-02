@@ -1,5 +1,6 @@
 package com.zeepy.server.community.domain;
 
+import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Participation {
+public class Participation extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
