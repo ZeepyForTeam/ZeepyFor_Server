@@ -19,13 +19,16 @@ import java.sql.Timestamp;
 public class BuildingLikeRequestDto {
     private Long likeDate;
     private Long user;
+    private Long buildingId;
 
     public BuildingLikeRequestDto(
             Long likeDate,
-            Long user
+            Long user,
+            Long buildingId
     ) {
         this.likeDate = likeDate;
         this.user = user;
+        this.buildingId = buildingId;
     }
 
     public BuildingLike returnBuildingLikeEntity() {
