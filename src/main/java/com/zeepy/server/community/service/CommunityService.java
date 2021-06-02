@@ -84,8 +84,11 @@ public class CommunityService {
 
         Comment superComment = commentRepository.findById(superCommentId).orElse(null);
 
+        String comment = writeCommentRequestDto.getComment();
+        Boolean isSecret = writeCommentRequestDto.getIsSecret();
         CommentDto commentDto = CommentDto.builder()
-                .comment(writeCommentRequestDto.getComment())
+                .comment(comment)
+                .isSecret(isSecret)
                 .superComment(superComment)
                 .community(community)
                 .writer(writer)
