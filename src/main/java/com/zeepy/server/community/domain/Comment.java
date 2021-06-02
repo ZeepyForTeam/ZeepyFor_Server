@@ -23,6 +23,9 @@ public class Comment extends BaseTimeEntity {
 
     private Boolean isSecret;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isParticipation;
+
     @ManyToOne
     @JoinColumn(name = "community_id")
     private Community community;
@@ -39,10 +42,11 @@ public class Comment extends BaseTimeEntity {
     private User user;
 
     @Builder
-    public Comment(Long id, String comment, Boolean isSecret, Community community, User user, Comment superComment) {
+    public Comment(Long id, String comment, Boolean isSecret, Boolean isParticipation, Community community, User user, Comment superComment) {
         this.id = id;
         this.comment = comment;
         this.isSecret = isSecret;
+        this.isParticipation = isParticipation;
         this.community = community;
         this.user = user;
         this.superComment = superComment;
@@ -60,5 +64,9 @@ public class Comment extends BaseTimeEntity {
         if (this.superComment == null) {
             community.getComments().add(this);
         }
+    }
+
+    public void setSubScribe() {
+        this.isParticipation = false;
     }
 }

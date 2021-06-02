@@ -59,7 +59,7 @@ public class CommunityControllerTest extends ControllerTest {
         //given
         long communityId = 1L;
         long joinUserId = 2L;
-        JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, joinUserId);
+        JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, true, joinUserId);
 
         doNothing().when(communityService).joinCommunity(communityId, requestDto);
         //when
@@ -122,7 +122,7 @@ public class CommunityControllerTest extends ControllerTest {
 
         User commentUser = User.builder().id(2L).name("댓글작성자").build();
 
-        WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", null, commentUser.getId());
+        WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", true, null, commentUser.getId());
         doNothing().when(communityService).saveComment(communityId, requestDto);
 
         //when
@@ -139,7 +139,7 @@ public class CommunityControllerTest extends ControllerTest {
 
         User commentUser = User.builder().id(2L).name("댓글작성자").build();
 
-        WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", 1L, commentUser.getId());
+        WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", true, 1L, commentUser.getId());
         doNothing().when(communityService).saveComment(communityId, requestDto);
         //when
         //then

@@ -23,10 +23,10 @@ public class CommunityController {
 
     @PostMapping("/participation/{id}")
     public ResponseEntity<Void> toJoinCommunity(
-            @PathVariable("id") Long id,
+            @PathVariable("id") Long communityId,
             @Valid @RequestBody JoinCommunityRequestDto joinCommunityRequestDto
     ) {
-        communityService.joinCommunity(id, joinCommunityRequestDto);
+        communityService.joinCommunity(communityId, joinCommunityRequestDto);
         return ResponseEntity.ok().build();
     }
 

@@ -60,20 +60,28 @@ public class CommunityService {
 
         String comment = joinCommunityRequestDto.getComment();
         Boolean isSecret = joinCommunityRequestDto.getIsSecret();
-        CommentDto commentDto = new CommentDto(comment, isSecret, null, community, participants);
+        CommentDto commentDto = new CommentDto(comment, isSecret, true, null, community, participants);
         commentRepository.save(commentDto.toEntity());
     }
 
     @Transactional
-    public void cancelJoinCommunity(Long id, CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto) {
+    public void cancelJoinCommunity(Long communityId, CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto) {
         Long cancelJoinUserId = cancelJoinCommunityRequestDto.getCancelUserId();
 
         User findUser = userRepository.findById(cancelJoinUserId).orElseThrow(NotFoundUserException::new);
-        Community findCommunity = communityRepository.findById(id).orElseThrow(NotFoundCommunityException::new);
+        Community findCommunity = communityRepository.findById(communityId).orElseThrow(NotFoundCommunityException::new);
 
         Long findUserId = findUser.getId();
         Long findCommunityId = findCommunity.getId();
+        //Participation에서 해당 사용자 삭제
         participationRepository.deleteByUserIdAndCommunityId(findUserId, findCommunityId);
+        //Comment에 참여자 여부 제거
+        List<Comment> comments = commentRepository.findCommentsByUserIdAndCommunityId(findUserId, findCommunityId);
+        Comment superComment = comments.stream().filter(v -> v.getSuperComment() == null && v.getIsParticipation()).findFirst().orElseThrow(BadRequestCommentException::new);
+        superComment.setSubScribe();
+        //달성률의 CurrentNumberOfPeople 차감
+        findCommunity.setSubstractCurrentNumberOfPeople();
+
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package com.zeepy.server.community.domain;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.user.domain.User;
@@ -115,6 +116,13 @@ public class Community extends BaseTimeEntity {
         if (targetNumberOfPeople != null && targetNumberOfPeople < currentNumberOfPeople) {
             throw new OverflowAchievementRateException();
         }
+    }
+
+    public void setSubstractCurrentNumberOfPeople() {
+        if (currentNumberOfPeople < 1) {
+            throw new NotFoundCommunityException();
+        }
+        currentNumberOfPeople--;
     }
 
     public void setUpdate(String title,
