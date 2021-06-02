@@ -45,15 +45,19 @@ public class BuildingService {
     }
 
     // READ
-    // TODO : 추후에 ZoomLevel에 따른 위도 경도 범위 지정 기능 추가
     @Transactional(readOnly = true)
-    public List<BuildingResponseDto> getByLatitudeAndLongitude(double latitude, double longitude) {
+    public List<BuildingResponseDto> getByLatitudeAndLongitude(
+            double latitudeGreater,
+            double latitudeLess,
+            double longitudeGreater,
+            double longitudeLess
+    ) {
         List<Building> buildingList = buildingRepository
                 .findByLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(
-                        latitude - 0.0001,
-                        latitude + 0.0001,
-                        longitude - 0.001,
-                        longitude + 0.001
+                        latitudeGreater,
+                        latitudeLess,
+                        longitudeGreater,
+                        longitudeLess
                 );
         return BuildingResponseDto.listOf(buildingList);
     }

@@ -42,10 +42,12 @@ public class BuildingController {
 
     @GetMapping("/location")
     public ResponseEntity<List<BuildingResponseDto>> getBuildingsByLocation(
-            @RequestParam("latitude") double latitude,
-            @RequestParam("longitude") double longitude
+            @RequestParam("latitudeGreater") double latitudeGreater,
+            @RequestParam("latitudeLess") double latitudeLess,
+            @RequestParam("longitudeGreater") double longitudeGreater,
+            @RequestParam("longitudeLess") double longitudeLess
     ) {
-        return ResponseEntity.ok(buildingService.getByLatitudeAndLongitude(latitude, longitude));
+        return ResponseEntity.ok(buildingService.getByLatitudeAndLongitude(latitudeGreater, latitudeLess, longitudeGreater, longitudeLess));
     }
 
     @GetMapping("/{id}")
