@@ -73,13 +73,13 @@ public class CommunityService {
 
         Long findUserId = findUser.getId();
         Long findCommunityId = findCommunity.getId();
-        //Participation에서 해당 사용자 삭제
+
         participationRepository.deleteByUserIdAndCommunityId(findUserId, findCommunityId);
-        //Comment에 참여자 여부 제거
+
         List<Comment> comments = commentRepository.findCommentsByUserIdAndCommunityId(findUserId, findCommunityId);
         Comment superComment = comments.stream().filter(v -> v.getSuperComment() == null && v.getIsParticipation()).findFirst().orElseThrow(BadRequestCommentException::new);
         superComment.setSubScribe();
-        //달성률의 CurrentNumberOfPeople 차감
+
         findCommunity.setSubstractCurrentNumberOfPeople();
 
     }
