@@ -1,6 +1,7 @@
 package com.zeepy.server.community.service;
 
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.community.domain.Comment;
@@ -82,7 +83,10 @@ public class CommunityService {
         User writer = userRepository.findById(writerUserId).orElseThrow(NotFoundUserException::new);
         Community community = communityRepository.findById(communityId).orElseThrow(NotFoundCommunityException::new);
 
-        Comment superComment = commentRepository.findById(superCommentId).orElse(null);
+        Comment superComment = null;
+        if (superCommentId != null) {
+            superComment = commentRepository.findById(superCommentId).orElseThrow(BadRequestCommentException::new);
+        }
 
         String comment = writeCommentRequestDto.getComment();
         Boolean isSecret = writeCommentRequestDto.getIsSecret();
