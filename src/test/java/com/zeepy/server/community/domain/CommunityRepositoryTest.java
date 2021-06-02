@@ -93,25 +93,15 @@ public class CommunityRepositoryTest {
     @Test
     public void saveCommunity() {
         //given
-        communityRepository.save(Community.builder()
-                .communityCategory(CommunityCategory.FREESHARING)
-                .productName("무료나눔물건")
-                .productPrice(100000)
-                .purchasePlace("매장")
-                .sharingMethod("만나서")
-                .targetNumberOfPeople(3)
-                .title("asadasda")
-                .content("assssssss")
-                .imageUrls(Arrays.asList("1", "2", "3"))
-                .build());
+        communityRepository.save(freeSharingCommunity);
 
         //when
         List<Community> result = communityRepository.findAll();
 
         //then
         Community communities = result.get(0);
-        assertThat(communities.getTitle()).isEqualTo("asadasda");
-        assertThat(communities.getProductName()).isEqualTo("무료나눔물건");
+        assertThat(communities.getTitle()).isEqualTo("같이 살사람");
+        assertThat(communities.getProductName()).isEqualTo("공동구매물건");
     }
 
     @DisplayName("참여하기 저장 테스트")
@@ -171,44 +161,44 @@ public class CommunityRepositoryTest {
         //given
         Community community = joinPurchaseCommunity;
 
-        Comment subComment1 = Comment.builder()
+        Comment comment1 = Comment.builder()
                 .comment("댓글1")
                 .user(user1)
                 .build();
-        subComment1.setSuperComment(null);
-        subComment1.setCommunity(community);
+        comment1.setSuperComment(null);
+        comment1.setCommunity(community);
 
-        Comment subComment2 = Comment.builder()
+        Comment comment2 = Comment.builder()
                 .comment("댓글2")
                 .user(user2)
                 .build();
-        subComment2.setSuperComment(null);
-        subComment2.setCommunity(community);
+        comment2.setSuperComment(null);
+        comment2.setCommunity(community);
 
-        Comment subSubComment = Comment.builder()
+        Comment subComment1 = Comment.builder()
                 .comment("대댓글")
                 .user(writer)
                 .build();
-        subSubComment.setSuperComment(subComment1);
-        subSubComment.setCommunity(community);
+        subComment1.setSuperComment(subComment1);
+        subComment1.setCommunity(community);
 
         //when
 
+        Comment saveComment1 = commentRepository.save(comment1);
+
+        Comment saveComment2 = commentRepository.save(comment2);
+
         Comment saveSubComment1 = commentRepository.save(subComment1);
 
-        Comment saveSubComment2 = commentRepository.save(subComment2);
-
-        Comment saveSubSubComment = commentRepository.save(subSubComment);
-
         //then
-        List<Comment> saveSubComment1sSubComments = saveSubComment1.getSubComments();
-        Integer comment1sSubCommentsSize = saveSubComment1sSubComments.size();
-        Comment comment1sSubComment = saveSubComment1sSubComments.get(0);
+        List<Comment> saveComment1sSubComments = saveComment1.getSubComments();
+        Integer comment1sSubCommentsSize = saveComment1sSubComments.size();
+        Comment comment1sSubComment = saveComment1sSubComments.get(0);
         assertThat(comment1sSubCommentsSize).isEqualTo(1);
-        assertThat(comment1sSubComment).isEqualTo(saveSubSubComment);
+        assertThat(comment1sSubComment).isEqualTo(saveSubComment1);
 
-        Comment comment1sSuperComment = saveSubComment1.getSuperComment();
-        Community comment1sCommunity = saveSubComment1.getCommunity();
+        Comment comment1sSuperComment = saveComment1.getSuperComment();
+        Community comment1sCommunity = saveComment1.getCommunity();
         assertThat(comment1sSuperComment).isNull();
         assertThat(comment1sCommunity).isEqualTo(community);
 
@@ -216,12 +206,12 @@ public class CommunityRepositoryTest {
         Integer communitysCommentsSzie = communitysComments.size();
         Comment communitysComment = communitysComments.get(1);
         assertThat(communitysCommentsSzie).isEqualTo(2);
-        assertThat(communitysComment).isEqualTo(saveSubComment2);
+        assertThat(communitysComment).isEqualTo(saveComment2);
 
-        Comment subSubCommentsSuperComment = saveSubSubComment.getSuperComment();
-        Integer subSubCommentsSubCommentSize = saveSubSubComment.getSubComments().size();
-        assertThat(subSubCommentsSuperComment).isEqualTo(saveSubComment1);
-        assertThat(subSubCommentsSubCommentSize).isEqualTo(0);
+        Comment subCommentsSuperComment = saveSubComment1.getSuperComment();
+        Integer subCommentsSubCommentSize = saveSubComment1.getSubComments().size();
+        assertThat(subCommentsSuperComment).isEqualTo(saveComment1);
+        assertThat(subCommentsSubCommentSize).isEqualTo(0);
     }
 
     @DisplayName("community의 commnets 테스트")
