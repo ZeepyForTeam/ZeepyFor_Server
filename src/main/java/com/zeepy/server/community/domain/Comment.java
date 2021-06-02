@@ -20,6 +20,8 @@ public class Comment {
 
     private String comment;
 
+    private Boolean isSecret;
+
     @ManyToOne
     @JoinColumn(name = "community_id")
     private Community community;
@@ -36,9 +38,10 @@ public class Comment {
     private User user;
 
     @Builder
-    public Comment(Long id, String comment, Community community, User user, Comment superComment) {
+    public Comment(Long id, String comment, Boolean isSecret, Community community, User user, Comment superComment) {
         this.id = id;
         this.comment = comment;
+        this.isSecret = isSecret;
         this.community = community;
         this.user = user;
         this.superComment = superComment;

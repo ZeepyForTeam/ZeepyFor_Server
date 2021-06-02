@@ -57,7 +57,9 @@ public class CommunityService {
         Participation participationToSave = participationDto.toUpdateEntity();
         participationRepository.save(participationToSave);
 
-        CommentDto commentDto = new CommentDto(joinCommunityRequestDto.getComment(), null, community, participants);
+        String comment = joinCommunityRequestDto.getComment();
+        Boolean isSecret = joinCommunityRequestDto.getIsSecret();
+        CommentDto commentDto = new CommentDto(comment, isSecret, null, community, participants);
         commentRepository.save(commentDto.toEntity());
     }
 

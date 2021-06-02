@@ -73,7 +73,7 @@ public class CommunityServiceTest {
         Long communityId = community.getId();
         Participation participation = createParticipation(community, user);
 
-        JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, userId);
+        JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, true, userId);
 
         when(communityRepository.findById(any(Long.class))).thenReturn(Optional.of(community));
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
