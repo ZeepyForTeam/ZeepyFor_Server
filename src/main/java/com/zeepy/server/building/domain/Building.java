@@ -12,14 +12,6 @@ import java.util.List;
  * Created by Minky on 2021-05-15
  */
 
-/**
- * DB 구조
- * 건설 날짜? -> 널러블
- * 주소
- * 전용 면적
- * 지역 코드
- */
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
@@ -56,6 +48,9 @@ public class Building extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "building", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<BuildingDeal> beadingDeals;
+
+    @OneToMany(mappedBy = "building", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<BuildingLike> beadingLikes;
 
     @Builder
     public Building(

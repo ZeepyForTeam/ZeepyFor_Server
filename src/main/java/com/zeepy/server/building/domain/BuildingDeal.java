@@ -13,13 +13,6 @@ import java.time.LocalDateTime;
  * Created by Minky on 2021-05-15
  */
 
-/**
- * DB 구조
- * 거래 날짜
- * 보증 금액
- * 월세 금액
- */
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
