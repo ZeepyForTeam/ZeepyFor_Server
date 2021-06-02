@@ -88,11 +88,14 @@ public class BuildingService {
         Building building = buildingRepository
                 .findById(id)
                 .orElseThrow(NoContentException::new);
+
         building.setBuildYear(buildingRequestDto.getBuildYear());
         building.setApartmentName(buildingRequestDto.getApartmentName());
+        building.setShortAddress(buildingRequestDto.getShortAddress());
         building.setAddress(buildingRequestDto.getAddress());
         building.setExclusivePrivateArea(buildingRequestDto.getExclusivePrivateArea());
         building.setAreaCode(buildingRequestDto.getAreaCode());
+
         buildingRepository.save(building);
     }
 

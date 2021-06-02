@@ -15,6 +15,7 @@ import lombok.Setter;
 public class BuildingRequestDto {
     private int buildYear; // Null 이 될 가능성이 있음
     private String apartmentName;
+    private String shortAddress;
     private String address;
     private float exclusivePrivateArea;
     private int areaCode;
@@ -24,6 +25,7 @@ public class BuildingRequestDto {
     public BuildingRequestDto(
             int buildYear,
             String apartmentName,
+            String shortAddress,
             String address,
             float exclusivePrivateArea,
             int areaCode,
@@ -32,6 +34,7 @@ public class BuildingRequestDto {
     ) {
         this.buildYear = buildYear;
         this.apartmentName = apartmentName;
+        this.shortAddress = shortAddress;
         this.address = address;
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
@@ -44,6 +47,7 @@ public class BuildingRequestDto {
                 null,
                 this.buildYear,
                 this.apartmentName,
+                this.shortAddress,
                 this.address,
                 this.exclusivePrivateArea,
                 this.areaCode,

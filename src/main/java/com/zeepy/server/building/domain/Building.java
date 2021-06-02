@@ -37,6 +37,9 @@ public class Building extends BaseTimeEntity {
     private String apartmentName; // 아파트 이름
 
     @NotEmpty
+    private String shortAddress; // 동 번지 로 구성된 작은 주소
+
+    @NotEmpty
     private String address; // 전체 주소
 
     @NotNull
@@ -59,6 +62,7 @@ public class Building extends BaseTimeEntity {
             Long id,
             int buildYear,
             String apartmentName,
+            String shortAddress,
             String address,
             float exclusivePrivateArea,
             int areaCode,
@@ -68,6 +72,7 @@ public class Building extends BaseTimeEntity {
         this.id = id;
         this.buildYear = buildYear;
         this.apartmentName = apartmentName;
+        this.shortAddress = shortAddress;
         this.address = address;
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
