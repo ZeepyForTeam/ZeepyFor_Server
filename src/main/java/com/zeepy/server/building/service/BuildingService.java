@@ -1,7 +1,8 @@
 package com.zeepy.server.building.service;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.zeepy.server.building.domain.Building;
+import com.zeepy.server.building.domain.*;
 import com.zeepy.server.building.dto.BuildingAddressResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
@@ -25,6 +26,55 @@ public class BuildingService {
     private final BuildingRepository buildingRepository;
     private final JPAQueryFactory jpaQueryFactory;
 
+    private QBuilding qBuilding = QBuilding.building;
+    private QBuildingDeal qBuildingDeal = QBuildingDeal.buildingDeal;
+    private QBuildingLike qBuildingLike = QBuildingLike.buildingLike;
+
+    private BooleanExpression goeMonthlyRent(Integer monthlyRent) {
+        if (monthlyRent == null) {
+            return null;
+        }
+        return qBuildingDeal
+                .monthlyRent
+                .goe(monthlyRent);
+    }
+
+    private BooleanExpression loeMonthlyRent(Integer monthlyRent) {
+        if (monthlyRent == null) {
+            return null;
+        }
+        return qBuildingDeal
+                .monthlyRent
+                .loe(monthlyRent);
+    }
+
+    private BooleanExpression goeDeposit(Integer deposit) {
+        if (deposit == null) {
+            return null;
+        }
+        return qBuildingDeal
+                .deposit
+                .goe(deposit);
+    }
+
+    private BooleanExpression loeDeposit(Integer deposit) {
+        if (deposit == null) {
+            return null;
+        }
+        return qBuildingDeal
+                .deposit
+                .loe(deposit);
+    }
+
+    private BooleanExpression neDealType(DealType dealType) {
+        if (dealType == null) {
+            return null;
+        }
+        return qBuildingDeal
+                .dealType
+                .ne(dealType);
+    }
+
     // CREATE
     @Transactional
     public Long create(BuildingRequestDto buildingRequestDto) {
@@ -34,8 +84,26 @@ public class BuildingService {
 
     // READ
     @Transactional(readOnly = true)
-    public List<BuildingResponseDto> getAll() {
-        List<Building> buildingList = buildingRepository.findAll();
+    public List<BuildingResponseDto> getAll(
+            Integer greaterMonthlyRent,
+            Integer lesserMonthlyRent,
+            Integer greaterDeposit,
+            Integer lesserDeposit,
+            DealType notEqualDealType
+    ) {
+        List<Building> buildingList = jpaQueryFactory
+                .selectFrom(qBuilding)
+                .innerJoin(qBuilding.buildingDeals, qBuildingDeal)
+                .where(
+                        goeMonthlyRent(greaterMonthlyRent),
+                        loeMonthlyRent(lesserMonthlyRent),
+                        goeDeposit(greaterDeposit),
+                        loeDeposit(lesserDeposit),
+                        neDealType(notEqualDealType)
+                )
+                .fetchJoin()
+                .fetch();
+
         return BuildingResponseDto.listOf(buildingList);
     }
 

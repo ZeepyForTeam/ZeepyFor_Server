@@ -65,8 +65,8 @@ public class BuildingResponseDto {
                 building.getAreaCode(),
                 building.getLatitude(),
                 building.getLongitude(),
-                BuildingDealResponseDto.listOf(building.getBeadingDeals()),
-                BuildingLikeResponseDto.listOf(building.getBeadingLikes())
+                BuildingDealResponseDto.listOf(building.getBuildingDeals()),
+                BuildingLikeResponseDto.listOf(building.getBuildingLikes())
         );
     }
 

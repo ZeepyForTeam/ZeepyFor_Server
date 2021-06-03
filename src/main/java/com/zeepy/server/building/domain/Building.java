@@ -47,10 +47,10 @@ public class Building extends BaseTimeEntity {
     private double longitude;
 
     @OneToMany(mappedBy = "building", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<BuildingDeal> beadingDeals;
+    private List<BuildingDeal> buildingDeals;
 
     @OneToMany(mappedBy = "building", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<BuildingLike> beadingLikes;
+    private List<BuildingLike> buildingLikes;
 
     @Builder
     public Building(

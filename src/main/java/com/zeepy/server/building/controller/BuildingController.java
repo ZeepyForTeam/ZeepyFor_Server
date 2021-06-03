@@ -1,5 +1,6 @@
 package com.zeepy.server.building.controller;
 
+import com.zeepy.server.building.domain.DealType;
 import com.zeepy.server.building.dto.BuildingAddressResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
@@ -23,8 +24,20 @@ public class BuildingController {
     private final BuildingService buildingService;
 
     @GetMapping
-    public ResponseEntity<List<BuildingResponseDto>> getBuildings() {
-        return ResponseEntity.ok(buildingService.getAll());
+    public ResponseEntity<List<BuildingResponseDto>> getBuildings(
+            @RequestParam(value = "geMonthly", required = false) Integer greaterMonthlyRent,
+            @RequestParam(value = "leMonthly", required = false) Integer lesserMonthlyRent,
+            @RequestParam(value = "geDeposit", required = false) Integer greaterDeposit,
+            @RequestParam(value = "leDeposit", required = false) Integer lesserDeposit,
+            @RequestParam(value = "neType", required = false) DealType notEqualDealType
+    ) {
+        return ResponseEntity.ok(buildingService.getAll(
+                greaterMonthlyRent,
+                lesserMonthlyRent,
+                greaterDeposit,
+                lesserDeposit,
+                notEqualDealType
+        ));
     }
 
     @GetMapping("/address")
