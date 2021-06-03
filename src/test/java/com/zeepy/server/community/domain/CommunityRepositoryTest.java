@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("CommunityDomain_테스트_클래스")
 @RunWith(SpringRunner.class)
@@ -266,7 +266,7 @@ public class CommunityRepositoryTest {
     }
 
     @DisplayName("달성률_에러_테스트")
-    @Test(expected = OverflowAchievementRateException.class)
+    @Test
     @Transactional
     public void achievementRate_Error() {
         User user1 = User.builder().id(2L).name("참여자1").build();
@@ -280,10 +280,11 @@ public class CommunityRepositoryTest {
 
         saveCommunity.setCurrentNumberOfPeople();
         communityRepository.saveAndFlush(saveCommunity);
-        saveCommunity.setCurrentNumberOfPeople();
-        communityRepository.saveAndFlush(saveCommunity);
-
-        fail("여까지 오면 실패");
+        assertThatThrownBy(saveCommunity::setCurrentNumberOfPeople).isInstanceOf(OverflowAchievementRateException.class);
+//        saveCommunity.setCurrentNumberOfPeople();
+//        communityRepository.saveAndFlush(saveCommunity);
+//
+//        fail("여까지 오면 실패");
     }
 
     @DisplayName("달성률_테스트")
