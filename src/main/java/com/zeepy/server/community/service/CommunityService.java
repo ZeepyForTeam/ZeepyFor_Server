@@ -44,13 +44,13 @@ public class CommunityService {
     }
 
     @Transactional
-    public void joinCommunity(Long id, JoinCommunityRequestDto joinCommunityRequestDto) {
-        Community community = communityRepository.findById(id).orElseThrow(NotFoundCommunityException::new);
+    public void joinCommunity(Long communityId, JoinCommunityRequestDto joinCommunityRequestDto) {
+        Community community = communityRepository.findById(communityId).orElseThrow(NotFoundCommunityException::new);
 
         Long participationUserId = joinCommunityRequestDto.getParticipationUserId();
         User participants = userRepository.findById(participationUserId).orElseThrow(NotFoundUserException::new);
 
-        participationRepository.findByCommunityIdAndUserId(id, participationUserId).ifPresent(v -> {
+        participationRepository.findByCommunityIdAndUserId(communityId, participationUserId).ifPresent(v -> {
             throw new AlreadyParticipationException();
         });
 
@@ -109,9 +109,9 @@ public class CommunityService {
     }
 
     @Transactional(readOnly = true)
-    public MyZipJoinResDto getJoinList(Long id) {
-        List<Participation> participationList = participationRepository.findAllByUserId(id);
-        List<Community> communityList = communityRepository.findAllByUserId(id);
+    public MyZipJoinResDto getJoinList(Long userId) {
+        List<Participation> participationList = participationRepository.findAllByUserId(userId);
+        List<Community> communityList = communityRepository.findAllByUserId(userId);
 
         List<ParticipationResDto> participationResDtoList = participationList.stream()
                 .map(ParticipationResDto::new)

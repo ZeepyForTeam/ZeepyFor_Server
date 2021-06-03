@@ -32,10 +32,10 @@ public class CommunityController {
 
     @PutMapping("/participation/{id}")
     public ResponseEntity<Void> cancelJoinCommunity(
-            @PathVariable("id") Long id,
+            @PathVariable("id") Long communityId,
             @Valid @RequestBody CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto
     ) {
-        communityService.cancelJoinCommunity(id, cancelJoinCommunityRequestDto);
+        communityService.cancelJoinCommunity(communityId, cancelJoinCommunityRequestDto);
         return ResponseEntity.ok().build();
     }
 
@@ -49,8 +49,8 @@ public class CommunityController {
     }
 
     @GetMapping("/participation/{id}")
-    public ResponseEntity<MyZipJoinResDto> getMyZipJoinList(@PathVariable("id") Long id) {
-        MyZipJoinResDto myZipJoinList = communityService.getJoinList(id);
+    public ResponseEntity<MyZipJoinResDto> getMyZipJoinList(@PathVariable("id") Long userId) {
+        MyZipJoinResDto myZipJoinList = communityService.getJoinList(userId);
         return ResponseEntity.ok().body(myZipJoinList);
     }
 

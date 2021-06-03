@@ -281,14 +281,10 @@ public class CommunityRepositoryTest {
         saveCommunity.setCurrentNumberOfPeople();
         communityRepository.saveAndFlush(saveCommunity);
         assertThatThrownBy(saveCommunity::setCurrentNumberOfPeople).isInstanceOf(OverflowAchievementRateException.class);
-//        saveCommunity.setCurrentNumberOfPeople();
-//        communityRepository.saveAndFlush(saveCommunity);
-//
-//        fail("여까지 오면 실패");
     }
 
     @DisplayName("달성률_테스트")
-    @Test
+    @Test(expected = OverflowAchievementRateException.class)
     @Transactional
     public void achievementRate() {
         User user1 = User.builder().id(2L).name("참여자1").build();
