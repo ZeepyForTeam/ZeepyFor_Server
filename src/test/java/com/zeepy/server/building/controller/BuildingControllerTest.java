@@ -1,5 +1,6 @@
 package com.zeepy.server.building.controller;
 
+import com.zeepy.server.building.dto.BuildingAddressResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.service.BuildingService;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 
@@ -34,6 +36,8 @@ class BuildingControllerTest extends ControllerTest {
         return new BuildingRequestDto(
                 0,
                 "test",
+                "test",
+                "test",
                 0.1f,
                 1100,
                 32.0,
@@ -46,11 +50,23 @@ class BuildingControllerTest extends ControllerTest {
                 1L,
                 0,
                 "test",
+                "test",
+                "test",
                 0.1f,
                 1100,
                 32.0,
                 124.0,
+                null,
                 null
+        );
+    }
+
+    private BuildingAddressResponseDto makeBuildingAddressResponseDto() {
+        return new BuildingAddressResponseDto(
+                1L,
+                "test",
+                "test",
+                "test"
         );
     }
 
@@ -86,7 +102,10 @@ class BuildingControllerTest extends ControllerTest {
     @DisplayName("GET Building Addresses (AutoComplete) Test")
     void getBuildingAddresses() throws Exception {
         given(buildingService.getBuildingAddressesByAddress(any(String.class)))
-                .willReturn(Arrays.asList("test", "test"));
+                .willReturn(Arrays.asList(
+                        makeBuildingAddressResponseDto(),
+                        makeBuildingAddressResponseDto()
+                ));
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("address", "test");
         doGet("/api/buildings/addresses", params);
@@ -95,7 +114,7 @@ class BuildingControllerTest extends ControllerTest {
     @Test
     @DisplayName("GET Buildings By Location Test")
     void getBuildingsByLocation() throws Exception {
-        given(buildingService.getByLatitudeAndLongitude(anyDouble(), anyDouble()))
+        given(buildingService.getByLatitudeAndLongitude(anyDouble(), anyDouble(), anyDouble(), anyDouble()))
                 .willReturn(makeBuildingResponseDtoList());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("latitude", "32.0");

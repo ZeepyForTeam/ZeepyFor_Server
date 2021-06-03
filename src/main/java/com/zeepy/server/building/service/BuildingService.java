@@ -1,5 +1,6 @@
 package com.zeepy.server.building.service;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.building.dto.BuildingAddressResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class BuildingService {
     private final BuildingRepository buildingRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
     // CREATE
     @Transactional

@@ -1,5 +1,6 @@
 package com.zeepy.server.building.controller;
 
+import com.zeepy.server.building.domain.DealType;
 import com.zeepy.server.building.dto.BuildingDealRequestDto;
 import com.zeepy.server.building.dto.BuildingDealResponseDto;
 import com.zeepy.server.building.service.BuildingDealService;
@@ -35,6 +36,7 @@ class BuildingDealControllerTest extends ControllerTest {
                 10,
                 10,
                 10,
+                10,
                 1L
         );
     }
@@ -45,7 +47,9 @@ class BuildingDealControllerTest extends ControllerTest {
                 new Timestamp(1L),
                 10,
                 10,
-                10
+                10,
+                10,
+                DealType.DEAL
         );
     }
 
