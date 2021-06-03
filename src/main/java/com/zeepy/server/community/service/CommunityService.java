@@ -49,7 +49,7 @@ public class CommunityService {
                 .orElseThrow(NoSuchCommunityException::new);
 
         User user = userRepository.findById(requestDto.getUserId())
-                .orElseThrow(NoSuchCommunityException::new);
+                .orElseThrow(NoSuchUserException::new);
 
         CommunityLike communityLike = communityLikeRepository.findByCommunityAndUser(community, user);
         communityLikeRepository.deleteById(communityLike.getId());
