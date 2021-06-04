@@ -1,18 +1,27 @@
 package com.zeepy.server.community.controller;
 
 import com.zeepy.server.common.ControllerTest;
+import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
+import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.service.CommunityService;
+import com.zeepy.server.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -72,5 +81,17 @@ public class CommunityControllerTest extends ControllerTest {
                 .build();
         doNothing().when(communityService).cancelLike(communityLikeRequestDto);
         doDelete("/api/community/like-cancel", communityLikeRequestDto);
+    }
+
+    @DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
+    @Test
+    public void getLikeList() throws Exception {
+        List<CommunityResponseDto> communityResponseDtoList = new ArrayList<CommunityResponseDto>();
+        CommunityResponseDtos communityResponseDtos = new CommunityResponseDtos(communityResponseDtoList);
+        given(communityService.getLikeList(any(Long.class))).willReturn(communityResponseDtos);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("id", "1");
+        doGet("/api/community/likes", params);
     }
 }
