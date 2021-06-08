@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -101,11 +102,11 @@ class BuildingControllerTest extends ControllerTest {
     @Test
     @DisplayName("GET Building Addresses (AutoComplete) Test")
     void getBuildingAddresses() throws Exception {
-        given(buildingService.getBuildingAddressesByAddress(any(String.class)))
-                .willReturn(Arrays.asList(
+        given(buildingService.getBuildingAddressesByAddress(any(String.class), any()))
+                .willReturn(new PageImpl<>(Arrays.asList(
                         makeBuildingAddressResponseDto(),
                         makeBuildingAddressResponseDto()
-                ));
+                )));
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("address", "test");
         doGet("/api/buildings/addresses", params);
@@ -117,8 +118,10 @@ class BuildingControllerTest extends ControllerTest {
         given(buildingService.getByLatitudeAndLongitude(anyDouble(), anyDouble(), anyDouble(), anyDouble()))
                 .willReturn(makeBuildingResponseDtoList());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("latitude", "32.0");
-        params.add("longitude", "124.0");
+        params.add("latitudeGreater", "32.0");
+        params.add("latitudeLess", "32.0");
+        params.add("longitudeGreater", "124.0");
+        params.add("longitudeLess", "124.0");
         doGet("/api/buildings/location", params);
     }
 
