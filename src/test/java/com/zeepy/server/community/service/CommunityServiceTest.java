@@ -8,11 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,7 +52,6 @@ public class CommunityServiceTest {
 		.content("구해요")
 		.imageUrls(Arrays.asList("1", "2", "3"))
 		.build();
-	@InjectMocks
 	private CommunityService communityService;
 	@Mock
 	private CommunityRepository communityRepository;
@@ -62,6 +61,12 @@ public class CommunityServiceTest {
 	private UserRepository userRepository;
 	@Mock
 	private CommentRepository commentRepository;
+
+	@Before
+	public void setDI() {
+		this.communityService = new CommunityService(communityRepository, participationRepository, userRepository,
+			commentRepository);
+	}
 
 	@BeforeEach
 	public void setUp() {
