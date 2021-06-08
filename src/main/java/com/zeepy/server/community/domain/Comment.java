@@ -82,7 +82,7 @@ public class Comment extends BaseTimeEntity {
 		}
 	}
 
-	public void setSubScribe() {
+	public void cancelParticipation() {
 		this.isParticipation = false;
 	}
 }
