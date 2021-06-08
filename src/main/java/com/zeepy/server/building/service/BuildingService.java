@@ -1,5 +1,7 @@
 package com.zeepy.server.building.service;
 
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.zeepy.server.building.domain.*;
@@ -10,6 +12,10 @@ import com.zeepy.server.building.repository.BuildingRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,14 +90,15 @@ public class BuildingService {
 
     // READ
     @Transactional(readOnly = true)
-    public List<BuildingResponseDto> getAll(
+    public Page<BuildingResponseDto> getAll(
             Integer greaterMonthlyRent,
             Integer lesserMonthlyRent,
             Integer greaterDeposit,
             Integer lesserDeposit,
-            DealType notEqualDealType
+            DealType notEqualDealType,
+            Pageable pageable
     ) {
-        List<Building> buildingList = jpaQueryFactory
+        QueryResults<Building> fetchResults = jpaQueryFactory
                 .selectFrom(qBuilding)
                 .innerJoin(qBuilding.buildingDeals, qBuildingDeal)
                 .where(
@@ -101,16 +108,22 @@ public class BuildingService {
                         loeDeposit(lesserDeposit),
                         neDealType(notEqualDealType)
                 )
+                .orderBy(qBuilding.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetchJoin()
-                .fetch();
+                .fetchResults();
 
-        return BuildingResponseDto.listOf(buildingList);
+        return new PageImpl<BuildingResponseDto>(
+                BuildingResponseDto.listOf(fetchResults.getResults()),
+                pageable,
+                fetchResults.getTotal());
     }
 
     // READ
     @Transactional(readOnly = true)
     public BuildingResponseDto getByAddress(String address) {
-        Building building = buildingRepository.findByAddress(address)
+        Building building = buildingRepository.findByAddressContaining(address)
                 .orElseThrow(NoContentException::new);
         return BuildingResponseDto.of(building);
     }
@@ -134,11 +147,13 @@ public class BuildingService {
     }
 
     // READ
-    // TODO : 추후에 페이징 기능 탑제
     @Transactional(readOnly = true)
-    public List<BuildingAddressResponseDto> getBuildingAddressesByAddress(String address) {
-        List<Building> buildingList = buildingRepository.findByAddressContaining(address);
-        return BuildingAddressResponseDto.listOf(buildingList);
+    public Page<BuildingAddressResponseDto> getBuildingAddressesByAddress(String address, Pageable pageable) {
+        Page<Building> buildingList = buildingRepository.findByAddressContaining(address, pageable);
+        return new PageImpl<BuildingAddressResponseDto>(
+                BuildingAddressResponseDto.listOf(buildingList.getContent()),
+                pageable,
+                buildingList.getTotalElements());
     }
 
     // READ

@@ -7,6 +7,8 @@ import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.service.BuildingService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,19 +26,21 @@ public class BuildingController {
     private final BuildingService buildingService;
 
     @GetMapping
-    public ResponseEntity<List<BuildingResponseDto>> getBuildings(
+    public ResponseEntity<Page<BuildingResponseDto>> getBuildings(
             @RequestParam(value = "geMonthly", required = false) Integer greaterMonthlyRent,
             @RequestParam(value = "leMonthly", required = false) Integer lesserMonthlyRent,
             @RequestParam(value = "geDeposit", required = false) Integer greaterDeposit,
             @RequestParam(value = "leDeposit", required = false) Integer lesserDeposit,
-            @RequestParam(value = "neType", required = false) DealType notEqualDealType
+            @RequestParam(value = "neType", required = false) DealType notEqualDealType,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(buildingService.getAll(
                 greaterMonthlyRent,
                 lesserMonthlyRent,
                 greaterDeposit,
                 lesserDeposit,
-                notEqualDealType
+                notEqualDealType,
+                pageable
         ));
     }
 
@@ -48,10 +52,11 @@ public class BuildingController {
     }
 
     @GetMapping("/addresses")
-    public ResponseEntity<List<BuildingAddressResponseDto>> getBuildingAddresses(
-            @RequestParam("address") String address
+    public ResponseEntity<Page<BuildingAddressResponseDto>> getBuildingAddresses(
+            @RequestParam("address") String address,
+            Pageable pageable
     ) {
-        return ResponseEntity.ok(buildingService.getBuildingAddressesByAddress(address));
+        return ResponseEntity.ok(buildingService.getBuildingAddressesByAddress(address, pageable));
     }
 
     @GetMapping("/location")
