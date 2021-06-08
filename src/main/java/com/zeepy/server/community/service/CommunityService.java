@@ -152,7 +152,7 @@ public class CommunityService {
 	public void updateCommunity(Long communityId, UpdateCommunityReqDto updateCommunityReqDto) {
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
-		updateCommunityReqDto.setUpdateCommunity(findCommunity);
+		updateCommunityReqDto.updateCommunity(findCommunity);
 	}
 }
 

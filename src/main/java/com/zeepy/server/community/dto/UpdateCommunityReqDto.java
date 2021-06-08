@@ -27,7 +27,7 @@ public class UpdateCommunityReqDto {
 
 	private String instructions;
 
-	public void setUpdateCommunity(Community community) {
+	public void updateCommunity(Community community) {
 		community.update(title,
 			productName,
 			productPrice,
