@@ -18,6 +18,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCo
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.ParticipationDto;
+import com.zeepy.server.community.dto.UpdateCommunityReqDto;
 import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
@@ -352,5 +353,32 @@ public class CommunityRepositoryTest {
 
 		assertThat(saveCommunity.getCurrentNumberOfPeople())
 			.isEqualTo(1);
+	}
+
+	@DisplayName("커뮤니티_수정하기_테스트")
+	@Test
+	@Transactional
+	public void updateCommunityTest() {
+		userRepository.save(writer);
+		communityRepository.saveAndFlush(joinPurchaseCommunity);
+		long joinPurchaseCommunityId = joinPurchaseCommunity.getId();
+
+		UpdateCommunityReqDto updateCommunityReqDto = new UpdateCommunityReqDto("수정된 제목", "수정된 제품명", 9999, "수정된 구매장소",
+			"수정된 공유방법", 3, "수정된 설명");
+
+		Community findCommunity = communityRepository.findById(joinPurchaseCommunityId)
+			.orElseThrow(NotFoundCommunityException::new);
+
+		updateCommunityReqDto.updateCommunity(findCommunity);
+		communityRepository.flush();
+
+		Community compareCommunity = communityRepository.findById(joinPurchaseCommunityId)
+			.orElseThrow(NotFoundCommunityException::new);
+
+		assertThat(compareCommunity.getTitle())
+			.isEqualTo("수정된 제목");
+		assertThat(compareCommunity.getProductPrice())
+			.isNotEqualTo(joinPurchaseCommunity
+				.getProductPrice());
 	}
 }
