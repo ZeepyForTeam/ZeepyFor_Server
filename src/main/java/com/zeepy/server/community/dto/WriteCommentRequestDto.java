@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class WriteCommentRequestDto {
-    private String comment;
-    private Boolean isSecret;
-    private Long superCommentId;
-    private Long writeUserId;
+	private String comment;
+	private Boolean isSecret;
+	private Long superCommentId;
+	private Long writeUserId;
 }

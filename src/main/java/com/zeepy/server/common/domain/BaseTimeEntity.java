@@ -1,10 +1,12 @@
 package com.zeepy.server.common.domain;
 
-import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.MappedSuperclass;
-import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
+
+import lombok.Getter;
 
 /**
  * Created by KimGyeong 4/19/20.
@@ -13,6 +15,6 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 public abstract class BaseTimeEntity {
-    @CreatedDate
-    private final LocalDateTime createdDate = LocalDateTime.now();
+	@CreatedDate
+	private final LocalDateTime createdDate = LocalDateTime.now();
 }

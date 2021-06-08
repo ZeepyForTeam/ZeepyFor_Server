@@ -79,25 +79,25 @@ public class CommunityServiceTest {
 		Long communityId = community.getId();
 		Participation participation = createParticipation(community, user);
 
-        JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, true, userId);
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, true, userId);
 
-        when(communityRepository.findById(any(Long.class))).thenReturn(Optional.of(community));
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
-        when(participationRepository.findById(any(Long.class))).thenReturn(Optional.of(participation));
+		when(communityRepository.findById(any(Long.class))).thenReturn(Optional.of(community));
+		when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+		when(participationRepository.findById(any(Long.class))).thenReturn(Optional.of(participation));
 
-        //when
-        communityService.joinCommunity(communityId, requestDto);
+		//when
+		communityService.joinCommunity(communityId, requestDto);
 
-        //then
-        List<Participation> participationList = participationRepository.findAll();
-        assertThat(participationList.size()).isEqualTo(1);
-    }
+		//then
+		List<Participation> participationList = participationRepository.findAll();
+		assertThat(participationList.size()).isEqualTo(1);
+	}
 
-    public Participation createParticipation(Community community, User user) {
-        return Participation.builder()
-                .id(1L)
-                .community(community)
-                .user(user)
-                .build();
-    }
+	public Participation createParticipation(Community community, User user) {
+		return Participation.builder()
+			.id(1L)
+			.community(community)
+			.user(user)
+			.build();
+	}
 }

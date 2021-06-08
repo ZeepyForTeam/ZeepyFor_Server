@@ -45,6 +45,7 @@ public class CommunityService {
 		User writer = userRepository.findById(writerId)
 			.orElseThrow(NotFoundUserException::new);
 		requestDto.setUser(writer);
+
 		Community communityToSave = requestDto.toEntity();
 		Community community = communityRepository.save(communityToSave);
 
@@ -82,18 +83,17 @@ public class CommunityService {
 	@Transactional
 	public void cancelJoinCommunity(Long communityId, CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto) {
 		Long cancelJoinUserId = cancelJoinCommunityRequestDto.getCancelUserId();
-
 		User findUser = userRepository.findById(cancelJoinUserId)
 			.orElseThrow(NotFoundUserException::new);
+
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 
 		Long findUserId = findUser.getId();
 		Long findCommunityId = findCommunity.getId();
-
 		participationRepository.deleteByUserIdAndCommunityId(findUserId, findCommunityId);
-
 		List<Comment> comments = commentRepository.findCommentsByUserIdAndCommunityId(findUserId, findCommunityId);
+
 		Comment superComment = comments.stream().filter(v ->
 			v.getSuperComment() == null &&
 				v.getIsParticipation())

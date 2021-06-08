@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CancelJoinCommunityRequestDto {
-    private Long cancelUserId;
+	private Long cancelUserId;
 }
