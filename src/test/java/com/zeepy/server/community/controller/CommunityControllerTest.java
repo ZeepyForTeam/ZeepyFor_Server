@@ -2,7 +2,6 @@ package com.zeepy.server.community.controller;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +25,7 @@ import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.ParticipationResDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
+import com.zeepy.server.community.dto.UpdateCommunityReqDto;
 import com.zeepy.server.community.dto.WriteCommentRequestDto;
 import com.zeepy.server.community.dto.WriteOutResDto;
 import com.zeepy.server.community.service.CommunityService;
@@ -163,5 +163,21 @@ public class CommunityControllerTest extends ControllerTest {
 		//when
 		//then
 		doPost(url, requestDto);
+	}
+
+	@DisplayName("수정하기테스트")
+	@Test
+	public void communityUpdateTest() throws Exception {
+		//given
+		long communityId = 1L;
+		UpdateCommunityReqDto updateCommunityReqDto = new UpdateCommunityReqDto("수정된 제목", "수정된 제품명", 10000, "수정된 구매장소",
+			"수정된 공유방법", 3, "수정된 설명");
+		String url = "/api/community/" + communityId;
+
+		doNothing().when(communityService).updateCommunity(communityId, updateCommunityReqDto);
+
+		//when
+		//then
+		doPut(url, updateCommunityReqDto);
 	}
 }

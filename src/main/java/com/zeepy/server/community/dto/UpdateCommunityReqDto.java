@@ -4,11 +4,13 @@ import javax.validation.constraints.NotBlank;
 
 import com.zeepy.server.community.domain.Community;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UpdateCommunityReqDto {
 	@NotBlank(message = "제목은 필수 사항입니다.")
 	private String title;
