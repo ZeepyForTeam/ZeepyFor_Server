@@ -16,7 +16,7 @@ public class ParticipationDto {
 	public Participation toUpdateEntity() {
 		Participation participation = Participation.builder()
 			.build();
-		community.setCurrentNumberOfPeople();
+		community.addCurrentNumberOfPeople();
 		participation.setCommunity(this.community);
 		participation.setUser(this.user);
 		return participation;
