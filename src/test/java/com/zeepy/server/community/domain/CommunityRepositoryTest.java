@@ -332,9 +332,9 @@ public class CommunityRepositoryTest {
 		Community saveCommunity = communityRepository.save(joinPurchaseCommunity);
 		communityRepository.save(freeSharingCommunity);
 
-		saveCommunity.setCurrentNumberOfPeople();
+		saveCommunity.addCurrentNumberOfPeople();
 		communityRepository.saveAndFlush(saveCommunity);
-		assertThatThrownBy(saveCommunity::setCurrentNumberOfPeople).isInstanceOf(
+		assertThatThrownBy(saveCommunity::addCurrentNumberOfPeople).isInstanceOf(
 			OverflowAchievementRateException.class);
 	}
 
@@ -348,7 +348,7 @@ public class CommunityRepositoryTest {
 
 		Community saveCommunity = communityRepository.save(joinPurchaseCommunity);
 
-		saveCommunity.setCurrentNumberOfPeople();
+		saveCommunity.addCurrentNumberOfPeople();
 
 		assertThat(saveCommunity.getCurrentNumberOfPeople())
 			.isEqualTo(1);

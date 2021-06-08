@@ -123,7 +123,7 @@ public class Community extends BaseTimeEntity {
 		this.imageUrls = imageUrls;
 	}
 
-	public void setCurrentNumberOfPeople() {
+	public void addCurrentNumberOfPeople() {
 		if (communityCategory == CommunityCategory.JOINTPURCHASE && targetNumberOfPeople != null) {
 			this.currentNumberOfPeople++;
 		}
@@ -132,11 +132,11 @@ public class Community extends BaseTimeEntity {
 		}
 	}
 
-	public void setSubstractCurrentNumberOfPeople() {
+	public void substractCurrentNumberOfPeople() {
 		currentNumberOfPeople--;
 	}
 
-	public void setUpdate(String title,
+	public void update(String title,
 		String productName,
 		Integer productPrice,
 		String purchasePlace,
