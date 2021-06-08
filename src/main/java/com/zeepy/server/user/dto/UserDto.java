@@ -1,6 +1,5 @@
 package com.zeepy.server.user.dto;
 
-import com.zeepy.server.user.domain.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class UserDto {
-    private Long id;
-    private String name;
+	private Long id;
+	private String name;
 }
