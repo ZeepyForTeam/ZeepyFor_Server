@@ -29,7 +29,12 @@ import com.zeepy.server.user.repository.UserRepository;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class CommunityRepositoryTest {
-	private final User writer = User.builder().id(1L).name("작성자").place("구월동").build();
+	private final User writer = User.builder()
+		.id(1L)
+		.name("작성자")
+		.place("구월동")
+		.build();
+
 	private final Community joinPurchaseCommunity = Community.builder()
 		.id(1L)
 		.communityCategory(CommunityCategory.JOINTPURCHASE)
@@ -45,6 +50,7 @@ public class CommunityRepositoryTest {
 		.place("구월동")
 		.imageUrls(Arrays.asList("1", "2", "3"))
 		.build();
+
 	private final Community freeSharingCommunity = Community.builder()
 		.id(2L)
 		.communityCategory(CommunityCategory.FREESHARING)
@@ -53,6 +59,7 @@ public class CommunityRepositoryTest {
 		.content("구해요")
 		.imageUrls(Arrays.asList("1", "2", "3"))
 		.build();
+
 	private final Community neighborhoodfriendCommunity = Community.builder()
 		.id(3L)
 		.communityCategory(CommunityCategory.NEIGHBORHOODFRIEND)
@@ -61,8 +68,16 @@ public class CommunityRepositoryTest {
 		.content("구해요")
 		.imageUrls(Arrays.asList("1", "2", "3"))
 		.build();
-	private final User user1 = User.builder().id(2L).name("참여자1").build();
-	private final User user2 = User.builder().id(3L).name("참여자2").build();
+
+	private final User user1 = User.builder()
+		.id(2L)
+		.name("참여자1")
+		.build();
+	private final User user2 = User.builder()
+		.id(3L)
+		.name("참여자2")
+		.build();
+
 	@Autowired
 	CommunityRepository communityRepository;
 	@Autowired
@@ -93,8 +108,10 @@ public class CommunityRepositoryTest {
 
 		//then
 		Community communities = result.get(0);
-		assertThat(communities.getTitle()).isEqualTo("같이 살사람");
-		assertThat(communities.getProductName()).isEqualTo("공동구매물건");
+		assertThat(communities.getTitle())
+			.isEqualTo("같이 살사람");
+		assertThat(communities.getProductName())
+			.isEqualTo("공동구매물건");
 	}
 
 	@DisplayName("참여하기 저장 테스트")
@@ -115,9 +132,12 @@ public class CommunityRepositoryTest {
 		Community participationsCommunity = participation.getCommunity();
 		User participationsUser = participation.getUser();
 
-		assertThat(participationsCommunity.getId()).isEqualTo(saveCommunityId);
-		assertThat(participationsUser.getId()).isEqualTo(joinUserId);
-		assertThat(participationsUser.getName()).isEqualTo("참여자");
+		assertThat(participationsCommunity.getId())
+			.isEqualTo(saveCommunityId);
+		assertThat(participationsUser.getId())
+			.isEqualTo(joinUserId);
+		assertThat(participationsUser.getName())
+			.isEqualTo("참여자");
 	}
 
 	@DisplayName("MyZip참여리스트 불러오기 테스트")
@@ -142,10 +162,14 @@ public class CommunityRepositoryTest {
 		User participationsUser = firstParticipation.getUser();
 		Community participationsCommunity = firstParticipation.getCommunity();
 
-		assertThat(participationsUser.getId()).isEqualTo(joinUserId);
-		assertThat(participationsUser.getName()).isEqualTo(joinUserName);
-		assertThat(participationsCommunity.getProductName()).isEqualTo(communityProductName);
-		assertThat(firstParticipation).isEqualTo(participation);
+		assertThat(participationsUser.getId())
+			.isEqualTo(joinUserId);
+		assertThat(participationsUser.getName())
+			.isEqualTo(joinUserName);
+		assertThat(participationsCommunity.getProductName())
+			.isEqualTo(communityProductName);
+		assertThat(firstParticipation)
+			.isEqualTo(participation);
 	}
 
 	@DisplayName("댓글달기 테스트")
@@ -187,24 +211,32 @@ public class CommunityRepositoryTest {
 		List<Comment> saveComment1sSubComments = saveComment1.getSubComments();
 		Integer comment1sSubCommentsSize = saveComment1sSubComments.size();
 		Comment comment1sSubComment = saveComment1sSubComments.get(0);
-		assertThat(comment1sSubCommentsSize).isEqualTo(1);
-		assertThat(comment1sSubComment).isEqualTo(saveSubComment1);
+		assertThat(comment1sSubCommentsSize)
+			.isEqualTo(1);
+		assertThat(comment1sSubComment)
+			.isEqualTo(saveSubComment1);
 
 		Comment comment1sSuperComment = saveComment1.getSuperComment();
 		Community comment1sCommunity = saveComment1.getCommunity();
-		assertThat(comment1sSuperComment).isNull();
-		assertThat(comment1sCommunity).isEqualTo(community);
+		assertThat(comment1sSuperComment)
+			.isNull();
+		assertThat(comment1sCommunity)
+			.isEqualTo(community);
 
 		List<Comment> communitysComments = community.getComments();
 		Integer communitysCommentsSzie = communitysComments.size();
 		Comment communitysComment = communitysComments.get(1);
-		assertThat(communitysCommentsSzie).isEqualTo(2);
-		assertThat(communitysComment).isEqualTo(saveComment2);
+		assertThat(communitysCommentsSzie)
+			.isEqualTo(2);
+		assertThat(communitysComment)
+			.isEqualTo(saveComment2);
 
 		Comment subCommentsSuperComment = saveSubComment1.getSuperComment();
 		Integer subCommentsSubCommentSize = saveSubComment1.getSubComments().size();
-		assertThat(subCommentsSuperComment).isEqualTo(saveComment1);
-		assertThat(subCommentsSubCommentSize).isEqualTo(0);
+		assertThat(subCommentsSuperComment)
+			.isEqualTo(saveComment1);
+		assertThat(subCommentsSubCommentSize)
+			.isEqualTo(0);
 	}
 
 	@DisplayName("community의 commnets 테스트")
@@ -230,7 +262,8 @@ public class CommunityRepositoryTest {
 			.build();
 		Comment user1Comment = user1CommentDto.toEntity();
 		commentRepository.save(user1Comment);
-		Community findCommunity1 = communityRepository.findById(1L).orElseThrow(NotFoundCommunityException::new);
+		Community findCommunity1 = communityRepository.findById(1L)
+			.orElseThrow(NotFoundCommunityException::new);
 
 		ParticipationDto user2ParticipationDto = new ParticipationDto(saveCommunity, user2);
 		Participation user2Participation = user2ParticipationDto.toEntity();
@@ -243,7 +276,8 @@ public class CommunityRepositoryTest {
 			.build();
 		Comment user2Comment = user2CommentDto.toEntity();
 		commentRepository.save(user2Comment);
-		Community findCommunity2 = communityRepository.findById(1L).orElseThrow(NotFoundCommunityException::new);
+		Community findCommunity2 = communityRepository.findById(1L)
+			.orElseThrow(NotFoundCommunityException::new);
 
 		//작성자가 사용자1 댓글에 대댓글
 		CommentDto subCommentDto = CommentDto.builder()
@@ -253,15 +287,20 @@ public class CommunityRepositoryTest {
 			.writer(writer)
 			.build();
 		commentRepository.save(subCommentDto.toEntity());
-		Community findCommunity3 = communityRepository.findById(1L).orElseThrow(NotFoundCommunityException::new);
+		Community findCommunity3 = communityRepository.findById(1L)
+			.orElseThrow(NotFoundCommunityException::new);
 
 		//then
 		//모든 영속성이 끝나고 community의 comments에는 대댓글이 포함되어있을까?
-		assertThat(saveCommunity.getComments().size()).isEqualTo(2);
+		assertThat(saveCommunity.getComments().size())
+			.isEqualTo(2);
 		//findById로 찾을때
-		assertThat(findCommunity1.getComments().size()).isEqualTo(1);
-		assertThat(findCommunity2.getComments().size()).isEqualTo(2);
-		assertThat(findCommunity3.getComments().size()).isEqualTo(3);
+		assertThat(findCommunity1.getComments().size())
+			.isEqualTo(1);
+		assertThat(findCommunity2.getComments().size())
+			.isEqualTo(2);
+		assertThat(findCommunity3.getComments().size())
+			.isEqualTo(3);
 	}
 
 	@DisplayName("community_currentNumberOfPeople_create Deafault 0")
@@ -270,15 +309,22 @@ public class CommunityRepositoryTest {
 		userRepository.save(writer);
 		Community saveCommunity = communityRepository.save(joinPurchaseCommunity);
 
-		assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(0);
+		assertThat(saveCommunity.getCurrentNumberOfPeople())
+			.isEqualTo(0);
 	}
 
 	@DisplayName("달성률_에러_테스트")
 	@Test
 	@Transactional
 	public void achievementRate_Error() {
-		User user1 = User.builder().id(2L).name("참여자1").build();
-		User user2 = User.builder().id(3L).name("참여자2").build();
+		User user1 = User.builder()
+			.id(2L)
+			.name("참여자1")
+			.build();
+		User user2 = User.builder()
+			.id(3L)
+			.name("참여자2")
+			.build();
 		userRepository.save(writer);
 		userRepository.save(user1);
 		userRepository.save(user2);
@@ -304,6 +350,7 @@ public class CommunityRepositoryTest {
 
 		saveCommunity.setCurrentNumberOfPeople();
 
-		assertThat(saveCommunity.getCurrentNumberOfPeople()).isEqualTo(1);
+		assertThat(saveCommunity.getCurrentNumberOfPeople())
+			.isEqualTo(1);
 	}
 }
