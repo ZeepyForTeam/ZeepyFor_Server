@@ -99,9 +99,9 @@ public class CommunityService {
 				v.getIsParticipation())
 			.findFirst()
 			.orElseThrow(BadRequestCommentException::new);
-		superComment.setSubScribe();
+		superComment.cancelParticipation();
 
-		findCommunity.setSubstractCurrentNumberOfPeople();
+		findCommunity.substractCurrentNumberOfPeople();
 
 	}
 
