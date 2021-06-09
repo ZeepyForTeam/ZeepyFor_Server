@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class BuildingDealController {
 
     @PostMapping
     public ResponseEntity<Void> uploadBuildingDeal(
-            @RequestBody BuildingDealRequestDto buildingDealRequestDto
+            @Valid @RequestBody BuildingDealRequestDto buildingDealRequestDto
     ) {
         Long id = buildingDealService.create(buildingDealRequestDto);
         return ResponseEntity.created(URI.create("/api/deals/" + id)).build();
@@ -52,7 +53,7 @@ public class BuildingDealController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateBuildingDeal(
             @PathVariable Long id,
-            @RequestBody BuildingDealRequestDto buildingDealRequestDto
+            @Valid @RequestBody BuildingDealRequestDto buildingDealRequestDto
     ) {
         buildingDealService.update(id, buildingDealRequestDto);
         return ResponseEntity.ok().build();

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class BuildingController {
 
     @PostMapping
     public ResponseEntity<Void> uploadBuilding(
-            @RequestBody BuildingRequestDto buildingRequestDto
+            @Valid @RequestBody BuildingRequestDto buildingRequestDto
     ) {
         Long id = buildingService.create(buildingRequestDto);
         return ResponseEntity.created(URI.create("/api/buildings/" + id)).build();
@@ -87,7 +88,7 @@ public class BuildingController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateBuilding(
             @PathVariable Long id,
-            @RequestBody BuildingRequestDto buildingRequestDto
+            @Valid @RequestBody BuildingRequestDto buildingRequestDto
     ) {
         buildingService.update(id, buildingRequestDto);
         return ResponseEntity.ok().build();

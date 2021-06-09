@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -19,11 +20,22 @@ import java.text.SimpleDateFormat;
 @Setter
 @Getter
 public class BuildingDealRequestDto {
+    @NotNull(message = "dealDate cannot be Null")
     private Long dealDate;
+
+    @NotNull(message = "deposit cannot be Null")
     private int deposit;
+
+    @NotNull(message = "monthlyRent cannot be Null")
     private int monthlyRent;
+
+    @NotNull(message = "floor cannot be Null")
     private int floor;
+
+    @NotNull(message = "dealCost cannot be Null")
     private int dealCost;
+
+    @NotNull(message = "buildingId cannot be Null")
     private Long buildingId;
 
     public BuildingDealRequestDto(

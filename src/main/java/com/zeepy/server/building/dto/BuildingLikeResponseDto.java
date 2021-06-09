@@ -44,7 +44,7 @@ public class BuildingLikeResponseDto {
     public static List<BuildingLikeResponseDto> listOf(List<BuildingLike> buildingLikeList) {
         return buildingLikeList
                 .stream()
-                .map(buildingLike -> of(buildingLike))
+                .map(BuildingLikeResponseDto::of)
                 .collect(Collectors.toList());
     }
 }

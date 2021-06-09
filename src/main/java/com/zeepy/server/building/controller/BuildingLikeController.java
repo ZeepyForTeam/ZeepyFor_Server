@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class BuildingLikeController {
 
     @PostMapping
     public ResponseEntity<Void> uploadBuildingLike(
-            @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
+            @Valid @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
     ) {
         Long id = buildingLikeService.create(buildingLikeRequestDto);
         return ResponseEntity.created(URI.create("/api/likes/buildings/" + id)).build();
@@ -45,7 +46,7 @@ public class BuildingLikeController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateBuildingLike(
             @PathVariable Long id,
-            @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
+            @Valid @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
     ) {
         buildingLikeService.update(id, buildingLikeRequestDto);
         return ResponseEntity.ok().build();

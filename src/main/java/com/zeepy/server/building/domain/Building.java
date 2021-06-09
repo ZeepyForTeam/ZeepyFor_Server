@@ -1,5 +1,6 @@
 package com.zeepy.server.building.domain;
 
+import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import lombok.*;
 
@@ -73,5 +74,16 @@ public class Building extends BaseTimeEntity {
         this.areaCode = areaCode;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public void update(BuildingRequestDto buildingRequestDto) {
+        this.buildYear = buildingRequestDto.getBuildYear();
+        this.apartmentName = buildingRequestDto.getApartmentName();
+        this.shortAddress = buildingRequestDto.getShortAddress();
+        this.address = buildingRequestDto.getAddress();
+        this.exclusivePrivateArea = buildingRequestDto.getExclusivePrivateArea();
+        this.areaCode = buildingRequestDto.getAreaCode();
+        this.latitude = buildingRequestDto.getLatitude();
+        this.longitude = buildingRequestDto.getLongitude();
     }
 }

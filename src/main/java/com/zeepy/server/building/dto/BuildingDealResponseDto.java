@@ -61,7 +61,7 @@ public class BuildingDealResponseDto {
     public static List<BuildingDealResponseDto> listOf(List<BuildingDeal> buildingDealList) {
         return buildingDealList
                 .stream()
-                .map(buildingDeal -> of(buildingDeal))
+                .map(BuildingDealResponseDto::of)
                 .collect(Collectors.toList());
     }
 }

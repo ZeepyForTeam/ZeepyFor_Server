@@ -1,5 +1,6 @@
 package com.zeepy.server.building.domain;
 
+import com.zeepy.server.building.dto.BuildingDealRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import lombok.*;
 
@@ -63,5 +64,18 @@ public class BuildingDeal extends BaseTimeEntity {
         this.dealCost = dealCost;
         this.floor = floor;
         this.dealType = dealType;
+    }
+
+    public void update(BuildingDealRequestDto buildingDealRequestDto) {
+        this.dealDate = new Timestamp(buildingDealRequestDto.getDealDate());
+        this.deposit = buildingDealRequestDto.getDeposit();
+        this.monthlyRent = buildingDealRequestDto.getMonthlyRent();
+        this.dealCost = buildingDealRequestDto.getDealCost();
+        this.floor = buildingDealRequestDto.getFloor();
+        if (this.monthlyRent == 0) {
+            this.dealType = DealType.JEONSE;
+        } else {
+            this.dealType = DealType.MONTHLY;
+        }
     }
 }

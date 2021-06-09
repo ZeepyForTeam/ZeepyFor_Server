@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 /**
@@ -21,7 +22,7 @@ public class AreaCodeController {
 
     @PostMapping
     public ResponseEntity<Void> uploadAreaCode(
-            @RequestBody AreaCodeRequestDto areaCodeRequestDto
+            @Valid @RequestBody AreaCodeRequestDto areaCodeRequestDto
     ) {
         Long id = areaCodeService.create(areaCodeRequestDto);
         return ResponseEntity.created(URI.create("/api/codes/" + id)).build();
@@ -30,7 +31,7 @@ public class AreaCodeController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateAreaCode(
             @PathVariable Long id,
-            @RequestBody AreaCodeRequestDto areaCodeRequestDto
+            @Valid @RequestBody AreaCodeRequestDto areaCodeRequestDto
     ) {
         areaCodeService.update(id, areaCodeRequestDto);
         return ResponseEntity.ok().build();

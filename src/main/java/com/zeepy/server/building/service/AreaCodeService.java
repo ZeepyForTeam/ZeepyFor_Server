@@ -3,6 +3,7 @@ package com.zeepy.server.building.service;
 import com.zeepy.server.building.domain.AreaCode;
 import com.zeepy.server.building.dto.AreaCodeRequestDto;
 import com.zeepy.server.building.repository.AreaCodeRepository;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,11 @@ public class AreaCodeService {
     // UPDATE
     @Transactional
     public void update(Long id, AreaCodeRequestDto areaCodeRequestDto) {
-        areaCodeRepository.findById(id).ifPresent(areaCode -> {
-            areaCode.setName(areaCodeRequestDto.getName());
-            areaCodeRepository.save(areaCode);
-        });
+        AreaCode areaCode = areaCodeRepository
+                .findById(id)
+                .orElseThrow(NoContentException::new);
+        areaCode.update(areaCodeRequestDto);
+        areaCodeRepository.save(areaCode);
     }
 
     // DELETE

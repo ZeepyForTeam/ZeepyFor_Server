@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 /**
@@ -17,8 +18,13 @@ import java.sql.Timestamp;
 @Setter
 @Getter
 public class BuildingLikeRequestDto {
+    @NotNull(message = "likeDate cannot be Null")
     private Long likeDate;
+
+    @NotNull(message = "user cannot be Null")
     private Long user;
+
+    @NotNull(message = "buildingId cannot be Null")
     private Long buildingId;
 
     public BuildingLikeRequestDto(

@@ -1,5 +1,6 @@
 package com.zeepy.server.building.domain;
 
+import com.zeepy.server.building.dto.BuildingLikeRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import lombok.*;
 
@@ -41,5 +42,9 @@ public class BuildingLike extends BaseTimeEntity {
         this.id = id;
         this.likeDate = likeDate;
         this.user = user;
+    }
+
+    public void update(BuildingLikeRequestDto buildingLikeRequestDto) {
+        this.likeDate = new Timestamp(buildingLikeRequestDto.getLikeDate());
     }
 }

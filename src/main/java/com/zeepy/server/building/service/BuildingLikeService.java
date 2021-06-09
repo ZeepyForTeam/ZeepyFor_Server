@@ -58,10 +58,7 @@ public class BuildingLikeService {
         BuildingLike buildingLike = buildingLikeRepository
                 .findById(id)
                 .orElseThrow(NoContentException::new);
-        BuildingLike buildingLikeEntity = buildingLikeRequestDto.returnBuildingLikeEntity();
-
-        buildingLike.setLikeDate(buildingLikeEntity.getLikeDate());
-
+        buildingLike.update(buildingLikeRequestDto);
         buildingLikeRepository.save(buildingLike);
     }
 

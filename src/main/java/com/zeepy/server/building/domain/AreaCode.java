@@ -1,5 +1,6 @@
 package com.zeepy.server.building.domain;
 
+import com.zeepy.server.building.dto.AreaCodeRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import lombok.*;
 
@@ -28,5 +29,9 @@ public class AreaCode extends BaseTimeEntity {
     ) {
         this.areaCode = areaCode;
         this.name = name;
+    }
+
+    public void update(AreaCodeRequestDto areaCodeRequestDto) {
+        this.name = areaCodeRequestDto.getName();
     }
 }
