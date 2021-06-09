@@ -91,7 +91,8 @@ public class Community {
 		Integer targetAmount,
 		String title,
 		String content,
-		List<String> imageUrls
+		List<String> imageUrls,
+		User user
 	) {
 		this.communityCategory = communityCategory;
 		this.productName = productName;
@@ -99,6 +100,7 @@ public class Community {
 		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
 		this.targetAmount = targetAmount;
+		this.user = user;
 		this.title = title;
 		this.content = content;
 		this.imageUrls = imageUrls;

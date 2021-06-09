@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityLike;
@@ -23,7 +24,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence_gen")
+	@SequenceGenerator(name = "user_sequence_gen", sequenceName = "user_sequence")
 	private Long id;
 
 	private String name;
