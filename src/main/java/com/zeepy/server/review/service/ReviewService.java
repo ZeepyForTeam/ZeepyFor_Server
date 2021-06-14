@@ -23,8 +23,9 @@ public class ReviewService {
 	@Transactional(readOnly = true)
 	public ReviewResponseDtos getReviewList(String address) {
 		List<Review> reviewList = reviewInterface.findAllByAddress(address);
-		if (reviewList.isEmpty())
+		if (reviewList.isEmpty()) {
 			throw new NoContentException();
+		}
 		return new ReviewResponseDtos(reviewList.stream()
 			.map(ReviewResponseDto::new)
 			.collect(Collectors.toList()));
