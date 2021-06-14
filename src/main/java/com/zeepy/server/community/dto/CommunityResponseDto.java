@@ -31,7 +31,11 @@ public class CommunityResponseDto {
 
 	public CommunityResponseDto(Community community) {
 		this.id = community.getId();
-		this.user = new UserDto(community.getUser().getId(), community.getUser().getName());
+		this.user = new UserDto(
+			community.getUser()
+				.getId(),
+			community.getUser()
+				.getName());
 		this.communityCategory = community.getCommunityCategory();
 		this.productName = community.getProductName();
 		this.productPrice = community.getProductPrice();

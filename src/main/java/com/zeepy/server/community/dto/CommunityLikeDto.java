@@ -19,7 +19,8 @@ public class CommunityLikeDto {
 	private Community community;
 
 	public CommunityLike toEntity() {
-		CommunityLike communityLike = CommunityLike.builder().build();
+		CommunityLike communityLike = CommunityLike.builder()
+			.build();
 		communityLike.setCommunity(community);
 		communityLike.setUser(user);
 		return communityLike;
