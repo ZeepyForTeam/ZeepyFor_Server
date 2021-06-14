@@ -69,10 +69,10 @@ public class Community {
 	private List<CommunityLike> likes = new ArrayList<>();
 
 	@Deprecated
-	private String Comments;
+	private String comments;
 
 	@Deprecated
-	private String AchievementRate;
+	private String achievementRate;
 
 	@OneToMany(mappedBy = "community")
 	private List<Participation> participationsList;
