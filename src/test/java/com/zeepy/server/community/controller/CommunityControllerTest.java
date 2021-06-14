@@ -35,6 +35,11 @@ public class CommunityControllerTest extends ControllerTest {
     @MockBean
     private CommunityService communityService;
 
+    private CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
+        .communityId(1L)
+        .userId(1L)
+        .build();
+
     @Override
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext) {
@@ -64,10 +69,6 @@ public class CommunityControllerTest extends ControllerTest {
     @DisplayName("좋아요_추가_테스트")
     @Test
     public void like() throws Exception {
-        CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
-                .communityId(1L)
-                .userId(1L)
-                .build();
         given(communityService.like(any(CommunityLikeRequestDto.class))).willReturn(1L);
         doPost("/api/community/like", communityLikeRequestDto);
     }
@@ -75,10 +76,6 @@ public class CommunityControllerTest extends ControllerTest {
     @DisplayName("좋아요_취소_테스트")
     @Test
     public void cancelLike() throws Exception {
-        CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
-                .userId(1L)
-                .communityId(1L)
-                .build();
         doNothing().when(communityService).cancelLike(communityLikeRequestDto);
         doDelete("/api/community/like-cancel", communityLikeRequestDto);
     }

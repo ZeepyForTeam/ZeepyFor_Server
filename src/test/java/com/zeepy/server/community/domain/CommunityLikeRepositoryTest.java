@@ -30,11 +30,19 @@ public class CommunityLikeRepositoryTest {
 	@Autowired
 	UserRepository userRepository;
 
+	private final User userA = User.builder()
+		.name("A")
+		.build();
+
+	private final User userB = User.builder()
+		.name("B")
+		.build();
+
 	@DisplayName("좋아요 누른 커뮤니티 GET 테스트")
 	@Test
 	public void getLikeList() {
-		User A = userRepository.save(makeUserA());
-		User B = userRepository.save(makeUserB());
+		User A = userRepository.save(userA);
+		User B = userRepository.save(userB);
 		Community writtenByA = communityRepository.save(makeDummyJointPurchase(A));
 		Community writtenByB = communityRepository.save(makeDummyFreeSharing(B));
 		CommunityLikeDto ALikesADto = new CommunityLikeDto(A, writtenByA);
@@ -75,15 +83,4 @@ public class CommunityLikeRepositoryTest {
 			.build();
 	}
 
-	public User makeUserA() {
-		return User.builder()
-			.name("A")
-			.build();
-	}
-
-	public User makeUserB() {
-		return User.builder()
-			.name("B")
-			.build();
-	}
 }
