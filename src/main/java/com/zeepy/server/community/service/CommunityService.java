@@ -61,7 +61,7 @@ public class CommunityService {
 		communityLikeRepository.deleteById(communityLike.getId());
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public CommunityResponseDtos getLikeList(Long id) {
 		List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(id);
 		return new CommunityResponseDtos(communityLikeList.stream()
