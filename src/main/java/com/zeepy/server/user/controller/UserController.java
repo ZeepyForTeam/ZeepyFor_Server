@@ -1,6 +1,7 @@
 package com.zeepy.server.user.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,5 +22,10 @@ public class UserController {
 	public ResponseEntity<Void> registration(@RequestBody RegistrationReqDto registrationReqDto) {
 		userService.registration(registrationReqDto);
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping
+	public ResponseEntity<String> test() {
+		return ResponseEntity.ok().body("test");
 	}
 }
