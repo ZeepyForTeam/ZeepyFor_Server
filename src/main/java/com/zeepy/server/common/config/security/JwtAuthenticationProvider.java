@@ -11,11 +11,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.zeepy.server.auth.CustomDetailsService;
+import com.zeepy.server.auth.service.CustomDetailsService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -24,10 +25,11 @@ public class JwtAuthenticationProvider {
 	private final CustomDetailsService customDetailsService;
 	private final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60; //1시간
 	private final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24; //24시간
+	@Value("${jwt.secret}")
 	private String secretKey;
 
 	@PostConstruct
-	protected void init(@Value("${jwt.secret}") String secretKey) {
+	protected void init() {
 		this.secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
 	}
 
@@ -52,4 +54,25 @@ public class JwtAuthenticationProvider {
 		UserDetails userDetails = customDetailsService.loadUserByUsername(userEmail);
 		return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
 	}
+
+	public String createAccessToken(String userEmail) {
+		Claims claims = Jwts.claims().setSubject(userEmail);
+		Date now = new Date();
+		return Jwts.builder()
+			.setClaims(claims)
+			.setIssuedAt(now)
+			.setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_TIME))
+			.signWith(SignatureAlgorithm.HS256, secretKey)
+			.compact();
+	}
+
+	public String createRefreshToken() {
+		Date now = new Date();
+		return Jwts.builder()
+			.setIssuedAt(now)
+			.setExpiration(new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_TIME))
+			.signWith(SignatureAlgorithm.HS256, secretKey)
+			.compact();
+	}
+
 }

@@ -15,6 +15,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomExce
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundParticipationException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundPasswordException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
 
@@ -62,6 +63,13 @@ public class ControllerExceptionHandler {
 
 	@ExceptionHandler(NotFoundUserException.class)
 	public ResponseEntity<ErrorResponse> notfoundUserException(NotFoundUserException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(NotFoundPasswordException.class)
+	public ResponseEntity<ErrorResponse> notfoundPasswordException(NotFoundPasswordException e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);

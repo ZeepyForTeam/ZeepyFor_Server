@@ -1,4 +1,4 @@
-package com.zeepy.server.auth;
+package com.zeepy.server.auth.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
