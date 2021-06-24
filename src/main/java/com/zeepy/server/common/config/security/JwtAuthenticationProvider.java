@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -33,8 +34,8 @@ public class JwtAuthenticationProvider {
 	private final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60; //1시간
 	private final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24; //24시간
 	private final Logger logger = LoggerFactory.getLogger(JwtAuthenticationProvider.class.getName());
-	// @Value("${jwt.secret}")
-	private String secretKey = "apple";
+	@Value("${jwt.secret}")
+	private String secretKey;
 
 	@PostConstruct
 	protected void init() {
@@ -69,7 +70,7 @@ public class JwtAuthenticationProvider {
 
 	public UsernamePasswordAuthenticationToken getAuthentication(String userEmail) {
 		UserDetails userDetails = customDetailsService.loadUserByUsername(userEmail);
-		return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "");
+		return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "", userDetails.getAuthorities());
 	}
 
 	public String createAccessToken(String userEmail) {
