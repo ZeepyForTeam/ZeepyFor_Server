@@ -10,13 +10,19 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.zeepy.server.common.ControllerTest;
+import com.zeepy.server.common.config.security.CustomAccessDeniedHandler;
+import com.zeepy.server.common.config.security.CustomAuthenticationEntryPoint;
+import com.zeepy.server.common.config.security.JwtAuthenticationProvider;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
@@ -32,11 +38,21 @@ import com.zeepy.server.community.service.CommunityService;
 import com.zeepy.server.user.domain.User;
 
 @DisplayName("커뮤니티_컨트롤러_테스트")
-@WebMvcTest(controllers = CommunityController.class)
+@RunWith(SpringRunner.class)
+@WebMvcTest(controllers = {CommunityController.class})
+//, includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class})
+@AutoConfigureMockMvc(addFilters = false)
 public class CommunityControllerTest extends ControllerTest {
 
 	@MockBean
 	private CommunityService communityService;
+
+	@MockBean
+	JwtAuthenticationProvider jwtAuthenticationProvider;
+	@MockBean
+	CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+	@MockBean
+	CustomAccessDeniedHandler customAccessDeniedHandler;
 
 	@Override
 	@BeforeEach
