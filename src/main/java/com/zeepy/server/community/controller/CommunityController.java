@@ -50,7 +50,6 @@ public class CommunityController {
 	public ResponseEntity<Void> cancelJoinCommunity(
 		@PathVariable("id") Long communityId,
 		@AuthenticationPrincipal String userEmail
-		// @Valid @RequestBody CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto
 	) {
 		communityService.cancelJoinCommunity(communityId, userEmail);
 		return ResponseEntity.ok().build();
