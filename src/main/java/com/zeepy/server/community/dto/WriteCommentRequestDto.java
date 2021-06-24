@@ -11,5 +11,4 @@ public class WriteCommentRequestDto {
 	private String comment;
 	private Boolean isSecret;
 	private Long superCommentId;
-	private Long writeUserId;
 }

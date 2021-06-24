@@ -54,6 +54,8 @@ public class CommunityControllerTest extends ControllerTest {
 	@MockBean
 	CustomAccessDeniedHandler customAccessDeniedHandler;
 
+	private final String userEmail = "test@naver.com";
+
 	@Override
 	@BeforeEach
 	public void setUp(WebApplicationContext webApplicationContext) {
@@ -83,10 +85,9 @@ public class CommunityControllerTest extends ControllerTest {
 	public void joinCommunity() throws Exception {
 		//given
 		long communityId = 1L;
-		String joinUserEmail = "test@naver.com";
 		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("aaaa", true);
 
-		doNothing().when(communityService).joinCommunity(communityId, requestDto, joinUserEmail);
+		doNothing().when(communityService).joinCommunity(communityId, requestDto, userEmail);
 		//when
 		//then
 		doPost("/api/community/participation/" + communityId, requestDto);
@@ -139,7 +140,6 @@ public class CommunityControllerTest extends ControllerTest {
 	public void cancelParticipation() throws Exception {
 		//given
 		long communityId = 1L;
-		String userEmail = "test@naver.com";
 		String url = "/api/community/participation/" + communityId;
 
 		doNothing().when(communityService).cancelJoinCommunity(communityId, userEmail);
@@ -156,10 +156,8 @@ public class CommunityControllerTest extends ControllerTest {
 		long communityId = 1L;
 		String url = "/api/community/comment/" + communityId;
 
-		User commentUser = User.builder().id(2L).name("댓글작성자").build();
-
-		WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", true, null, commentUser.getId());
-		doNothing().when(communityService).saveComment(communityId, requestDto);
+		WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", true, null);
+		doNothing().when(communityService).saveComment(communityId, requestDto, userEmail);
 
 		//when
 		//then
@@ -173,10 +171,8 @@ public class CommunityControllerTest extends ControllerTest {
 		long communityId = 1L;
 		String url = "/api/community/comment/" + communityId;
 
-		User commentUser = User.builder().id(2L).name("댓글작성자").build();
-
-		WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", true, 1L, commentUser.getId());
-		doNothing().when(communityService).saveComment(communityId, requestDto);
+		WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", true, 1L);
+		doNothing().when(communityService).saveComment(communityId, requestDto, userEmail);
 		//when
 		//then
 		doPost(url, requestDto);

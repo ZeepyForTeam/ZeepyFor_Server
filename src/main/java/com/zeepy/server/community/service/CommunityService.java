@@ -100,11 +100,9 @@ public class CommunityService {
 	}
 
 	@Transactional
-	public void saveComment(Long communityId, WriteCommentRequestDto writeCommentRequestDto) {
-		Long writerUserId = writeCommentRequestDto.getWriteUserId();
+	public void saveComment(Long communityId, WriteCommentRequestDto writeCommentRequestDto, String userEmail) {
 		Long superCommentId = writeCommentRequestDto.getSuperCommentId();
-		User writer = userRepository.findById(writerUserId)
-			.orElseThrow(NotFoundUserException::new);
+		User writer = getUserByEmail(userEmail);
 		Community community = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 

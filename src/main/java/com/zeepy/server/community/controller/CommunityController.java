@@ -58,9 +58,10 @@ public class CommunityController {
 	@PostMapping("/comment/{id}")
 	public ResponseEntity<Void> writeComment(
 		@PathVariable("id") Long communityId,
-		@Valid @RequestBody WriteCommentRequestDto writeCommentRequestDto
+		@Valid @RequestBody WriteCommentRequestDto writeCommentRequestDto,
+		@AuthenticationPrincipal String userEmail
 	) {
-		communityService.saveComment(communityId, writeCommentRequestDto);
+		communityService.saveComment(communityId, writeCommentRequestDto, userEmail);
 		return ResponseEntity.ok().build();
 	}
 
