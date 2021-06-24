@@ -40,10 +40,8 @@ public class CommunityService {
 	private final CommentRepository commentRepository;
 
 	@Transactional
-	public Long save(SaveCommunityRequestDto requestDto) {
-		Long writerId = requestDto.getWriterId();
-		User writer = userRepository.findById(writerId)
-			.orElseThrow(NotFoundUserException::new);
+	public Long save(SaveCommunityRequestDto requestDto, String userEmail) {
+		User writer = getUserByEmail(userEmail);
 		requestDto.setUser(writer);
 
 		Community communityToSave = requestDto.toEntity();
@@ -57,15 +55,14 @@ public class CommunityService {
 	}
 
 	@Transactional
-	public void joinCommunity(Long communityId, JoinCommunityRequestDto joinCommunityRequestDto) {
+	public void joinCommunity(Long communityId, JoinCommunityRequestDto joinCommunityRequestDto, String userEmail) {
 		Community community = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 
-		Long participationUserId = joinCommunityRequestDto.getParticipationUserId();
-		User participants = userRepository.findById(participationUserId)
-			.orElseThrow(NotFoundUserException::new);
+		User participants = getUserByEmail(userEmail);
 
-		participationRepository.findByCommunityIdAndUserId(communityId, participationUserId)
+		participationRepository.findByCommunityIdAndUserId(communityId, participants
+			.getId())
 			.ifPresent(v -> {
 				throw new AlreadyParticipationException();
 			});
@@ -153,6 +150,11 @@ public class CommunityService {
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 		updateCommunityReqDto.updateCommunity(findCommunity);
+	}
+
+	private User getUserByEmail(String authUserEmail) {
+		return userRepository.findByEmail(authUserEmail)
+			.orElseThrow(NotFoundUserException::new);
 	}
 }
 

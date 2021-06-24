@@ -11,9 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -39,9 +41,8 @@ import com.zeepy.server.user.domain.User;
 
 @DisplayName("커뮤니티_컨트롤러_테스트")
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = {CommunityController.class})
-//, includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class})
-@AutoConfigureMockMvc(addFilters = false)
+@WebMvcTest(controllers = {CommunityController.class}, includeFilters = @ComponentScan.Filter(classes = {
+	EnableWebSecurity.class}))
 public class CommunityControllerTest extends ControllerTest {
 
 	@MockBean
@@ -62,6 +63,7 @@ public class CommunityControllerTest extends ControllerTest {
 
 	@DisplayName("커뮤니티_등록_테스트")
 	@Test
+	@WithMockUser
 	public void save() throws Exception {
 		SaveCommunityRequestDto requestDto = SaveCommunityRequestDto.builder()
 			.communityCategory(CommunityCategory.FREESHARING)
@@ -71,20 +73,21 @@ public class CommunityControllerTest extends ControllerTest {
 			.imageUrls(Arrays.asList("asdasd", "aaaaaaa", "ccccccccc"))
 			.build();
 
-		given(communityService.save(any(SaveCommunityRequestDto.class))).willReturn(1L);
+		given(communityService.save(any(SaveCommunityRequestDto.class), any(String.class))).willReturn(1L);
 
 		doPost("/api/community", requestDto);
 	}
 
 	@DisplayName("참가하기_테스트")
 	@Test
+	@WithMockUser("test@naver.com")
 	public void joinCommunity() throws Exception {
 		//given
 		long communityId = 1L;
-		long joinUserId = 2L;
-		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, true, joinUserId);
+		String joinUserEmail = "test@naver.com";
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("aaaa", true);
 
-		doNothing().when(communityService).joinCommunity(communityId, requestDto);
+		doNothing().when(communityService).joinCommunity(communityId, requestDto, joinUserEmail);
 		//when
 		//then
 		doPost("/api/community/participation/" + communityId, requestDto);

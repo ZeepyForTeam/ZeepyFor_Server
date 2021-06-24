@@ -5,6 +5,7 @@ import java.net.URI;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,17 +31,19 @@ public class CommunityController {
 	private final CommunityService communityService;
 
 	@PostMapping
-	public ResponseEntity<Void> saveCommunity(@Valid @RequestBody SaveCommunityRequestDto saveCommunityRequestDto) {
-		Long saveId = communityService.save(saveCommunityRequestDto);
+	public ResponseEntity<Void> saveCommunity(@Valid @RequestBody SaveCommunityRequestDto saveCommunityRequestDto,
+		@AuthenticationPrincipal String userEmail) {
+		Long saveId = communityService.save(saveCommunityRequestDto, userEmail);
 		return ResponseEntity.created(URI.create("/api/community/" + saveId)).build();
 	}
 
 	@PostMapping("/participation/{id}")
 	public ResponseEntity<Void> toJoinCommunity(
 		@PathVariable("id") Long communityId,
-		@Valid @RequestBody JoinCommunityRequestDto joinCommunityRequestDto
+		@Valid @RequestBody JoinCommunityRequestDto joinCommunityRequestDto,
+		@AuthenticationPrincipal String userEmail
 	) {
-		communityService.joinCommunity(communityId, joinCommunityRequestDto);
+		communityService.joinCommunity(communityId, joinCommunityRequestDto, userEmail);
 		return ResponseEntity.ok().build();
 	}
 

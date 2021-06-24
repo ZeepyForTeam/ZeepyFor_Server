@@ -14,6 +14,4 @@ public class JoinCommunityRequestDto {
 	private String comment;
 
 	private Boolean isSecret;
-
-	private Long participationUserId;
 }

@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,12 +61,6 @@ public class CommunityServiceTest {
 	@Mock
 	private CommentRepository commentRepository;
 
-	@Before
-	public void setDI() {
-		this.communityService = new CommunityService(communityRepository, participationRepository, userRepository,
-			commentRepository);
-	}
-
 	@BeforeEach
 	public void setUp() {
 		this.communityService = new CommunityService(communityRepository, participationRepository, userRepository,
@@ -75,23 +68,24 @@ public class CommunityServiceTest {
 	}
 
 	@DisplayName("참여하기_서비스로직_테스트")
+	@Transactional
 	@Test
 	public void joinCommunity() {
 		//given
 		User user = joinUser;
-		Long userId = user.getId();
+		String userEmail = "test@naver.com";
 		Community community = joinPurhcaseCommunity;
 		Long communityId = community.getId();
 		Participation participation = createParticipation(community, user);
 
-		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, true, userId);
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("aaaa", true);
 
 		when(communityRepository.findById(any(Long.class))).thenReturn(Optional.of(community));
-		when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+		when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(user));
 		when(participationRepository.findById(any(Long.class))).thenReturn(Optional.of(participation));
 
 		//when
-		communityService.joinCommunity(communityId, requestDto);
+		communityService.joinCommunity(communityId, requestDto, userEmail);
 
 		//then
 		List<Participation> participationList = participationRepository.findAll();
