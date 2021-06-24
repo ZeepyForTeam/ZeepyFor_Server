@@ -13,7 +13,8 @@ public enum ErrorCode {
 	NOT_FOUND_PASSWORD(404, "비밀번호가 잘못되었습니다."),
 	BAD_REQUEST_COMMENT(400, "Comment에 대해 잘못된 요청입니다."),
 	OVERFLOW_ACHIEVEMENT(400, "더이상 참여할수 없습니다."),
-	ALREADY_PARTICIPATION(400, "이미 참여한 사용자입니다.");
+	ALREADY_PARTICIPATION(400, "이미 참여한 사용자입니다."),
+	REFRESH_TOKEN_EXPIRED(401, "RefreshToken의 유효시간이 만료되었습니다");
 
 	private final int status;
 	private final String message;

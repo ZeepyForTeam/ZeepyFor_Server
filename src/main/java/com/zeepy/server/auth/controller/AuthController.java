@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zeepy.server.auth.dto.LoginReqDto;
+import com.zeepy.server.auth.dto.ReIssueReqDto;
 import com.zeepy.server.auth.dto.TokenResDto;
 import com.zeepy.server.auth.service.AuthService;
 
@@ -30,5 +31,11 @@ public class AuthController {
 	public ResponseEntity<Void> logout(@AuthenticationPrincipal String userEmail) {
 		authService.logout(userEmail);
 		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/reissue")
+	public ResponseEntity<TokenResDto> reissue(@RequestBody ReIssueReqDto reIssueReqDto) {
+		TokenResDto tokenResDto = authService.reissue(reIssueReqDto);
+		return ResponseEntity.ok().body(tokenResDto);
 	}
 }
