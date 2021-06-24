@@ -97,7 +97,6 @@ public class CommunityControllerTest extends ControllerTest {
 	@Test
 	public void testGetMyZipJoinList() throws Exception {
 		//given
-		long joinUserId = 2L;
 		User writerUser = User.builder().id(1L).name("작성자").build();
 		User writerUser2 = User.builder().id(3L).name("작성자2").build();
 		User joinUser = User.builder().id(2L).name("참여자").build();
@@ -128,11 +127,11 @@ public class CommunityControllerTest extends ControllerTest {
 		MyZipJoinResDto resultResDto = new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		given(communityService.getJoinList(joinUserId)).willReturn(resultResDto);
+		given(communityService.getJoinList(userEmail)).willReturn(resultResDto);
 
 		//when
 		//then
-		doGet("/api/community/participation/1", params);
+		doGet("/api/community/participation", params);
 	}
 
 	@DisplayName("참여취소하기")

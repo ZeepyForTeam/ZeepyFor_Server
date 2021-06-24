@@ -65,9 +65,9 @@ public class CommunityController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/participation/{id}")
-	public ResponseEntity<MyZipJoinResDto> getMyZipJoinList(@PathVariable("id") Long userId) {
-		MyZipJoinResDto myZipJoinList = communityService.getJoinList(userId);
+	@GetMapping("/participation")
+	public ResponseEntity<MyZipJoinResDto> getMyZipJoinList(@AuthenticationPrincipal String userEmail) {
+		MyZipJoinResDto myZipJoinList = communityService.getJoinList(userEmail);
 		return ResponseEntity.ok().body(myZipJoinList);
 	}
 

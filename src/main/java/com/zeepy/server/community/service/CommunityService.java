@@ -126,9 +126,12 @@ public class CommunityService {
 	}
 
 	@Transactional(readOnly = true)
-	public MyZipJoinResDto getJoinList(Long userId) {
-		List<Participation> participationList = participationRepository.findAllByUserId(userId);
-		List<Community> communityList = communityRepository.findAllByUserId(userId);
+	public MyZipJoinResDto getJoinList(String userEmail) {
+		User findUser = getUserByEmail(userEmail);
+		List<Participation> participationList = participationRepository.findAllByUserId(findUser
+			.getId());
+		List<Community> communityList = communityRepository.findAllByUserId(findUser
+			.getId());
 
 		List<ParticipationResDto> participationResDtoList = participationList.stream()
 			.map(ParticipationResDto::new)
