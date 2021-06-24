@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
@@ -50,9 +49,10 @@ public class CommunityController {
 	@PutMapping("/participation/{id}")
 	public ResponseEntity<Void> cancelJoinCommunity(
 		@PathVariable("id") Long communityId,
-		@Valid @RequestBody CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto
+		@AuthenticationPrincipal String userEmail
+		// @Valid @RequestBody CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto
 	) {
-		communityService.cancelJoinCommunity(communityId, cancelJoinCommunityRequestDto);
+		communityService.cancelJoinCommunity(communityId, userEmail);
 		return ResponseEntity.ok().build();
 	}
 

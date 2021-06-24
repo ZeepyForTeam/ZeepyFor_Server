@@ -28,7 +28,6 @@ import com.zeepy.server.common.config.security.JwtAuthenticationProvider;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
-import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.ParticipationResDto;
@@ -140,15 +139,14 @@ public class CommunityControllerTest extends ControllerTest {
 	public void cancelParticipation() throws Exception {
 		//given
 		long communityId = 1L;
+		String userEmail = "test@naver.com";
 		String url = "/api/community/participation/" + communityId;
-		long userId = 2L;
 
-		CancelJoinCommunityRequestDto requestDto = new CancelJoinCommunityRequestDto(userId);
-		doNothing().when(communityService).cancelJoinCommunity(communityId, requestDto);
+		doNothing().when(communityService).cancelJoinCommunity(communityId, userEmail);
 
 		//when
 		//then
-		doPut(url, requestDto);
+		doPut(url, null);
 	}
 
 	@DisplayName("댓글작성하기")

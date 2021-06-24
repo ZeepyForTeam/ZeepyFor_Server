@@ -13,7 +13,6 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUs
 import com.zeepy.server.community.domain.Comment;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.Participation;
-import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
@@ -78,10 +77,8 @@ public class CommunityService {
 	}
 
 	@Transactional
-	public void cancelJoinCommunity(Long communityId, CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto) {
-		Long cancelJoinUserId = cancelJoinCommunityRequestDto.getCancelUserId();
-		User findUser = userRepository.findById(cancelJoinUserId)
-			.orElseThrow(NotFoundUserException::new);
+	public void cancelJoinCommunity(Long communityId, String userEmail) {
+		User findUser = getUserByEmail(userEmail);
 
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
