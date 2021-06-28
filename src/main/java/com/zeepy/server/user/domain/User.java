@@ -30,7 +30,7 @@ public class User {
 
 	private String name;
 
-	@OneToMany(mappedBy = "user")
+	private String place;@OneToMany(mappedBy = "user")
 	private List<CommunityLike> likedCommunities = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user")
@@ -40,7 +40,9 @@ public class User {
 	private List<Community> communities = new ArrayList<>();
 
 	@Builder
-	public User(String name) {
+	public User(Long id, String name, String place) {
+        this.id = id;
 		this.name = name;
-	}
+	this.place = place;
+    }
 }

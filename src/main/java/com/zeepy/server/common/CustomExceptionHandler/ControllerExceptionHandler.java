@@ -9,9 +9,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoSuchCommunityException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoSuchUserException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundParticipationException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -23,9 +28,10 @@ public class ControllerExceptionHandler {
 
 		BindingResult bindingResult = e.getBindingResult();
 		ErrorCode errorCode = ErrorCode.INVALID_BODY;
-		ErrorResponse errorResponse = ErrorResponse.create()
-			.status(errorCode.getStatus())
-			.message(errorCode.getMessage())
+		int errorStatus = errorCode.getStatus();
+		String errorMessage = errorCode.getMessage();ErrorResponse errorResponse = ErrorResponse.create()
+			.status(errorStatus)
+			.message(errorMessage)
 			.errors(bindingResult);
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
@@ -33,31 +39,58 @@ public class ControllerExceptionHandler {
 
 	@ExceptionHandler(NoContentException.class)
 	public ResponseEntity<ErrorResponse> getNullResultSoNoContentException(NoContentException e) {
-		final ErrorCode errorCode = e.getErrorCode();
-		final ErrorResponse response = ErrorResponse.create()
-			.status(errorCode.getStatus())
-			.message(errorCode.getMessage());
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(NoSuchUserException.class)
-	public ResponseEntity<ErrorResponse> noSuchUserException(NoSuchUserException e) {
-		final ErrorCode errorCode = e.getErrorCode();
-		final ErrorResponse response = ErrorResponse.create()
-			.status(errorCode.getStatus())
-			.message(errorCode.getMessage());
+	@ExceptionHandler(NotFoundCommunityException.class)
+	public ResponseEntity<ErrorResponse> notfoundCommunityException(NotFoundCommunityException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(NoSuchCommunityException.class)
-	public ResponseEntity<ErrorResponse> noSuchCommunityException(NoSuchCommunityException e) {
-		final ErrorCode errorCode = e.getErrorCode();
-		final ErrorResponse response = ErrorResponse.create()
-			.status(errorCode.getStatus())
-			.message(errorCode.getMessage());
+	@ExceptionHandler(NotFoundParticipationException.class)
+	public ResponseEntity<ErrorResponse> notfoundParticipationException(NotFoundParticipationException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
+
+	@ExceptionHandler(NotFoundUserException.class)
+	public ResponseEntity<ErrorResponse> notfoundUserException(NotFoundUserException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(BadRequestCommentException.class)
+	public ResponseEntity<ErrorResponse> badRequestComment(BadRequestCommentException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(OverflowAchievementRateException.class)
+	public ResponseEntity<ErrorResponse> overflowAchievementRate(OverflowAchievementRateException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(AlreadyParticipationException.class)
+	public ResponseEntity<ErrorResponse> alreadyParticipationException(AlreadyParticipationException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {final ErrorCode errorCode = e.getErrorCode();
+		int errorStatus = errorCode.getStatus();
+			String errorMessage = errorCode.getMessage();
+
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+
 }

@@ -4,18 +4,12 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zeepy.server.community.dto.CommunityLikeRequestDto;
-import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.service.CommunityService;
 
@@ -39,6 +33,23 @@ public class CommunityController {
 		Long likeId = communityService.like(communityLikeRequestDto);
 		return ResponseEntity.created(URI.create("/api/community/like/" + likeId)).build();
 	}
+	@PostMapping("/participation/{id}")
+	public ResponseEntity<Void> toJoinCommunity(
+		@PathVariable("id") Long communityId,
+		@Valid @RequestBody JoinCommunityRequestDto joinCommunityRequestDto
+	) {
+		communityService.joinCommunity(communityId, joinCommunityRequestDto);
+		return ResponseEntity.ok().build();
+	}
+
+	@PutMapping("/participation/{id}")
+	public ResponseEntity<Void> cancelJoinCommunity(
+		@PathVariable("id") Long communityId,
+		@Valid @RequestBody CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto
+	) {
+		communityService.cancelJoinCommunity(communityId, cancelJoinCommunityRequestDto);
+		return ResponseEntity.ok().build();
+	}
 
 	@DeleteMapping("/like")
 	public ResponseEntity<Void> cancelLikeCommunity(
@@ -50,5 +61,28 @@ public class CommunityController {
 	@GetMapping("/likes")
 	public ResponseEntity<CommunityResponseDtos> getLikeList(@RequestParam Long id) {
 		return new ResponseEntity<CommunityResponseDtos>(communityService.getLikeList(id), HttpStatus.OK);
+	}
+	@PostMapping("/comment/{id}")
+	public ResponseEntity<Void> writeComment(
+		@PathVariable("id") Long communityId,
+		@Valid @RequestBody WriteCommentRequestDto writeCommentRequestDto
+	) {
+		communityService.saveComment(communityId, writeCommentRequestDto);
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/participation/{id}")
+	public ResponseEntity<MyZipJoinResDto> getMyZipJoinList(@PathVariable("id") Long userId) {
+		MyZipJoinResDto myZipJoinList = communityService.getJoinList(userId);
+		return ResponseEntity.ok().body(myZipJoinList);
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> updateCommunity(
+		@PathVariable("id") Long communityId,
+		@Valid @RequestBody UpdateCommunityReqDto updateCommunityReqDto
+	) {
+		communityService.updateCommunity(communityId, updateCommunityReqDto);
+		return ResponseEntity.ok().build();
 	}
 }

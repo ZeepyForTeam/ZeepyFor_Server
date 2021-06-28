@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
+import com.zeepy.server.user.domain.User;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -25,11 +26,13 @@ public class SaveCommunityRequestDto {
 
 	private Integer productPrice;
 
+	private String purchasePlace;
+
 	private String sharingMethod;
 
 	private Integer targetNumberOfPeople;
 
-	private Integer targetAmount;
+	private Integer currentNumberOfPeople = 0;
 
 	@NotEmpty(message = "제목은 필수입니다.")
 	private String title;
@@ -37,26 +40,32 @@ public class SaveCommunityRequestDto {
 	@NotEmpty(message = "내용은 필수입니다.")
 	private String content;
 
+	private String instructions;
+
 	private List<String> imageUrls;
 
-	@Builder
+	private User user;
+
+	private Long writerId;//작성자ID인데 토큰작업되면 지울꺼@Builder
 	public SaveCommunityRequestDto(CommunityCategory communityCategory,
 		String productName,
-		Integer productPrice,
+		Integer productPrice,String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
-		Integer targetAmount,
+
 		String title,
 		String content,
-		List<String> imageUrls) {
+		String instructions,
+		User user,List<String> imageUrls) {
 		this.communityCategory = communityCategory;
 		this.productName = productName;
 		this.productPrice = productPrice;
-		this.sharingMethod = sharingMethod;
+		this.purchasePlace = purchasePlace;this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
-		this.targetAmount = targetAmount;
+
 		this.title = title;
-		this.content = content;
+		this.content = content;this.instructions = instructions;
+		this.user = user;
 		this.imageUrls = imageUrls;
 	}
 
@@ -64,12 +73,21 @@ public class SaveCommunityRequestDto {
 		return Community.builder()
 			.communityCategory(communityCategory)
 			.productName(productName)
+			.productPrice(productPrice)
+			.purchasePlace(purchasePlace)
 			.sharingMethod(sharingMethod)
 			.targetNumberOfPeople(targetNumberOfPeople)
-			.targetAmount(targetAmount)
+			.currentNumberOfPeople(currentNumberOfPeople)
 			.title(title)
 			.content(content)
+			.place(user.getPlace())
+			.instructions(instructions)
+			.user(user)
 			.imageUrls(imageUrls)
 			.build();
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

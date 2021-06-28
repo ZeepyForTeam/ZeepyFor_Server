@@ -45,7 +45,8 @@ public class ErrorResponse {
 		customFieldErrors = new ArrayList<>();
 
 		fieldErrors.forEach(error -> customFieldErrors.add(new CustomFieldError(
-			Objects.requireNonNull(error.getCodes())[0],
+			Objects.requireNonNull(error
+				.getCodes())[0],
 			error.getRejectedValue(),
 			error.getDefaultMessage()
 		)));
