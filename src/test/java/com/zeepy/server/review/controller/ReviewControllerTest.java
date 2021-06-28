@@ -1,5 +1,7 @@
 package com.zeepy.server.review.controller;
 
+import static org.mockito.BDDMockito.*;
+
 import com.zeepy.server.common.ControllerTest;
 import com.zeepy.server.review.domain.*;
 import com.zeepy.server.review.dto.ReviewDto;
@@ -19,9 +21,11 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Arrays;
 
 @DisplayName("ReviewController_테스트_클래스")
-@RunWith(SpringRunner.class)
 @WebMvcTest(ReviewController.class)
 public class ReviewControllerTest extends ControllerTest {
+
+    @MockBean
+    private ReviewService reviewService;
 
     @Override
     @BeforeEach
@@ -48,6 +52,7 @@ public class ReviewControllerTest extends ControllerTest {
                 TotalEvaluation.GOOD,
                 Arrays.asList("1", "2", "3")
         );
+        given(reviewService.create(any())).willReturn(1L);
         doPost("/api/review", requestDto);
     }
 

@@ -3,19 +3,34 @@ package com.zeepy.server.community.controller;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.zeepy.server.common.ControllerTest;
+import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
+import com.zeepy.server.community.domain.Participation;
+import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunityResponseDtos;
+import com.zeepy.server.community.dto.JoinCommunityRequestDto;
+import com.zeepy.server.community.dto.MyZipJoinResDto;
+import com.zeepy.server.community.dto.ParticipationResDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
+import com.zeepy.server.community.dto.UpdateCommunityReqDto;
+import com.zeepy.server.community.dto.WriteCommentRequestDto;
+import com.zeepy.server.community.dto.WriteOutResDto;
 import com.zeepy.server.community.service.CommunityService;
 import com.zeepy.server.user.domain.User;
 
@@ -64,7 +79,7 @@ public class CommunityControllerTest extends ControllerTest {
     @Test
     public void cancelLike() throws Exception {
         doNothing().when(communityService).cancelLike(communityLikeRequestDto);
-        doDelete("/api/community/like-cancel", communityLikeRequestDto);
+        doDelete("/api/community/like", communityLikeRequestDto);
     }
 
     @DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
@@ -77,8 +92,6 @@ public class CommunityControllerTest extends ControllerTest {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("id", "1");
         doGet("/api/community/likes", params);
-    }
-		doPost("/api/community", requestDto);
 	}
 
 	@DisplayName("참가하기_테스트")
@@ -89,8 +102,9 @@ public class CommunityControllerTest extends ControllerTest {
 		long joinUserId = 2L;
 		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, true, joinUserId);
 
-		doNothing().when(communityService).joinCommunity(communityId, requestDto);
 		//when
+		doNothing().when(communityService).joinCommunity(communityId, requestDto);
+
 		//then
 		doPost("/api/community/participation/" + communityId, requestDto);
 	}

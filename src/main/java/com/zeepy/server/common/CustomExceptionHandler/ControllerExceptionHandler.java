@@ -86,11 +86,14 @@ public class ControllerExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
-	public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {final ErrorCode errorCode = e.getErrorCode();
+	public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
+		final ErrorCode errorCode = e.getErrorCode();
 		int errorStatus = errorCode.getStatus();
-			String errorMessage = errorCode.getMessage();
+		String errorMessage = errorCode.getMessage();
 
-		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		return ErrorResponse.create()
+			.status(errorStatus)
+			.message(errorMessage);
 	}
 
 }

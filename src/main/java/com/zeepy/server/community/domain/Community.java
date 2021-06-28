@@ -103,8 +103,7 @@ public class Community extends BaseTimeEntity {
 		String content,
 		String place,
 		String instructions,
-		List<String> imageUrls,
-		User user
+		List<String> imageUrls
 	) {
 		this.id = id;this.communityCategory = communityCategory;
 		this.productName = productName;

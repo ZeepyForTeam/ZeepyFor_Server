@@ -2,6 +2,7 @@ package com.zeepy.server.community.dto;
 
 import java.util.List;
 
+import com.zeepy.server.community.domain.Comment;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
@@ -20,12 +21,10 @@ public class CommunityResponseDto {
 	private Integer productPrice;
 	private String sharingMethod;
 	private Integer targetNumberOfPeople;
-	private Integer targetAmount;
 	private String title;
 	private String content;
 	private UserDto user;
-	private String comments;
-	private String achievementRate;
+	private List<Comment> comments;
 	private List<Participation> participationList;
 	private List<String> imageUrls;
 
@@ -41,11 +40,9 @@ public class CommunityResponseDto {
 		this.productPrice = community.getProductPrice();
 		this.sharingMethod = community.getSharingMethod();
 		this.targetNumberOfPeople = community.getTargetNumberOfPeople();
-		this.targetAmount = community.getTargetAmount();
 		this.title = community.getTitle();
 		this.content = community.getContent();
 		this.comments = community.getComments();
-		this.achievementRate = community.getAchievementRate();
 		this.participationList = community.getParticipationsList();
 		this.imageUrls = community.getImageUrls();
 	}
