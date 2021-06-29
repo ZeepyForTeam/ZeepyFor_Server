@@ -22,37 +22,36 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ReviewDto {
-
 	private Long user; // 변경 될 겁니다.
 
-	@NotBlank(message = "주소는 필수값입니다.")
+	@NotNull
 	private String address;
 
-	@NotBlank(message = "소통경향은 필수값입니다.")
+	@NotNull
 	private CommuncationTendency communcationTendency;
 
-	@NotBlank(message = "임대인 성별은 필수값입니다.")
+	@NotNull
 	private LessorGender lessorGender;
 
-	@NotBlank(message = "임대인 나이는 필수값입니다.")
+	@NotNull
 	private LessorAge lessorAge;
 
-	@NotNull(message = "임대인에 대한 정보는 null값이면 안됩니다.")
+	@NotNull
 	private String lessorReview;
 
-	@NotBlank(message = "방갯수 필수값입니다.")
+	@NotNull
 	private RoomCount roomCount;
 
-	@NotBlank(message = "방음은 필수값입니다.")
+	@NotNull
 	private MultiChoiceReview soundInsulation;
 
-	@NotBlank(message = "해충은 필수값입니다.")
+	@NotNull
 	private MultiChoiceReview pest;
 
-	@NotBlank(message = "채광은 필수값입니다.")
+	@NotNull
 	private MultiChoiceReview lightning;
 
-	@NotBlank(message = "수압은 필수값입니다.")
+	@NotNull
 	private MultiChoiceReview waterPressure;
 
 	private List<Furniture> furnitures;
@@ -60,7 +59,7 @@ public class ReviewDto {
 	@NotBlank(message = "상세리뷰는 필수값입니다.")
 	private String review;
 
-	@NotBlank(message = "종합평가는 필수값입니다.")
+	@NotNull
 	private TotalEvaluation totalEvaluation;
 
 	private List<String> imageUrls;

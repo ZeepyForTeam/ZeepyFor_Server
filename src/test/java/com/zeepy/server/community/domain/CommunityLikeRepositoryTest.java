@@ -6,19 +6,18 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.zeepy.server.community.dto.CommunityLikeDto;
-import com.zeepy.server.community.dto.CommunityLikeRequestDto;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @DataJpaTest
 public class CommunityLikeRepositoryTest {
 	@Autowired

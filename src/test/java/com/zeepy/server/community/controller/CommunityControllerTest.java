@@ -85,8 +85,8 @@ public class CommunityControllerTest extends ControllerTest {
     @DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
     @Test
     public void getLikeList() throws Exception {
-        List<CommunityResponseDto> communityResponseDtoList = new ArrayList<CommunityResponseDto>();
-        CommunityResponseDtos communityResponseDtos = new CommunityResponseDtos(communityResponseDtoList);
+        List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
+		CommunityResponseDtos communityResponseDtos = new CommunityResponseDtos(communityResponseDtoList);
         given(communityService.getLikeList(any(Long.class))).willReturn(communityResponseDtos);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -100,13 +100,13 @@ public class CommunityControllerTest extends ControllerTest {
 		//given
 		long communityId = 1L;
 		long joinUserId = 2L;
-		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, true, joinUserId);
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true, joinUserId);
 
 		//when
 		doNothing().when(communityService).joinCommunity(communityId, requestDto);
 
 		//then
-		doPost("/api/community/participation/" + communityId, requestDto);
+		doPostThenOk("/api/community/participation/" + communityId, requestDto);
 	}
 
 	@DisplayName("나의ZIP참여목록_테스트")
@@ -181,7 +181,7 @@ public class CommunityControllerTest extends ControllerTest {
 
 		//when
 		//then
-		doPost(url, requestDto);
+		doPostThenOk(url, requestDto);
 	}
 
 	@DisplayName("대댓글작성하기")
@@ -197,7 +197,7 @@ public class CommunityControllerTest extends ControllerTest {
 		doNothing().when(communityService).saveComment(communityId, requestDto);
 		//when
 		//then
-		doPost(url, requestDto);
+		doPostThenOk(url, requestDto);
 	}
 
 	@DisplayName("수정하기테스트")

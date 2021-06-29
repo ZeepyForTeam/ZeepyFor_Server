@@ -46,6 +46,7 @@ public class CommunityController {
 		Long likeId = communityService.like(communityLikeRequestDto);
 		return ResponseEntity.created(URI.create("/api/community/like/" + likeId)).build();
 	}
+
 	@PostMapping("/participation/{id}")
 	public ResponseEntity<Void> toJoinCommunity(
 		@PathVariable("id") Long communityId,
@@ -73,7 +74,7 @@ public class CommunityController {
 
 	@GetMapping("/likes")
 	public ResponseEntity<CommunityResponseDtos> getLikeList(@RequestParam Long id) {
-		return new ResponseEntity<CommunityResponseDtos>(communityService.getLikeList(id), HttpStatus.OK);
+		return new ResponseEntity<>(communityService.getLikeList(id), HttpStatus.OK);
 	}
 	@PostMapping("/comment/{id}")
 	public ResponseEntity<Void> writeComment(
