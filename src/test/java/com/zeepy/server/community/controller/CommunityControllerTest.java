@@ -21,6 +21,9 @@ import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
+import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.ParticipationResDto;
@@ -38,11 +41,16 @@ public class CommunityControllerTest extends ControllerTest {
 	@MockBean
 	private CommunityService communityService;
 
-	@Override
-	@BeforeEach
-	public void setUp(WebApplicationContext webApplicationContext) {
-		super.setUp(webApplicationContext);
-	}
+	private CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
+        .communityId(1L)
+        .userId(1L)
+        .build();
+
+    @Override
+    @BeforeEach
+    public void setUp(WebApplicationContext webApplicationContext) {
+        super.setUp(webApplicationContext);
+    }
 
 	@DisplayName("커뮤니티_등록_테스트")
 	@Test
@@ -57,7 +65,33 @@ public class CommunityControllerTest extends ControllerTest {
 
 		given(communityService.save(any(SaveCommunityRequestDto.class))).willReturn(1L);
 
-		doPost("/api/community", requestDto);
+        doPost("/api/community", requestDto);
+    }
+
+    @DisplayName("좋아요_추가_테스트")
+    @Test
+    public void like() throws Exception {
+        given(communityService.like(any(CommunityLikeRequestDto.class))).willReturn(1L);
+        doPost("/api/community/like", communityLikeRequestDto);
+    }
+
+    @DisplayName("좋아요_취소_테스트")
+    @Test
+    public void cancelLike() throws Exception {
+        doNothing().when(communityService).cancelLike(communityLikeRequestDto);
+        doDelete("/api/community/like", communityLikeRequestDto);
+    }
+
+    @DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
+    @Test
+    public void getLikeList() throws Exception {
+        List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
+		CommunityResponseDtos communityResponseDtos = new CommunityResponseDtos(communityResponseDtoList);
+        given(communityService.getLikeList(any(Long.class))).willReturn(communityResponseDtos);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("id", "1");
+        doGet("/api/community/likes", params);
 	}
 
 	@DisplayName("참가하기_테스트")
@@ -66,12 +100,13 @@ public class CommunityControllerTest extends ControllerTest {
 		//given
 		long communityId = 1L;
 		long joinUserId = 2L;
-		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, true, joinUserId);
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true, joinUserId);
 
-		doNothing().when(communityService).joinCommunity(communityId, requestDto);
 		//when
+		doNothing().when(communityService).joinCommunity(communityId, requestDto);
+
 		//then
-		doPost("/api/community/participation/" + communityId, requestDto);
+		doPostThenOk("/api/community/participation/" + communityId, requestDto);
 	}
 
 	@DisplayName("나의ZIP참여목록_테스트")
@@ -146,7 +181,7 @@ public class CommunityControllerTest extends ControllerTest {
 
 		//when
 		//then
-		doPost(url, requestDto);
+		doPostThenOk(url, requestDto);
 	}
 
 	@DisplayName("대댓글작성하기")
@@ -162,7 +197,7 @@ public class CommunityControllerTest extends ControllerTest {
 		doNothing().when(communityService).saveComment(communityId, requestDto);
 		//when
 		//then
-		doPost(url, requestDto);
+		doPostThenOk(url, requestDto);
 	}
 
 	@DisplayName("수정하기테스트")

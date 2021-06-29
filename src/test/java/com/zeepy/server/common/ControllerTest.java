@@ -35,20 +35,29 @@ public abstract class ControllerTest {
 
     protected <T> ResultActions doPost(String path, T request) throws Exception {
         return mockMvc.perform(post(path)
-                .content(objectMapper.writeValueAsBytes(request))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(header().string(HttpHeaders.LOCATION, path + "/1"))
-                .andDo(MockMvcResultHandlers.print());
+            .content(objectMapper.writeValueAsBytes(request))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isCreated())
+            .andExpect(header().string(HttpHeaders.LOCATION, path + "/1"))
+            .andDo(MockMvcResultHandlers.print());
+    }
+
+    protected <T> ResultActions doPostThenOk(String path, T request) throws Exception {
+        return mockMvc.perform(post(path)
+            .content(objectMapper.writeValueAsBytes(request))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(MockMvcResultHandlers.print());
     }
 
     protected ResultActions doGet(String path, MultiValueMap<String, String> params) throws Exception {
         return mockMvc.perform(get(path)
-                .params(params)
+            .params(params)
         )
-                .andExpect(status().isOk())
-                .andDo(MockMvcResultHandlers.print());
+            .andExpect(status().isOk())
+            .andDo(MockMvcResultHandlers.print());
     }
 
     protected <T> ResultActions doPut(String path, T request) throws Exception {

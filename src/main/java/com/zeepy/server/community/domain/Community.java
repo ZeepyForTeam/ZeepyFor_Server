@@ -78,7 +78,7 @@ public class Community extends BaseTimeEntity {
 	private User user;
 
 	@OneToMany(mappedBy = "community")
-	private List<CommunityLike> likeUsers = new ArrayList<>();
+	private List<CommunityLike> likes = new ArrayList<>();
 
 	@OneToMany(mappedBy = "community")
 	private List<Comment> comments = new ArrayList<>();
@@ -92,11 +92,9 @@ public class Community extends BaseTimeEntity {
 
 	@Builder
 	public Community(
-		Long id,
-		CommunityCategory communityCategory,
+		Long id,CommunityCategory communityCategory,
 		String productName,
-		Integer productPrice,
-		String purchasePlace,
+		Integer productPrice,String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
 		Integer currentNumberOfPeople,
@@ -107,8 +105,7 @@ public class Community extends BaseTimeEntity {
 		String instructions,
 		List<String> imageUrls
 	) {
-		this.id = id;
-		this.communityCategory = communityCategory;
+		this.id = id;this.communityCategory = communityCategory;
 		this.productName = productName;
 		this.productPrice = productPrice;
 		this.sharingMethod = sharingMethod;
@@ -116,14 +113,12 @@ public class Community extends BaseTimeEntity {
 		this.currentNumberOfPeople = currentNumberOfPeople;
 		this.purchasePlace = purchasePlace;
 		this.user = user;
-		this.title = title;
-		this.place = place;
-		this.content = content;
-		this.instructions = instructions;
+		this.user = user;
+		this.title = title;this.place = place;
+		this.content = content;this.instructions = instructions;
 		this.imageUrls = imageUrls;
 	}
-
-	public void addCurrentNumberOfPeople() {
+public void addCurrentNumberOfPeople() {
 		if (communityCategory == CommunityCategory.JOINTPURCHASE && targetNumberOfPeople != null) {
 			this.currentNumberOfPeople++;
 		}
