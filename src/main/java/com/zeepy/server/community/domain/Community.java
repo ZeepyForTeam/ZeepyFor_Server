@@ -1,92 +1,149 @@
 package com.zeepy.server.community.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.lang.Nullable;
+
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
+import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.user.domain.User;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Community {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "community_sequence_gen")
-    @SequenceGenerator(name = "community_sequence_gen", sequenceName = "community_sequence")
-    private Long id;    //id
+public class Community extends BaseTimeEntity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "community_sequence_gen")
+	@SequenceGenerator(name = "community_sequence_gen", sequenceName = "community_sequence")
+	private Long id;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private CommunityCategory communityCategory;    //커뮤니티 카테고리
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private CommunityCategory communityCategory;
 
-    @Nullable
-    private String productName;
+	@Nullable
+	private String productName;
 
-    @Nullable
-    private Integer productPrice;
+	@Nullable
+	private Integer productPrice;
 
-    @Nullable
-    private String sharingMethod;
+	@Nullable
+	private String purchasePlace;
 
-    @Nullable
-    private Integer targetNumberOfPeople;
+	@Nullable
+	private String sharingMethod;
 
-    @Nullable
-    private Integer targetAmount;
+	@Nullable
+	private Integer targetNumberOfPeople;
 
-    @NotNull
-    private String title;
+	@Column(columnDefinition = "integer default 0")
+	private Integer currentNumberOfPeople;
 
-    @NotNull
-    private String content;
+	@NotNull
+	private String title;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+	@NotNull
+	private String content;
 
-    @OneToMany(mappedBy = "community")
-    private List<CommunityLike> likeUsers = new ArrayList<>();
+	@Nullable
+	private String place;
 
-    @Deprecated
-    private String Comments;
+	@Nullable
+	private String instructions;
 
-    @Deprecated
-    private String AchievementRate;
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
-    @OneToMany(mappedBy = "community")
-    private List<Participation> participationsList;
+	@OneToMany(mappedBy = "community")
+	private List<CommunityLike> likes = new ArrayList<>();
 
-    @ElementCollection
-    @JoinTable(name = "communityImageUrls", joinColumns = @JoinColumn(name = "communityID"))
-    private List<String> imageUrls;   //사진
+	@OneToMany(mappedBy = "community")
+	private List<Comment> comments = new ArrayList<>();
 
-    @Builder
-    public Community(
-            CommunityCategory communityCategory,
-            String productName,
-            Integer productPrice,
-            String sharingMethod,
-            Integer targetNumberOfPeople,
-            Integer targetAmount,
-            String title,
-            String content,
-            List<String> imageUrls
-    ) {
-        this.communityCategory = communityCategory;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.sharingMethod = sharingMethod;
-        this.targetNumberOfPeople = targetNumberOfPeople;
-        this.targetAmount = targetAmount;
-        this.title = title;
-        this.content = content;
-        this.imageUrls = imageUrls;
-    }
+	@OneToMany(mappedBy = "community")
+	private List<Participation> participationsList = new ArrayList<>();
+
+	@ElementCollection
+	@JoinTable(name = "communityImageUrls", joinColumns = @JoinColumn(name = "community_id"))
+	private List<String> imageUrls;
+
+	@Builder
+	public Community(
+		Long id,CommunityCategory communityCategory,
+		String productName,
+		Integer productPrice,String purchasePlace,
+		String sharingMethod,
+		Integer targetNumberOfPeople,
+		Integer currentNumberOfPeople,
+		User user,
+		String title,
+		String content,
+		String place,
+		String instructions,
+		List<String> imageUrls
+	) {
+		this.id = id;this.communityCategory = communityCategory;
+		this.productName = productName;
+		this.productPrice = productPrice;
+		this.sharingMethod = sharingMethod;
+		this.targetNumberOfPeople = targetNumberOfPeople;
+		this.currentNumberOfPeople = currentNumberOfPeople;
+		this.purchasePlace = purchasePlace;
+		this.user = user;
+		this.user = user;
+		this.title = title;this.place = place;
+		this.content = content;this.instructions = instructions;
+		this.imageUrls = imageUrls;
+	}
+public void addCurrentNumberOfPeople() {
+		if (communityCategory == CommunityCategory.JOINTPURCHASE && targetNumberOfPeople != null) {
+			this.currentNumberOfPeople++;
+		}
+		if (targetNumberOfPeople != null && targetNumberOfPeople < currentNumberOfPeople) {
+			throw new OverflowAchievementRateException();
+		}
+	}
+
+	public void substractCurrentNumberOfPeople() {
+		currentNumberOfPeople--;
+	}
+
+	public void update(String title,
+		String productName,
+		Integer productPrice,
+		String purchasePlace,
+		String sharingMethod,
+		Integer targetNumberOfPeople,
+		String instructions) {
+		this.title = title;
+		this.productName = productName;
+		this.productPrice = productPrice;
+		this.purchasePlace = purchasePlace;
+		this.sharingMethod = sharingMethod;
+		this.targetNumberOfPeople = targetNumberOfPeople;
+		this.instructions = instructions;
+	}
 }

@@ -1,80 +1,71 @@
 package com.zeepy.server.review.controller;
 
-import com.zeepy.server.common.ControllerTest;
-import com.zeepy.server.review.domain.*;
-import com.zeepy.server.review.dto.ReviewDto;
-import com.zeepy.server.review.service.ReviewService;
+import static org.mockito.BDDMockito.*;
+
+import java.util.Collections;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Arrays;
+import com.zeepy.server.common.ControllerTest;
+import com.zeepy.server.review.domain.CommuncationTendency;
+import com.zeepy.server.review.domain.Furniture;
+import com.zeepy.server.review.domain.LessorAge;
+import com.zeepy.server.review.domain.LessorGender;
+import com.zeepy.server.review.domain.MultiChoiceReview;
+import com.zeepy.server.review.domain.RoomCount;
+import com.zeepy.server.review.domain.TotalEvaluation;
+import com.zeepy.server.review.dto.ReviewDto;
+import com.zeepy.server.review.service.ReviewService;
 
 @DisplayName("ReviewController_테스트_클래스")
-@RunWith(SpringRunner.class)
-@WebMvcTest(ReviewController.class)
+@WebMvcTest(controllers = ReviewController.class)
 public class ReviewControllerTest extends ControllerTest {
+	@MockBean
+	private ReviewService reviewService;
 
-    @Override
-    @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext) {
-        super.setUp(webApplicationContext);
-    }
+	@BeforeEach
+	@Override
+	public void setUp(WebApplicationContext webApplicationContext) {
+		super.setUp(webApplicationContext);
+	}
 
-    @DisplayName("Review_생성_테스트")
-    @Test
-    public void saveTest() throws Exception {
-        ReviewDto requestDto = new ReviewDto(1L,
-                "sssss",
-                CommuncationTendency.BUSINESS,
-                LessorGender.MALE,
-                LessorAge.FOURTY,
-                "aaaaa",
-                RoomCount.THREEORMORE,
-                MultiChoiceReview.GOOD,
-                MultiChoiceReview.GOOD,
-                MultiChoiceReview.GOOD,
-                MultiChoiceReview.GOOD,
-                Arrays.asList(Furniture.AIRCONDITIONAL, Furniture.AIRCONDITIONAL),
-                "asda",
-                TotalEvaluation.GOOD,
-                Arrays.asList("1", "2", "3")
-        );
-        doPost("/api/review", requestDto);
-    }
+	@Test
+	@DisplayName("리뷰 조회 기능 테스트")
+	public void getReview() throws Exception {
+		doGet("/api/review/hello");
+	}
 
-    @Test
-    @DisplayName("ReviewList_불러오기_테스트")
-    public void getReviewListTest() throws Exception {
-        ReviewDto requestDto = new ReviewDto(1L,
-                "sssss",
-                CommuncationTendency.BUSINESS,
-                LessorGender.MALE,
-                LessorAge.FOURTY,
-                "aaaaa",
-                RoomCount.THREEORMORE,
-                MultiChoiceReview.GOOD,
-                MultiChoiceReview.GOOD,
-                MultiChoiceReview.GOOD,
-                MultiChoiceReview.GOOD,
-                Arrays.asList(Furniture.AIRCONDITIONAL, Furniture.AIRCONDITIONAL),
-                "asda",
-                TotalEvaluation.GOOD,
-                Arrays.asList("1", "2", "3")
-        );
-        String path = "/api/review/1";
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+	@Test
+	@DisplayName("리뷰 생성 기능 테스트")
+	public void saveReview() throws Exception {
+		given(reviewService.create(any())).willReturn(1L);
+		ReviewDto review = ReviewDto.builder()
+			.address("주소")
+			.communcationTendency(CommuncationTendency.BUSINESS.name())
+			.lessorGender(LessorGender.MALE.name())
+			.lessorAge(LessorAge.FIFTY.name())
+			.lessorReview("집주인 리뷰")
+			.roomCount(RoomCount.ONE.name())
+			.soundInsulation(MultiChoiceReview.GOOD.name())
+			.pest(MultiChoiceReview.GOOD.name())
+			.lightning(MultiChoiceReview.PROPER.name())
+			.waterPressure(MultiChoiceReview.GOOD.name())
+			.furnitures(Collections.singletonList(Furniture.AIRCONDITIONAL))
+			.review("리뷰")
+			.totalEvaluation(TotalEvaluation.GOOD.name())
+			.build();
+		doPost("/api/review", review);
+	}
 
-        doGet(path, params);
-
-
-    }
+	@Test
+	@DisplayName("리뷰 삭제 기능 테스트")
+	public void deleteReviewTest() throws Exception {
+		doNothing().when(reviewService).deleteReview(1L);
+		doDelete("/api/review/1");
+	}
 }
