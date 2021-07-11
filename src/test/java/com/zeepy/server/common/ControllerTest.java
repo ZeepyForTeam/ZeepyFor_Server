@@ -20,37 +20,37 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Created by KimGyeong 4/19/20.
  */
 public abstract class ControllerTest {
-    protected MockMvc mockMvc;
-    protected ObjectMapper objectMapper;
+	protected MockMvc mockMvc;
+	protected ObjectMapper objectMapper;
 
-    @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext) {
-        this.mockMvc = MockMvcBuilders
-                .webAppContextSetup(webApplicationContext)
-                .addFilters(new CharacterEncodingFilter("UTF-8", true))
-                .build();
+	@BeforeEach
+	public void setUp(WebApplicationContext webApplicationContext) {
+		this.mockMvc = MockMvcBuilders
+			.webAppContextSetup(webApplicationContext)
+			.addFilters(new CharacterEncodingFilter("UTF-8", true))
+			.build();
 
-        this.objectMapper = new ObjectMapper();
-    }
+		this.objectMapper = new ObjectMapper();
+	}
 
-    protected <T> ResultActions doPost(String path, T request) throws Exception {
-        return mockMvc.perform(post(path)
-            .content(objectMapper.writeValueAsBytes(request))
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated())
-            .andExpect(header().string(HttpHeaders.LOCATION, path + "/1"))
-            .andDo(MockMvcResultHandlers.print());
-    }
+	protected <T> ResultActions doPost(String path, T request) throws Exception {
+		return mockMvc.perform(post(path)
+			.content(objectMapper.writeValueAsBytes(request))
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isCreated())
+			.andExpect(header().string(HttpHeaders.LOCATION, path + "/1"))
+			.andDo(MockMvcResultHandlers.print());
+	}
 
-    protected <T> ResultActions doPostThenOk(String path, T request) throws Exception {
-        return mockMvc.perform(post(path)
-            .content(objectMapper.writeValueAsBytes(request))
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andDo(MockMvcResultHandlers.print());
-    }
+	protected <T> ResultActions doPostThenOk(String path, T request) throws Exception {
+		return mockMvc.perform(post(path)
+			.content(objectMapper.writeValueAsBytes(request))
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andDo(MockMvcResultHandlers.print());
+	}
 
 	protected <T> ResultActions doGet(String path) throws Exception {
 		return mockMvc.perform(get(path)
@@ -59,26 +59,34 @@ public abstract class ControllerTest {
 			.andExpect(status().isOk());
 	}
 
-    protected ResultActions doGet(String path, MultiValueMap<String, String> params) throws Exception {
-        return mockMvc.perform(get(path)
-            .params(params)
-        )
-            .andExpect(status().isOk())
-            .andDo(MockMvcResultHandlers.print());
-    }
+	protected ResultActions doGet(String path, MultiValueMap<String, String> params) throws Exception {
+		return mockMvc.perform(get(path)
+			.params(params)
+		)
+			.andExpect(status().isOk())
+			.andDo(MockMvcResultHandlers.print());
+	}
 
-    protected <T> ResultActions doPut(String path, T request) throws Exception {
-        return mockMvc.perform(put(path)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(request))
-        )
-                .andExpect(status().isOk());
-    }
+	protected <T> ResultActions doPut(String path, T request) throws Exception {
+		return mockMvc.perform(put(path)
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsBytes(request))
+		)
+			.andExpect(status().isOk());
+	}
 
-    protected <T> ResultActions doDelete(String path) throws Exception {
+	protected <T> ResultActions doDelete(String path) throws Exception {
 		return mockMvc.perform(delete(path)
 			.contentType(MediaType.APPLICATION_JSON)
-        )
-                .andExpect(status().isNoContent());
-    }
+		)
+			.andExpect(status().isNoContent());
+	}
+
+	protected <T> ResultActions doDelete(String path, T request) throws Exception {
+		return mockMvc.perform(delete(path)
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(request))
+		)
+			.andExpect(status().isNoContent());
+	}
 }

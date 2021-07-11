@@ -6,15 +6,13 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import com.zeepy.server.review.domain.Review;
 import com.zeepy.server.review.dto.ReviewDto;
 import com.zeepy.server.review.dto.ReviewResponseDto;
 import com.zeepy.server.review.dto.ReviewResponseDtos;
-import com.zeepy.server.review.repository.ReviewInterface;
+import com.zeepy.server.review.repository.ReviewRepository;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +23,7 @@ public class ReviewService {
 
 	@Transactional(readOnly = true)
 	public ReviewResponseDtos getReviewList(String address) {
-		List<Review> reviewList = reviewInterface.findAllByAddress(address);
+		List<Review> reviewList = reviewRepository.findAllByAddress(address);
 		if (reviewList.isEmpty()) {
 			throw new NoContentException();
 		}

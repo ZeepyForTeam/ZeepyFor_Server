@@ -15,11 +15,12 @@ import com.zeepy.server.review.domain.Review;
 import com.zeepy.server.review.domain.RoomCount;
 import com.zeepy.server.review.domain.TotalEvaluation;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,58 +31,58 @@ public class ReviewDto {
 	@NotNull
 	private String address;
 
-	@Enum(enumClass = CommuncationTendency.class, message = "소통경향은 필수값입니다.")
-	private CommuncationTendency communcationTendency;
+	@Enum(enumClass = CommuncationTendency.class, ignoreCase = true, message = "소통경향은 필수값입니다.")
+	private String communcationTendency;
 
-	@Enum(enumClass = LessorGender.class, message = "임대인 성별은 필수값입니다.")
-	private LessorGender lessorGender;
+	@Enum(enumClass = LessorGender.class, ignoreCase = true, message = "임대인 성별은 필수값입니다.")
+	private String lessorGender;
 
-	@Enum(enumClass = LessorAge.class, message = "임대인 나이는 필수값입니다.")
-	private LessorAge lessorAge;
+	@Enum(enumClass = LessorAge.class, ignoreCase = true, message = "임대인 나이는 필수값입니다.")
+	private String lessorAge;
 
 	@NotNull
 	private String lessorReview;
 
-	@Enum(enumClass = RoomCount.class, message = "방갯수 필수값입니다.")
-	private RoomCount roomCount;
+	@Enum(enumClass = RoomCount.class, ignoreCase = true, message = "방갯수 필수값입니다.")
+	private String roomCount;
 
-	@Enum(enumClass = MultiChoiceReview.class, message = "방음은 필수값입니다.")
-	private MultiChoiceReview soundInsulation;
+	@Enum(enumClass = MultiChoiceReview.class, ignoreCase = true, message = "방음은 필수값입니다.")
+	private String soundInsulation;
 
-	@Enum(enumClass = MultiChoiceReview.class, message = "해충은 필수값입니다.")
-	private MultiChoiceReview pest;
+	@Enum(enumClass = MultiChoiceReview.class, ignoreCase = true, message = "해충은 필수값입니다.")
+	private String pest;
 
-	@Enum(enumClass = MultiChoiceReview.class, message = "채광은 필수값입니다.")
-	private MultiChoiceReview lightning;
+	@Enum(enumClass = MultiChoiceReview.class, ignoreCase = true, message = "채광은 필수값입니다.")
+	private String lightning;
 
-	@Enum(enumClass = MultiChoiceReview.class, message = "수압은 필수값입니다.")
-	private MultiChoiceReview waterPressure;
+	@Enum(enumClass = MultiChoiceReview.class, ignoreCase = true, message = "수압은 필수값입니다.")
+	private String waterPressure;
 
 	private List<Furniture> furnitures;
 
 	@NotBlank(message = "상세리뷰는 필수값입니다.")
 	private String review;
 
-	@Enum(enumClass = TotalEvaluation.class, message = "종합평가는 필수값입니다.")
-	private TotalEvaluation totalEvaluation;
+	@Enum(enumClass = TotalEvaluation.class, ignoreCase = true, message = "종합평가는 필수값입니다.")
+	private String totalEvaluation;
 
 	private List<String> imageUrls;
 
 	@Builder
 	public ReviewDto(
 		Long user, String address,
-		CommuncationTendency communcationTendency,
-		LessorGender lessorGender,
-		LessorAge lessorAge,
+		String communcationTendency,
+		String lessorGender,
+		String lessorAge,
 		String lessorReview,
-		RoomCount roomCount,
-		MultiChoiceReview soundInsulation,
-		MultiChoiceReview pest,
-		MultiChoiceReview lightning,
-		MultiChoiceReview waterPressure,
+		String roomCount,
+		String soundInsulation,
+		String pest,
+		String lightning,
+		String waterPressure,
 		List<Furniture> furnitures,
 		String review,
-		TotalEvaluation totalEvaluation,
+		String totalEvaluation,
 		List<String> imageUrls
 	) {
 		this.user = user;
@@ -105,18 +106,18 @@ public class ReviewDto {
 		return new Review(null,
 			this.user,
 			this.address,
-			this.communcationTendency,
-			this.lessorGender,
-			this.lessorAge,
+			CommuncationTendency.valueOf(this.communcationTendency),
+			LessorGender.valueOf(this.lessorGender),
+			LessorAge.valueOf(this.lessorAge),
 			this.lessorReview,
-			this.roomCount,
-			this.soundInsulation,
-			this.pest,
-			this.lightning,
-			this.waterPressure,
+			RoomCount.valueOf(this.roomCount),
+			MultiChoiceReview.valueOf(this.soundInsulation),
+			MultiChoiceReview.valueOf(this.pest),
+			MultiChoiceReview.valueOf(this.lightning),
+			MultiChoiceReview.valueOf(this.waterPressure),
 			this.furnitures,
 			this.review,
-			this.totalEvaluation,
+			TotalEvaluation.valueOf(this.totalEvaluation),
 			this.imageUrls
 		);
 	}
