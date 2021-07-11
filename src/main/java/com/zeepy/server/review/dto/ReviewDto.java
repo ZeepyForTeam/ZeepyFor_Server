@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.zeepy.server.common.annotation.Enum;
 import com.zeepy.server.review.domain.CommuncationTendency;
 import com.zeepy.server.review.domain.Furniture;
 import com.zeepy.server.review.domain.LessorAge;
@@ -14,70 +15,74 @@ import com.zeepy.server.review.domain.Review;
 import com.zeepy.server.review.domain.RoomCount;
 import com.zeepy.server.review.domain.TotalEvaluation;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @Setter
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewDto {
+
 	private Long user; // 변경 될 겁니다.
 
 	@NotNull
 	private String address;
 
-	@NotNull
-	private CommuncationTendency communcationTendency;
+	@Enum(enumClass = CommuncationTendency.class, ignoreCase = true, message = "소통경향은 필수값입니다.")
+	private String communcationTendency;
 
-	@NotNull
-	private LessorGender lessorGender;
+	@Enum(enumClass = LessorGender.class, ignoreCase = true, message = "임대인 성별은 필수값입니다.")
+	private String lessorGender;
 
-	@NotNull
-	private LessorAge lessorAge;
+	@Enum(enumClass = LessorAge.class, ignoreCase = true, message = "임대인 나이는 필수값입니다.")
+	private String lessorAge;
 
 	@NotNull
 	private String lessorReview;
 
-	@NotNull
-	private RoomCount roomCount;
+	@Enum(enumClass = RoomCount.class, ignoreCase = true, message = "방갯수 필수값입니다.")
+	private String roomCount;
 
-	@NotNull
-	private MultiChoiceReview soundInsulation;
+	@Enum(enumClass = MultiChoiceReview.class, ignoreCase = true, message = "방음은 필수값입니다.")
+	private String soundInsulation;
 
-	@NotNull
-	private MultiChoiceReview pest;
+	@Enum(enumClass = MultiChoiceReview.class, ignoreCase = true, message = "해충은 필수값입니다.")
+	private String pest;
 
-	@NotNull
-	private MultiChoiceReview lightning;
+	@Enum(enumClass = MultiChoiceReview.class, ignoreCase = true, message = "채광은 필수값입니다.")
+	private String lightning;
 
-	@NotNull
-	private MultiChoiceReview waterPressure;
+	@Enum(enumClass = MultiChoiceReview.class, ignoreCase = true, message = "수압은 필수값입니다.")
+	private String waterPressure;
 
 	private List<Furniture> furnitures;
 
 	@NotBlank(message = "상세리뷰는 필수값입니다.")
 	private String review;
 
-	@NotNull
-	private TotalEvaluation totalEvaluation;
+	@Enum(enumClass = TotalEvaluation.class, ignoreCase = true, message = "종합평가는 필수값입니다.")
+	private String totalEvaluation;
 
 	private List<String> imageUrls;
 
+	@Builder
 	public ReviewDto(
 		Long user, String address,
-		CommuncationTendency communcationTendency,
-		LessorGender lessorGender,
-		LessorAge lessorAge,
+		String communcationTendency,
+		String lessorGender,
+		String lessorAge,
 		String lessorReview,
-		RoomCount roomCount,
-		MultiChoiceReview soundInsulation,
-		MultiChoiceReview pest,
-		MultiChoiceReview lightning,
-		MultiChoiceReview waterPressure,
+		String roomCount,
+		String soundInsulation,
+		String pest,
+		String lightning,
+		String waterPressure,
 		List<Furniture> furnitures,
 		String review,
-		TotalEvaluation totalEvaluation,
+		String totalEvaluation,
 		List<String> imageUrls
 	) {
 		this.user = user;
@@ -101,18 +106,18 @@ public class ReviewDto {
 		return new Review(null,
 			this.user,
 			this.address,
-			this.communcationTendency,
-			this.lessorGender,
-			this.lessorAge,
+			CommuncationTendency.valueOf(this.communcationTendency),
+			LessorGender.valueOf(this.lessorGender),
+			LessorAge.valueOf(this.lessorAge),
 			this.lessorReview,
-			this.roomCount,
-			this.soundInsulation,
-			this.pest,
-			this.lightning,
-			this.waterPressure,
+			RoomCount.valueOf(this.roomCount),
+			MultiChoiceReview.valueOf(this.soundInsulation),
+			MultiChoiceReview.valueOf(this.pest),
+			MultiChoiceReview.valueOf(this.lightning),
+			MultiChoiceReview.valueOf(this.waterPressure),
 			this.furnitures,
 			this.review,
-			this.totalEvaluation,
+			TotalEvaluation.valueOf(this.totalEvaluation),
 			this.imageUrls
 		);
 	}

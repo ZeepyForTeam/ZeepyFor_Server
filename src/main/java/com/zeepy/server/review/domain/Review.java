@@ -51,7 +51,7 @@ public class Review extends BaseTimeEntity {
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private CommuncationTendency communcationTendency;
+	private CommuncationTendency communicationTendency;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
@@ -106,7 +106,7 @@ public class Review extends BaseTimeEntity {
 
 	@Builder
 	public Review(Long id, Long user, String address,
-		CommuncationTendency communcationTendency,
+		CommuncationTendency communicationTendency,
 		LessorGender lessorGender,
 		LessorAge lessorAge,
 		String lessorReview,
@@ -122,7 +122,7 @@ public class Review extends BaseTimeEntity {
 		this.id = id;
 		this.user = user;
 		this.address = address;
-		this.communcationTendency = communcationTendency;
+		this.communicationTendency = communicationTendency;
 		this.lessorGender = lessorGender;
 		this.lessorAge = lessorAge;
 		this.lessorReview = lessorReview;

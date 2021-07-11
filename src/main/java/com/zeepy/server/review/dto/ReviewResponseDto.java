@@ -7,11 +7,12 @@ import com.zeepy.server.review.domain.LessorAge;
 import com.zeepy.server.review.domain.MultiChoiceReview;
 import com.zeepy.server.review.domain.Review;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewResponseDto {
 	private Long id;
 	private Long user;
@@ -31,7 +32,7 @@ public class ReviewResponseDto {
 		this.user = review.getUser();
 		this.address = review.getAddress();
 		this.lessorAge = review.getLessorAge();
-		this.communcationTendency = review.getCommuncationTendency();
+		this.communcationTendency = review.getCommunicationTendency();
 		this.soundInsulation = review.getSoundInsulation();
 		this.pest = review.getPest();
 		this.lightning = review.getLightning();
