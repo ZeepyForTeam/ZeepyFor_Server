@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.doNothing;
  */
 @DisplayName("AreaCode Controller Test")
 @WebMvcTest(AreaCodeController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 class AreaCodeControllerTest extends ControllerTest {
 
     @MockBean

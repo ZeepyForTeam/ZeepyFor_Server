@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.doNothing;
  */
 @DisplayName("Building Controller Test")
 @WebMvcTest(controllers = BuildingController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 class BuildingControllerTest extends ControllerTest {
 
     @MockBean

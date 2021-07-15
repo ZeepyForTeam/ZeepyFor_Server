@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.zeepy.server.common.ControllerTest;
@@ -24,6 +25,7 @@ import com.zeepy.server.review.service.ReviewService;
 
 @DisplayName("ReviewController_테스트_클래스")
 @WebMvcTest(controllers = ReviewController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 public class ReviewControllerTest extends ControllerTest {
     @MockBean
     private ReviewService reviewService;
@@ -55,7 +57,7 @@ public class ReviewControllerTest extends ControllerTest {
                 .pest(MultiChoiceReview.GOOD.name())
                 .lightning(MultiChoiceReview.PROPER.name())
                 .waterPressure(MultiChoiceReview.GOOD.name())
-                .furnitures(Collections.singletonList(Furniture.AIRCONDITIONAL))
+                .furnitures(Collections.singletonList(Furniture.AIRCONDITIONAL.name()))
                 .review("리뷰")
                 .totalEvaluation(TotalEvaluation.GOOD.name())
                 .buildingId(1L)
