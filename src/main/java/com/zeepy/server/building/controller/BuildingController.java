@@ -5,6 +5,8 @@ import com.zeepy.server.building.dto.BuildingAddressResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.service.BuildingService;
+import com.zeepy.server.review.domain.Furniture;
+import com.zeepy.server.review.domain.RoomCount;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,6 +35,8 @@ public class BuildingController {
             @RequestParam(value = "geDeposit", required = false) Integer greaterDeposit,
             @RequestParam(value = "leDeposit", required = false) Integer lesserDeposit,
             @RequestParam(value = "neType", required = false) DealType notEqualDealType,
+            @RequestParam(value = "eqRoomCount", required = false) String roomCount,
+            @RequestParam(value = "inFurnitures", required = false) List<Furniture> furnitures,
             Pageable pageable
     ) {
         return ResponseEntity.ok(buildingService.getAll(
@@ -41,6 +45,8 @@ public class BuildingController {
                 greaterDeposit,
                 lesserDeposit,
                 notEqualDealType,
+                roomCount,
+                furnitures,
                 pageable
         ));
     }

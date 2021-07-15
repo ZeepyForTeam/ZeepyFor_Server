@@ -5,10 +5,7 @@ import java.util.stream.Collectors;
 
 import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.building.dto.BuildingResponseDto;
-import com.zeepy.server.review.domain.CommuncationTendency;
-import com.zeepy.server.review.domain.LessorAge;
-import com.zeepy.server.review.domain.MultiChoiceReview;
-import com.zeepy.server.review.domain.Review;
+import com.zeepy.server.review.domain.*;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,6 +24,7 @@ public class ReviewResponseDto {
     private MultiChoiceReview lightning;
     private MultiChoiceReview waterPressure;
     private String lessorReview;
+    private List<Furniture> furnitures;
     private String review;
     private List<String> imageUrls;
 
@@ -41,6 +39,7 @@ public class ReviewResponseDto {
             MultiChoiceReview lightning,
             MultiChoiceReview waterPressure,
             String lessorReview,
+            List<Furniture> furnitures,
             String review,
             List<String> imageUrls
     ) {
@@ -54,6 +53,7 @@ public class ReviewResponseDto {
         this.lightning = lightning;
         this.waterPressure = waterPressure;
         this.lessorReview = lessorReview;
+        this.furnitures = furnitures;
         this.review = review;
         this.imageUrls = imageUrls;
     }
@@ -69,6 +69,7 @@ public class ReviewResponseDto {
         this.lightning = review.getLightning();
         this.waterPressure = review.getWaterPressure();
         this.lessorReview = review.getLessorReview();
+        this.furnitures = review.getFurnitures();
         this.review = review.getReview();
         this.imageUrls = review.getImageUrls();
     }
@@ -85,6 +86,7 @@ public class ReviewResponseDto {
                 review.getLightning(),
                 review.getWaterPressure(),
                 review.getLessorReview(),
+                review.getFurnitures(),
                 review.getReview(),
                 review.getImageUrls()
         );

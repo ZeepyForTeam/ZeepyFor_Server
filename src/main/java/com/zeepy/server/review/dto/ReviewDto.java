@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.zeepy.server.common.annotation.Enum;
+import com.zeepy.server.common.annotation.EnumList;
 import com.zeepy.server.review.domain.CommuncationTendency;
 import com.zeepy.server.review.domain.Furniture;
 import com.zeepy.server.review.domain.LessorAge;
@@ -58,7 +59,8 @@ public class ReviewDto {
     @Enum(enumClass = MultiChoiceReview.class, ignoreCase = true, message = "수압은 필수값입니다.")
     private String waterPressure;
 
-    private List<Furniture> furnitures;
+    @EnumList(enumClass = Furniture.class, ignoreCase = true, message = "가구는 필수값입니다.")
+    private List<String> furnitures;
 
     @NotBlank(message = "상세리뷰는 필수값입니다.")
     private String review;
@@ -83,7 +85,7 @@ public class ReviewDto {
             String pest,
             String lightning,
             String waterPressure,
-            List<Furniture> furnitures,
+            List<String> furnitures,
             String review,
             String totalEvaluation,
             List<String> imageUrls,
@@ -121,7 +123,7 @@ public class ReviewDto {
                 MultiChoiceReview.valueOf(this.pest),
                 MultiChoiceReview.valueOf(this.lightning),
                 MultiChoiceReview.valueOf(this.waterPressure),
-                this.furnitures,
+                Furniture.listOf(this.furnitures),
                 this.review,
                 TotalEvaluation.valueOf(this.totalEvaluation),
                 this.imageUrls,

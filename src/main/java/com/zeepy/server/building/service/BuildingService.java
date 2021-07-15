@@ -9,9 +9,14 @@ import com.zeepy.server.building.dto.BuildingAddressResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.repository.BuildingRepository;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.InvalidRequestParameterException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
+import com.zeepy.server.review.domain.Furniture;
+import com.zeepy.server.review.domain.QReview;
+import com.zeepy.server.review.domain.RoomCount;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.omg.CORBA.DynAnyPackage.Invalid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +47,7 @@ public class BuildingService {
     private QBuilding qBuilding = QBuilding.building;
     private QBuildingDeal qBuildingDeal = QBuildingDeal.buildingDeal;
     private QBuildingLike qBuildingLike = QBuildingLike.buildingLike;
+    private QReview qReview = QReview.review1;
 
     private BooleanExpression goeMonthlyRent(Integer monthlyRent) {
         if (monthlyRent == null) {
@@ -88,6 +94,32 @@ public class BuildingService {
                 .ne(dealType);
     }
 
+    private BooleanExpression eqRoomCount(String roomCount) {
+        if (roomCount == null) {
+            return null;
+        }
+
+        try {
+            RoomCount.valueOf(roomCount);
+        } catch (Exception e) {
+            throw new InvalidRequestParameterException();
+        }
+
+        return qReview
+                .roomCount
+                .eq(RoomCount.valueOf(roomCount));
+    }
+
+    private BooleanExpression inFurnitures(List<Furniture> furnitures) {
+        if (furnitures == null) {
+            return null;
+        }
+        return qReview
+                .furnitures
+                .any()
+                .in(furnitures);
+    }
+
     // CREATE
     @Transactional
     public Long create(BuildingRequestDto buildingRequestDto) {
@@ -104,6 +136,8 @@ public class BuildingService {
             Integer greaterDeposit,
             Integer lesserDeposit,
             DealType notEqualDealType,
+            String roomCount,
+            List<Furniture> furnitures,
             Pageable pageable
     ) {
         /**
@@ -128,13 +162,16 @@ public class BuildingService {
          */
         QueryResults<Building> fetchResults = jpaQueryFactory
                 .selectFrom(qBuilding)
+                .leftJoin(qBuilding.reviews, qReview)
                 .innerJoin(qBuilding.buildingDeals, qBuildingDeal)
                 .where(
                         goeMonthlyRent(greaterMonthlyRent),
                         loeMonthlyRent(lesserMonthlyRent),
                         goeDeposit(greaterDeposit),
                         loeDeposit(lesserDeposit),
-                        neDealType(notEqualDealType)
+                        neDealType(notEqualDealType),
+                        eqRoomCount(roomCount),
+                        inFurnitures(furnitures)
                 )
                 .orderBy(qBuilding.id.desc())
                 .offset(pageable.getOffset())
