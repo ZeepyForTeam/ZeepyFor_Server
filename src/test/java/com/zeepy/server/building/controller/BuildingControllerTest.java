@@ -58,6 +58,7 @@ class BuildingControllerTest extends ControllerTest {
                 32.0,
                 124.0,
                 null,
+                null,
                 null
         );
     }

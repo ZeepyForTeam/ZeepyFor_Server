@@ -1,6 +1,8 @@
 package com.zeepy.server.building.dto;
 
 import com.zeepy.server.building.domain.Building;
+import com.zeepy.server.review.dto.ReviewResponseDto;
+import com.zeepy.server.review.dto.ReviewResponseDtos;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +29,7 @@ public class BuildingResponseDto {
     private double longitude;
     private List<BuildingDealResponseDto> buildingDeals;
     private List<BuildingLikeResponseDto> buildingLikes;
+    private List<ReviewResponseDto> reviews;
 
     public BuildingResponseDto(
             Long id,
@@ -39,7 +42,8 @@ public class BuildingResponseDto {
             double latitude,
             double longitude,
             List<BuildingDealResponseDto> buildingDeals,
-            List<BuildingLikeResponseDto> buildingLikes
+            List<BuildingLikeResponseDto> buildingLikes,
+            List<ReviewResponseDto> reviews
     ){
         this.id = id;
         this.buildYear = buildYear;
@@ -52,6 +56,7 @@ public class BuildingResponseDto {
         this.longitude = longitude;
         this.buildingDeals = buildingDeals;
         this.buildingLikes = buildingLikes;
+        this.reviews = reviews;
     }
 
     public static BuildingResponseDto of(Building building){
@@ -66,7 +71,8 @@ public class BuildingResponseDto {
                 building.getLatitude(),
                 building.getLongitude(),
                 BuildingDealResponseDto.listOf(building.getBuildingDeals()),
-                BuildingLikeResponseDto.listOf(building.getBuildingLikes())
+                BuildingLikeResponseDto.listOf(building.getBuildingLikes()),
+                ReviewResponseDto.listOf(building.getReviews())
         );
     }
 

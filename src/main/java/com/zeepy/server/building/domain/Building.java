@@ -2,6 +2,7 @@ package com.zeepy.server.building.domain;
 
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
+import com.zeepy.server.review.domain.Review;
 import lombok.*;
 
 import javax.persistence.*;
@@ -53,6 +54,9 @@ public class Building extends BaseTimeEntity {
     @OneToMany(mappedBy = "building", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<BuildingLike> buildingLikes;
 
+    @OneToMany(mappedBy = "building", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Review> reviews;
+
     @Builder
     public Building(
             Long id,
@@ -63,7 +67,8 @@ public class Building extends BaseTimeEntity {
             float exclusivePrivateArea,
             int areaCode,
             double latitude,
-            double longitude
+            double longitude,
+            List<Review> reviews
     ) {
         this.id = id;
         this.buildYear = buildYear;
@@ -74,6 +79,7 @@ public class Building extends BaseTimeEntity {
         this.areaCode = areaCode;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.reviews = reviews;
     }
 
     public void update(BuildingRequestDto buildingRequestDto) {

@@ -70,7 +70,8 @@ public class BuildingRequestDto {
                 this.exclusivePrivateArea,
                 this.areaCode,
                 this.latitude,
-                this.longitude
+                this.longitude,
+                null
         );
     }
 }

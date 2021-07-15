@@ -91,7 +91,8 @@ public class BuildingService {
     // CREATE
     @Transactional
     public Long create(BuildingRequestDto buildingRequestDto) {
-        Building building = buildingRepository.save(buildingRequestDto.returnBuildingEntity());
+        Building building = buildingRepository
+                .save(buildingRequestDto.returnBuildingEntity());
         return building.getId();
     }
 
