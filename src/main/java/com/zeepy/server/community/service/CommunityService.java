@@ -18,6 +18,7 @@ import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.CommunityLikeDto;
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityRequestDto;
 import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
@@ -194,6 +195,26 @@ public class CommunityService {
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 		updateCommunityReqDto.updateCommunity(findCommunity);
+	}
+
+	@Transactional(readOnly = true)
+	public CommunityResponseDto getCommunity(Long communityId) {
+		Community community = communityRepository.findById(communityId)
+			.orElseThrow(NotFoundCommunityException::new);
+		return new CommunityResponseDto(community);
+	}
+
+	@Transactional(readOnly = true)
+	public CommunityResponseDtos getCommunityList(CommunityRequestDto requestDto) {
+		List<Community> communityList;
+
+		if (requestDto.getCommunityCategory() == null) {
+			communityList = communityRepository.findByAddress(requestDto.getAddress());
+		} else {
+			communityList = communityRepository.findByAddressAndType(requestDto.getAddress(), requestDto.getCommunityCategory());
+		}
+
+		return CommunityResponseDto.ofList(communityList);
 	}
 }
 

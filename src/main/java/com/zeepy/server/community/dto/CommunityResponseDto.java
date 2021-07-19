@@ -1,6 +1,7 @@
 package com.zeepy.server.community.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.zeepy.server.community.domain.Comment;
 import com.zeepy.server.community.domain.Community;
@@ -45,5 +46,12 @@ public class CommunityResponseDto {
 		this.comments = community.getComments();
 		this.participationList = community.getParticipationsList();
 		this.imageUrls = community.getImageUrls();
+	}
+
+	public static CommunityResponseDtos ofList(List<Community> communityList) {
+		List<CommunityResponseDto> communityResponseDtoList = communityList.stream()
+			.map(CommunityResponseDto::new)
+			.collect(Collectors.toList());
+		return new CommunityResponseDtos(communityResponseDtoList);
 	}
 }
