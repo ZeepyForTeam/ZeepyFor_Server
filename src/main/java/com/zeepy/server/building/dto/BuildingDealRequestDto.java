@@ -1,16 +1,15 @@
 package com.zeepy.server.building.dto;
 
+import java.sql.Timestamp;
+
+import javax.validation.constraints.NotNull;
+
 import com.zeepy.server.building.domain.BuildingDeal;
 import com.zeepy.server.building.domain.DealType;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by Minky on 2021-05-15
@@ -55,12 +54,7 @@ public class BuildingDealRequestDto {
     }
 
     public BuildingDeal returnBuildingDealEntity() {
-        DealType dealType = DealType.MONTHLY;
-        if (this.dealCost != 0) {
-            dealType = DealType.DEAL;
-        } else if (this.monthlyRent == 0) {
-            dealType = DealType.JEONSE;
-        }
+        DealType dealType = DealType.getDealType(dealCost, monthlyRent);
 
         return new BuildingDeal(
                 null,

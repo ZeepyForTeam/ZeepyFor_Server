@@ -5,7 +5,17 @@ package com.zeepy.server.building.domain;
  */
 
 public enum DealType {
-    MONTHLY, // 월세
-    JEONSE, // 전세
-    DEAL // 매매
+	MONTHLY, // 월세
+	JEONSE, // 전세
+	DEAL; // 매매
+
+	public static DealType getDealType(int dealCost, int monthlyRent) {
+		if (dealCost != 0) {
+			return DEAL;
+		}
+		if (monthlyRent == 0) {
+			return JEONSE;
+		}
+		return MONTHLY;
+	}
 }
