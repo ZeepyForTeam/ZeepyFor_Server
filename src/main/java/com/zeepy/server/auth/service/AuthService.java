@@ -12,6 +12,7 @@ import com.zeepy.server.auth.repository.TokenRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundPasswordException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenNotExistException;
 import com.zeepy.server.common.config.security.JwtAuthenticationProvider;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
@@ -57,6 +58,9 @@ public class AuthService {
 	public TokenResDto reissue(ReIssueReqDto reIssueReqDto) {
 		String accessToken = reIssueReqDto.getAccessToken();
 		String refreshToken = reIssueReqDto.getRefreshToken();
+
+		tokenRepository.findByRefreshToken(refreshToken)
+			.orElseThrow(RefreshTokenNotExistException::new);
 
 		if (!jwtAuthenticationProvider.validateToken(refreshToken)) {
 			throw new RefreshTokenException();
