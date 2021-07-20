@@ -2,6 +2,7 @@ package com.zeepy.server.user.dto;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.zeepy.server.user.domain.Role;
 import com.zeepy.server.user.domain.User;
 
 import lombok.Builder;
@@ -33,6 +34,7 @@ public class RegistrationReqDto {
 			.password(setBCryptEncoding())
 			.address(address)
 			.building(building)
+			.role(Role.ROLE_USER)
 			.build();
 	}
 

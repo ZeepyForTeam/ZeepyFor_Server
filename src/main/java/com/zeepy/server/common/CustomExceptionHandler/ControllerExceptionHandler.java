@@ -19,6 +19,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundPa
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenNotExistException;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -100,6 +101,13 @@ public class ControllerExceptionHandler {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(RefreshTokenNotExistException.class)
+	public ResponseEntity<ErrorResponse> refreshTokenNotExistException(RefreshTokenNotExistException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
 	public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {

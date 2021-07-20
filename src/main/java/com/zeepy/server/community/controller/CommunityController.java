@@ -91,6 +91,7 @@ public class CommunityController {
 
 	@GetMapping("/participation")
 	public ResponseEntity<MyZipJoinResDto> getMyZipJoinList(@AuthenticationPrincipal String userEmail) {
+		System.out.println("authenticationPrincipal : " + userEmail);
 		MyZipJoinResDto myZipJoinList = communityService.getJoinList(userEmail);
 		return ResponseEntity.ok().body(myZipJoinList);
 	}
