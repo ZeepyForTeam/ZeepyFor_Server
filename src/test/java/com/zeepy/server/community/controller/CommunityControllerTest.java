@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -36,6 +37,7 @@ import com.zeepy.server.user.domain.User;
 
 @DisplayName("커뮤니티_컨트롤러_테스트")
 @WebMvcTest(controllers = CommunityController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 public class CommunityControllerTest extends ControllerTest {
 
 	@MockBean
