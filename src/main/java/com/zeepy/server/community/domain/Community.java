@@ -42,6 +42,9 @@ public class Community extends BaseTimeEntity {
 	@Enumerated(EnumType.STRING)
 	private CommunityCategory communityCategory;
 
+	@NotNull
+	private String address;
+
 	@Nullable
 	private String productName;
 

@@ -22,6 +22,9 @@ public class SaveCommunityRequestDto {
 	@NotNull(message = "커뮤니티카테고리는 필수값입니다.")
 	private CommunityCategory communityCategory;
 
+	@NotNull(message = "커뮤니티 주소는 필수입니다.")
+	private String address;
+
 	private String productName;
 
 	private Integer productPrice;

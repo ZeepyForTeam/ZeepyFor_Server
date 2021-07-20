@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class CommunityResponseDto {
 	private Long id;
 	private CommunityCategory communityCategory;
+	private String address;
 	private String productName;
 	private Integer productPrice;
 	private String sharingMethod;
@@ -37,6 +38,7 @@ public class CommunityResponseDto {
 			community.getUser()
 				.getName());
 		this.communityCategory = community.getCommunityCategory();
+		this.address = community.getAddress();
 		this.productName = community.getProductName();
 		this.productPrice = community.getProductPrice();
 		this.sharingMethod = community.getSharingMethod();
