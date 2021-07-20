@@ -31,9 +31,7 @@ public class ControllerExceptionHandler {
 		BindingResult bindingResult = e.getBindingResult();
 		ErrorCode errorCode = ErrorCode.INVALID_BODY;
 		int errorStatus = errorCode.getStatus();
-		String errorMessage = errorCode.getMessage();
-
-		ErrorResponse errorResponse = ErrorResponse.create()
+		String errorMessage = errorCode.getMessage();ErrorResponse errorResponse = ErrorResponse.create()
 			.status(errorStatus)
 			.message(errorMessage)
 			.errors(bindingResult);
@@ -113,4 +111,5 @@ public class ControllerExceptionHandler {
 			.status(errorStatus)
 			.message(errorMessage);
 	}
+
 }

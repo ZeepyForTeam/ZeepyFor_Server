@@ -46,29 +46,27 @@ public class SaveCommunityRequestDto {
 
 	private User user;
 
-	private Long writerId;//작성자ID인데 토큰작업되면 지울꺼
+	private Long writerId;//작성자ID인데 토큰작업되면 지울꺼@Builder
 
 	@Builder
 	public SaveCommunityRequestDto(CommunityCategory communityCategory,
 		String productName,
-		Integer productPrice,
-		String purchasePlace,
+		Integer productPrice,String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
+
 		String title,
 		String content,
 		String instructions,
-		User user,
-		List<String> imageUrls) {
+		User user,List<String> imageUrls) {
 		this.communityCategory = communityCategory;
 		this.productName = productName;
 		this.productPrice = productPrice;
-		this.purchasePlace = purchasePlace;
-		this.sharingMethod = sharingMethod;
+		this.purchasePlace = purchasePlace;this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
+
 		this.title = title;
-		this.content = content;
-		this.instructions = instructions;
+		this.content = content;this.instructions = instructions;
 		this.user = user;
 		this.imageUrls = imageUrls;
 	}

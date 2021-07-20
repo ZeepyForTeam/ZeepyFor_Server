@@ -11,9 +11,9 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +22,14 @@ import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.repository.CommentRepository;
+import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
 
 @DisplayName("커뮤니티_서비스_테스트")
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 @Transactional
 public class CommunityServiceTest {
@@ -55,6 +56,8 @@ public class CommunityServiceTest {
 	@Mock
 	private CommunityRepository communityRepository;
 	@Mock
+	private CommunityLikeRepository communityLikeRepository;
+	@Mock
 	private ParticipationRepository participationRepository;
 	@Mock
 	private UserRepository userRepository;
@@ -63,8 +66,8 @@ public class CommunityServiceTest {
 
 	@BeforeEach
 	public void setUp() {
-		this.communityService = new CommunityService(communityRepository, participationRepository, userRepository,
-			commentRepository);
+		this.communityService = new CommunityService(communityRepository, communityLikeRepository, userRepository,
+			participationRepository, commentRepository);
 	}
 
 	@DisplayName("참여하기_서비스로직_테스트")
@@ -78,7 +81,7 @@ public class CommunityServiceTest {
 		Long communityId = community.getId();
 		Participation participation = createParticipation(community, user);
 
-		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("aaaa", true);
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true, 1L);
 
 		when(communityRepository.findById(any(Long.class))).thenReturn(Optional.of(community));
 		when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(user));
