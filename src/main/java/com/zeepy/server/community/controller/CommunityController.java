@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zeepy.server.common.annotation.Enum;
+import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
-import com.zeepy.server.community.dto.CommunityRequestDto;
 import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
@@ -104,14 +106,17 @@ public class CommunityController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<CommunityResponseDto> getCommunity(@PathVariable("id") Long communityId) {
+	public ResponseEntity<CommunityResponseDto> getCommunity(
+		@PathVariable("id") Long communityId) {
 		CommunityResponseDto communityResponseDto = communityService.getCommunity(communityId);
 		return ResponseEntity.ok().body(communityResponseDto);
 	}
 
 	@GetMapping
-	public ResponseEntity<CommunityResponseDtos> getCommunityList(@RequestBody CommunityRequestDto requestDto) {
-		CommunityResponseDtos communityResponseDtos = communityService.getCommunityList(requestDto);
+	public ResponseEntity<CommunityResponseDtos> getCommunityList(
+		@RequestParam String address,
+		@RequestParam @Nullable String communityType) {
+		CommunityResponseDtos communityResponseDtos = communityService.getCommunityList(address, communityType);
 		return ResponseEntity.ok().body(communityResponseDtos);
 	}
 }
