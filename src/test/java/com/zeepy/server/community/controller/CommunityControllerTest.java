@@ -21,6 +21,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.zeepy.server.auth.service.CustomDetailsService;
 import com.zeepy.server.common.ControllerTest;
 import com.zeepy.server.common.config.security.CustomAccessDeniedHandler;
 import com.zeepy.server.common.config.security.CustomAuthenticationEntryPoint;
@@ -42,11 +43,13 @@ import com.zeepy.server.user.domain.User;
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = {CommunityController.class}, includeFilters = @ComponentScan.Filter(classes = {
 	EnableWebSecurity.class}))
+
 public class CommunityControllerTest extends ControllerTest {
 
 	@MockBean
 	private CommunityService communityService;
-
+	@MockBean
+	CustomDetailsService customDetailsService;
 	@MockBean
 	JwtAuthenticationProvider jwtAuthenticationProvider;
 	@MockBean
@@ -64,11 +67,10 @@ public class CommunityControllerTest extends ControllerTest {
 
 	@DisplayName("커뮤니티_등록_테스트")
 	@Test
-	@WithMockUser
+	@WithMockUser(username = "user", password = "123123", roles = "USER")
 	public void save() throws Exception {
 		SaveCommunityRequestDto requestDto = SaveCommunityRequestDto.builder()
 			.communityCategory(CommunityCategory.FREESHARING)
-			.user(User.builder().id(1L).name("작성자").build())
 			.title("강의 공동 구매해요!")
 			.content("제곧내")
 			.imageUrls(Arrays.asList("asdasd", "aaaaaaa", "ccccccccc"))

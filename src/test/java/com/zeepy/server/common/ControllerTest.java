@@ -1,5 +1,6 @@
 package com.zeepy.server.common;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -35,6 +36,7 @@ public abstract class ControllerTest {
 
     protected <T> ResultActions doPost(String path, T request) throws Exception {
         return mockMvc.perform(post(path)
+            .with(user("user").password("123123").roles("USER"))
                 .content(objectMapper.writeValueAsBytes(request))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
