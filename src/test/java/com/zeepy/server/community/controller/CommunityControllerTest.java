@@ -10,13 +10,13 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -29,6 +29,9 @@ import com.zeepy.server.common.config.security.JwtAuthenticationProvider;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
+import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.ParticipationResDto;
@@ -40,7 +43,7 @@ import com.zeepy.server.community.service.CommunityService;
 import com.zeepy.server.user.domain.User;
 
 @DisplayName("커뮤니티_컨트롤러_테스트")
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = {CommunityController.class}, includeFilters = @ComponentScan.Filter(classes = {
 	EnableWebSecurity.class}))
 
@@ -52,6 +55,10 @@ public class CommunityControllerTest extends ControllerTest {
 	CustomDetailsService customDetailsService;
 	@MockBean
 	JwtAuthenticationProvider jwtAuthenticationProvider;
+	private CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
+		.communityId(1L)
+		.userId(1L)
+		.build();
 	@MockBean
 	CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 	@MockBean
@@ -81,18 +88,45 @@ public class CommunityControllerTest extends ControllerTest {
 		doPost("/api/community", requestDto);
 	}
 
+	@DisplayName("좋아요_추가_테스트")
+	@Test
+	public void like() throws Exception {
+		given(communityService.like(any(CommunityLikeRequestDto.class))).willReturn(1L);
+		doPost("/api/community/like", communityLikeRequestDto);
+	}
+
+	@DisplayName("좋아요_취소_테스트")
+	@Test
+	public void cancelLike() throws Exception {
+		doNothing().when(communityService).cancelLike(communityLikeRequestDto);
+		doDelete("/api/community/like", communityLikeRequestDto);
+	}
+
+	@DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
+	@Test
+	public void getLikeList() throws Exception {
+		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
+		CommunityResponseDtos communityResponseDtos = new CommunityResponseDtos(communityResponseDtoList);
+		given(communityService.getLikeList(any(Long.class))).willReturn(communityResponseDtos);
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("id", "1");
+		doGet("/api/community/likes", params);
+	}
+
 	@DisplayName("참가하기_테스트")
 	@Test
 	@WithMockUser("test@naver.com")
 	public void joinCommunity() throws Exception {
 		//given
 		long communityId = 1L;
-		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("aaaa", true);
+		long joinUserId = 2L;
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true, joinUserId);
 
-		doNothing().when(communityService).joinCommunity(communityId, requestDto, userEmail);
 		//when
+		doNothing().when(communityService).joinCommunity(communityId, requestDto, userEmail);
 		//then
-		doPost("/api/community/participation/" + communityId, requestDto);
+		doPostThenOk("/api/community/participation/" + communityId, requestDto);
 	}
 
 	@DisplayName("나의ZIP참여목록_테스트")
@@ -162,7 +196,7 @@ public class CommunityControllerTest extends ControllerTest {
 
 		//when
 		//then
-		doPost(url, requestDto);
+		doPostThenOk(url, requestDto);
 	}
 
 	@DisplayName("대댓글작성하기")
@@ -176,7 +210,7 @@ public class CommunityControllerTest extends ControllerTest {
 		doNothing().when(communityService).saveComment(communityId, requestDto, userEmail);
 		//when
 		//then
-		doPost(url, requestDto);
+		doPostThenOk(url, requestDto);
 	}
 
 	@DisplayName("수정하기테스트")
