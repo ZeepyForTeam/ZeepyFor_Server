@@ -46,11 +46,6 @@ public class SaveCommunityRequestDto {
 
 	private User user;
 
-<<<<<<< HEAD
-=======
-	private Long writerId;//작성자ID인데 토큰작업되면 지울꺼@Builder
-
->>>>>>> 8ac996bf92ec63907a7cbaebb7a90096573bcd1a
 	@Builder
 	public SaveCommunityRequestDto(CommunityCategory communityCategory,
 		String productName,

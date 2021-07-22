@@ -36,15 +36,6 @@ public abstract class ControllerTest {
 
     protected <T> ResultActions doPost(String path, T request) throws Exception {
         return mockMvc.perform(post(path)
-<<<<<<< HEAD
-            .with(user("user").password("123123").roles("USER"))
-                .content(objectMapper.writeValueAsBytes(request))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(header().string(HttpHeaders.LOCATION, path + "/1"))
-                .andDo(MockMvcResultHandlers.print());
-=======
             .content(objectMapper.writeValueAsBytes(request))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
@@ -60,7 +51,6 @@ public abstract class ControllerTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andDo(MockMvcResultHandlers.print());
->>>>>>> 8ac996bf92ec63907a7cbaebb7a90096573bcd1a
     }
 
     protected ResultActions doGet(String path, MultiValueMap<String, String> params) throws Exception {

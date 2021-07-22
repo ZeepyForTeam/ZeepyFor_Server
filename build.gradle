@@ -30,13 +30,9 @@ dependencies {
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-<<<<<<< HEAD
-    testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '5.3.2.RELEASE'
-=======
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '5.1.6.RELEASE'
->>>>>>> 8ac996bf92ec63907a7cbaebb7a90096573bcd1a
 }
 
 test {
