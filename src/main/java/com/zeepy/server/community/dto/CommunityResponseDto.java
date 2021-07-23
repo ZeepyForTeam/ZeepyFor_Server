@@ -1,5 +1,7 @@
 package com.zeepy.server.community.dto;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,9 +53,8 @@ public class CommunityResponseDto {
 	}
 
 	public static CommunityResponseDtos ofList(List<Community> communityList) {
-		List<CommunityResponseDto> communityResponseDtoList = communityList.stream()
+		return communityList.stream()
 			.map(CommunityResponseDto::new)
-			.collect(Collectors.toList());
-		return new CommunityResponseDtos(communityResponseDtoList);
+			.collect(collectingAndThen(toList(), CommunityResponseDtos::new));
 	}
 }
