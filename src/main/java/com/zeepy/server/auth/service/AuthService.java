@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.auth.domain.Token;
+import com.zeepy.server.auth.dto.GetUserInfoResDto;
 import com.zeepy.server.auth.dto.LoginReqDto;
 import com.zeepy.server.auth.dto.ReIssueReqDto;
 import com.zeepy.server.auth.dto.TokenResDto;
@@ -70,6 +71,23 @@ public class AuthService {
 		String newAccessToken = jwtAuthenticationProvider.createAccessToken(userEmail);
 		String newRefreshToken = jwtAuthenticationProvider.createRefreshToken();
 		return new TokenResDto(newAccessToken, newRefreshToken);
+	}
+
+	@Transactional
+	public TokenResDto kakaoLogin(GetUserInfoResDto userInfoResDto) {
+		String nickname = userInfoResDto.getNickname();
+		String email = userInfoResDto.getEmail();
+
+		//신규회원이면 회원가입, 기존회원이면 kakao에서 받은 정보로 최신화후 저장
+		User user = userRepository.findByEmail(nickname)
+			.map(entity -> entity.update(email, nickname))
+			.orElseGet(userInfoResDto::toEntity);
+		userRepository.save(user);
+
+		String accessToken = jwtAuthenticationProvider.createAccessToken(user.getEmail());
+		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
+
+		return new TokenResDto(accessToken, refreshToken);
 	}
 
 	private User getUserByEmail(String authUserEmail) {
