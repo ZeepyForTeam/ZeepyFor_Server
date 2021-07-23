@@ -87,6 +87,9 @@ public class AuthService {
 		String accessToken = jwtAuthenticationProvider.createAccessToken(user.getEmail());
 		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
 
+		Token tokens = new Token(accessToken, refreshToken, user);
+		tokenRepository.save(tokens);
+
 		return new TokenResDto(accessToken, refreshToken);
 	}
 
