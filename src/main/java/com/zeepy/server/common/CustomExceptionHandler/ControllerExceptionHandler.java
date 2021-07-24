@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.KakaoUnAuthorization;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundParticipationException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundPasswordException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundTokenException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenException;
@@ -108,6 +110,20 @@ public class ControllerExceptionHandler {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(NotFoundTokenException.class)
+	public ResponseEntity<ErrorResponse> notFoundTokenException(NotFoundTokenException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(KakaoUnAuthorization.class)
+	public ResponseEntity<ErrorResponse> kakaoUnAuthorization(KakaoUnAuthorization e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 	}
 
 	public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
