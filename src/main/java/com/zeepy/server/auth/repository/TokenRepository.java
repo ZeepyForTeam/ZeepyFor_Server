@@ -11,5 +11,7 @@ import com.zeepy.server.auth.domain.Token;
 public interface TokenRepository extends JpaRepository<Token, Long> {
 	void deleteByUserId(Long userId);
 
+	Optional<Token> findByUserId(Long userId);
+
 	Optional<Token> findByRefreshToken(String refreshToken);
 }

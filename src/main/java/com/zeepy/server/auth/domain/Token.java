@@ -31,6 +31,8 @@ public class Token extends BaseTimeEntity {
 	@NotNull
 	private String refreshToken;
 
+	private String kakaoToken;
+
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -40,5 +42,9 @@ public class Token extends BaseTimeEntity {
 		this.accessToken = accessToken;
 		this.refreshToken = refreshToken;
 		this.user = user;
+	}
+
+	public void setKakaoToken(String kakaoToken) {
+		this.kakaoToken = kakaoToken;
 	}
 }

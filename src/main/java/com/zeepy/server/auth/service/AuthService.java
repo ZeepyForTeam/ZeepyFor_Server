@@ -11,6 +11,7 @@ import com.zeepy.server.auth.dto.ReIssueReqDto;
 import com.zeepy.server.auth.dto.TokenResDto;
 import com.zeepy.server.auth.repository.TokenRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundPasswordException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundTokenException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenNotExistException;
@@ -27,6 +28,7 @@ public class AuthService {
 	private final TokenRepository tokenRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtAuthenticationProvider jwtAuthenticationProvider;
+	private final KakaoApi kakaoApi;
 
 	@Transactional
 	public TokenResDto login(LoginReqDto loginReqDto) {
@@ -50,9 +52,15 @@ public class AuthService {
 
 	@Transactional
 	public void logout(String userEmail) {
-		User user = getUserByEmail(userEmail);
-		tokenRepository.deleteByUserId(user
-			.getId());
+		Long userId = getUserByEmail(userEmail).getId();
+		Token findToken = tokenRepository.findByUserId(userId)
+			.orElseThrow(NotFoundTokenException::new);//사용자의 등록된 토큰이 없습니다.(401??)
+		//만약 token의 카카오가 !null이면 카카오 로그아웃
+		if (findToken.getKakaoToken() != null) {
+			kakaoApi.logout(findToken.getKakaoToken());
+		}
+		//나중에 token의 애플이 !null이면 애플 로그아웃
+		tokenRepository.deleteByUserId(userId);
 	}
 
 	@Transactional
@@ -74,19 +82,22 @@ public class AuthService {
 	}
 
 	@Transactional
-	public TokenResDto kakaoLogin(GetUserInfoResDto userInfoResDto) {
+	public TokenResDto kakaoLogin(GetUserInfoResDto userInfoResDto, String kakaoAccessToken) {
 		// String nickname = userInfoResDto.getNickname();
 		String email = userInfoResDto.getEmail();
 
-		//신규회원이면 회원가입, 기존회원이면 kakao에서 받은 정보로 최신화후 저장
+		//신규회원이면 회원가입
 		User user = userRepository.findByEmail(email)
-			.orElseGet(userInfoResDto::toEntity);
-		userRepository.save(user);
+			.orElseGet(() -> {
+				User newUser = userInfoResDto.toEntity();
+				return userRepository.save(newUser);    //신규회원일때 name = zeepy#000 이런식으로
+			});
 
 		String accessToken = jwtAuthenticationProvider.createAccessToken(user.getEmail());
 		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
 
 		Token tokens = new Token(accessToken, refreshToken, user);
+		tokens.setKakaoToken(kakaoAccessToken);
 		tokenRepository.save(tokens);
 
 		return new TokenResDto(accessToken, refreshToken);
