@@ -10,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 
 import com.zeepy.server.auth.dto.GetUserInfoResDto;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.KakaoUnAuthorization;
 
 @Service
 public class KakaoApi {
@@ -34,6 +35,9 @@ public class KakaoApi {
 
 			int responseCode = conn.getResponseCode();
 			System.out.println("responseCode : " + responseCode);
+			if (responseCode == 401) {
+				throw new KakaoUnAuthorization();
+			}
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String line;
@@ -59,5 +63,27 @@ public class KakaoApi {
 			throw new RuntimeException(e);
 		}
 		return userInfoResDto;
+	}
+
+	public void logout(String accessToken) {
+		System.out.println("accessToken : " + accessToken);
+		String reqUrl = "https://kapi.kakao.com/v1/user/logout";
+		try {
+			URL url = new URL(reqUrl);
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("POST");
+
+			conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode : " + responseCode);
+			if (responseCode == 401) {
+				throw new KakaoUnAuthorization();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 }
