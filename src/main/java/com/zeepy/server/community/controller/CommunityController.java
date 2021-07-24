@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
 import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
@@ -35,8 +35,9 @@ public class CommunityController {
 	private final CommunityService communityService;
 
 	@PostMapping
-	public ResponseEntity<Void> saveCommunity(@Valid @RequestBody SaveCommunityRequestDto saveCommunityRequestDto) {
-		Long saveId = communityService.save(saveCommunityRequestDto);
+	public ResponseEntity<Void> saveCommunity(@Valid @RequestBody SaveCommunityRequestDto saveCommunityRequestDto,
+		@AuthenticationPrincipal String userEmail) {
+		Long saveId = communityService.save(saveCommunityRequestDto, userEmail);
 		return ResponseEntity.created(URI.create("/api/community/" + saveId)).build();
 	}
 
@@ -50,18 +51,19 @@ public class CommunityController {
 	@PostMapping("/participation/{id}")
 	public ResponseEntity<Void> toJoinCommunity(
 		@PathVariable("id") Long communityId,
-		@Valid @RequestBody JoinCommunityRequestDto joinCommunityRequestDto
+		@Valid @RequestBody JoinCommunityRequestDto joinCommunityRequestDto,
+		@AuthenticationPrincipal String userEmail
 	) {
-		communityService.joinCommunity(communityId, joinCommunityRequestDto);
+		communityService.joinCommunity(communityId, joinCommunityRequestDto, userEmail);
 		return ResponseEntity.ok().build();
 	}
 
 	@PutMapping("/participation/{id}")
 	public ResponseEntity<Void> cancelJoinCommunity(
 		@PathVariable("id") Long communityId,
-		@Valid @RequestBody CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto
+		@AuthenticationPrincipal String userEmail
 	) {
-		communityService.cancelJoinCommunity(communityId, cancelJoinCommunityRequestDto);
+		communityService.cancelJoinCommunity(communityId, userEmail);
 		return ResponseEntity.ok().build();
 	}
 
@@ -76,18 +78,21 @@ public class CommunityController {
 	public ResponseEntity<CommunityResponseDtos> getLikeList(@RequestParam Long id) {
 		return new ResponseEntity<>(communityService.getLikeList(id), HttpStatus.OK);
 	}
+
 	@PostMapping("/comment/{id}")
 	public ResponseEntity<Void> writeComment(
 		@PathVariable("id") Long communityId,
-		@Valid @RequestBody WriteCommentRequestDto writeCommentRequestDto
+		@Valid @RequestBody WriteCommentRequestDto writeCommentRequestDto,
+		@AuthenticationPrincipal String userEmail
 	) {
-		communityService.saveComment(communityId, writeCommentRequestDto);
+		communityService.saveComment(communityId, writeCommentRequestDto, userEmail);
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/participation/{id}")
-	public ResponseEntity<MyZipJoinResDto> getMyZipJoinList(@PathVariable("id") Long userId) {
-		MyZipJoinResDto myZipJoinList = communityService.getJoinList(userId);
+	@GetMapping("/participation")
+	public ResponseEntity<MyZipJoinResDto> getMyZipJoinList(@AuthenticationPrincipal String userEmail) {
+		System.out.println("authenticationPrincipal : " + userEmail);
+		MyZipJoinResDto myZipJoinList = communityService.getJoinList(userEmail);
 		return ResponseEntity.ok().body(myZipJoinList);
 	}
 

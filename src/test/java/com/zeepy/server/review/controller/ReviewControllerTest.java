@@ -10,9 +10,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.zeepy.server.common.ControllerTest;
+import com.zeepy.server.common.config.security.CustomAccessDeniedHandler;
+import com.zeepy.server.common.config.security.CustomAuthenticationEntryPoint;
+import com.zeepy.server.common.config.security.JwtAuthenticationProvider;
 import com.zeepy.server.review.domain.CommuncationTendency;
 import com.zeepy.server.review.domain.Furniture;
 import com.zeepy.server.review.domain.LessorAge;
@@ -24,11 +31,18 @@ import com.zeepy.server.review.dto.ReviewDto;
 import com.zeepy.server.review.service.ReviewService;
 
 @DisplayName("ReviewController_테스트_클래스")
-@WebMvcTest(controllers = ReviewController.class)
+@WebMvcTest(controllers = {ReviewController.class}, includeFilters = @ComponentScan.Filter(classes = {
+	EnableWebSecurity.class}))
 @MockBean(JpaMetamodelMappingContext.class)
 public class ReviewControllerTest extends ControllerTest {
     @MockBean
     private ReviewService reviewService;
+    @MockBean
+    JwtAuthenticationProvider jwtAuthenticationProvider;
+    @MockBean
+    CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    @MockBean
+    CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @BeforeEach
     @Override

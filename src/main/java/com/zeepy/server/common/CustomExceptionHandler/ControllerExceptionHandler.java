@@ -98,6 +98,13 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(NotFoundPasswordException.class)
+	public ResponseEntity<ErrorResponse> notfoundPasswordException(NotFoundPasswordException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+
     @ExceptionHandler(BadRequestCommentException.class)
     public ResponseEntity<ErrorResponse> badRequestComment(BadRequestCommentException e) {
         ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
@@ -119,6 +126,20 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(RefreshTokenException.class)
+	public ResponseEntity<ErrorResponse> refreshToeknException(RefreshTokenException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(RefreshTokenNotExistException.class)
+	public ResponseEntity<ErrorResponse> refreshTokenNotExistException(RefreshTokenNotExistException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
     public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
         final ErrorCode errorCode = e.getErrorCode();
         int errorStatus = errorCode.getStatus();
@@ -128,5 +149,5 @@ public class ControllerExceptionHandler {
                 .status(errorStatus)
                 .message(errorMessage);
     }
-
+    
 }
