@@ -75,12 +75,12 @@ public class AuthService {
 
 	@Transactional
 	public TokenResDto kakaoLogin(GetUserInfoResDto userInfoResDto) {
-		String nickname = userInfoResDto.getNickname();
+		// String nickname = userInfoResDto.getNickname();
 		String email = userInfoResDto.getEmail();
 
 		//신규회원이면 회원가입, 기존회원이면 kakao에서 받은 정보로 최신화후 저장
-		User user = userRepository.findByEmail(nickname)
-			.map(entity -> entity.update(email, nickname))
+		User user = userRepository.findByEmail(email)
+			.map(entity -> entity.update(email))
 			.orElseGet(userInfoResDto::toEntity);
 		userRepository.save(user);
 

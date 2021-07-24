@@ -75,8 +75,7 @@ public class User implements UserDetails {
 		this.role = role;
 	}
 
-	public User update(String email, String name) {
-		this.name = name;
+	public User update(String email) {
 		this.email = email;
 		return this;
 	}

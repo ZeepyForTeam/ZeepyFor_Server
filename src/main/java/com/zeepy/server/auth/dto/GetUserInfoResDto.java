@@ -16,7 +16,6 @@ public class GetUserInfoResDto {
 
 	public User toEntity() {
 		return User.builder()
-			.name(nickname)
 			.email(email)
 			.role(Role.ROLE_USER)
 			.build();

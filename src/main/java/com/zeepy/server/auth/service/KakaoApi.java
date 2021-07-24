@@ -52,7 +52,7 @@ public class KakaoApi {
 			String nickname = properties.get("nickname").toString();
 			String email = kakao_account.get("email").toString();
 
-			userInfoResDto.setNickname(nickname);
+			// userInfoResDto.setNickname(nickname);
 			userInfoResDto.setEmail(email);
 		} catch (Exception e) {
 			e.printStackTrace();
