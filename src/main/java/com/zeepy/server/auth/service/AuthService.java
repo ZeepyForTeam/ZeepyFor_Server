@@ -80,7 +80,6 @@ public class AuthService {
 
 		//신규회원이면 회원가입, 기존회원이면 kakao에서 받은 정보로 최신화후 저장
 		User user = userRepository.findByEmail(email)
-			.map(entity -> entity.update(email))
 			.orElseGet(userInfoResDto::toEntity);
 		userRepository.save(user);
 
