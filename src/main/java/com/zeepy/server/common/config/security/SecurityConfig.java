@@ -11,8 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.zeepy.server.auth.service.CustomOAuth2UserService;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -23,8 +21,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 	@Autowired
 	private CustomAccessDeniedHandler customAccessDeniedHandler;
-	@Autowired
-	private CustomOAuth2UserService customOAuth2UserService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -44,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			.antMatchers("/h2-console/*").permitAll()
 			.antMatchers("/api/user/registration").permitAll()
-			.antMatchers("/api/auth/*").permitAll()
+			.antMatchers("/api/auth/**").permitAll()
 			.anyRequest().authenticated()
 
 			.and()

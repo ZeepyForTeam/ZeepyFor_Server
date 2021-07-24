@@ -14,28 +14,34 @@ import com.zeepy.server.auth.dto.GetUserInfoResDto;
 @Service
 public class KakaoApi {
 
-	public GetUserInfoResDto getUserInfo(String access_Token) {
+	public GetUserInfoResDto getUserInfo(String accessToken) {
+		System.out.println("accessToken !!!!!!! : " + accessToken);
 		GetUserInfoResDto userInfoResDto = new GetUserInfoResDto();
 		String reqUrl = "https://kapi.kakao.com/v2/user/me";
 		try {
 			URL url = new URL(reqUrl);
-			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-			connection.setRequestMethod("POST");
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("GET");
 
 			//요청에 필요한 Header에 포함될 내용
-			connection.setRequestProperty("Authorization", "Bearer" + access_Token);
+			String authorizationHeader = "Bearer " + accessToken.trim();
+			System.out.println("code : " + authorizationHeader);
+			conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+			System.out.println("method : " + conn.getRequestMethod());
 
-			// int responseCode = connection.getResponseCode();
+			conn.setConnectTimeout(10000);
+			conn.setReadTimeout(5000);
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode : " + responseCode);
 
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String line;
 			String result = "";
 
 			while ((line = br.readLine()) != null) {
 				result += line;
 			}
-			System.out.println("responseBody : " + result);
 
 			JSONParser jsonParser = new JSONParser();
 			JSONObject jsonObject = (JSONObject)jsonParser.parse(result);
@@ -50,6 +56,7 @@ public class KakaoApi {
 			userInfoResDto.setEmail(email);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return userInfoResDto;
 	}
