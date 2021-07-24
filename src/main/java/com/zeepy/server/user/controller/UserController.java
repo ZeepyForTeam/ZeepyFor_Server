@@ -1,5 +1,7 @@
 package com.zeepy.server.user.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +20,7 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping("/registration")
-	public ResponseEntity<Void> registration(@RequestBody RegistrationReqDto registrationReqDto) {
+	public ResponseEntity<Void> registration(@Valid @RequestBody RegistrationReqDto registrationReqDto) {
 		userService.registration(registrationReqDto);
 		return ResponseEntity.ok().build();
 	}
