@@ -7,9 +7,11 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.push.dto.PushManyTargetRequestDto;
 import com.zeepy.server.push.dto.PushOneTargetRequestDto;
 import com.zeepy.server.push.util.FirebaseCloudMessageUtility;
+import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +45,12 @@ public class PushService {
     public void pushByTargetUsersUsingTopic(
             PushOneTargetRequestDto pushOneTargetRequestDto
     ) throws FirebaseMessagingException {
-        // TODO : Security Merge 후 작업
+        User user = userRepository.findByEmail(pushOneTargetRequestDto.getEmail())
+                .orElseThrow(NotFoundUserException::new);
+        firebaseCloudMessageUtility.sendTopicMessage(
+                user.getId().toString(),
+                pushOneTargetRequestDto.getTitle(),
+                pushOneTargetRequestDto.getBody()
+        );
     }
 }

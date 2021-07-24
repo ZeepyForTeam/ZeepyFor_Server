@@ -2,6 +2,7 @@ package com.zeepy.server.push.controller;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.zeepy.server.push.dto.PushManyTargetRequestDto;
+import com.zeepy.server.push.dto.PushOneTargetRequestDto;
 import com.zeepy.server.push.service.PushService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,14 @@ public class PushController {
             @Valid @RequestBody PushManyTargetRequestDto pushManyTargetRequestDto
     ) throws FirebaseMessagingException {
         pushService.pushByAllUsers(pushManyTargetRequestDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/target")
+    public ResponseEntity<Void> notifyTargetUsers(
+            @Valid @RequestBody PushOneTargetRequestDto pushOneTargetRequestDto
+    ) throws FirebaseMessagingException {
+        pushService.pushByTargetUsersUsingTopic(pushOneTargetRequestDto);
         return ResponseEntity.ok().build();
     }
 }
