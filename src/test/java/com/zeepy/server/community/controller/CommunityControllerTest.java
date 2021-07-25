@@ -12,6 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -44,22 +46,22 @@ public class CommunityControllerTest extends ControllerTest {
 	private CommunityService communityService;
 
 	private CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
-        .communityId(1L)
-        .userId(1L)
-        .build();
+		.communityId(1L)
+		.userId(1L)
+		.build();
 
-    @Override
-    @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext) {
-        super.setUp(webApplicationContext);
-    }
+	@Override
+	@BeforeEach
+	public void setUp(WebApplicationContext webApplicationContext) {
+		super.setUp(webApplicationContext);
+	}
 
 	@DisplayName("커뮤니티_등록_테스트")
 	@Test
 	public void save() throws Exception {
 		SaveCommunityRequestDto requestDto = SaveCommunityRequestDto.builder()
 			.communityCategory(CommunityCategory.FREESHARING)
-			.user(User.builder().id(1L).name("작성자").build())
+			.writerId(1L)
 			.title("강의 공동 구매해요!")
 			.content("제곧내")
 			.imageUrls(Arrays.asList("asdasd", "aaaaaaa", "ccccccccc"))
@@ -67,33 +69,33 @@ public class CommunityControllerTest extends ControllerTest {
 
 		given(communityService.save(any(SaveCommunityRequestDto.class))).willReturn(1L);
 
-        doPost("/api/community", requestDto);
-    }
+		doPost("/api/community", requestDto);
+	}
 
-    @DisplayName("좋아요_추가_테스트")
-    @Test
-    public void like() throws Exception {
-        given(communityService.like(any(CommunityLikeRequestDto.class))).willReturn(1L);
-        doPost("/api/community/like", communityLikeRequestDto);
-    }
+	@DisplayName("좋아요_추가_테스트")
+	@Test
+	public void like() throws Exception {
+		given(communityService.like(any(CommunityLikeRequestDto.class))).willReturn(1L);
+		doPost("/api/community/like", communityLikeRequestDto);
+	}
 
-    @DisplayName("좋아요_취소_테스트")
-    @Test
-    public void cancelLike() throws Exception {
-        doNothing().when(communityService).cancelLike(communityLikeRequestDto);
-        doDelete("/api/community/like", communityLikeRequestDto);
-    }
+	@DisplayName("좋아요_취소_테스트")
+	@Test
+	public void cancelLike() throws Exception {
+		doNothing().when(communityService).cancelLike(communityLikeRequestDto);
+		doDelete("/api/community/like", communityLikeRequestDto);
+	}
 
-    @DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
-    @Test
-    public void getLikeList() throws Exception {
-        List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
+	@DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
+	@Test
+	public void getLikeList() throws Exception {
+		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
 		CommunityResponseDtos communityResponseDtos = new CommunityResponseDtos(communityResponseDtoList);
-        given(communityService.getLikeList(any(Long.class))).willReturn(communityResponseDtos);
+		given(communityService.getLikeList(any(Long.class))).willReturn(communityResponseDtos);
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("id", "1");
-        doGet("/api/community/likes", params);
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("id", "1");
+		doGet("/api/community/likes", params);
 	}
 
 	@DisplayName("참가하기_테스트")
@@ -217,4 +219,25 @@ public class CommunityControllerTest extends ControllerTest {
 		//then
 		doPut(url, updateCommunityReqDto);
 	}
+
+	@DisplayName("커뮤니티 불러오기 테스트")
+	@Test
+	public void getCommunity() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		given(communityService.getCommunity(any(Long.class))).willReturn(any(CommunityResponseDto.class));
+
+		doGet("/api/community/1", params);
+	}
+
+	@DisplayName("커뮤니티 목록 불러오기 테스트")
+	@Test
+	public void getCommunityList() throws Exception {
+		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
+		given(communityService.getCommunityList(any(String.class), anyString(), any()))
+			.willReturn(new PageImpl<>(communityResponseDtoList));
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		doGet("/api/community", params);
+	}
 }
+

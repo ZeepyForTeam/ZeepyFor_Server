@@ -1,6 +1,9 @@
 package com.zeepy.server.community.dto;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.zeepy.server.community.domain.Comment;
 import com.zeepy.server.community.domain.Community;
@@ -17,6 +20,7 @@ import lombok.NoArgsConstructor;
 public class CommunityResponseDto {
 	private Long id;
 	private CommunityCategory communityCategory;
+	private String address;
 	private String productName;
 	private Integer productPrice;
 	private String sharingMethod;
@@ -24,6 +28,8 @@ public class CommunityResponseDto {
 	private String title;
 	private String content;
 	private UserDto user;
+	private Boolean isLiked;
+	private Boolean isParticipant;
 	private List<Comment> comments;
 	private List<Participation> participationList;
 	private List<String> imageUrls;
@@ -36,14 +42,29 @@ public class CommunityResponseDto {
 			community.getUser()
 				.getName());
 		this.communityCategory = community.getCommunityCategory();
+		this.address = community.getAddress();
 		this.productName = community.getProductName();
 		this.productPrice = community.getProductPrice();
 		this.sharingMethod = community.getSharingMethod();
 		this.targetNumberOfPeople = community.getTargetNumberOfPeople();
 		this.title = community.getTitle();
 		this.content = community.getContent();
+		// this.isLiked = isLiked(community);
+
 		this.comments = community.getComments();
 		this.participationList = community.getParticipationsList();
 		this.imageUrls = community.getImageUrls();
 	}
+
+	// private Boolean isLiked(Community community) {
+	// 	return community.getLikes().stream()
+	// 		.filter();
+	// }
+
+	public static List<CommunityResponseDto> listOf(List<Community> communityList) {
+		return communityList.stream()
+			.map(CommunityResponseDto::new)
+			.collect(Collectors.toList());
+	}
+
 }

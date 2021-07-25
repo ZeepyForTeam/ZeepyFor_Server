@@ -23,6 +23,8 @@ public class CommunityLikeDto {
 			.build();
 		communityLike.setCommunity(community);
 		communityLike.setUser(user);
+		community.getLikes().add(communityLike);
+		user.getLikedCommunities().add(communityLike);
 		return communityLike;
 	}
 }

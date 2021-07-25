@@ -30,7 +30,9 @@ public class User {
 
 	private String name;
 
-	private String place;@OneToMany(mappedBy = "user")
+	private String place;
+
+	@OneToMany(mappedBy = "user")
 	private List<CommunityLike> likedCommunities = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user")
@@ -43,6 +45,6 @@ public class User {
 	public User(Long id, String name, String place) {
         this.id = id;
 		this.name = name;
-	this.place = place;
+		this.place = place;
     }
 }
