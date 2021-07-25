@@ -66,6 +66,7 @@ public class CommunityLikeRepositoryTest {
 			.productName("사료")
 			.productPrice(80000)
 			.user(user)
+			.address("사당")
 			.title("고앵이 사료 공구")
 			.content("고양이 확대 같이 해봐요")
 			.build();
@@ -77,6 +78,7 @@ public class CommunityLikeRepositoryTest {
 			.productName("기프티콘")
 			.productPrice(80000)
 			.user(user)
+			.address("향남")
 			.title("오늘까지인 기프티콘 나눔")
 			.content("죄송해요 그냥 제가 쓸래요")
 			.build();

@@ -104,12 +104,12 @@ public class Community extends BaseTimeEntity {
 		User user,
 		String title,
 		String content,
-		String place,
 		String instructions,
 		List<String> imageUrls
 	) {
 		this.id = id;
 		this.communityCategory = communityCategory;
+		this.address = address;
 		this.productName = productName;
 		this.productPrice = productPrice;
 		this.sharingMethod = sharingMethod;
