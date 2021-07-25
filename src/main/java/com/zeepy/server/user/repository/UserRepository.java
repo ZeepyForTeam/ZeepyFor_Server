@@ -11,4 +11,6 @@ import com.zeepy.server.user.domain.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByEmail(String userEmail);
+
+	void deleteById(Long userId);
 }
