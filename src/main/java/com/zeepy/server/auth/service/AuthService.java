@@ -90,7 +90,9 @@ public class AuthService {
 		User user = userRepository.findByEmail(email)
 			.orElseGet(() -> {
 				User newUser = userInfoResDto.toEntity();
-				return userRepository.save(newUser);    //신규회원일때 name = zeepy#000 이런식으로
+				User saveUser = userRepository.save(newUser);    //신규회원일때 name = zeepy#000 이런식으로
+				saveUser.setNameById();
+				return saveUser;
 			});
 
 		String accessToken = jwtAuthenticationProvider.createAccessToken(user.getEmail());

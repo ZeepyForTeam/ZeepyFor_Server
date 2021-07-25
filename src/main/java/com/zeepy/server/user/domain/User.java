@@ -75,6 +75,10 @@ public class User implements UserDetails {
 		this.role = role;
 	}
 
+	public void setNameById() {
+		this.name = "Zeepy#" + this.id;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.singletonList(
