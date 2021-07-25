@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateNicknameException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.KakaoUnAuthorization;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
@@ -121,6 +123,20 @@ public class ControllerExceptionHandler {
 
 	@ExceptionHandler(KakaoUnAuthorization.class)
 	public ResponseEntity<ErrorResponse> kakaoUnAuthorization(KakaoUnAuthorization e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(DuplicateEmailException.class)
+	public ResponseEntity<ErrorResponse> checkOfRedundancyEmail(DuplicateEmailException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(DuplicateNicknameException.class)
+	public ResponseEntity<ErrorResponse> checkOfRedundancyNickname(DuplicateNicknameException e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);

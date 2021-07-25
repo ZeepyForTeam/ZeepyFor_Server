@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zeepy.server.user.dto.CheckOfRedundancyEmailReqDto;
+import com.zeepy.server.user.dto.CheckOfRedundancyNicknameReqDto;
 import com.zeepy.server.user.dto.RegistrationReqDto;
 import com.zeepy.server.user.service.UserService;
 
@@ -22,6 +24,20 @@ public class UserController {
 	@PostMapping("/registration")
 	public ResponseEntity<Void> registration(@Valid @RequestBody RegistrationReqDto registrationReqDto) {
 		userService.registration(registrationReqDto);
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/redundancy/email")
+	public ResponseEntity<Void> checkForRedundancyEmail(
+		@RequestBody CheckOfRedundancyEmailReqDto checkOfRedundancyEmailReqDto) {
+		userService.checkForRedundancyEmail(checkOfRedundancyEmailReqDto);
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/redundancy/nickname")
+	public ResponseEntity<Void> checkFromRedundancyNickname(
+		@RequestBody CheckOfRedundancyNicknameReqDto checkOfRedundancyNicknameReqDto) {
+		userService.checkFromRedundancyNickname(checkOfRedundancyNicknameReqDto);
 		return ResponseEntity.ok().build();
 	}
 }
