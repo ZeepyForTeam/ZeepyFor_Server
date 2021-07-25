@@ -4,6 +4,8 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -113,10 +115,10 @@ public class CommunityController {
 	}
 
 	@GetMapping
-	public ResponseEntity<CommunityResponseDtos> getCommunityList(
+	public ResponseEntity<Page<CommunityResponseDto>> getCommunityList(
 		@RequestParam(required = false) String address,
-		@RequestParam(required = false) String communityType) {
-		CommunityResponseDtos communityResponseDtos = communityService.getCommunityList(address, communityType);
-		return ResponseEntity.ok().body(communityResponseDtos);
+		@RequestParam(required = false) String communityType,
+		Pageable pageable) {
+		return ResponseEntity.ok().body(communityService.getCommunityList(address, communityType, pageable));
 	}
 }

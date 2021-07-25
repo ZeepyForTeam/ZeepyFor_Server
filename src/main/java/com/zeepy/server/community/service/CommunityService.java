@@ -3,6 +3,9 @@ package com.zeepy.server.community.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -206,20 +209,25 @@ public class CommunityService {
 	}
 
 	@Transactional(readOnly = true)
-	public CommunityResponseDtos getCommunityList(String address, String communityType) {
+	public Page<CommunityResponseDto> getCommunityList(String address, String communityType, Pageable pageable) {
+		Page<Community> communityList;
 		if (address == null) {
 			if (communityType == null) {
-				return CommunityResponseDto.ofList(communityRepository.findAll());
+				communityList = communityRepository.findAll(pageable);
 			}
-			return CommunityResponseDto.ofList(
-				communityRepository.findByCategory(CommunityCategory.valueOf(communityType)));
+			communityList = communityRepository.findByCategory(CommunityCategory.valueOf(communityType), pageable);
 		}
 
 		if (communityType == null) {
-			return CommunityResponseDto.ofList(communityRepository.findByAddress(address));
+			communityList = communityRepository.findByAddress(address, pageable);
 		}
-		return CommunityResponseDto.ofList(
-			communityRepository.findByAddressAndCommunityCategory(address, CommunityCategory.valueOf(communityType)));
+		communityList = communityRepository.findByAddressAndCommunityCategory(address, CommunityCategory.valueOf(communityType), pageable);
+
+
+		return new PageImpl<CommunityResponseDto>(
+			CommunityResponseDto.listOf(communityList.getContent()),
+			pageable,
+			communityList.getTotalElements());
 	}
 }
 

@@ -28,6 +28,8 @@ public class CommunityResponseDto {
 	private String title;
 	private String content;
 	private UserDto user;
+	private Boolean isLiked;
+	private Boolean isParticipant;
 	private List<Comment> comments;
 	private List<Participation> participationList;
 	private List<String> imageUrls;
@@ -47,12 +49,25 @@ public class CommunityResponseDto {
 		this.targetNumberOfPeople = community.getTargetNumberOfPeople();
 		this.title = community.getTitle();
 		this.content = community.getContent();
+		// this.isLiked = isLiked(community);
+
 		this.comments = community.getComments();
 		this.participationList = community.getParticipationsList();
 		this.imageUrls = community.getImageUrls();
 	}
 
-	public static CommunityResponseDtos ofList(List<Community> communityList) {
+	// private Boolean isLiked(Community community) {
+	// 	return community.getLikes().stream()
+	// 		.filter();
+	// }
+
+	public static List<CommunityResponseDto> listOf(List<Community> communityList) {
+		return communityList.stream()
+			.map(CommunityResponseDto::new)
+			.collect(Collectors.toList());
+	}
+
+	public static CommunityResponseDtos toDtos(List<Community> communityList) {
 		return communityList.stream()
 			.map(CommunityResponseDto::new)
 			.collect(collectingAndThen(toList(), CommunityResponseDtos::new));

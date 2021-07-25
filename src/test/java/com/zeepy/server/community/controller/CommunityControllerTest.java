@@ -12,6 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -229,14 +231,10 @@ public class CommunityControllerTest extends ControllerTest {
 	@Test
 	public void getCommunityList() throws Exception {
 		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
-		CommunityResponseDtos communityResponseDtos = new CommunityResponseDtos(communityResponseDtoList);
-		given(communityService.getCommunityList("Seoul", "JOINT_PURCHASE")).willReturn(
-			communityResponseDtos);
+		given(communityService.getCommunityList(any(String.class), anyString(), any()))
+			.willReturn(new PageImpl<>(communityResponseDtoList));
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("address", "Seoul");
-		params.add("communityType", "JOINT_PURCHASE");
-
 		doGet("/api/community", params);
 	}
 }
