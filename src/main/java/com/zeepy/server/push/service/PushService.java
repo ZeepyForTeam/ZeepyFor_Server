@@ -34,7 +34,7 @@ public class PushService {
 
     public void pushByAllUsers(
             PushManyTargetRequestDto pushManyTargetRequestDto
-    ) throws FirebaseMessagingException {
+    ) {
         firebaseCloudMessageUtility.sendTopicMessage(
                 "notify",
                 pushManyTargetRequestDto.getTitle(),
@@ -44,7 +44,7 @@ public class PushService {
 
     public void pushByTargetUsersUsingTopic(
             PushOneTargetRequestDto pushOneTargetRequestDto
-    ) throws FirebaseMessagingException {
+    ) {
         User user = userRepository.findByEmail(pushOneTargetRequestDto.getEmail())
                 .orElseThrow(NotFoundUserException::new);
         firebaseCloudMessageUtility.sendTopicMessage(

@@ -27,7 +27,7 @@ public class PushController {
     @PostMapping("/all")
     public ResponseEntity<Void> notifyAllUsers(
             @Valid @RequestBody PushManyTargetRequestDto pushManyTargetRequestDto
-    ) throws FirebaseMessagingException {
+    ) {
         pushService.pushByAllUsers(pushManyTargetRequestDto);
         return ResponseEntity.ok().build();
     }
@@ -35,7 +35,7 @@ public class PushController {
     @PostMapping("/target")
     public ResponseEntity<Void> notifyTargetUsers(
             @Valid @RequestBody PushOneTargetRequestDto pushOneTargetRequestDto
-    ) throws FirebaseMessagingException {
+    ) {
         pushService.pushByTargetUsersUsingTopic(pushOneTargetRequestDto);
         return ResponseEntity.ok().build();
     }

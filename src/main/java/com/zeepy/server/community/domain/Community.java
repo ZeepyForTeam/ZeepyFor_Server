@@ -127,6 +127,14 @@ public void addCurrentNumberOfPeople() {
 		}
 	}
 
+	public Boolean checkCurrentNumberOfPeople() {
+		if (targetNumberOfPeople != null && targetNumberOfPeople <= currentNumberOfPeople) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public void substractCurrentNumberOfPeople() {
 		currentNumberOfPeople--;
 	}

@@ -1,5 +1,7 @@
 package com.zeepy.server.common.CustomExceptionHandler;
 
+import com.google.api.Http;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -139,6 +141,13 @@ public class ControllerExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
+
+    @ExceptionHandler(FirebaseCloudMessageException.class)
+    public ResponseEntity<ErrorResponse> firebaseMessagingException(FirebaseCloudMessageException e) {
+        ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
         final ErrorCode errorCode = e.getErrorCode();

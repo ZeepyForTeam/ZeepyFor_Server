@@ -16,7 +16,8 @@ public enum ErrorCode {
 	OVERFLOW_ACHIEVEMENT(400, "더이상 참여할수 없습니다."),
 	ALREADY_PARTICIPATION(400, "이미 참여한 사용자입니다."),
 	REFRESH_TOKEN_EXPIRED(401, "RefreshToken의 유효시간이 만료되었습니다"),
-	REFRESH_TOKEN_NOT_EXIST(400, "RefreshToken이 존재하지 않습니다. 다시 로그인 해주세요.");
+	REFRESH_TOKEN_NOT_EXIST(400, "RefreshToken이 존재하지 않습니다. 다시 로그인 해주세요."),
+	FCM_NOT_ALLOWED(500, "Firebase 오류입니다. 서버팀에 문의하여 주세요");
 
 	private final int status;
 	private final String message;

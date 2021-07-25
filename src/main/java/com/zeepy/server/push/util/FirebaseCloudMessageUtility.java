@@ -7,6 +7,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.FirebaseCloudMessageException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -42,20 +43,27 @@ public class FirebaseCloudMessageUtility {
             String targetToken,
             String title,
             String body
-    ) throws FirebaseMessagingException {
+    ) {
         Message message = makeTargetMessage(targetToken, title, body);
 
-        this.instance.send(message);
+        try {
+            this.instance.send(message);
+        } catch (FirebaseMessagingException e) {
+            throw new FirebaseCloudMessageException();
+        }
     }
 
     public void sendTopicMessage(
             String topic,
             String title,
             String body
-    ) throws FirebaseMessagingException {
+    ) {
         Message message = makeTopicMessage(topic, title, body);
-
-        this.instance.send(message);
+        try {
+            this.instance.send(message);
+        } catch (FirebaseMessagingException e) {
+            throw new FirebaseCloudMessageException();
+        }
     }
 
     private Message makeTargetMessage(
