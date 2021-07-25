@@ -26,6 +26,7 @@ public class UserService {
 			.toEntity());
 	}
 
+	@Transactional
 	public void checkForRedundancyEmail(CheckOfRedundancyEmailReqDto reqDto) {
 		String email = reqDto.getEmail();
 		Optional<User> user = userRepository.findByEmail(email);
@@ -34,6 +35,7 @@ public class UserService {
 		}
 	}
 
+	@Transactional
 	public void checkFromRedundancyNickname(CheckOfRedundancyNicknameReqDto reqDto) {
 		String nickname = reqDto.getNickname();
 		Optional<User> user = userRepository.findByName(nickname);
