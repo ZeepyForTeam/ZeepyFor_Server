@@ -90,9 +90,9 @@ public class CommunityService {
 		Long writerId = requestDto.getWriterId();
 		User writer = userRepository.findById(writerId)
 			.orElseThrow(NotFoundUserException::new);
-		requestDto.setUser(writer);
 
 		Community communityToSave = requestDto.toEntity();
+		communityToSave.setUser(writer);
 		Community community = communityRepository.save(communityToSave);
 
 		ParticipationDto participationDto = new ParticipationDto(community, writer);

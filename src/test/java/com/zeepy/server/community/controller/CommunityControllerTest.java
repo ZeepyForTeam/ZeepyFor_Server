@@ -59,7 +59,7 @@ public class CommunityControllerTest extends ControllerTest {
 	public void save() throws Exception {
 		SaveCommunityRequestDto requestDto = SaveCommunityRequestDto.builder()
 			.communityCategory(CommunityCategory.FREESHARING)
-			.user(User.builder().id(1L).name("작성자").build())
+			.writerId(1L)
 			.title("강의 공동 구매해요!")
 			.content("제곧내")
 			.imageUrls(Arrays.asList("asdasd", "aaaaaaa", "ccccccccc"))

@@ -47,36 +47,39 @@ public class SaveCommunityRequestDto {
 
 	private List<String> imageUrls;
 
-	private User user;
-
 	private Long writerId;//작성자ID인데 토큰작업되면 지울꺼@Builder
 
 	@Builder
-	public SaveCommunityRequestDto(CommunityCategory communityCategory,
+	public SaveCommunityRequestDto(
+		CommunityCategory communityCategory,
+		String address,
 		String productName,
 		Integer productPrice,String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
-
 		String title,
 		String content,
 		String instructions,
-		User user,List<String> imageUrls) {
+		List<String> imageUrls,
+		Long writerId) {
 		this.communityCategory = communityCategory;
+		this.address = address;
 		this.productName = productName;
 		this.productPrice = productPrice;
-		this.purchasePlace = purchasePlace;this.sharingMethod = sharingMethod;
+		this.purchasePlace = purchasePlace;
+		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
-
 		this.title = title;
-		this.content = content;this.instructions = instructions;
-		this.user = user;
+		this.content = content;
+		this.instructions = instructions;
 		this.imageUrls = imageUrls;
+		this.writerId = writerId;
 	}
 
 	public Community toEntity() {
 		return Community.builder()
 			.communityCategory(communityCategory)
+			.address(address)
 			.productName(productName)
 			.productPrice(productPrice)
 			.purchasePlace(purchasePlace)
@@ -85,14 +88,8 @@ public class SaveCommunityRequestDto {
 			.currentNumberOfPeople(currentNumberOfPeople)
 			.title(title)
 			.content(content)
-			.place(user.getPlace())
 			.instructions(instructions)
-			.user(user)
 			.imageUrls(imageUrls)
 			.build();
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 }
