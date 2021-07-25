@@ -14,5 +14,7 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 
 	List<Community> findByAddress(String address);
 
-	List<Community> findByAddressAndType(String address, CommunityCategory communityCategory);
+	List<Community> findByAddressAndCommunityCategory(String address, CommunityCategory communityCategory);
+
+	List<Community> findByCategory(CommunityCategory communityType);
 }

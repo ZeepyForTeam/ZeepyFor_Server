@@ -41,7 +41,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CommunityService {
-    private final CommunityRepository communityRepository;
+	private final CommunityRepository communityRepository;
 	private final CommunityLikeRepository communityLikeRepository;
 	private final UserRepository userRepository;
 	private final ParticipationRepository participationRepository;
@@ -81,6 +81,7 @@ public class CommunityService {
 			.map(CommunityResponseDto::new)
 			.collect(Collectors.toList()));
 	}
+
 	@Transactional
 	public Long save(SaveCommunityRequestDto requestDto) {
 		Long writerId = requestDto.getWriterId();
@@ -206,12 +207,19 @@ public class CommunityService {
 
 	@Transactional(readOnly = true)
 	public CommunityResponseDtos getCommunityList(String address, String communityType) {
+		if (address == null) {
+			if (communityType == null) {
+				return CommunityResponseDto.ofList(communityRepository.findAll());
+			}
+			return CommunityResponseDto.ofList(
+				communityRepository.findByCategory(CommunityCategory.valueOf(communityType)));
+		}
+
 		if (communityType == null) {
 			return CommunityResponseDto.ofList(communityRepository.findByAddress(address));
 		}
 		return CommunityResponseDto.ofList(
-			communityRepository.findByAddressAndType(address, CommunityCategory.valueOf(communityType)));
-
+			communityRepository.findByAddressAndCommunityCategory(address, CommunityCategory.valueOf(communityType)));
 	}
 }
 

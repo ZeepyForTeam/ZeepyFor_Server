@@ -114,8 +114,8 @@ public class CommunityController {
 
 	@GetMapping
 	public ResponseEntity<CommunityResponseDtos> getCommunityList(
-		@RequestParam String address,
-		@RequestParam @Nullable String communityType) {
+		@RequestParam(required = false) String address,
+		@RequestParam(required = false) String communityType) {
 		CommunityResponseDtos communityResponseDtos = communityService.getCommunityList(address, communityType);
 		return ResponseEntity.ok().body(communityResponseDtos);
 	}
