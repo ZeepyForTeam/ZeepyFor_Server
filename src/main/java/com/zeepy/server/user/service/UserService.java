@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.auth.repository.TokenRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
+import com.zeepy.server.user.domain.ModifyNicknameReqDto;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.dto.RegistrationReqDto;
 import com.zeepy.server.user.repository.UserRepository;
@@ -21,6 +22,14 @@ public class UserService {
 	public void registration(RegistrationReqDto registrationReqDto) {
 		userRepository.save(registrationReqDto
 			.toEntity());
+	}
+
+	@Transactional
+	public void modifyUser(ModifyNicknameReqDto modifyNicknameReqDto, String userEmail) {
+		User user = userRepository.findByEmail(userEmail)
+			.orElseThrow(NotFoundUserException::new);
+		user.setName(modifyNicknameReqDto
+			.getNickname());
 	}
 
 	@Transactional

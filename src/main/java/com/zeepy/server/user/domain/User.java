@@ -75,6 +75,10 @@ public class User implements UserDetails {
 		this.role = role;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.singletonList(
