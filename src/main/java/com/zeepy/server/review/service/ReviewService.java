@@ -3,6 +3,8 @@ package com.zeepy.server.review.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.zeepy.server.building.domain.Building;
+import com.zeepy.server.building.repository.BuildingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReviewService {
 	private final ReviewRepository reviewRepository;
+	private final BuildingRepository buildingRepository;
 
 	@Transactional(readOnly = true)
 	public ReviewResponseDtos getReviewList(String address) {
@@ -35,6 +38,11 @@ public class ReviewService {
 	@Transactional
 	public Long create(ReviewDto reviewDto) {
 		Review review = reviewDto.returnReviewEntity();
+
+		Building building = buildingRepository.findById(reviewDto.getBuildingId())
+				.orElseThrow(NoContentException::new);
+
+		review.setBuilding(building);
 		Review save = reviewRepository.save(review);
 		return save.getId();
 	}
