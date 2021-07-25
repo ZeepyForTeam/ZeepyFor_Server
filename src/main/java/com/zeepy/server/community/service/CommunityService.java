@@ -215,7 +215,8 @@ public class CommunityService {
 			if (communityType == null || communityType.isEmpty()) {
 				communityList = communityRepository.findAll(pageable);
 			}
-			communityList = communityRepository.findByCategory(CommunityCategory.valueOf(communityType), pageable);
+			communityList = communityRepository.findByCommunityCategory(CommunityCategory.valueOf(communityType),
+				pageable);
 		}
 
 		if (communityType == null || communityType.isEmpty()) {

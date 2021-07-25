@@ -19,7 +19,8 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 
 	Page<Community> findByAddress(String address, Pageable pageable);
 
-	Page<Community> findByAddressAndCommunityCategory(String address, CommunityCategory communityCategory, Pageable pageable);
+	Page<Community> findByAddressAndCommunityCategory(String address, CommunityCategory communityCategory,
+		Pageable pageable);
 
-	Page<Community> findByCategory(CommunityCategory communityType, Pageable pageable);
+	Page<Community> findByCommunityCategory(CommunityCategory communityCategory, Pageable pageable);
 }
