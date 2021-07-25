@@ -30,6 +30,7 @@ public class BuildingController {
 
     @GetMapping
     public ResponseEntity<Page<BuildingResponseDto>> getBuildings(
+            @RequestParam(value = "shortAddress", required = false) String shortAddress,
             @RequestParam(value = "geMonthly", required = false) Integer greaterMonthlyRent,
             @RequestParam(value = "leMonthly", required = false) Integer lesserMonthlyRent,
             @RequestParam(value = "geDeposit", required = false) Integer greaterDeposit,
@@ -40,6 +41,7 @@ public class BuildingController {
             Pageable pageable
     ) {
         return ResponseEntity.ok(buildingService.getAll(
+                shortAddress,
                 greaterMonthlyRent,
                 lesserMonthlyRent,
                 greaterDeposit,

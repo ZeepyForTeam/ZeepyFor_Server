@@ -49,6 +49,15 @@ public class BuildingService {
     private QBuildingLike qBuildingLike = QBuildingLike.buildingLike;
     private QReview qReview = QReview.review1;
 
+    private BooleanExpression containShortAddress(String shortAddress) {
+        if (shortAddress == null) {
+            return null;
+        }
+        return qBuilding
+                .shortAddress
+                .contains(shortAddress);
+    }
+
     private BooleanExpression goeMonthlyRent(Integer monthlyRent) {
         if (monthlyRent == null) {
             return null;
@@ -131,6 +140,7 @@ public class BuildingService {
     // READ
     @Transactional(readOnly = true)
     public Page<BuildingResponseDto> getAll(
+            String shortAddress,
             Integer greaterMonthlyRent,
             Integer lesserMonthlyRent,
             Integer greaterDeposit,
@@ -161,10 +171,12 @@ public class BuildingService {
          * 해당 키워드를 사용한 것이고 페이징이 없는 경우에는 fetch로 가지고 오시면 됩니다.
          */
         QueryResults<Building> fetchResults = jpaQueryFactory
-                .selectFrom(qBuilding)
+                .selectDistinct(qBuilding)
+                .from(qBuilding)
                 .leftJoin(qBuilding.reviews, qReview)
                 .innerJoin(qBuilding.buildingDeals, qBuildingDeal)
                 .where(
+                        containShortAddress(shortAddress),
                         goeMonthlyRent(greaterMonthlyRent),
                         loeMonthlyRent(lesserMonthlyRent),
                         goeDeposit(greaterDeposit),
