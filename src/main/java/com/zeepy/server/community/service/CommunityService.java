@@ -233,19 +233,26 @@ public class CommunityService {
          * superComment == null
          * 댓글 -> Community 제작자에게 PUSH 알림 전송
          * superComment != null
-         * 대댓글 -> superComment 제작자에게 PUSH 알림 전송
+         * 대댓글
+         * -> Community 제작자에게 PUSH 알림 전송
+         * -> superComment 제작자에게 PUSH 알림 전송
          */
+
+        Long communityUserId = community.getUser().getId();
 
         if (superComment != null) {
             firebaseCloudMessageUtility.sendTopicMessage(
                     superCommentId.toString(),
-                    "새로운 댓글이 달렸어요.",
+                    "새로운 대댓글이 달렸어요.",
                     makeMessageBodyAboutComment(community.getTitle(), superComment));
-        } else {
-            Long communityUserId = community.getUser().getId();
             firebaseCloudMessageUtility.sendTopicMessage(
                     communityUserId.toString(),
                     "새로운 대댓글이 달렸어요.",
+                    makeMessageBodyAboutComment(community.getTitle(), superComment));
+        } else {
+            firebaseCloudMessageUtility.sendTopicMessage(
+                    communityUserId.toString(),
+                    "새로운 댓글이 달렸어요.",
                     makeMessageBodyAboutComment(community.getTitle(), superComment));
         }
     }
