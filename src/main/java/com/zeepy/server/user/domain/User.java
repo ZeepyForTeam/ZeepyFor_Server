@@ -79,6 +79,10 @@ public class User implements UserDetails {
 		this.name = name;
 	}
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.singletonList(

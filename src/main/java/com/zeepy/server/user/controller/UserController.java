@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zeepy.server.user.domain.ModifyNicknameReqDto;
+import com.zeepy.server.user.dto.ModifyPasswordReqDto;
 import com.zeepy.server.user.dto.RegistrationReqDto;
 import com.zeepy.server.user.service.UserService;
 
@@ -28,9 +29,16 @@ public class UserController {
 	}
 
 	@PutMapping("/nickname")
-	public ResponseEntity<Void> modifyUser(@RequestBody ModifyNicknameReqDto modifyNicknameReqDto,
+	public ResponseEntity<Void> modifyNickname(@RequestBody ModifyNicknameReqDto modifyNicknameReqDto,
 		@AuthenticationPrincipal String userEmail) {
 		userService.modifyUser(modifyNicknameReqDto, userEmail);
+		return ResponseEntity.ok().build();
+	}
+
+	@PutMapping("/password")
+	public ResponseEntity<Void> modifyPassword(@RequestBody ModifyPasswordReqDto modifyPasswordReqDto,
+		@AuthenticationPrincipal String userEmail) {
+		userService.modifyPassword(modifyPasswordReqDto, userEmail);
 		return ResponseEntity.ok().build();
 	}
 
