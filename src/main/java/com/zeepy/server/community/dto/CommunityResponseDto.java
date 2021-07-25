@@ -67,9 +67,4 @@ public class CommunityResponseDto {
 			.collect(Collectors.toList());
 	}
 
-	public static CommunityResponseDtos toDtos(List<Community> communityList) {
-		return communityList.stream()
-			.map(CommunityResponseDto::new)
-			.collect(collectingAndThen(toList(), CommunityResponseDtos::new));
-	}
 }

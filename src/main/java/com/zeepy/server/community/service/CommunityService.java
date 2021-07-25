@@ -211,18 +211,18 @@ public class CommunityService {
 	@Transactional(readOnly = true)
 	public Page<CommunityResponseDto> getCommunityList(String address, String communityType, Pageable pageable) {
 		Page<Community> communityList;
-		if (address == null) {
-			if (communityType == null) {
+		if (address == null || address.isEmpty()) {
+			if (communityType == null || communityType.isEmpty()) {
 				communityList = communityRepository.findAll(pageable);
 			}
 			communityList = communityRepository.findByCategory(CommunityCategory.valueOf(communityType), pageable);
 		}
 
-		if (communityType == null) {
+		if (communityType == null || communityType.isEmpty()) {
 			communityList = communityRepository.findByAddress(address, pageable);
 		}
-		communityList = communityRepository.findByAddressAndCommunityCategory(address, CommunityCategory.valueOf(communityType), pageable);
-
+		communityList = communityRepository.findByAddressAndCommunityCategory(address,
+			CommunityCategory.valueOf(communityType), pageable);
 
 		return new PageImpl<CommunityResponseDto>(
 			CommunityResponseDto.listOf(communityList.getContent()),
