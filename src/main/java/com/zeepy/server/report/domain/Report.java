@@ -21,10 +21,11 @@ public class Report extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "report_sequence_gen")
     @SequenceGenerator(name = "report_sequence_gen", sequenceName = "report_sequence")
-    @Column(name = "report_seq_id")
+    @Column(name = "report_id")
     private Long id; // PK
 
     @NotNull
+    @Column(name = "report_target_id")
     private Long reportId; // 신고하 테이블 의 PK
 
     @NotNull
