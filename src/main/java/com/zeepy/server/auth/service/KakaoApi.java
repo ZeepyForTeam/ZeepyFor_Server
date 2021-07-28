@@ -35,7 +35,7 @@ public class KakaoApi {
 
 			int responseCode = conn.getResponseCode();
 			System.out.println("responseCode : " + responseCode);
-			if (responseCode == 401) {
+			if (responseCode == 401 || responseCode == 400) {
 				throw new KakaoUnAuthorization();
 			}
 

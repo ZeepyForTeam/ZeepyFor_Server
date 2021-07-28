@@ -1,14 +1,12 @@
 package com.zeepy.server.auth.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class KakaoLoginReqDto {
 	private String accessToken;
-
-	public KakaoLoginReqDto(String accessToken) {
-		this.accessToken = accessToken;
-	}
 }

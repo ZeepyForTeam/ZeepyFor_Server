@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class GetUserInfoResDto {
-	private String nickname;
 	private String email;
 
 	public User toEntity() {

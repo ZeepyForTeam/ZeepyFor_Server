@@ -45,10 +45,10 @@ public class AuthController {
 
 	@PostMapping("/login/kakao")
 	public ResponseEntity<TokenResDto> kakaoLogin(@RequestBody KakaoLoginReqDto kakaoLoginReqDto) {
-		String kakaoAccessToken = kakaoLoginReqDto.getAccessToken();
-		GetUserInfoResDto userInfoResDto = kakaoApi.getUserInfo(kakaoAccessToken);
+		GetUserInfoResDto userInfoResDto = kakaoApi.getUserInfo(
+			kakaoLoginReqDto.getAccessToken());
 
-		TokenResDto tokenResDto = authService.kakaoLogin(userInfoResDto, kakaoAccessToken);
+		TokenResDto tokenResDto = authService.kakaoLogin(userInfoResDto, kakaoLoginReqDto);
 		return ResponseEntity.ok().body(tokenResDto);
 	}
 }
