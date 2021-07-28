@@ -3,6 +3,9 @@ package com.zeepy.server.community.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +15,15 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCo
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.community.domain.Comment;
 import com.zeepy.server.community.domain.Community;
+import com.zeepy.server.community.domain.CommunityCategory;
+import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.CommentDto;
+import com.zeepy.server.community.dto.CommunityLikeDto;
+import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.ParticipationDto;
@@ -24,6 +33,7 @@ import com.zeepy.server.community.dto.UpdateCommunityReqDto;
 import com.zeepy.server.community.dto.WriteCommentRequestDto;
 import com.zeepy.server.community.dto.WriteOutResDto;
 import com.zeepy.server.community.repository.CommentRepository;
+import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
 import com.zeepy.server.user.domain.User;
@@ -35,18 +45,54 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommunityService {
 	private final CommunityRepository communityRepository;
-	private final ParticipationRepository participationRepository;
+	private final CommunityLikeRepository communityLikeRepository;
 	private final UserRepository userRepository;
+	private final ParticipationRepository participationRepository;
 	private final CommentRepository commentRepository;
+
+	@Transactional
+	public Long like(CommunityLikeRequestDto requestDto) {
+		Community community = communityRepository.findById(requestDto.getCommunityId())
+			.orElseThrow(NotFoundCommunityException::new);
+
+		User user = userRepository.findById(requestDto.getUserId())
+			.orElseThrow(NotFoundUserException::new);
+
+		CommunityLikeDto communityLikeDto = new CommunityLikeDto(user, community);
+		CommunityLike communityLike = communityLikeRepository.save(communityLikeDto.toEntity());
+
+		return communityLike.getId();
+	}
+
+	@Transactional
+	public void cancelLike(CommunityLikeRequestDto requestDto) {
+		Community community = communityRepository.findById(requestDto.getCommunityId())
+			.orElseThrow(NotFoundCommunityException::new);
+
+		User user = userRepository.findById(requestDto.getUserId())
+			.orElseThrow(NotFoundUserException::new);
+
+		CommunityLike communityLike = communityLikeRepository.findByCommunityAndUser(community, user);
+		communityLikeRepository.deleteById(communityLike.getId());
+	}
+
+	@Transactional(readOnly = true)
+	public CommunityResponseDtos getLikeList(Long id) {
+		List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(id);
+		return new CommunityResponseDtos(communityLikeList.stream()
+			.map(CommunityLike::getCommunity)
+			.map(CommunityResponseDto::new)
+			.collect(Collectors.toList()));
+	}
 
 	@Transactional
 	public Long save(SaveCommunityRequestDto requestDto) {
 		Long writerId = requestDto.getWriterId();
 		User writer = userRepository.findById(writerId)
 			.orElseThrow(NotFoundUserException::new);
-		requestDto.setUser(writer);
 
 		Community communityToSave = requestDto.toEntity();
+		communityToSave.setUser(writer);
 		Community community = communityRepository.save(communityToSave);
 
 		ParticipationDto participationDto = new ParticipationDto(community, writer);
@@ -153,6 +199,36 @@ public class CommunityService {
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 		updateCommunityReqDto.updateCommunity(findCommunity);
+	}
+
+	@Transactional(readOnly = true)
+	public CommunityResponseDto getCommunity(Long communityId) {
+		Community community = communityRepository.findById(communityId)
+			.orElseThrow(NotFoundCommunityException::new);
+		return new CommunityResponseDto(community);
+	}
+
+	@Transactional(readOnly = true)
+	public Page<CommunityResponseDto> getCommunityList(String address, String communityType, Pageable pageable) {
+		Page<Community> communityList;
+		if (address == null || address.isEmpty()) {
+			if (communityType == null || communityType.isEmpty()) {
+				communityList = communityRepository.findAll(pageable);
+			}
+			communityList = communityRepository.findByCommunityCategory(CommunityCategory.valueOf(communityType),
+				pageable);
+		}
+
+		if (communityType == null || communityType.isEmpty()) {
+			communityList = communityRepository.findByAddress(address, pageable);
+		}
+		communityList = communityRepository.findByAddressAndCommunityCategory(address,
+			CommunityCategory.valueOf(communityType), pageable);
+
+		return new PageImpl<CommunityResponseDto>(
+			CommunityResponseDto.listOf(communityList.getContent()),
+			pageable,
+			communityList.getTotalElements());
 	}
 }
 

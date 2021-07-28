@@ -22,6 +22,9 @@ public class SaveCommunityRequestDto {
 	@NotNull(message = "커뮤니티카테고리는 필수값입니다.")
 	private CommunityCategory communityCategory;
 
+	@NotNull(message = "커뮤니티 주소는 필수입니다.")
+	private String address;
+
 	private String productName;
 
 	private Integer productPrice;
@@ -44,23 +47,23 @@ public class SaveCommunityRequestDto {
 
 	private List<String> imageUrls;
 
-	private User user;
-
-	private Long writerId;//작성자ID인데 토큰작업되면 지울꺼
+	private Long writerId;//작성자ID인데 토큰작업되면 지울꺼@Builder
 
 	@Builder
-	public SaveCommunityRequestDto(CommunityCategory communityCategory,
+	public SaveCommunityRequestDto(
+		CommunityCategory communityCategory,
+		String address,
 		String productName,
-		Integer productPrice,
-		String purchasePlace,
+		Integer productPrice,String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
 		String title,
 		String content,
 		String instructions,
-		User user,
-		List<String> imageUrls) {
+		List<String> imageUrls,
+		Long writerId) {
 		this.communityCategory = communityCategory;
+		this.address = address;
 		this.productName = productName;
 		this.productPrice = productPrice;
 		this.purchasePlace = purchasePlace;
@@ -69,13 +72,14 @@ public class SaveCommunityRequestDto {
 		this.title = title;
 		this.content = content;
 		this.instructions = instructions;
-		this.user = user;
 		this.imageUrls = imageUrls;
+		this.writerId = writerId;
 	}
 
 	public Community toEntity() {
 		return Community.builder()
 			.communityCategory(communityCategory)
+			.address(address)
 			.productName(productName)
 			.productPrice(productPrice)
 			.purchasePlace(purchasePlace)
@@ -84,14 +88,8 @@ public class SaveCommunityRequestDto {
 			.currentNumberOfPeople(currentNumberOfPeople)
 			.title(title)
 			.content(content)
-			.place(user.getPlace())
 			.instructions(instructions)
-			.user(user)
 			.imageUrls(imageUrls)
 			.build();
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 }

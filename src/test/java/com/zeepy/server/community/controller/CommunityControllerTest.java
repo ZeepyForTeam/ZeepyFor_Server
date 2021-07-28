@@ -12,6 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -21,6 +23,9 @@ import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
+import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.ParticipationResDto;
@@ -33,10 +38,16 @@ import com.zeepy.server.user.domain.User;
 
 @DisplayName("커뮤니티_컨트롤러_테스트")
 @WebMvcTest(controllers = CommunityController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 public class CommunityControllerTest extends ControllerTest {
 
 	@MockBean
 	private CommunityService communityService;
+
+	private CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
+		.communityId(1L)
+		.userId(1L)
+		.build();
 
 	@Override
 	@BeforeEach
@@ -48,8 +59,9 @@ public class CommunityControllerTest extends ControllerTest {
 	@Test
 	public void save() throws Exception {
 		SaveCommunityRequestDto requestDto = SaveCommunityRequestDto.builder()
+			.address("안양")
 			.communityCategory(CommunityCategory.FREESHARING)
-			.user(User.builder().id(1L).name("작성자").build())
+			.writerId(1L)
 			.title("강의 공동 구매해요!")
 			.content("제곧내")
 			.imageUrls(Arrays.asList("asdasd", "aaaaaaa", "ccccccccc"))
@@ -60,18 +72,45 @@ public class CommunityControllerTest extends ControllerTest {
 		doPost("/api/community", requestDto);
 	}
 
+	@DisplayName("좋아요_추가_테스트")
+	@Test
+	public void like() throws Exception {
+		given(communityService.like(any(CommunityLikeRequestDto.class))).willReturn(1L);
+		doPost("/api/community/like", communityLikeRequestDto);
+	}
+
+	@DisplayName("좋아요_취소_테스트")
+	@Test
+	public void cancelLike() throws Exception {
+		doNothing().when(communityService).cancelLike(communityLikeRequestDto);
+		doDelete("/api/community/like", communityLikeRequestDto);
+	}
+
+	@DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
+	@Test
+	public void getLikeList() throws Exception {
+		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
+		CommunityResponseDtos communityResponseDtos = new CommunityResponseDtos(communityResponseDtoList);
+		given(communityService.getLikeList(any(Long.class))).willReturn(communityResponseDtos);
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("id", "1");
+		doGet("/api/community/likes", params);
+	}
+
 	@DisplayName("참가하기_테스트")
 	@Test
 	public void joinCommunity() throws Exception {
 		//given
 		long communityId = 1L;
 		long joinUserId = 2L;
-		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto(null, true, joinUserId);
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true, joinUserId);
 
-		doNothing().when(communityService).joinCommunity(communityId, requestDto);
 		//when
+		doNothing().when(communityService).joinCommunity(communityId, requestDto);
+
 		//then
-		doPost("/api/community/participation/" + communityId, requestDto);
+		doPostThenOk("/api/community/participation/" + communityId, requestDto);
 	}
 
 	@DisplayName("나의ZIP참여목록_테스트")
@@ -146,7 +185,7 @@ public class CommunityControllerTest extends ControllerTest {
 
 		//when
 		//then
-		doPost(url, requestDto);
+		doPostThenOk(url, requestDto);
 	}
 
 	@DisplayName("대댓글작성하기")
@@ -162,7 +201,7 @@ public class CommunityControllerTest extends ControllerTest {
 		doNothing().when(communityService).saveComment(communityId, requestDto);
 		//when
 		//then
-		doPost(url, requestDto);
+		doPostThenOk(url, requestDto);
 	}
 
 	@DisplayName("수정하기테스트")
@@ -180,4 +219,25 @@ public class CommunityControllerTest extends ControllerTest {
 		//then
 		doPut(url, updateCommunityReqDto);
 	}
+
+	@DisplayName("커뮤니티 불러오기 테스트")
+	@Test
+	public void getCommunity() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		given(communityService.getCommunity(any(Long.class))).willReturn(any(CommunityResponseDto.class));
+
+		doGet("/api/community/1", params);
+	}
+
+	@DisplayName("커뮤니티 목록 불러오기 테스트")
+	@Test
+	public void getCommunityList() throws Exception {
+		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
+		given(communityService.getCommunityList(any(String.class), anyString(), any()))
+			.willReturn(new PageImpl<>(communityResponseDtoList));
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		doGet("/api/community", params);
+	}
 }
+
