@@ -39,7 +39,7 @@ public class User {
 	@ElementCollection
 	@CollectionTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"))
 	@Column(name = "address")
-	private List<Address> addresss = new ArrayList<>();
+	private List<Address> addresses = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user")
 	private List<CommunityLike> likedCommunities = new ArrayList<>();
@@ -58,6 +58,6 @@ public class User {
 	}
 
 	public void setAddress(List<Address> addresses) {
-		this.addresss = addresses;
+		this.addresses = addresses;
 	}
 }
