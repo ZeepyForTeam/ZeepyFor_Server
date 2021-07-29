@@ -26,9 +26,7 @@ public class UserService {
 			.orElseThrow(NotFoundUserException::new);
 
 		user.setAddress(addAddressReqDto.getAddresses().stream()
-			.map(addressDto ->
-				new Address(addressDto.getCityDistinct(), addressDto.getPrimaryAddress(),
-					addressDto.getDetailAddress()))
+			.map(Address::new)
 			.collect(Collectors.toList()));
 	}
 
