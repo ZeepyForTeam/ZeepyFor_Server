@@ -14,12 +14,7 @@ public class AddressDto {
 	private String primaryAddress;
 	private String detailAddress;
 
-	public AddressDto(AddressDto addressDto) {
-		this.cityDistinct = addressDto.getCityDistinct();
-		this.primaryAddress = addressDto.getPrimaryAddress();
-		this.detailAddress = addressDto.getDetailAddress();
-	}
-
+	@Builder
 	public AddressDto(Address address) {
 		this.cityDistinct = address.getCityDistinct();
 		this.primaryAddress = address.getPrimaryAddress();
