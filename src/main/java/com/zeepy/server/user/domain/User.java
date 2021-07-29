@@ -3,10 +3,14 @@ package com.zeepy.server.user.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
@@ -32,6 +36,11 @@ public class User {
 
 	private String place;
 
+	@ElementCollection
+	@CollectionTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"))
+	@Column(name = "address")
+	private List<Address> addresss = new ArrayList<>();
+
 	@OneToMany(mappedBy = "user")
 	private List<CommunityLike> likedCommunities = new ArrayList<>();
 
@@ -43,8 +52,12 @@ public class User {
 
 	@Builder
 	public User(Long id, String name, String place) {
-        this.id = id;
+		this.id = id;
 		this.name = name;
 		this.place = place;
-    }
+	}
+
+	public void setAddress(List<Address> addresses) {
+		this.addresss = addresses;
+	}
 }
