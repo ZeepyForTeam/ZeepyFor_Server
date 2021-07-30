@@ -26,6 +26,15 @@ public class WriteOutResDto {
 		title = community.getTitle();
 		content = community.getContent();
 		createdTime = community.getCreatedDate();
-		isCompleted = community.getCurrentNumberOfPeople().equals(community.getTargetNumberOfPeople());
+		isCompleted = setIsCompleted(
+			community.getCurrentNumberOfPeople(),
+			community.getTargetNumberOfPeople());
+	}
+
+	public Boolean setIsCompleted(Integer currentNumberOfPeople, Integer targetNumberOfPeople) {
+		if (targetNumberOfPeople == null) {
+			return false;
+		}
+		return currentNumberOfPeople.equals(targetNumberOfPeople);
 	}
 }

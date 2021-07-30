@@ -28,6 +28,15 @@ public class ParticipationResDto {
 		this.title = thisCommunity.getTitle();
 		this.content = thisCommunity.getContent();
 		this.createdTime = thisCommunity.getCreatedDate();
-		this.isCompleted = thisCommunity.getCurrentNumberOfPeople().equals(thisCommunity.getTargetNumberOfPeople());
+		this.isCompleted = setIsCompleted(
+			thisCommunity.getCurrentNumberOfPeople(),
+			thisCommunity.getTargetNumberOfPeople());
+	}
+
+	public Boolean setIsCompleted(Integer currentNumberOfPeople, Integer targetNumberOfPeople) {
+		if (targetNumberOfPeople == null) {
+			return false;
+		}
+		return currentNumberOfPeople.equals(targetNumberOfPeople);
 	}
 }
