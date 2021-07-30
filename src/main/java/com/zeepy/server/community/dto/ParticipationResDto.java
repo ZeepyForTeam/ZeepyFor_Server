@@ -1,5 +1,7 @@
 package com.zeepy.server.community.dto;
 
+import java.time.LocalDateTime;
+
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
@@ -15,6 +17,8 @@ public class ParticipationResDto {
 	private CommunityCategory communityCategory;
 	private String title;
 	private String content;
+	private LocalDateTime createdTime;
+	private Boolean isCompleted;
 
 	@Builder
 	public ParticipationResDto(Participation participation) {
@@ -23,5 +27,7 @@ public class ParticipationResDto {
 		this.communityCategory = thisCommunity.getCommunityCategory();
 		this.title = thisCommunity.getTitle();
 		this.content = thisCommunity.getContent();
+		this.createdTime = thisCommunity.getCreatedDate();
+		this.isCompleted = thisCommunity.getCurrentNumberOfPeople().equals(thisCommunity.getTargetNumberOfPeople());
 	}
 }
