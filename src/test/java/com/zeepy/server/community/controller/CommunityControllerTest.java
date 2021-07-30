@@ -24,6 +24,8 @@ import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityLikeResDto;
+import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
@@ -89,9 +91,9 @@ public class CommunityControllerTest extends ControllerTest {
 	@DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
 	@Test
 	public void getLikeList() throws Exception {
-		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
-		CommunityResponseDtos communityResponseDtos = new CommunityResponseDtos(communityResponseDtoList);
-		given(communityService.getLikeList(any(Long.class), any(String.class))).willReturn(communityResponseDtos);
+		List<CommunityLikeResDto> dtoList = new ArrayList<>();
+		CommunityLikeResDtos dtos = new CommunityLikeResDtos(dtoList);
+		given(communityService.getLikeList(any(Long.class), any(String.class))).willReturn(dtos);
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("id", "1");
@@ -148,7 +150,7 @@ public class CommunityControllerTest extends ControllerTest {
 		MyZipJoinResDto resultResDto = new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		given(communityService.getJoinList(joinUserId)).willReturn(resultResDto);
+		given(communityService.getJoinList(joinUserId, "NEIGHBORHOODFRIEND")).willReturn(resultResDto);
 
 		//when
 		//then

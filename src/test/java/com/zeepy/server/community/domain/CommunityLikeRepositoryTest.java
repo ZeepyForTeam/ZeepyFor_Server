@@ -69,6 +69,7 @@ public class CommunityLikeRepositoryTest {
 			.address("사당")
 			.title("고앵이 사료 공구")
 			.content("고양이 확대 같이 해봐요")
+			.targetNumberOfPeople(4)
 			.build();
 	}
 
