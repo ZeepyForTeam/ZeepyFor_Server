@@ -31,8 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class JwtAuthenticationProvider {
 	private final CustomDetailsService customDetailsService;
-	private final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60;
-	private final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60;
+	private final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24; //24시간
+	private final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 30; //30일
 	private final Logger logger = LoggerFactory.getLogger(JwtAuthenticationProvider.class.getName());
 	@Value("${jwt.secret}")
 	private String secretKey;
