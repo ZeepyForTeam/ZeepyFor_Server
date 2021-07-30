@@ -1,6 +1,8 @@
 package com.zeepy.server.community.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -77,7 +79,7 @@ public class CommunityService {
 	}
 
 	@Transactional(readOnly = true)
-	public CommunityResponseDtos getLikeList(Long id) {
+	public CommunityResponseDtos getLikeList(Long id, String CommunityCategory) {
 		List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(id);
 		return new CommunityResponseDtos(communityLikeList.stream()
 			.map(CommunityLike::getCommunity)
@@ -180,15 +182,28 @@ public class CommunityService {
 	}
 
 	@Transactional(readOnly = true)
-	public MyZipJoinResDto getJoinList(Long userId) {
+	public MyZipJoinResDto getJoinList(Long userId, String communityCategory) {
 		List<Participation> participationList = participationRepository.findAllByUserId(userId);
 		List<Community> communityList = communityRepository.findAllByUserId(userId);
 
+		if (communityCategory == null || communityCategory.isEmpty()) {
+			List<ParticipationResDto> participationResDtoList = participationList.stream()
+				.map(ParticipationResDto::new)
+				.collect(Collectors.toList());
+			List<WriteOutResDto> writeOutResDtoList = communityList.stream()
+				.map(WriteOutResDto::new)
+				.collect(Collectors.toList());
+			return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
+		}
+
 		List<ParticipationResDto> participationResDtoList = participationList.stream()
 			.map(ParticipationResDto::new)
+			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
 			.collect(Collectors.toList());
+
 		List<WriteOutResDto> writeOutResDtoList = communityList.stream()
 			.map(WriteOutResDto::new)
+			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
 			.collect(Collectors.toList());
 
 		return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);

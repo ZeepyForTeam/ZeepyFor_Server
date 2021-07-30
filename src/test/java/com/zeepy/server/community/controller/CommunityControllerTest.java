@@ -91,7 +91,7 @@ public class CommunityControllerTest extends ControllerTest {
 	public void getLikeList() throws Exception {
 		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
 		CommunityResponseDtos communityResponseDtos = new CommunityResponseDtos(communityResponseDtoList);
-		given(communityService.getLikeList(any(Long.class))).willReturn(communityResponseDtos);
+		given(communityService.getLikeList(any(Long.class), any(String.class))).willReturn(communityResponseDtos);
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("id", "1");

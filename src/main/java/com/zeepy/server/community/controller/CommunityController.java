@@ -79,8 +79,10 @@ public class CommunityController {
 	}
 
 	@GetMapping("/likes")
-	public ResponseEntity<CommunityResponseDtos> getLikeList(@RequestParam Long id) {
-		return new ResponseEntity<>(communityService.getLikeList(id), HttpStatus.OK);
+	public ResponseEntity<CommunityResponseDtos> getLikeList(
+		@RequestParam Long id,
+		@RequestParam(required = false) String communityCategory) {
+		return new ResponseEntity<>(communityService.getLikeList(id, communityCategory), HttpStatus.OK);
 	}
 
 	@PostMapping("/comment/{id}")
@@ -93,8 +95,10 @@ public class CommunityController {
 	}
 
 	@GetMapping("/participation/{id}")
-	public ResponseEntity<MyZipJoinResDto> getMyZipJoinList(@PathVariable("id") Long userId) {
-		MyZipJoinResDto myZipJoinList = communityService.getJoinList(userId);
+	public ResponseEntity<MyZipJoinResDto> getMyZipJoinList(
+		@PathVariable("id") Long userId,
+		@RequestParam(required = false) String communityCategory) {
+		MyZipJoinResDto myZipJoinList = communityService.getJoinList(userId, communityCategory);
 		return ResponseEntity.ok().body(myZipJoinList);
 	}
 
