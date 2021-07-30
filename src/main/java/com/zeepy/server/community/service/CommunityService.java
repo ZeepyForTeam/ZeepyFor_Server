@@ -1,8 +1,8 @@
 package com.zeepy.server.community.service;
 
-import java.util.ArrayList;
+import static java.util.stream.Collectors.*;
+
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -24,8 +24,9 @@ import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.CommunityLikeDto;
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityLikeResDto;
+import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
-import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.ParticipationDto;
@@ -79,12 +80,19 @@ public class CommunityService {
 	}
 
 	@Transactional(readOnly = true)
-	public CommunityResponseDtos getLikeList(Long id, String CommunityCategory) {
+	public CommunityLikeResDtos getLikeList(Long id, String communityCategory) {
 		List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(id);
-		return new CommunityResponseDtos(communityLikeList.stream()
-			.map(CommunityLike::getCommunity)
-			.map(CommunityResponseDto::new)
-			.collect(Collectors.toList()));
+
+		if (communityCategory == null || communityCategory.isEmpty()) {
+			return communityLikeList.stream()
+				.map(CommunityLikeResDto::new)
+				.collect(collectingAndThen(toList(), CommunityLikeResDtos::new));
+		}
+
+		return communityLikeList.stream()
+			.map(CommunityLikeResDto::new)
+			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
+			.collect(collectingAndThen(toList(), CommunityLikeResDtos::new));
 	}
 
 	@Transactional

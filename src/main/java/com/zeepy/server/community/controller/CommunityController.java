@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zeepy.server.common.annotation.Enum;
-import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
-import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
@@ -79,7 +76,7 @@ public class CommunityController {
 	}
 
 	@GetMapping("/likes")
-	public ResponseEntity<CommunityResponseDtos> getLikeList(
+	public ResponseEntity<CommunityLikeResDtos> getLikeList(
 		@RequestParam Long id,
 		@RequestParam(required = false) String communityCategory) {
 		return new ResponseEntity<>(communityService.getLikeList(id, communityCategory), HttpStatus.OK);
