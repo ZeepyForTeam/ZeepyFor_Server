@@ -83,7 +83,7 @@ public class CommunityControllerTest extends ControllerTest {
 			.imageUrls(Arrays.asList("asdasd", "aaaaaaa", "ccccccccc"))
 			.build();
 
-		given(communityService.save(any(SaveCommunityRequestDto.class), any(String.class))).willReturn(1L);
+		given(communityService.save(any(), any())).willReturn(1L);
 
 		doPost("/api/community", requestDto);
 	}

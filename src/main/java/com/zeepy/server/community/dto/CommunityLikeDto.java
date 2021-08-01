@@ -14,7 +14,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommunityLikeDto {
-
 	private User user;
 	private Community community;
 
