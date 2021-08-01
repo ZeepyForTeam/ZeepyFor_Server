@@ -42,6 +42,9 @@ public class Community extends BaseTimeEntity {
 	@Enumerated(EnumType.STRING)
 	private CommunityCategory communityCategory;
 
+	@NotNull
+	private String address;
+
 	@Nullable
 	private String productName;
 
@@ -67,9 +70,6 @@ public class Community extends BaseTimeEntity {
 	private String content;
 
 	@Nullable
-	private String place;
-
-	@Nullable
 	private String instructions;
 
 	@NotNull
@@ -92,20 +92,24 @@ public class Community extends BaseTimeEntity {
 
 	@Builder
 	public Community(
-		Long id,CommunityCategory communityCategory,
+		Long id,
+		CommunityCategory communityCategory,
+		String address,
 		String productName,
-		Integer productPrice,String purchasePlace,
+		Integer productPrice,
+		String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
 		Integer currentNumberOfPeople,
 		User user,
 		String title,
 		String content,
-		String place,
 		String instructions,
 		List<String> imageUrls
 	) {
-		this.id = id;this.communityCategory = communityCategory;
+		this.id = id;
+		this.communityCategory = communityCategory;
+		this.address = address;
 		this.productName = productName;
 		this.productPrice = productPrice;
 		this.sharingMethod = sharingMethod;
@@ -113,12 +117,13 @@ public class Community extends BaseTimeEntity {
 		this.currentNumberOfPeople = currentNumberOfPeople;
 		this.purchasePlace = purchasePlace;
 		this.user = user;
-		this.user = user;
-		this.title = title;this.place = place;
-		this.content = content;this.instructions = instructions;
+		this.title = title;
+		this.content = content;
+		this.instructions = instructions;
 		this.imageUrls = imageUrls;
 	}
-public void addCurrentNumberOfPeople() {
+
+	public void addCurrentNumberOfPeople() {
 		if (communityCategory == CommunityCategory.JOINTPURCHASE && targetNumberOfPeople != null) {
 			this.currentNumberOfPeople++;
 		}
@@ -145,5 +150,10 @@ public void addCurrentNumberOfPeople() {
 		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
 		this.instructions = instructions;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+		user.getCommunities().add(this);
 	}
 }

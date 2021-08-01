@@ -2,6 +2,7 @@ package com.zeepy.server.review.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -13,16 +14,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.common.domain.BaseTimeEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by KimGyeong 4/19/20.
@@ -30,6 +34,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Entity
 public class Review extends BaseTimeEntity {
 	@Id
@@ -51,7 +56,7 @@ public class Review extends BaseTimeEntity {
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private CommuncationTendency communcationTendency;
+	private CommuncationTendency communicationTendency;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
@@ -104,9 +109,13 @@ public class Review extends BaseTimeEntity {
 	@Column(name = "imageUrl")
 	private List<String> imageUrls;
 
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "building_id")
+	private Building building;
+
 	@Builder
 	public Review(Long id, Long user, String address,
-		CommuncationTendency communcationTendency,
+		CommuncationTendency communicationTendency,
 		LessorGender lessorGender,
 		LessorAge lessorAge,
 		String lessorReview,
@@ -118,11 +127,11 @@ public class Review extends BaseTimeEntity {
 		List<Furniture> furnitures,
 		String review,
 		TotalEvaluation totalEvaluation,
-		List<String> imageUrls) {
+		List<String> imageUrls, Building building) {
 		this.id = id;
 		this.user = user;
 		this.address = address;
-		this.communcationTendency = communcationTendency;
+		this.communicationTendency = communicationTendency;
 		this.lessorGender = lessorGender;
 		this.lessorAge = lessorAge;
 		this.lessorReview = lessorReview;
@@ -135,5 +144,6 @@ public class Review extends BaseTimeEntity {
 		this.review = review;
 		this.totalEvaluation = totalEvaluation;
 		this.imageUrls = imageUrls;
+		this.building = building;
 	}
 }

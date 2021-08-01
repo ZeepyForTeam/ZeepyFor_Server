@@ -14,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -23,9 +25,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.zeepy.server.auth.service.CustomDetailsService;
 import com.zeepy.server.common.ControllerTest;
-import com.zeepy.server.common.config.security.CustomAccessDeniedHandler;
-import com.zeepy.server.common.config.security.CustomAuthenticationEntryPoint;
-import com.zeepy.server.common.config.security.JwtAuthenticationProvider;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
@@ -46,23 +45,17 @@ import com.zeepy.server.user.domain.User;
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = {CommunityController.class}, includeFilters = @ComponentScan.Filter(classes = {
 	EnableWebSecurity.class}))
-
+@MockBean(JpaMetamodelMappingContext.class)
 public class CommunityControllerTest extends ControllerTest {
-
 	@MockBean
 	private CommunityService communityService;
 	@MockBean
 	CustomDetailsService customDetailsService;
-	@MockBean
-	JwtAuthenticationProvider jwtAuthenticationProvider;
+
 	private CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
 		.communityId(1L)
 		.userId(1L)
 		.build();
-	@MockBean
-	CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-	@MockBean
-	CustomAccessDeniedHandler customAccessDeniedHandler;
 
 	private final String userEmail = "test@naver.com";
 
@@ -77,6 +70,7 @@ public class CommunityControllerTest extends ControllerTest {
 	@WithMockUser(username = "user", password = "123123", roles = "USER")
 	public void save() throws Exception {
 		SaveCommunityRequestDto requestDto = SaveCommunityRequestDto.builder()
+			.address("안양")
 			.communityCategory(CommunityCategory.FREESHARING)
 			.title("강의 공동 구매해요!")
 			.content("제곧내")
@@ -228,4 +222,25 @@ public class CommunityControllerTest extends ControllerTest {
 		//then
 		doPut(url, updateCommunityReqDto);
 	}
+
+	@DisplayName("커뮤니티 불러오기 테스트")
+	@Test
+	public void getCommunity() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		given(communityService.getCommunity(any(Long.class))).willReturn(any(CommunityResponseDto.class));
+
+		doGet("/api/community/1", params);
+	}
+
+	@DisplayName("커뮤니티 목록 불러오기 테스트")
+	@Test
+	public void getCommunityList() throws Exception {
+		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
+		given(communityService.getCommunityList(any(String.class), anyString(), any()))
+			.willReturn(new PageImpl<>(communityResponseDtoList));
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		doGet("/api/community", params);
+	}
 }
+

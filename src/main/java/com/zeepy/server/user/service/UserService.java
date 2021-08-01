@@ -1,6 +1,7 @@
 package com.zeepy.server.user.service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,8 +10,11 @@ import com.zeepy.server.auth.repository.TokenRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateNicknameException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
+import com.zeepy.server.user.domain.Address;
 import com.zeepy.server.user.domain.ModifyNicknameReqDto;
 import com.zeepy.server.user.domain.User;
+import com.zeepy.server.user.dto.AddAddressReqDto;
+import com.zeepy.server.user.dto.AddressResDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyEmailReqDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyNicknameReqDto;
 import com.zeepy.server.user.dto.ModifyPasswordReqDto;
@@ -73,5 +77,22 @@ public class UserService {
 			.getId());
 
 		userRepository.delete(user);
+	}
+
+	@Transactional
+	public void addAddress(AddAddressReqDto addAddressReqDto) {
+		@Deprecated
+		User user = userRepository.findById(addAddressReqDto.getUserId())
+			.orElseThrow(NotFoundUserException::new);
+
+		user.setAddress(addAddressReqDto.getAddresses().stream()
+			.map(Address::new)
+			.collect(Collectors.toList()));
+	}
+
+	@Transactional
+	public AddressResDto getAddresses(Long id) {
+		User user = userRepository.findById(id).orElseThrow(NotFoundUserException::new);
+		return new AddressResDto(user.getAddresss());
 	}
 }

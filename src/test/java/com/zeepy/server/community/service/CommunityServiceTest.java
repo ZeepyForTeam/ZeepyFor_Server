@@ -44,7 +44,6 @@ public class CommunityServiceTest {
 		.communityCategory(CommunityCategory.JOINTPURCHASE)
 		.productName("공동구매물건")
 		.productPrice(10000)
-		.place("구월동")
 		.sharingMethod("만나서")
 		.targetNumberOfPeople(2)
 		.currentNumberOfPeople(0)

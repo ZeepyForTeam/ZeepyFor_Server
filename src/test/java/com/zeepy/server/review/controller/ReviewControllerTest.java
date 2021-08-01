@@ -2,7 +2,7 @@ package com.zeepy.server.review.controller;
 
 import static org.mockito.BDDMockito.*;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,15 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.zeepy.server.common.ControllerTest;
-import com.zeepy.server.common.config.security.CustomAccessDeniedHandler;
-import com.zeepy.server.common.config.security.CustomAuthenticationEntryPoint;
-import com.zeepy.server.common.config.security.JwtAuthenticationProvider;
 import com.zeepy.server.review.domain.CommuncationTendency;
 import com.zeepy.server.review.domain.Furniture;
 import com.zeepy.server.review.domain.LessorAge;
@@ -31,70 +27,51 @@ import com.zeepy.server.review.service.ReviewService;
 
 @DisplayName("ReviewController_테스트_클래스")
 @WebMvcTest(controllers = {ReviewController.class}, includeFilters = @ComponentScan.Filter(classes = {
-	EnableWebSecurity.class}))
+    EnableWebSecurity.class}))
+@MockBean(JpaMetamodelMappingContext.class)
 public class ReviewControllerTest extends ControllerTest {
+    @MockBean
+    private ReviewService reviewService;
 
-	@MockBean
-	private ReviewService reviewService;
-	@MockBean
-	JwtAuthenticationProvider jwtAuthenticationProvider;
-	@MockBean
-	CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-	@MockBean
-	CustomAccessDeniedHandler customAccessDeniedHandler;
+    @BeforeEach
+    @Override
+    public void setUp(WebApplicationContext webApplicationContext) {
+        super.setUp(webApplicationContext);
+    }
 
-	@Override
-	@BeforeEach
-	public void setUp(WebApplicationContext webApplicationContext) {
-		super.setUp(webApplicationContext);
-	}
+    @Test
+    @DisplayName("리뷰 조회 기능 테스트")
+    public void getReview() throws Exception {
+        doGet("/api/review/hello");
+    }
 
-	@DisplayName("Review_생성_테스트")
-	@Test
-	public void saveTest() throws Exception {
-		ReviewDto requestDto = new ReviewDto(1L,
-			"sssss",
-			CommuncationTendency.BUSINESS,
-			LessorGender.MALE,
-			LessorAge.FOURTY,
-			"aaaaa",
-			RoomCount.THREEORMORE,
-			MultiChoiceReview.GOOD,
-			MultiChoiceReview.GOOD,
-			MultiChoiceReview.GOOD,
-			MultiChoiceReview.GOOD,
-			Arrays.asList(Furniture.AIRCONDITIONAL, Furniture.AIRCONDITIONAL),
-			"asda",
-			TotalEvaluation.GOOD,
-			Arrays.asList("1", "2", "3")
-		);
-		given(reviewService.create(any())).willReturn(1L);
-		doPost("/api/review", requestDto);
-	}
+    @Test
+    @DisplayName("리뷰 생성 기능 테스트")
+    public void saveReview() throws Exception {
+        given(reviewService.create(any())).willReturn(1L);
+        ReviewDto review = ReviewDto.builder()
+            .address("주소")
+            .communcationTendency(CommuncationTendency.BUSINESS.name())
+            .lessorGender(LessorGender.MALE.name())
+            .lessorAge(LessorAge.FIFTY.name())
+            .lessorReview("집주인 리뷰")
+            .roomCount(RoomCount.ONE.name())
+            .soundInsulation(MultiChoiceReview.GOOD.name())
+            .pest(MultiChoiceReview.GOOD.name())
+            .lightning(MultiChoiceReview.PROPER.name())
+            .waterPressure(MultiChoiceReview.GOOD.name())
+            .furnitures(Collections.singletonList(Furniture.AIRCONDITIONAL.name()))
+            .review("리뷰")
+            .totalEvaluation(TotalEvaluation.GOOD.name())
+            .buildingId(1L)
+            .build();
+        doPost("/api/review", review);
+    }
 
-	@Test
-	@DisplayName("ReviewList_불러오기_테스트")
-	public void getReviewListTest() throws Exception {
-		ReviewDto requestDto = new ReviewDto(1L,
-			"sssss",
-			CommuncationTendency.BUSINESS,
-			LessorGender.MALE,
-			LessorAge.FOURTY,
-			"aaaaa",
-			RoomCount.THREEORMORE,
-			MultiChoiceReview.GOOD,
-			MultiChoiceReview.GOOD,
-			MultiChoiceReview.GOOD,
-			MultiChoiceReview.GOOD,
-			Arrays.asList(Furniture.AIRCONDITIONAL, Furniture.AIRCONDITIONAL),
-			"asda",
-			TotalEvaluation.GOOD,
-			Arrays.asList("1", "2", "3")
-		);
-		String path = "/api/review/1";
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-
-		doGet(path, params);
-
-	}
+    @Test
+    @DisplayName("리뷰 삭제 기능 테스트")
+    public void deleteReviewTest() throws Exception {
+        doNothing().when(reviewService).deleteReview(1L);
+        doDelete("/api/review/1");
+    }
 }

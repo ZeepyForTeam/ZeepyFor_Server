@@ -6,23 +6,27 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zeepy.server.building.domain.Building;
+import com.zeepy.server.building.repository.BuildingRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import com.zeepy.server.review.domain.Review;
 import com.zeepy.server.review.dto.ReviewDto;
 import com.zeepy.server.review.dto.ReviewResponseDto;
 import com.zeepy.server.review.dto.ReviewResponseDtos;
-import com.zeepy.server.review.repository.ReviewInterface;
+import com.zeepy.server.review.repository.ReviewRepository;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReviewService {
-	private final ReviewInterface reviewInterface;
+	private final ReviewRepository reviewRepository;
+	private final BuildingRepository buildingRepository;
 
 	@Transactional(readOnly = true)
 	public ReviewResponseDtos getReviewList(String address) {
-		List<Review> reviewList = reviewInterface.findAllByAddress(address);
+		List<Review> reviewList = reviewRepository.findAllByAddress(address);
 		if (reviewList.isEmpty()) {
 			throw new NoContentException();
 		}
@@ -33,7 +37,18 @@ public class ReviewService {
 
 	@Transactional
 	public Long create(ReviewDto reviewDto) {
-		Review review = reviewInterface.save(reviewDto.returnReviewEntity());
-		return review.getId();
+		Review review = reviewDto.returnReviewEntity();
+
+		Building building = buildingRepository.findById(reviewDto.getBuildingId())
+			.orElseThrow(NoContentException::new);
+
+		review.setBuilding(building);
+		Review save = reviewRepository.save(review);
+		return save.getId();
+	}
+
+	@Transactional
+	public void deleteReview(Long id) {
+		reviewRepository.deleteById(id);
 	}
 }

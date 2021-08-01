@@ -5,12 +5,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
@@ -52,6 +56,11 @@ public class User implements UserDetails {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Role role;
+
+	@ElementCollection
+	@CollectionTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"))
+	@Column(name = "address")
+	private List<Address> addresss = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user")
 	private List<CommunityLike> likedCommunities = new ArrayList<>();
@@ -117,5 +126,9 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public void setAddress(List<Address> addresses) {
+		this.addresss = addresses;
 	}
 }
