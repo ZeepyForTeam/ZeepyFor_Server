@@ -3,13 +3,18 @@ package com.zeepy.server.user.controller;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zeepy.server.user.domain.ModifyNicknameReqDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyEmailReqDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyNicknameReqDto;
+import com.zeepy.server.user.dto.ModifyPasswordReqDto;
 import com.zeepy.server.user.dto.RegistrationReqDto;
 import com.zeepy.server.user.service.UserService;
 
@@ -38,6 +43,26 @@ public class UserController {
 	public ResponseEntity<Void> checkFromRedundancyNickname(
 		@RequestBody CheckOfRedundancyNicknameReqDto checkOfRedundancyNicknameReqDto) {
 		userService.checkFromRedundancyNickname(checkOfRedundancyNicknameReqDto);
+		return ResponseEntity.ok().build();
+	}
+
+	@PutMapping("/nickname")
+	public ResponseEntity<Void> modifyNickname(@RequestBody ModifyNicknameReqDto modifyNicknameReqDto,
+		@AuthenticationPrincipal String userEmail) {
+		userService.modifyUser(modifyNicknameReqDto, userEmail);
+		return ResponseEntity.ok().build();
+	}
+
+	@PutMapping("/password")
+	public ResponseEntity<Void> modifyPassword(@RequestBody ModifyPasswordReqDto modifyPasswordReqDto,
+		@AuthenticationPrincipal String userEmail) {
+		userService.modifyPassword(modifyPasswordReqDto, userEmail);
+		return ResponseEntity.ok().build();
+	}
+
+	@DeleteMapping("/withdrawal")
+	public ResponseEntity<Void> memberShipWithdrawal(@AuthenticationPrincipal String userEmail) {
+		userService.memberShipWithdrawal(userEmail);
 		return ResponseEntity.ok().build();
 	}
 }

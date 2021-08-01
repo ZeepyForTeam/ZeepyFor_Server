@@ -79,6 +79,14 @@ public class User implements UserDetails {
 		this.name = "Zeepy#" + this.id;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.singletonList(
