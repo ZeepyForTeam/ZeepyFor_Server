@@ -36,6 +36,10 @@ out/
 ### VS Code ###
 .vscode/
 
+### ETC ###
+src/main/resources/key
+src/main/resources/static
+
 #Config_Securit
 
 application-oauth.properties

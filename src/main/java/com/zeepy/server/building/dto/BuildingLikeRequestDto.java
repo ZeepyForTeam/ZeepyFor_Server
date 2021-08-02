@@ -1,6 +1,7 @@
 package com.zeepy.server.building.dto;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
 
@@ -18,30 +19,20 @@ import lombok.Setter;
 @Setter
 @Getter
 public class BuildingLikeRequestDto {
-    @NotNull(message = "likeDate cannot be Null")
-    private Long likeDate;
-
-    @NotNull(message = "user cannot be Null")
-    private Long user;
 
     @NotNull(message = "buildingId cannot be Null")
     private Long buildingId;
 
     public BuildingLikeRequestDto(
-        Long likeDate,
-        Long user,
         Long buildingId
     ) {
-        this.likeDate = likeDate;
-        this.user = user;
         this.buildingId = buildingId;
     }
 
     public BuildingLike returnBuildingLikeEntity() {
         return new BuildingLike(
             null,
-            new Timestamp(this.likeDate),
-            this.user
+                LocalDateTime.now()
         );
     }
 }
