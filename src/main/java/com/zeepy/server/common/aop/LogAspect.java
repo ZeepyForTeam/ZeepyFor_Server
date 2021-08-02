@@ -18,14 +18,16 @@ public class LogAspect {
     @Around("execution(* com.zeepy.server..controller.*Controller.*(..))\n || execution(* com.zeepy.server..service.*Service.*(..))\n")
     public Object infoLogging(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = joinPoint.proceed();
-        logger.info("Execute : { package : " + joinPoint.getSignature().getDeclaringTypeName() + " }, method : " + joinPoint.getSignature().getName() + " }");
+        logger.info("Execute : { package : " + joinPoint.getSignature().getDeclaringTypeName() + " }, method : "
+            + joinPoint.getSignature().getName() + " }");
         return result;
     }
 
     @Around("execution(* com.zeepy.server..CustomExceptionHandler.*.*(..))\n")
     public Object exceptionLogging(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = joinPoint.proceed();
-        logger.error("Exception : { package : " + joinPoint.getSignature().getDeclaringTypeName() + " }, method : " + joinPoint.getSignature().getName() + " }");
+        logger.error("Exception : { package : " + joinPoint.getSignature().getDeclaringTypeName() + " }, method : "
+            + joinPoint.getSignature().getName() + " }");
         return result;
     }
 

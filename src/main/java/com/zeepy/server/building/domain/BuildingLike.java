@@ -1,12 +1,25 @@
 package com.zeepy.server.building.domain;
 
+import java.sql.Timestamp;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
+
 import com.zeepy.server.building.dto.BuildingLikeRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
-import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by Minky on 2021-06-02
@@ -35,9 +48,9 @@ public class BuildingLike extends BaseTimeEntity {
 
     @Builder
     public BuildingLike(
-            Long id,
-            Timestamp likeDate,
-            Long user
+        Long id,
+        Timestamp likeDate,
+        Long user
     ) {
         this.id = id;
         this.likeDate = likeDate;

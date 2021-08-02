@@ -1,15 +1,14 @@
 package com.zeepy.server.building.dto;
 
-import com.zeepy.server.building.domain.BuildingDeal;
-import com.zeepy.server.building.domain.BuildingLike;
-import com.zeepy.server.building.domain.DealType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.zeepy.server.building.domain.BuildingLike;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by Minky on 2021-06-02
@@ -24,9 +23,9 @@ public class BuildingLikeResponseDto {
     private Long user;
 
     public BuildingLikeResponseDto(
-            Long id,
-            Timestamp likeDate,
-            Long user
+        Long id,
+        Timestamp likeDate,
+        Long user
     ) {
         this.id = id;
         this.likeDate = likeDate;
@@ -35,16 +34,16 @@ public class BuildingLikeResponseDto {
 
     public static BuildingLikeResponseDto of(BuildingLike buildingLike) {
         return new BuildingLikeResponseDto(
-                buildingLike.getId(),
-                buildingLike.getLikeDate(),
-                buildingLike.getUser()
+            buildingLike.getId(),
+            buildingLike.getLikeDate(),
+            buildingLike.getUser()
         );
     }
 
     public static List<BuildingLikeResponseDto> listOf(List<BuildingLike> buildingLikeList) {
         return buildingLikeList
-                .stream()
-                .map(BuildingLikeResponseDto::of)
-                .collect(Collectors.toList());
+            .stream()
+            .map(BuildingLikeResponseDto::of)
+            .collect(Collectors.toList());
     }
 }

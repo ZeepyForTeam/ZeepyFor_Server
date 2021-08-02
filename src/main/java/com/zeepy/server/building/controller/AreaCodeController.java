@@ -27,30 +27,30 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/codes")
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class AreaCodeController {
-    private final AreaCodeService areaCodeService;
+	private final AreaCodeService areaCodeService;
 
-    @PostMapping
-    public ResponseEntity<Void> uploadAreaCode(
-            @Valid @RequestBody AreaCodeRequestDto areaCodeRequestDto
-    ) {
-        Long id = areaCodeService.create(areaCodeRequestDto);
-        return ResponseEntity.created(URI.create("/api/codes/" + id)).build();
-    }
+	@PostMapping
+	public ResponseEntity<Void> uploadAreaCode(
+		@Valid @RequestBody AreaCodeRequestDto areaCodeRequestDto
+	) {
+		Long id = areaCodeService.create(areaCodeRequestDto);
+		return ResponseEntity.created(URI.create("/api/codes/" + id)).build();
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateAreaCode(
-            @PathVariable Long id,
-            @Valid @RequestBody AreaCodeRequestDto areaCodeRequestDto
-    ) {
-        areaCodeService.update(id, areaCodeRequestDto);
-        return ResponseEntity.ok().build();
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> updateAreaCode(
+		@PathVariable Long id,
+		@Valid @RequestBody AreaCodeRequestDto areaCodeRequestDto
+	) {
+		areaCodeService.update(id, areaCodeRequestDto);
+		return ResponseEntity.ok().build();
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAreaCode(
-            @PathVariable Long id
-    ) {
-        areaCodeService.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteAreaCode(
+		@PathVariable Long id
+	) {
+		areaCodeService.deleteById(id);
+		return ResponseEntity.noContent().build();
+	}
 }

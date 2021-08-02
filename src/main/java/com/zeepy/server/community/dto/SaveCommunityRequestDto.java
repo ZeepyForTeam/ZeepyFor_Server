@@ -47,6 +47,8 @@ public class SaveCommunityRequestDto {
 
 	private List<String> imageUrls;
 
+	private User user;
+
 	private Long writerId;//작성자ID인데 토큰작업되면 지울꺼@Builder
 
 	@Builder
@@ -54,12 +56,13 @@ public class SaveCommunityRequestDto {
 		CommunityCategory communityCategory,
 		String address,
 		String productName,
-		Integer productPrice,String purchasePlace,
+		Integer productPrice, String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
 		String title,
 		String content,
 		String instructions,
+
 		List<String> imageUrls,
 		Long writerId) {
 		this.communityCategory = communityCategory;

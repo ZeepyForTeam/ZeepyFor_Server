@@ -1,14 +1,27 @@
 package com.zeepy.server.building.domain;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.review.domain.Review;
-import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by Minky on 2021-05-15
@@ -59,16 +72,16 @@ public class Building extends BaseTimeEntity {
 
     @Builder
     public Building(
-            Long id,
-            int buildYear,
-            String apartmentName,
-            String shortAddress,
-            String address,
-            float exclusivePrivateArea,
-            int areaCode,
-            double latitude,
-            double longitude,
-            List<Review> reviews
+        Long id,
+        int buildYear,
+        String apartmentName,
+        String shortAddress,
+        String address,
+        float exclusivePrivateArea,
+        int areaCode,
+        double latitude,
+        double longitude,
+        List<Review> reviews
     ) {
         this.id = id;
         this.buildYear = buildYear;

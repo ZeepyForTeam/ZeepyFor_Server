@@ -1,14 +1,12 @@
 package com.zeepy.server.review.dto;
 
 import java.util.List;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
 import java.util.stream.Collectors;
 
 import com.zeepy.server.review.domain.Review;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
@@ -19,9 +17,9 @@ public class ReviewResponseDtos {
 		this.reviewResponseDtos = reviewResponseDto;
 	}
 
-    public static ReviewResponseDtos listOf(List<Review> reviews) {
-        return reviews.stream()
-            .map(ReviewResponseDto::new)
-            .collect(Collectors.collectingAndThen(Collectors.toList(), ReviewResponseDtos::new));
-    }
+	public static ReviewResponseDtos listOf(List<Review> reviews) {
+		return reviews.stream()
+			.map(ReviewResponseDto::new)
+			.collect(Collectors.collectingAndThen(Collectors.toList(), ReviewResponseDtos::new));
+	}
 }

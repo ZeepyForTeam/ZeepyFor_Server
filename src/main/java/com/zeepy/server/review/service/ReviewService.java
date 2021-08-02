@@ -3,11 +3,11 @@ package com.zeepy.server.review.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.zeepy.server.building.domain.Building;
-import com.zeepy.server.building.repository.BuildingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zeepy.server.building.domain.Building;
+import com.zeepy.server.building.repository.BuildingRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import com.zeepy.server.review.domain.Review;
 import com.zeepy.server.review.dto.ReviewDto;
@@ -40,7 +40,7 @@ public class ReviewService {
 		Review review = reviewDto.returnReviewEntity();
 
 		Building building = buildingRepository.findById(reviewDto.getBuildingId())
-				.orElseThrow(NoContentException::new);
+			.orElseThrow(NoContentException::new);
 
 		review.setBuilding(building);
 		Review save = reviewRepository.save(review);

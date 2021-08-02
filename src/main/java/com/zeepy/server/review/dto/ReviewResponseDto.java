@@ -3,9 +3,11 @@ package com.zeepy.server.review.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.zeepy.server.building.domain.Building;
-import com.zeepy.server.building.dto.BuildingResponseDto;
-import com.zeepy.server.review.domain.*;
+import com.zeepy.server.review.domain.CommuncationTendency;
+import com.zeepy.server.review.domain.Furniture;
+import com.zeepy.server.review.domain.LessorAge;
+import com.zeepy.server.review.domain.MultiChoiceReview;
+import com.zeepy.server.review.domain.Review;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,19 +31,19 @@ public class ReviewResponseDto {
     private List<String> imageUrls;
 
     public ReviewResponseDto(
-            Long id,
-            Long user,
-            String address,
-            LessorAge lessorAge,
-            CommuncationTendency communcationTendency,
-            MultiChoiceReview soundInsulation,
-            MultiChoiceReview pest,
-            MultiChoiceReview lightning,
-            MultiChoiceReview waterPressure,
-            String lessorReview,
-            List<Furniture> furnitures,
-            String review,
-            List<String> imageUrls
+        Long id,
+        Long user,
+        String address,
+        LessorAge lessorAge,
+        CommuncationTendency communcationTendency,
+        MultiChoiceReview soundInsulation,
+        MultiChoiceReview pest,
+        MultiChoiceReview lightning,
+        MultiChoiceReview waterPressure,
+        String lessorReview,
+        List<Furniture> furnitures,
+        String review,
+        List<String> imageUrls
     ) {
         this.id = id;
         this.user = user;
@@ -76,26 +78,26 @@ public class ReviewResponseDto {
 
     public static ReviewResponseDto of(Review review) {
         return new ReviewResponseDto(
-                review.getId(),
-                review.getUser(),
-                review.getAddress(),
-                review.getLessorAge(),
-                review.getCommunicationTendency(),
-                review.getSoundInsulation(),
-                review.getPest(),
-                review.getLightning(),
-                review.getWaterPressure(),
-                review.getLessorReview(),
-                review.getFurnitures(),
-                review.getReview(),
-                review.getImageUrls()
+            review.getId(),
+            review.getUser(),
+            review.getAddress(),
+            review.getLessorAge(),
+            review.getCommunicationTendency(),
+            review.getSoundInsulation(),
+            review.getPest(),
+            review.getLightning(),
+            review.getWaterPressure(),
+            review.getLessorReview(),
+            review.getFurnitures(),
+            review.getReview(),
+            review.getImageUrls()
         );
     }
 
     public static List<ReviewResponseDto> listOf(List<Review> reviewList) {
         return reviewList
-                .stream()
-                .map(ReviewResponseDto::of)
-                .collect(Collectors.toList());
+            .stream()
+            .map(ReviewResponseDto::of)
+            .collect(Collectors.toList());
     }
 }

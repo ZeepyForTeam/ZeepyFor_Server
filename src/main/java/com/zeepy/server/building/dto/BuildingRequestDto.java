@@ -1,13 +1,13 @@
 package com.zeepy.server.building.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.zeepy.server.building.domain.Building;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 /**
  * Created by Minky on 2021-05-15
@@ -41,14 +41,14 @@ public class BuildingRequestDto {
     private double longitude;
 
     public BuildingRequestDto(
-            int buildYear,
-            String apartmentName,
-            String shortAddress,
-            String address,
-            float exclusivePrivateArea,
-            int areaCode,
-            double latitude,
-            double longitude
+        int buildYear,
+        String apartmentName,
+        String shortAddress,
+        String address,
+        float exclusivePrivateArea,
+        int areaCode,
+        double latitude,
+        double longitude
     ) {
         this.buildYear = buildYear;
         this.apartmentName = apartmentName;
@@ -62,16 +62,16 @@ public class BuildingRequestDto {
 
     public Building returnBuildingEntity() {
         return new Building(
-                null,
-                this.buildYear,
-                this.apartmentName,
-                this.shortAddress,
-                this.address,
-                this.exclusivePrivateArea,
-                this.areaCode,
-                this.latitude,
-                this.longitude,
-                null
+            null,
+            this.buildYear,
+            this.apartmentName,
+            this.shortAddress,
+            this.address,
+            this.exclusivePrivateArea,
+            this.areaCode,
+            this.latitude,
+            this.longitude,
+            null
         );
     }
 }

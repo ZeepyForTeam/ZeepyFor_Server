@@ -23,54 +23,54 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class BuildingLikeService {
-    private final BuildingLikeRepository buildingLikeRepository;
-    private final BuildingRepository buildingRepository;
+	private final BuildingLikeRepository buildingLikeRepository;
+	private final BuildingRepository buildingRepository;
 
-    // CREATE
-    @Transactional
-    public Long create(BuildingLikeRequestDto buildingLikeRequestDto) {
-        Building building = buildingRepository
-            .findById(buildingLikeRequestDto.getBuildingId())
-            .orElseThrow(NoContentException::new);
+	// CREATE
+	@Transactional
+	public Long create(BuildingLikeRequestDto buildingLikeRequestDto) {
+		Building building = buildingRepository
+			.findById(buildingLikeRequestDto.getBuildingId())
+			.orElseThrow(NoContentException::new);
 
-        BuildingLike buildingLike = buildingLikeRequestDto.returnBuildingLikeEntity();
-        buildingLike.setBuilding(building);
+		BuildingLike buildingLike = buildingLikeRequestDto.returnBuildingLikeEntity();
+		buildingLike.setBuilding(building);
 
-        return buildingLikeRepository.save(buildingLike)
-            .getId();
-    }
+		return buildingLikeRepository.save(buildingLike)
+			.getId();
+	}
 
-    // READ
-    @Transactional(readOnly = true)
-    public List<BuildingLikeResponseDto> getAll() {
-        List<BuildingLike> buildingLikeList = buildingLikeRepository.findAll();
-        return BuildingLikeResponseDto.listOf(buildingLikeList);
-    }
+	// READ
+	@Transactional(readOnly = true)
+	public List<BuildingLikeResponseDto> getAll() {
+		List<BuildingLike> buildingLikeList = buildingLikeRepository.findAll();
+		return BuildingLikeResponseDto.listOf(buildingLikeList);
+	}
 
-    // READ
-    @Transactional(readOnly = true)
-    public BuildingLikeResponseDto getById(Long id) {
-        BuildingLike buildingLike = getBuildingLikeById(id);
-        return BuildingLikeResponseDto.of(buildingLike);
-    }
+	// READ
+	@Transactional(readOnly = true)
+	public BuildingLikeResponseDto getById(Long id) {
+		BuildingLike buildingLike = getBuildingLikeById(id);
+		return BuildingLikeResponseDto.of(buildingLike);
+	}
 
-    // UPDATE
-    @Transactional
-    public void update(Long id, BuildingLikeRequestDto buildingLikeRequestDto) {
-        BuildingLike buildingLike = getBuildingLikeById(id);
-        buildingLike.update(buildingLikeRequestDto);
-        buildingLikeRepository.save(buildingLike);
-    }
+	// UPDATE
+	@Transactional
+	public void update(Long id, BuildingLikeRequestDto buildingLikeRequestDto) {
+		BuildingLike buildingLike = getBuildingLikeById(id);
+		buildingLike.update(buildingLikeRequestDto);
+		buildingLikeRepository.save(buildingLike);
+	}
 
-    // DELETE
-    @Transactional
-    public void deleteById(Long id) {
-        buildingLikeRepository.deleteById(id);
-    }
+	// DELETE
+	@Transactional
+	public void deleteById(Long id) {
+		buildingLikeRepository.deleteById(id);
+	}
 
-    private BuildingLike getBuildingLikeById(Long id) {
-        return buildingLikeRepository
-            .findById(id)
-            .orElseThrow(NoContentException::new);
-    }
+	private BuildingLike getBuildingLikeById(Long id) {
+		return buildingLikeRepository
+			.findById(id)
+			.orElseThrow(NoContentException::new);
+	}
 }
