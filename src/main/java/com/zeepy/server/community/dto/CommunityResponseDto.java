@@ -29,7 +29,7 @@ public class CommunityResponseDto {
 	private Boolean isLiked;
 	private Boolean isParticipant;
 	private List<CommentResDto> comments;
-	private List<Participation> participationList;
+	private List<ParticipantDto> participants;
 	private List<String> imageUrls;
 	private LocalDateTime createdTime;
 	private Boolean isCompleted;
@@ -50,7 +50,7 @@ public class CommunityResponseDto {
 		this.title = community.getTitle();
 		this.content = community.getContent();
 		this.comments = CommentResDto.listOf(community.getComments());
-		this.participationList = community.getParticipationsList();
+		this.participants = ParticipantDto.listOf(community.getParticipationsList());
 		this.imageUrls = community.getImageUrls();
 		this.createdTime = community.getCreatedDate();
 		this.isCompleted = community.getCurrentNumberOfPeople().equals(community.getTargetNumberOfPeople());

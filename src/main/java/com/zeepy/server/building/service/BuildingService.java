@@ -1,10 +1,21 @@
 package com.zeepy.server.building.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.zeepy.server.building.domain.*;
+import com.zeepy.server.building.domain.Building;
+import com.zeepy.server.building.domain.DealType;
+import com.zeepy.server.building.domain.QBuilding;
+import com.zeepy.server.building.domain.QBuildingDeal;
+import com.zeepy.server.building.domain.QBuildingLike;
 import com.zeepy.server.building.dto.BuildingAddressResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
@@ -14,18 +25,9 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentE
 import com.zeepy.server.review.domain.Furniture;
 import com.zeepy.server.review.domain.QReview;
 import com.zeepy.server.review.domain.RoomCount;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.omg.CORBA.DynAnyPackage.Invalid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Minky on 2021-05-15
