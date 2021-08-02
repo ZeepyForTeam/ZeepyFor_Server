@@ -188,21 +188,20 @@ public class AppleUtils {
 
 	/**
 	 * POST https://appleid.apple.com/auth/token
-	 * @param tokenRequest
-	 * @return
+	 * @return tokenResponse
 	 */
 	private TokenResponse getTokenResponse(Map<String, String> tokenRequest) {
-		// try {
-		// 	String response = AppleApi.doPost(AUTH_TOKEN_URL, tokenRequest);
-		// 	ObjectMapper objectMapper = new ObjectMapper();
-		// 	TokenResponse tokenResponse = objectMapper.readValue(response, TokenResponse.class);
-		//
-		// 	if (tokenResponse != null) {
-		// 		return tokenResponse;
-		// 	}
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
+		try {
+			String response = AppleApi.doPost(AUTH_TOKEN_URL, tokenRequest);
+			ObjectMapper objectMapper = new ObjectMapper();
+			TokenResponse tokenResponse = objectMapper.readValue(response, TokenResponse.class);
+
+			if (tokenResponse != null) {
+				return tokenResponse;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;    //exception변경 예정
 	}
 }
