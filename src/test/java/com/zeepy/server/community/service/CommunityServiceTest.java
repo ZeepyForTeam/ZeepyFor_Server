@@ -44,7 +44,6 @@ public class CommunityServiceTest {
 		.communityCategory(CommunityCategory.JOINTPURCHASE)
 		.productName("공동구매물건")
 		.productPrice(10000)
-		.place("구월동")
 		.sharingMethod("만나서")
 		.targetNumberOfPeople(2)
 		.currentNumberOfPeople(0)
@@ -86,7 +85,7 @@ public class CommunityServiceTest {
 
 		when(communityRepository.findById(any(Long.class))).thenReturn(Optional.of(community));
 		when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(user));
-		when(participationRepository.findById(any(Long.class))).thenReturn(Optional.of(participation));
+		lenient().when(participationRepository.findById(any(Long.class))).thenReturn(Optional.of(participation));
 		when(participationRepository.save(any(Participation.class))).thenReturn(participation);
 		when(participationRepository.findAll()).thenReturn(Collections.singletonList(participation));
 

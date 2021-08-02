@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
 	INVALID_BODY(400, "Invalid Request Body 에러 발생!!"),
+	INVALID_PARAMETER(400, "정상적인 Parameter가 아닙니다."),
 	NO_CONTENT(400, "정상적인 Content가 아닙니다."),
 	NOT_FOUND_ELEMENT(404, "찾고자하는 값이 업습니다."),
 	NOT_FOUND_COMMUNITY(404, "찾고자하는 커뮤니티를 찾을수 없습니다."),

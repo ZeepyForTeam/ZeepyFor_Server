@@ -3,6 +3,9 @@ package com.zeepy.server.community.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +15,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCo
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.community.domain.Comment;
 import com.zeepy.server.community.domain.Community;
+import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CommentDto;
@@ -39,7 +43,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CommunityService {
-    private final CommunityRepository communityRepository;
+	private final CommunityRepository communityRepository;
 	private final CommunityLikeRepository communityLikeRepository;
 	private final UserRepository userRepository;
 	private final ParticipationRepository participationRepository;
@@ -79,12 +83,13 @@ public class CommunityService {
 			.map(CommunityResponseDto::new)
 			.collect(Collectors.toList()));
 	}
+
 	@Transactional
 	public Long save(SaveCommunityRequestDto requestDto, String userEmail) {
 		User writer = getUserByEmail(userEmail);
-		requestDto.setUser(writer);
 
 		Community communityToSave = requestDto.toEntity();
+		communityToSave.setUser(writer);
 		Community community = communityRepository.save(communityToSave);
 
 		ParticipationDto participationDto = new ParticipationDto(community, writer);
@@ -194,6 +199,36 @@ public class CommunityService {
 	private User getUserByEmail(String authUserEmail) {
 		return userRepository.findByEmail(authUserEmail)
 			.orElseThrow(NotFoundUserException::new);
+	}
+
+	@Transactional(readOnly = true)
+	public CommunityResponseDto getCommunity(Long communityId) {
+		Community community = communityRepository.findById(communityId)
+			.orElseThrow(NotFoundCommunityException::new);
+		return new CommunityResponseDto(community);
+	}
+
+	@Transactional(readOnly = true)
+	public Page<CommunityResponseDto> getCommunityList(String address, String communityType, Pageable pageable) {
+		Page<Community> communityList;
+		if (address == null || address.isEmpty()) {
+			if (communityType == null || communityType.isEmpty()) {
+				communityList = communityRepository.findAll(pageable);
+			}
+			communityList = communityRepository.findByCommunityCategory(CommunityCategory.valueOf(communityType),
+				pageable);
+		}
+
+		if (communityType == null || communityType.isEmpty()) {
+			communityList = communityRepository.findByAddress(address, pageable);
+		}
+		communityList = communityRepository.findByAddressAndCommunityCategory(address,
+			CommunityCategory.valueOf(communityType), pageable);
+
+		return new PageImpl<CommunityResponseDto>(
+			CommunityResponseDto.listOf(communityList.getContent()),
+			pageable,
+			communityList.getTotalElements());
 	}
 }
 

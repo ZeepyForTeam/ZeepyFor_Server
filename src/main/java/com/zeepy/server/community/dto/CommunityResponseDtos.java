@@ -13,4 +13,5 @@ public class CommunityResponseDtos {
 	public CommunityResponseDtos(List<CommunityResponseDto> communityResponseDtoList) {
 		this.communityResponseDtoList = communityResponseDtoList;
 	}
+
 }

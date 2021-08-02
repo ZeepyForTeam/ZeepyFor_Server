@@ -23,6 +23,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation group: 'com.querydsl', name: 'querydsl-jpa'
+    implementation group: 'com.querydsl', name: 'querydsl-apt'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -33,6 +35,8 @@ dependencies {
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
     compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.60'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '5.1.6.RELEASE'
@@ -40,4 +44,21 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+configure("querydsl-sample") {
+    apply plugin: "io.spring.dependency-management"
+
+    dependencies {
+        compile("com.querydsl:querydsl-core")
+        compile("com.querydsl:querydsl-jpa")
+
+        annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa")
+        annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+        annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+    }
+
+    clean {
+        delete file('src/main/generated')
+    }
 }

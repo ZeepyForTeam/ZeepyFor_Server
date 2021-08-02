@@ -4,6 +4,8 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
@@ -103,5 +106,20 @@ public class CommunityController {
 	) {
 		communityService.updateCommunity(communityId, updateCommunityReqDto);
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<CommunityResponseDto> getCommunity(
+		@PathVariable("id") Long communityId) {
+		CommunityResponseDto communityResponseDto = communityService.getCommunity(communityId);
+		return ResponseEntity.ok().body(communityResponseDto);
+	}
+
+	@GetMapping
+	public ResponseEntity<Page<CommunityResponseDto>> getCommunityList(
+		@RequestParam(required = false) String address,
+		@RequestParam(required = false) String communityType,
+		Pageable pageable) {
+		return ResponseEntity.ok().body(communityService.getCommunityList(address, communityType, pageable));
 	}
 }
