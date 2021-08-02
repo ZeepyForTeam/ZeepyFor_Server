@@ -8,6 +8,7 @@ import com.zeepy.server.review.domain.Furniture;
 import com.zeepy.server.review.domain.LessorAge;
 import com.zeepy.server.review.domain.MultiChoiceReview;
 import com.zeepy.server.review.domain.Review;
+import com.zeepy.server.user.domain.User;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,8 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewResponseDto {
     private Long id;
-    private Long user;
-    private String address;
+    private ReviewUserResDto user;
     private LessorAge lessorAge;
     private CommuncationTendency communcationTendency;
     private MultiChoiceReview soundInsulation;
@@ -32,8 +32,7 @@ public class ReviewResponseDto {
 
     public ReviewResponseDto(
         Long id,
-        Long user,
-        String address,
+        User user,
         LessorAge lessorAge,
         CommuncationTendency communcationTendency,
         MultiChoiceReview soundInsulation,
@@ -46,8 +45,7 @@ public class ReviewResponseDto {
         List<String> imageUrls
     ) {
         this.id = id;
-        this.user = user;
-        this.address = address;
+        this.user = new ReviewUserResDto(user);
         this.lessorAge = lessorAge;
         this.communcationTendency = communcationTendency;
         this.soundInsulation = soundInsulation;
@@ -62,8 +60,7 @@ public class ReviewResponseDto {
 
     public ReviewResponseDto(Review review) {
         this.id = review.getId();
-        this.user = review.getUser();
-        this.address = review.getAddress();
+        this.user = new ReviewUserResDto(review.getUser());
         this.lessorAge = review.getLessorAge();
         this.communcationTendency = review.getCommunicationTendency();
         this.soundInsulation = review.getSoundInsulation();
@@ -80,7 +77,6 @@ public class ReviewResponseDto {
         return new ReviewResponseDto(
             review.getId(),
             review.getUser(),
-            review.getAddress(),
             review.getLessorAge(),
             review.getCommunicationTendency(),
             review.getSoundInsulation(),

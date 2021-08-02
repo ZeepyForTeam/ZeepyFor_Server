@@ -27,8 +27,6 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewDto {
 
-	private Long user; // 변경 될 겁니다.
-
 	@NotNull
 	private String address;
 
@@ -75,7 +73,7 @@ public class ReviewDto {
 
 	@Builder
 	public ReviewDto(
-		Long user, String address,
+		String address,
 		String communcationTendency,
 		String lessorGender,
 		String lessorAge,
@@ -91,7 +89,6 @@ public class ReviewDto {
 		List<String> imageUrls,
 		Long buildingId
 	) {
-		this.user = user;
 		this.address = address;
 		this.communcationTendency = communcationTendency;
 		this.lessorGender = lessorGender;
@@ -112,8 +109,6 @@ public class ReviewDto {
 	public Review returnReviewEntity() {
 		return new Review(
 			null,
-			this.user,
-			this.address,
 			CommuncationTendency.valueOf(this.communcationTendency),
 			LessorGender.valueOf(this.lessorGender),
 			LessorAge.valueOf(this.lessorAge),

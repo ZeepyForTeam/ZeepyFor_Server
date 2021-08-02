@@ -26,6 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
+import com.zeepy.server.review.domain.Review;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -70,6 +71,9 @@ public class User implements UserDetails {
 
 	@OneToMany(mappedBy = "user")
 	private List<Community> communities = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user")
+	private List<Review> reviews = new ArrayList<>();
 
 	@Builder
 	public User(Long id, String name, String email, String password, String address, String building, String place,
