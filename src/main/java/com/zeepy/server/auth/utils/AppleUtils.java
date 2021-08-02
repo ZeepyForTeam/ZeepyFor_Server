@@ -186,6 +186,17 @@ public class AppleUtils {
 		return getTokenResponse(tokenRequest);
 	}
 
+	public TokenResponse validateAnExistingRefreshToken(String clientSecret, String appleRefreshToken) {
+		Map<String, String> tokenRequest = new HashMap<>();
+
+		tokenRequest.put("client_id", AUD);
+		tokenRequest.put("client_secret", clientSecret);
+		tokenRequest.put("grant_type", "refresh_token");
+		tokenRequest.put("refresh_token", appleRefreshToken);
+
+		return getTokenResponse(tokenRequest);
+	}
+
 	/**
 	 * POST https://appleid.apple.com/auth/token
 	 * @return tokenResponse

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zeepy.server.auth.dto.AppleRefreshReqDto;
 import com.zeepy.server.auth.dto.AppleServiceResDto;
 import com.zeepy.server.auth.dto.AppleTokenResDto;
 import com.zeepy.server.auth.dto.GetUserInfoResDto;
@@ -79,6 +80,16 @@ public class AuthController {
 		logger.debug("================================");
 
 		AppleTokenResDto appleTokenResDto = appleService.requestCodeValidations(clientSecret, code, null);
+		return ResponseEntity.ok().body(appleTokenResDto);
+	}
+
+	@PostMapping("/reissue/apple")
+	public ResponseEntity<AppleTokenResDto> appleRefresh(@RequestBody AppleRefreshReqDto appleRefreshReqDto) {
+		String appleRefreshToken = appleRefreshReqDto.getAppleRefreshToken();
+		//String clientSecret = appleService.getCilentSecret(appleRefreshToken);
+		String clientSecret = "";
+
+		AppleTokenResDto appleTokenResDto = appleService.requestCodeValidations(clientSecret, null, appleRefreshToken);
 		return ResponseEntity.ok().body(appleTokenResDto);
 	}
 }
