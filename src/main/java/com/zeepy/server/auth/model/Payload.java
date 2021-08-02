@@ -17,7 +17,7 @@ public class Payload {
 	private String sub;
 	private String nonce;
 	private String c_hash;
-	private String at_hahs;
+	private String at_hash;
 	private String email;
 	private String email_verified;
 	private String is_private_email;
