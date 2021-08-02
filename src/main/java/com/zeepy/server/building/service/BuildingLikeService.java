@@ -2,6 +2,9 @@ package com.zeepy.server.building.service;
 
 import java.util.List;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
+import com.zeepy.server.user.domain.User;
+import com.zeepy.server.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,16 +28,22 @@ import lombok.RequiredArgsConstructor;
 public class BuildingLikeService {
 	private final BuildingLikeRepository buildingLikeRepository;
 	private final BuildingRepository buildingRepository;
+	private final UserRepository userRepository;
 
 	// CREATE
 	@Transactional
-	public Long create(BuildingLikeRequestDto buildingLikeRequestDto) {
+	public Long create(BuildingLikeRequestDto buildingLikeRequestDto, String userEmail) {
 		Building building = buildingRepository
 			.findById(buildingLikeRequestDto.getBuildingId())
 			.orElseThrow(NoContentException::new);
 
+		User user = userRepository
+				.findByEmail(userEmail)
+				.orElseThrow(NotFoundUserException::new);
+
 		BuildingLike buildingLike = buildingLikeRequestDto.returnBuildingLikeEntity();
 		buildingLike.setBuilding(building);
+		buildingLike.setUser(user);
 
 		return buildingLikeRepository.save(buildingLike)
 			.getId();
@@ -56,9 +65,9 @@ public class BuildingLikeService {
 
 	// UPDATE
 	@Transactional
-	public void update(Long id, BuildingLikeRequestDto buildingLikeRequestDto) {
+	public void update(Long id) {
 		BuildingLike buildingLike = getBuildingLikeById(id);
-		buildingLike.update(buildingLikeRequestDto);
+		buildingLike.update();
 		buildingLikeRepository.save(buildingLike);
 	}
 

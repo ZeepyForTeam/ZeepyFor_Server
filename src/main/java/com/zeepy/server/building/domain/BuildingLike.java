@@ -1,20 +1,15 @@
 package com.zeepy.server.building.domain;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.zeepy.server.building.dto.BuildingLikeRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
 
+import com.zeepy.server.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,10 +32,11 @@ public class BuildingLike extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    private Timestamp likeDate;
+    private LocalDateTime likeDate;
 
-    @Deprecated
-    private Long user;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="user_id")
+    private User user;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "building_id")
@@ -49,15 +45,13 @@ public class BuildingLike extends BaseTimeEntity {
     @Builder
     public BuildingLike(
         Long id,
-        Timestamp likeDate,
-        Long user
+        LocalDateTime likeDate
     ) {
         this.id = id;
         this.likeDate = likeDate;
-        this.user = user;
     }
 
-    public void update(BuildingLikeRequestDto buildingLikeRequestDto) {
-        this.likeDate = new Timestamp(buildingLikeRequestDto.getLikeDate());
+    public void update() {
+        this.likeDate = LocalDateTime.now();
     }
 }
