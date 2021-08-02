@@ -1,11 +1,9 @@
 package com.zeepy.server.community.dto;
 
-import static java.util.stream.Collectors.*;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.zeepy.server.community.domain.Comment;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
@@ -30,9 +28,11 @@ public class CommunityResponseDto {
 	private UserDto user;
 	private Boolean isLiked;
 	private Boolean isParticipant;
-	private List<Comment> comments;
+	private List<CommentResDto> comments;
 	private List<Participation> participationList;
 	private List<String> imageUrls;
+	private LocalDateTime createdTime;
+	private Boolean isCompleted;
 
 	public CommunityResponseDto(Community community) {
 		this.id = community.getId();
@@ -49,11 +49,11 @@ public class CommunityResponseDto {
 		this.targetNumberOfPeople = community.getTargetNumberOfPeople();
 		this.title = community.getTitle();
 		this.content = community.getContent();
-		// this.isLiked = isLiked(community);
-
-		this.comments = community.getComments();
+		this.comments = CommentResDto.listOf(community.getComments());
 		this.participationList = community.getParticipationsList();
 		this.imageUrls = community.getImageUrls();
+		this.createdTime = community.getCreatedDate();
+		this.isCompleted = community.getCurrentNumberOfPeople().equals(community.getTargetNumberOfPeople());
 	}
 
 	// private Boolean isLiked(Community community) {
@@ -66,5 +66,4 @@ public class CommunityResponseDto {
 			.map(CommunityResponseDto::new)
 			.collect(Collectors.toList());
 	}
-
 }
