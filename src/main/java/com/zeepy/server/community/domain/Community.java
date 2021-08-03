@@ -137,6 +137,7 @@ public class Community extends BaseTimeEntity {
 	}
 
 	public void update(String title,
+		String content,
 		String productName,
 		Integer productPrice,
 		String purchasePlace,
@@ -144,6 +145,7 @@ public class Community extends BaseTimeEntity {
 		Integer targetNumberOfPeople,
 		String instructions) {
 		this.title = title;
+		this.content = content;
 		this.productName = productName;
 		this.productPrice = productPrice;
 		this.purchasePlace = purchasePlace;

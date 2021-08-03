@@ -211,7 +211,7 @@ public class CommunityControllerTest extends ControllerTest {
 	public void communityUpdateTest() throws Exception {
 		//given
 		long communityId = 1L;
-		UpdateCommunityReqDto updateCommunityReqDto = new UpdateCommunityReqDto("수정된 제목", "수정된 제품명", 10000, "수정된 구매장소",
+		UpdateCommunityReqDto updateCommunityReqDto = new UpdateCommunityReqDto("수정된 제목", "수정된 내용", "수정된 제품명", 10000, "수정된 구매장소",
 			"수정된 공유방법", 3, "수정된 설명");
 		String url = "/api/community/" + communityId;
 
