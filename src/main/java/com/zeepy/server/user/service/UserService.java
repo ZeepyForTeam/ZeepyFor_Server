@@ -93,6 +93,6 @@ public class UserService {
 	@Transactional
 	public AddressResDto getAddresses(Long id) {
 		User user = userRepository.findById(id).orElseThrow(NotFoundUserException::new);
-		return new AddressResDto(user.getAddresss());
+		return new AddressResDto(user.getAddresses());
 	}
 }

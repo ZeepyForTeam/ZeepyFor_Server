@@ -48,7 +48,7 @@ public class AuthService {
 		Token tokens = new Token(accessToken, refreshToken, user);
 		tokenRepository.save(tokens);
 
-		return new TokenResDto(accessToken, refreshToken);
+		return new TokenResDto(accessToken, refreshToken, user);
 	}
 
 	@Transactional
@@ -79,7 +79,10 @@ public class AuthService {
 		String userEmail = jwtAuthenticationProvider.getUserEmail(accessToken);
 		String newAccessToken = jwtAuthenticationProvider.createAccessToken(userEmail);
 		String newRefreshToken = jwtAuthenticationProvider.createRefreshToken();
-		return new TokenResDto(newAccessToken, newRefreshToken);
+
+		User findUser = userRepository.findByEmail(userEmail)
+			.orElseThrow(NotFoundUserException::new);
+		return new TokenResDto(newAccessToken, newRefreshToken, findUser);
 	}
 
 	@Transactional
@@ -105,7 +108,7 @@ public class AuthService {
 		);
 		tokenRepository.save(tokens);
 
-		return new TokenResDto(accessToken, refreshToken);
+		return new TokenResDto(accessToken, refreshToken, user);
 	}
 
 	private User getUserByEmail(String authUserEmail) {

@@ -26,6 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
+import com.zeepy.server.review.domain.Review;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -60,7 +61,7 @@ public class User implements UserDetails {
 	@ElementCollection
 	@CollectionTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"))
 	@Column(name = "address")
-	private List<Address> addresss = new ArrayList<>();
+	private List<Address> addresses = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user")
 	private List<CommunityLike> likedCommunities = new ArrayList<>();
@@ -70,6 +71,9 @@ public class User implements UserDetails {
 
 	@OneToMany(mappedBy = "user")
 	private List<Community> communities = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user")
+	private List<Review> reviews = new ArrayList<>();
 
 	@Builder
 	public User(Long id, String name, String email, String password, String address, String building, String place,
@@ -129,6 +133,6 @@ public class User implements UserDetails {
 	}
 
 	public void setAddress(List<Address> addresses) {
-		this.addresss = addresses;
+		this.addresses = addresses;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,31 +40,31 @@ public class BuildingLikeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BuildingLikeResponseDto> getBuildingLike(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
         return ResponseEntity.ok(buildingLikeService.getById(id));
     }
 
     @PostMapping
     public ResponseEntity<Void> uploadBuildingLike(
-        @Valid @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
+            @AuthenticationPrincipal String userEmail,
+            @Valid @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
     ) {
-        Long id = buildingLikeService.create(buildingLikeRequestDto);
+        Long id = buildingLikeService.create(buildingLikeRequestDto, userEmail);
         return ResponseEntity.created(URI.create("/api/likes/buildings/" + id)).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateBuildingLike(
-        @PathVariable Long id,
-        @Valid @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
+            @PathVariable Long id
     ) {
-        buildingLikeService.update(id, buildingLikeRequestDto);
+        buildingLikeService.update(id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBuildingLike(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
         buildingLikeService.deleteById(id);
         return ResponseEntity.noContent().build();
