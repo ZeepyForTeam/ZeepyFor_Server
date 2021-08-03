@@ -67,8 +67,6 @@ public class UserControllerTest extends ControllerTest {
 	@DisplayName("유저 주소 불러오기 테스트")
 	public void getUserAddress() throws Exception {
 		//given
-		Long userId = user.getId();
-
 		Address address1 = new Address("서울특별시 용산구", "용산2가동 새싹빌딩", "101동 305호");
 		Address address2 = new Address("서울특별시 용산구", "김치나베우동 배고픈빌딩", "102동 1604호");
 		Address address3 = new Address("서울특별시 중구", "시키드나동 드루와빌딩", "102동 101호");
@@ -78,7 +76,7 @@ public class UserControllerTest extends ControllerTest {
 		AddressResDto addressResDto = new AddressResDto(addressList);
 
 		//when
-		given(userService.getAddresses(any(Long.class))).willReturn(addressResDto);
+		given(userService.getAddresses(any(String.class))).willReturn(addressResDto);
 
 		//then
 		doGet("/api/user/address/1");
