@@ -18,6 +18,7 @@ import com.zeepy.server.auth.dto.KakaoLoginReqDto;
 import com.zeepy.server.auth.dto.LoginReqDto;
 import com.zeepy.server.auth.dto.ReIssueReqDto;
 import com.zeepy.server.auth.dto.TokenResDto;
+import com.zeepy.server.auth.model.TokenResponse;
 import com.zeepy.server.auth.service.AppleService;
 import com.zeepy.server.auth.service.AuthService;
 import com.zeepy.server.auth.service.KakaoApi;
@@ -79,17 +80,18 @@ public class AuthController {
 		logger.debug("client_secret ‣ " + clientSecret);
 		logger.debug("================================");
 
-		AppleTokenResDto appleTokenResDto = appleService.requestCodeValidations(clientSecret, code, null);
+		TokenResponse tokenResponse = appleService.requestCodeValidations(clientSecret, code, null);
+		AppleTokenResDto appleTokenResDto = appleService.setAppleTokenResDto(tokenResponse, idToken);
 		return ResponseEntity.ok().body(appleTokenResDto);
 	}
 
 	@PostMapping("/reissue/apple")
 	public ResponseEntity<AppleTokenResDto> appleRefresh(@RequestBody AppleRefreshReqDto appleRefreshReqDto) {
 		String appleRefreshToken = appleRefreshReqDto.getAppleRefreshToken();
-		//String clientSecret = appleService.getCilentSecret(appleRefreshToken);
-		String clientSecret = "";
+		String clientSecret = appleService.getClientSecretByModel(appleRefreshToken);
 
-		AppleTokenResDto appleTokenResDto = appleService.requestCodeValidations(clientSecret, null, appleRefreshToken);
+		TokenResponse tokenResponse = appleService.requestCodeValidations(clientSecret, null, appleRefreshToken);
+		AppleTokenResDto appleTokenResDto = appleService.setAppleTokenResDto(tokenResponse, null);
 		return ResponseEntity.ok().body(appleTokenResDto);
 	}
 }

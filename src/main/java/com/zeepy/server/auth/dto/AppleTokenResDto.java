@@ -11,4 +11,5 @@ public class AppleTokenResDto {
 	private String accessToken;
 	private String refreshToken;
 	private String appleRefreshToken;
+	private Long userId;
 }

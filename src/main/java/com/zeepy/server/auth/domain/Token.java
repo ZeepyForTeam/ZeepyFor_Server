@@ -33,6 +33,12 @@ public class Token extends BaseTimeEntity {
 
 	private String kakaoAccessToken;
 
+	private String appleRefreshToken;
+
+	private String appleIdToken;
+
+	private String appleClientSecret;
+
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -46,5 +52,9 @@ public class Token extends BaseTimeEntity {
 
 	public void setKakaoToken(String kakaoAccessToken) {
 		this.kakaoAccessToken = kakaoAccessToken;
+	}
+
+	public void setAppleRefreshToken(String appleRefreshToken) {
+		this.appleRefreshToken = appleRefreshToken;
 	}
 }
