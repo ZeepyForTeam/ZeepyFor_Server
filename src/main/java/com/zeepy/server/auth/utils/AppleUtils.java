@@ -30,6 +30,7 @@ import com.zeepy.server.auth.model.Key;
 import com.zeepy.server.auth.model.Keys;
 import com.zeepy.server.auth.model.Payload;
 import com.zeepy.server.auth.model.TokenResponse;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.AppleUnAuthrizationException;
 
 import sun.security.ec.ECPrivateKeyImpl;
 
@@ -171,7 +172,7 @@ public class AppleUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		throw new AppleUnAuthrizationException();
 	}
 
 	public TokenResponse validateAuthorizationGrantCode(String clientSecret, String code) {
@@ -213,6 +214,6 @@ public class AppleUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;    //exception변경 예정
+		throw new AppleUnAuthrizationException();
 	}
 }

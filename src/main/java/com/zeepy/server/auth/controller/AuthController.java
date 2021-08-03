@@ -22,6 +22,7 @@ import com.zeepy.server.auth.model.TokenResponse;
 import com.zeepy.server.auth.service.AppleService;
 import com.zeepy.server.auth.service.AuthService;
 import com.zeepy.server.auth.service.KakaoApi;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestBodyException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -67,7 +68,7 @@ public class AuthController {
 
 		if (appleServiceResDto == null) {
 			System.out.println("안왔는뎅??????????????");
-			return null;
+			throw new BadRequestBodyException();
 		}
 
 		String code = appleServiceResDto.getCode();

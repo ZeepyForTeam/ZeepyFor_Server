@@ -9,6 +9,7 @@ import com.zeepy.server.auth.model.Payload;
 import com.zeepy.server.auth.model.TokenResponse;
 import com.zeepy.server.auth.repository.TokenRepository;
 import com.zeepy.server.auth.utils.AppleUtils;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.AppleUnAuthrizationException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundTokenException;
 import com.zeepy.server.common.config.security.JwtAuthenticationProvider;
 import com.zeepy.server.user.domain.User;
@@ -28,7 +29,7 @@ public class AppleService {
 		if (appleUtils.verifyIdentityToken(idToken)) {
 			return appleUtils.createClientSecret();
 		}
-		return null;    //exception으로 변경해정
+		throw new AppleUnAuthrizationException();
 	}
 
 	public TokenResponse requestCodeValidations(String clientSecret, String code, String appleRefreshToken) {

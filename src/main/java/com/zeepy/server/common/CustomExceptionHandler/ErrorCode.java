@@ -20,7 +20,8 @@ public enum ErrorCode {
 	NOT_FOUND_TOKEN(400, "등록된 토큰이 존재하지 않습니다, 로그인을 다시해야합니다."),
 	KAKAO_UNAUTHORIZATION(401, "잘못된 카카오 토큰입니다."),
 	Duplicate_Email(400, "중복된 이메일입니다."),
-	Duplicate_Nickname(400, "중복된 닉네임입니다.");
+	Duplicate_Nickname(400, "중복된 닉네임입니다."),
+	APPLE_UNAUTHORIZATION(401, "애플 유효성 검사에 실패했습니다.");
 
 	private final int status;
 	private final String message;
