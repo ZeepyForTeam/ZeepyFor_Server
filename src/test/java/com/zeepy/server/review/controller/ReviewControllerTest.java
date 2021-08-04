@@ -9,7 +9,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.zeepy.server.common.ControllerTest;
@@ -24,7 +26,8 @@ import com.zeepy.server.review.dto.ReviewDto;
 import com.zeepy.server.review.service.ReviewService;
 
 @DisplayName("ReviewController_테스트_클래스")
-@WebMvcTest(controllers = ReviewController.class)
+@WebMvcTest(controllers = {ReviewController.class}, includeFilters = @ComponentScan.Filter(classes = {
+    EnableWebSecurity.class}))
 @MockBean(JpaMetamodelMappingContext.class)
 public class ReviewControllerTest extends ControllerTest {
     @MockBean
@@ -45,23 +48,23 @@ public class ReviewControllerTest extends ControllerTest {
     @Test
     @DisplayName("리뷰 생성 기능 테스트")
     public void saveReview() throws Exception {
-        given(reviewService.create(any())).willReturn(1L);
+        given(reviewService.create(any(ReviewDto.class), any(String.class))).willReturn(1L);
         ReviewDto review = ReviewDto.builder()
-                .address("주소")
-                .communcationTendency(CommuncationTendency.BUSINESS.name())
-                .lessorGender(LessorGender.MALE.name())
-                .lessorAge(LessorAge.FIFTY.name())
-                .lessorReview("집주인 리뷰")
-                .roomCount(RoomCount.ONE.name())
-                .soundInsulation(MultiChoiceReview.GOOD.name())
-                .pest(MultiChoiceReview.GOOD.name())
-                .lightning(MultiChoiceReview.PROPER.name())
-                .waterPressure(MultiChoiceReview.GOOD.name())
-                .furnitures(Collections.singletonList(Furniture.AIRCONDITIONAL.name()))
-                .review("리뷰")
-                .totalEvaluation(TotalEvaluation.GOOD.name())
-                .buildingId(1L)
-                .build();
+            .address("주소")
+            .communcationTendency(CommuncationTendency.BUSINESS.name())
+            .lessorGender(LessorGender.MALE.name())
+            .lessorAge(LessorAge.FIFTY.name())
+            .lessorReview("집주인 리뷰")
+            .roomCount(RoomCount.ONE.name())
+            .soundInsulation(MultiChoiceReview.GOOD.name())
+            .pest(MultiChoiceReview.GOOD.name())
+            .lightning(MultiChoiceReview.PROPER.name())
+            .waterPressure(MultiChoiceReview.GOOD.name())
+            .furnitures(Collections.singletonList(Furniture.AIRCONDITIONAL.name()))
+            .review("리뷰")
+            .totalEvaluation(TotalEvaluation.GOOD.name())
+            .buildingId(1L)
+            .build();
         doPost("/api/review", review);
     }
 

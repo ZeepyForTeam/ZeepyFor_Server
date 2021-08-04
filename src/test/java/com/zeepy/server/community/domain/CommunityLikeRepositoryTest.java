@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.zeepy.server.community.dto.CommunityLikeDto;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
+import com.zeepy.server.user.domain.Role;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
 
@@ -31,10 +32,12 @@ public class CommunityLikeRepositoryTest {
 
 	private final User userA = User.builder()
 		.name("A")
+		.role(Role.ROLE_USER)
 		.build();
 
 	private final User userB = User.builder()
 		.name("B")
+		.role(Role.ROLE_USER)
 		.build();
 
 	@DisplayName("좋아요 누른 커뮤니티 GET 테스트")

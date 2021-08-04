@@ -2,14 +2,32 @@ package com.zeepy.server.review.domain;
 
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.common.domain.BaseTimeEntity;
+import com.zeepy.server.user.domain.User;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by KimGyeong 4/19/20.
@@ -25,17 +43,10 @@ public class Review extends BaseTimeEntity {
 	@SequenceGenerator(name = "review_sequence_gen", sequenceName = "review_sequence")
 	private Long id;
 
-	/**
-	 * User class로 변경 될 예정. by KimGyeong
-	 */
-	@Deprecated
-	private Long user;
-
-	/**
-	 * 주소 혹은 OPEN API에서 사용하는 ID로 변경 될 예정. by KimGyeong
-	 */
-	@Deprecated
-	private String address;
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
@@ -97,7 +108,7 @@ public class Review extends BaseTimeEntity {
 	private Building building;
 
 	@Builder
-	public Review(Long id, Long user, String address,
+	public Review(Long id,
 		CommuncationTendency communicationTendency,
 		LessorGender lessorGender,
 		LessorAge lessorAge,
@@ -112,8 +123,6 @@ public class Review extends BaseTimeEntity {
 		TotalEvaluation totalEvaluation,
 		List<String> imageUrls, Building building) {
 		this.id = id;
-		this.user = user;
-		this.address = address;
 		this.communicationTendency = communicationTendency;
 		this.lessorGender = lessorGender;
 		this.lessorAge = lessorAge;
@@ -128,5 +137,10 @@ public class Review extends BaseTimeEntity {
 		this.totalEvaluation = totalEvaluation;
 		this.imageUrls = imageUrls;
 		this.building = building;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+		user.getReviews().add(this);
 	}
 }

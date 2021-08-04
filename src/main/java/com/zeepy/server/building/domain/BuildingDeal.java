@@ -1,14 +1,27 @@
 package com.zeepy.server.building.domain;
 
+import java.sql.Timestamp;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
+
 import com.zeepy.server.building.dto.BuildingDealRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
-import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by Minky on 2021-05-15
@@ -49,13 +62,13 @@ public class BuildingDeal extends BaseTimeEntity {
 
     @Builder
     public BuildingDeal(
-            Long id,
-            Timestamp dealDate,
-            int deposit,
-            int monthlyRent,
-            int dealCost,
-            int floor,
-            DealType dealType
+        Long id,
+        Timestamp dealDate,
+        int deposit,
+        int monthlyRent,
+        int dealCost,
+        int floor,
+        DealType dealType
     ) {
         this.id = id;
         this.dealDate = dealDate;

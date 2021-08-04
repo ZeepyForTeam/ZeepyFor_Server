@@ -1,7 +1,10 @@
 package com.zeepy.server.common;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -12,9 +15,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zeepy.server.common.config.security.CustomAccessDeniedHandler;
+import com.zeepy.server.common.config.security.CustomAuthenticationEntryPoint;
+import com.zeepy.server.common.config.security.JwtAuthenticationProvider;
 
 /**
  * Created by KimGyeong 4/19/20.
@@ -22,6 +26,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public abstract class ControllerTest {
 	protected MockMvc mockMvc;
 	protected ObjectMapper objectMapper;
+	@MockBean
+	protected JwtAuthenticationProvider jwtAuthenticationProvider;
+	@MockBean
+	protected CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+	@MockBean
+	protected CustomAccessDeniedHandler customAccessDeniedHandler;
 
 	@BeforeEach
 	public void setUp(WebApplicationContext webApplicationContext) {
