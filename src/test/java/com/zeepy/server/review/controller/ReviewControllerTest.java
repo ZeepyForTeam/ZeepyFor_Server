@@ -48,7 +48,7 @@ public class ReviewControllerTest extends ControllerTest {
     @Test
     @DisplayName("리뷰 생성 기능 테스트")
     public void saveReview() throws Exception {
-        given(reviewService.create(any())).willReturn(1L);
+        given(reviewService.create(any(ReviewDto.class), any(String.class))).willReturn(1L);
         ReviewDto review = ReviewDto.builder()
             .address("주소")
             .communcationTendency(CommuncationTendency.BUSINESS.name())
