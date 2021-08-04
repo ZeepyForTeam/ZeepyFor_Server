@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.MoreThanOneParticipantException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.community.domain.Comment;
@@ -221,6 +222,9 @@ public class CommunityService {
 	public void updateCommunity(Long communityId, UpdateCommunityReqDto updateCommunityReqDto) {
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
+		if (findCommunity.getCurrentNumberOfPeople() > 1){
+			throw new MoreThanOneParticipantException();
+		}
 		updateCommunityReqDto.updateCommunity(findCommunity);
 	}
 
