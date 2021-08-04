@@ -20,16 +20,12 @@ public class RegistrationReqDto {
 	private String email;
 	@NotNull(message = "비밀번호는 필수값입니다.")
 	private String password;
-	private String address;
-	private String building;
 
 	@Builder
-	public RegistrationReqDto(String name, String email, String password, String address, String building) {
+	public RegistrationReqDto(String name, String email, String password) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.address = address;
-		this.building = building;
 	}
 
 	public User toEntity() {
@@ -37,8 +33,6 @@ public class RegistrationReqDto {
 			.name(name)
 			.email(email)
 			.password(setBCryptEncoding())
-			.address(address)
-			.building(building)
 			.role(Role.ROLE_USER)
 			.build();
 	}

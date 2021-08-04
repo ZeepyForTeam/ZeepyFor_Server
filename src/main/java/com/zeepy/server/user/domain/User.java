@@ -48,12 +48,6 @@ public class User implements UserDetails {
 
 	private String password;
 
-	private String address;
-
-	private String building;
-
-	private String place;
-
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -76,15 +70,11 @@ public class User implements UserDetails {
 	private List<Review> reviews = new ArrayList<>();
 
 	@Builder
-	public User(Long id, String name, String email, String password, String address, String building, String place,
-		Role role) {
+	public User(Long id, String name, String email, String password, Role role) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.address = address;
-		this.building = building;
-		this.place = place;
 		this.role = role;
 	}
 

@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,14 +70,16 @@ public class UserController {
 	}
 
 	@PostMapping("/address")
-	public ResponseEntity<Void> addAddress(@RequestBody AddAddressReqDto addAddressReqDto) {
-		userService.addAddress(addAddressReqDto);
+	public ResponseEntity<Void> addAddress(
+		@RequestBody AddAddressReqDto addAddressReqDto,
+		@AuthenticationPrincipal String userEmail) {
+		userService.addAddress(addAddressReqDto, userEmail);
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/address/{id}")
-	public ResponseEntity<AddressResDto> getAddresses(@PathVariable("id") Long userId) {
-		AddressResDto addressResDto = userService.getAddresses(userId);
+	@GetMapping("/address")
+	public ResponseEntity<AddressResDto> getAddresses(@AuthenticationPrincipal String userEmail) {
+		AddressResDto addressResDto = userService.getAddresses(userEmail);
 		return ResponseEntity.ok().body(addressResDto);
 
 	}

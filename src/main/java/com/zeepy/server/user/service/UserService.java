@@ -80,9 +80,9 @@ public class UserService {
 	}
 
 	@Transactional
-	public void addAddress(AddAddressReqDto addAddressReqDto) {
+	public void addAddress(AddAddressReqDto addAddressReqDto, String userEmail) {
 		@Deprecated
-		User user = userRepository.findById(addAddressReqDto.getUserId())
+		User user = userRepository.findByEmail(userEmail)
 			.orElseThrow(NotFoundUserException::new);
 
 		user.setAddress(addAddressReqDto.getAddresses().stream()
@@ -91,8 +91,8 @@ public class UserService {
 	}
 
 	@Transactional
-	public AddressResDto getAddresses(Long id) {
-		User user = userRepository.findById(id).orElseThrow(NotFoundUserException::new);
+	public AddressResDto getAddresses(String userEmail) {
+		User user = userRepository.findByEmail(userEmail).orElseThrow(NotFoundUserException::new);
 		return new AddressResDto(user.getAddresses());
 	}
 }
