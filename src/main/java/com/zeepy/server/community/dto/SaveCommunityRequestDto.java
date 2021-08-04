@@ -27,8 +27,6 @@ public class SaveCommunityRequestDto {
 
 	private String productName;
 
-	private Integer productPrice;
-
 	private String purchasePlace;
 
 	private String sharingMethod;
@@ -47,36 +45,30 @@ public class SaveCommunityRequestDto {
 
 	private List<String> imageUrls;
 
-	private User user;
-
-	private Long writerId;//작성자ID인데 토큰작업되면 지울꺼@Builder
-
 	@Builder
 	public SaveCommunityRequestDto(
 		CommunityCategory communityCategory,
 		String address,
 		String productName,
-		Integer productPrice, String purchasePlace,
+		String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
 		String title,
 		String content,
 		String instructions,
-
-		List<String> imageUrls,
-		Long writerId) {
+		List<String> imageUrls
+		) {
 		this.communityCategory = communityCategory;
 		this.address = address;
 		this.productName = productName;
-		this.productPrice = productPrice;
 		this.purchasePlace = purchasePlace;
 		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
+		this.currentNumberOfPeople = 0;
 		this.title = title;
 		this.content = content;
 		this.instructions = instructions;
 		this.imageUrls = imageUrls;
-		this.writerId = writerId;
 	}
 
 	public Community toEntity() {
@@ -84,7 +76,6 @@ public class SaveCommunityRequestDto {
 			.communityCategory(communityCategory)
 			.address(address)
 			.productName(productName)
-			.productPrice(productPrice)
 			.purchasePlace(purchasePlace)
 			.sharingMethod(sharingMethod)
 			.targetNumberOfPeople(targetNumberOfPeople)

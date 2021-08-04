@@ -37,13 +37,11 @@ public class CommunityServiceTest {
 	private final User joinUser = User.builder()
 		.id(1L)
 		.name("참여자")
-		.place("구월동")
 		.build();
 	private final Community joinPurhcaseCommunity = Community.builder()
 		.id(1L)
 		.communityCategory(CommunityCategory.JOINTPURCHASE)
 		.productName("공동구매물건")
-		.productPrice(10000)
 		.sharingMethod("만나서")
 		.targetNumberOfPeople(2)
 		.currentNumberOfPeople(0)
