@@ -122,4 +122,12 @@ public class CommunityController {
 		Pageable pageable) {
 		return ResponseEntity.ok().body(communityService.getCommunityList(address, communityType, pageable));
 	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteCommunity(
+		@PathVariable("id") Long communityId
+		) {
+		communityService.deleteCommunity(communityId);
+		return ResponseEntity.noContent().build();
+	}
 }

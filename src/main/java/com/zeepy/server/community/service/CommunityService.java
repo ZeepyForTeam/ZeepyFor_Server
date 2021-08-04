@@ -257,5 +257,15 @@ public class CommunityService {
 			pageable,
 			communityList.getTotalElements());
 	}
+
+	public void deleteCommunity(Long communityId) {
+		Community community = communityRepository.findById(communityId)
+			.orElseThrow(NotFoundCommunityException::new);
+		if (community.getCurrentNumberOfPeople() > 1) {
+			throw new MoreThanOneParticipantException();
+		}
+
+		communityRepository.deleteById(communityId);
+	}
 }
 
