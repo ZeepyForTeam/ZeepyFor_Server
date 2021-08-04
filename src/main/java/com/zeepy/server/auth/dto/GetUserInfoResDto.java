@@ -3,11 +3,13 @@ package com.zeepy.server.auth.dto;
 import com.zeepy.server.user.domain.Role;
 import com.zeepy.server.user.domain.User;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
 @Getter
 public class GetUserInfoResDto {
