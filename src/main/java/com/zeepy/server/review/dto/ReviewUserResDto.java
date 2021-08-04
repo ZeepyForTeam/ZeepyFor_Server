@@ -1,5 +1,8 @@
 package com.zeepy.server.review.dto;
 
+import java.util.List;
+
+import com.zeepy.server.user.domain.Address;
 import com.zeepy.server.user.domain.User;
 
 import lombok.Getter;
@@ -10,11 +13,11 @@ import lombok.NoArgsConstructor;
 public class ReviewUserResDto {
 	private Long id;
 	private String name;
-	private String address;
+	private List<Address> addresses;
 
 	public ReviewUserResDto(User user) {
 		this.id = user.getId();
 		this.name = user.getName();
-		this.address = user.getAddress();
+		this.addresses = user.getAddresses();
 	}
 }
