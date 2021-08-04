@@ -1,16 +1,27 @@
 package com.zeepy.server.building.controller;
 
+import java.net.URI;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.zeepy.server.building.dto.BuildingLikeRequestDto;
 import com.zeepy.server.building.dto.BuildingLikeResponseDto;
 import com.zeepy.server.building.service.BuildingLikeService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.util.List;
 
 /**
  * Created by Minky on 2021-06-02
@@ -21,7 +32,6 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class BuildingLikeController {
     private final BuildingLikeService buildingLikeService;
-
 
     @GetMapping
     public ResponseEntity<List<BuildingLikeResponseDto>> getBuildingLikes() {
@@ -37,18 +47,18 @@ public class BuildingLikeController {
 
     @PostMapping
     public ResponseEntity<Void> uploadBuildingLike(
+            @AuthenticationPrincipal String userEmail,
             @Valid @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
     ) {
-        Long id = buildingLikeService.create(buildingLikeRequestDto);
+        Long id = buildingLikeService.create(buildingLikeRequestDto, userEmail);
         return ResponseEntity.created(URI.create("/api/likes/buildings/" + id)).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateBuildingLike(
-            @PathVariable Long id,
-            @Valid @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
+            @PathVariable Long id
     ) {
-        buildingLikeService.update(id, buildingLikeRequestDto);
+        buildingLikeService.update(id);
         return ResponseEntity.ok().build();
     }
 

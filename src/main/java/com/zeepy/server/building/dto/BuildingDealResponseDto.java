@@ -1,16 +1,15 @@
 package com.zeepy.server.building.dto;
 
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.zeepy.server.building.domain.BuildingDeal;
 import com.zeepy.server.building.domain.DealType;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Minky on 2021-05-15
@@ -29,13 +28,13 @@ public class BuildingDealResponseDto {
     private DealType dealType;
 
     public BuildingDealResponseDto(
-            Long id,
-            Timestamp dealDate,
-            int deposit,
-            int monthlyRent,
-            int dealCost,
-            int floor,
-            DealType dealType
+        Long id,
+        Timestamp dealDate,
+        int deposit,
+        int monthlyRent,
+        int dealCost,
+        int floor,
+        DealType dealType
     ) {
         this.id = id;
         this.dealDate = dealDate;
@@ -48,20 +47,20 @@ public class BuildingDealResponseDto {
 
     public static BuildingDealResponseDto of(BuildingDeal buildingDeal) {
         return new BuildingDealResponseDto(
-                buildingDeal.getId(),
-                buildingDeal.getDealDate(),
-                buildingDeal.getDeposit(),
-                buildingDeal.getMonthlyRent(),
-                buildingDeal.getDealCost(),
-                buildingDeal.getFloor(),
-                buildingDeal.getDealType()
+            buildingDeal.getId(),
+            buildingDeal.getDealDate(),
+            buildingDeal.getDeposit(),
+            buildingDeal.getMonthlyRent(),
+            buildingDeal.getDealCost(),
+            buildingDeal.getFloor(),
+            buildingDeal.getDealType()
         );
     }
 
     public static List<BuildingDealResponseDto> listOf(List<BuildingDeal> buildingDealList) {
         return buildingDealList
-                .stream()
-                .map(BuildingDealResponseDto::of)
-                .collect(Collectors.toList());
+            .stream()
+            .map(BuildingDealResponseDto::of)
+            .collect(Collectors.toList());
     }
 }

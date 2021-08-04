@@ -18,7 +18,6 @@ import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
-import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.CommunityLikeDto;
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
@@ -86,10 +85,8 @@ public class CommunityService {
 	}
 
 	@Transactional
-	public Long save(SaveCommunityRequestDto requestDto) {
-		Long writerId = requestDto.getWriterId();
-		User writer = userRepository.findById(writerId)
-			.orElseThrow(NotFoundUserException::new);
+	public Long save(SaveCommunityRequestDto requestDto, String userEmail) {
+		User writer = getUserByEmail(userEmail);
 
 		Community communityToSave = requestDto.toEntity();
 		communityToSave.setUser(writer);
@@ -103,15 +100,14 @@ public class CommunityService {
 	}
 
 	@Transactional
-	public void joinCommunity(Long communityId, JoinCommunityRequestDto joinCommunityRequestDto) {
+	public void joinCommunity(Long communityId, JoinCommunityRequestDto joinCommunityRequestDto, String userEmail) {
 		Community community = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 
-		Long participationUserId = joinCommunityRequestDto.getParticipationUserId();
-		User participants = userRepository.findById(participationUserId)
-			.orElseThrow(NotFoundUserException::new);
+		User participants = getUserByEmail(userEmail);
 
-		participationRepository.findByCommunityIdAndUserId(communityId, participationUserId)
+		participationRepository.findByCommunityIdAndUserId(communityId, participants
+			.getId())
 			.ifPresent(v -> {
 				throw new AlreadyParticipationException();
 			});
@@ -127,10 +123,8 @@ public class CommunityService {
 	}
 
 	@Transactional
-	public void cancelJoinCommunity(Long communityId, CancelJoinCommunityRequestDto cancelJoinCommunityRequestDto) {
-		Long cancelJoinUserId = cancelJoinCommunityRequestDto.getCancelUserId();
-		User findUser = userRepository.findById(cancelJoinUserId)
-			.orElseThrow(NotFoundUserException::new);
+	public void cancelJoinCommunity(Long communityId, String userEmail) {
+		User findUser = getUserByEmail(userEmail);
 
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
@@ -152,11 +146,9 @@ public class CommunityService {
 	}
 
 	@Transactional
-	public void saveComment(Long communityId, WriteCommentRequestDto writeCommentRequestDto) {
-		Long writerUserId = writeCommentRequestDto.getWriteUserId();
+	public void saveComment(Long communityId, WriteCommentRequestDto writeCommentRequestDto, String userEmail) {
 		Long superCommentId = writeCommentRequestDto.getSuperCommentId();
-		User writer = userRepository.findById(writerUserId)
-			.orElseThrow(NotFoundUserException::new);
+		User writer = getUserByEmail(userEmail);
 		Community community = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 
@@ -180,9 +172,12 @@ public class CommunityService {
 	}
 
 	@Transactional(readOnly = true)
-	public MyZipJoinResDto getJoinList(Long userId) {
-		List<Participation> participationList = participationRepository.findAllByUserId(userId);
-		List<Community> communityList = communityRepository.findAllByUserId(userId);
+	public MyZipJoinResDto getJoinList(String userEmail) {
+		User findUser = getUserByEmail(userEmail);
+		List<Participation> participationList = participationRepository.findAllByUserId(findUser
+			.getId());
+		List<Community> communityList = communityRepository.findAllByUserId(findUser
+			.getId());
 
 		List<ParticipationResDto> participationResDtoList = participationList.stream()
 			.map(ParticipationResDto::new)
@@ -199,6 +194,11 @@ public class CommunityService {
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 		updateCommunityReqDto.updateCommunity(findCommunity);
+	}
+
+	private User getUserByEmail(String authUserEmail) {
+		return userRepository.findByEmail(authUserEmail)
+			.orElseThrow(NotFoundUserException::new);
 	}
 
 	@Transactional(readOnly = true)

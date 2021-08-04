@@ -1,16 +1,16 @@
 package com.zeepy.server.building.repository;
 
-import com.zeepy.server.building.domain.BuildingDeal;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import com.zeepy.server.building.domain.BuildingDeal;
 
 /**
  * Created by Minky on 2021-05-15
  */
 @Repository
 public interface BuildingDealRepository extends JpaRepository<BuildingDeal, Long> {
-    Optional<BuildingDeal> findByFloorAndBuilding_Id(int floor, Long id);
+	Optional<BuildingDeal> findByFloorAndBuilding_Id(int floor, Long id);
 }

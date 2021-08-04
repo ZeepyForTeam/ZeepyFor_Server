@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.zeepy.server.review.domain.Review;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-	List<Review> findAllByAddress(String address);
+	List<Review> findAllByUserId(Long userId);
 }

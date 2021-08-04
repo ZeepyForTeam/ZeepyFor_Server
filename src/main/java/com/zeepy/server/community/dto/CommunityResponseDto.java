@@ -1,7 +1,5 @@
 package com.zeepy.server.community.dto;
 
-import static java.util.stream.Collectors.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
