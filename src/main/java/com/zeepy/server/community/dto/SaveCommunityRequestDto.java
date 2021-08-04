@@ -33,8 +33,6 @@ public class SaveCommunityRequestDto {
 
 	private Integer targetNumberOfPeople;
 
-	private Integer currentNumberOfPeople = 0;
-
 	@NotEmpty(message = "제목은 필수입니다.")
 	private String title;
 
@@ -64,7 +62,6 @@ public class SaveCommunityRequestDto {
 		this.purchasePlace = purchasePlace;
 		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
-		this.currentNumberOfPeople = 0;
 		this.title = title;
 		this.content = content;
 		this.instructions = instructions;
@@ -79,7 +76,7 @@ public class SaveCommunityRequestDto {
 			.purchasePlace(purchasePlace)
 			.sharingMethod(sharingMethod)
 			.targetNumberOfPeople(targetNumberOfPeople)
-			.currentNumberOfPeople(currentNumberOfPeople)
+			.currentNumberOfPeople(0)
 			.title(title)
 			.content(content)
 			.instructions(instructions)
