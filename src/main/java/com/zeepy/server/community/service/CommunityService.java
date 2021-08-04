@@ -21,7 +21,6 @@ import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.CommunityLikeDto;
-import com.zeepy.server.community.dto.CommunityLikeRequestDto;
 import com.zeepy.server.community.dto.CommunityLikeResDto;
 import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
@@ -52,12 +51,11 @@ public class CommunityService {
 	private final CommentRepository commentRepository;
 
 	@Transactional
-	public Long like(CommunityLikeRequestDto requestDto) {
-		Community community = communityRepository.findById(requestDto.getCommunityId())
+	public Long like(Long communityId, String userEmail) {
+		Community community = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 
-		User user = userRepository.findById(requestDto.getUserId())
-			.orElseThrow(NotFoundUserException::new);
+		User user = getUserByEmail(userEmail);
 
 		CommunityLikeDto communityLikeDto = new CommunityLikeDto(user, community);
 		CommunityLike communityLike = communityLikeRepository.save(communityLikeDto.toEntity());
@@ -66,31 +64,31 @@ public class CommunityService {
 	}
 
 	@Transactional
-	public void cancelLike(CommunityLikeRequestDto requestDto) {
-		Community community = communityRepository.findById(requestDto.getCommunityId())
+	public void cancelLike(Long communityId, String userEmail) {
+		Community community = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 
-		User user = userRepository.findById(requestDto.getUserId())
-			.orElseThrow(NotFoundUserException::new);
+		User user = getUserByEmail(userEmail);
 
 		CommunityLike communityLike = communityLikeRepository.findByCommunityAndUser(community, user);
 		communityLikeRepository.deleteById(communityLike.getId());
 	}
 
 	@Transactional(readOnly = true)
-	public CommunityLikeResDtos getLikeList(Long id, String communityCategory) {
-		List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(id);
+	public CommunityLikeResDtos getLikeList(String userEmail, String communityCategory) {
+		User user = getUserByEmail(userEmail);
+		List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(user.getId());
 
 		if (communityCategory == null || communityCategory.isEmpty()) {
 			return communityLikeList.stream()
 				.map(CommunityLikeResDto::new)
-				.collect(collectingAndThen(toList(), CommunityLikeResDtos::new));
+				.collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
 		}
 
 		return communityLikeList.stream()
 			.map(CommunityLikeResDto::new)
 			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
-			.collect(collectingAndThen(toList(), CommunityLikeResDtos::new));
+			.collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
 	}
 
 	@Transactional
@@ -176,8 +174,7 @@ public class CommunityService {
 			.community(community)
 			.writer(writer)
 			.build();
-		commentRepository.save(commentDto
-			.toEntity());
+		commentRepository.save(commentDto.toEntity());
 	}
 
 	@Transactional(readOnly = true)
@@ -215,7 +212,7 @@ public class CommunityService {
 	public void updateCommunity(Long communityId, UpdateCommunityReqDto updateCommunityReqDto) {
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
-		if (findCommunity.getCurrentNumberOfPeople() > 1){
+		if (findCommunity.getCurrentNumberOfPeople() > 1) {
 			throw new MoreThanOneParticipantException();
 		}
 		updateCommunityReqDto.updateCommunity(findCommunity);

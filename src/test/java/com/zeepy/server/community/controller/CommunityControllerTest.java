@@ -32,7 +32,6 @@ import com.zeepy.server.community.dto.CommunityLikeRequestDto;
 import com.zeepy.server.community.dto.CommunityLikeResDto;
 import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
-import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.ParticipationResDto;
@@ -56,7 +55,7 @@ public class CommunityControllerTest extends ControllerTest {
 
 	private CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
 		.communityId(1L)
-		.userId(1L)
+		.userEmail("hey@naver.com")
 		.build();
 
 	private final String userEmail = "test@naver.com";
@@ -87,15 +86,21 @@ public class CommunityControllerTest extends ControllerTest {
 	@DisplayName("좋아요_추가_테스트")
 	@Test
 	public void like() throws Exception {
-		given(communityService.like(any(CommunityLikeRequestDto.class))).willReturn(1L);
-		doPost("/api/community/like", communityLikeRequestDto);
+		given(communityService.like(any(Long.class), any(String.class))).willReturn(1L);
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("communityId", "1");
+		params.add("userEmail", "hey@naver.com");
+		doPostWithParams("/api/community/like", params);
 	}
 
 	@DisplayName("좋아요_취소_테스트")
 	@Test
 	public void cancelLike() throws Exception {
-		doNothing().when(communityService).cancelLike(communityLikeRequestDto);
-		doDelete("/api/community/like", communityLikeRequestDto);
+		doNothing().when(communityService).cancelLike(1L, "hey@naver.com");
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("communityId", "1");
+		params.add("userEmail", "hey@naver.com");
+		doDeleteWithParams("/api/community/like", params);
 	}
 
 	@DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
@@ -103,7 +108,7 @@ public class CommunityControllerTest extends ControllerTest {
 	public void getLikeList() throws Exception {
 		List<CommunityLikeResDto> dtoList = new ArrayList<>();
 		CommunityLikeResDtos dtos = new CommunityLikeResDtos(dtoList);
-		given(communityService.getLikeList(any(Long.class), any(String.class))).willReturn(dtos);
+		given(communityService.getLikeList("hey@naver.com", "JOINTPURCHASE")).willReturn(dtos);
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("id", "1");
@@ -214,7 +219,8 @@ public class CommunityControllerTest extends ControllerTest {
 	public void communityUpdateTest() throws Exception {
 		//given
 		long communityId = 1L;
-		UpdateCommunityReqDto updateCommunityReqDto = new UpdateCommunityReqDto("수정된 제목", "수정된 내용", "수정된 제품명", 10000, "수정된 구매장소",
+		UpdateCommunityReqDto updateCommunityReqDto = new UpdateCommunityReqDto("수정된 제목", "수정된 내용", "수정된 제품명",
+			"수정된 구매장소",
 			"수정된 공유방법", 3, "수정된 설명");
 		String url = "/api/community/" + communityId;
 

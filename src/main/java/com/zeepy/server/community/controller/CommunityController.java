@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zeepy.server.community.dto.CancelJoinCommunityRequestDto;
-import com.zeepy.server.community.dto.CommunityLikeRequestDto;
 import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
@@ -39,16 +37,19 @@ public class CommunityController {
 	private final CommunityService communityService;
 
 	@PostMapping
-	public ResponseEntity<Void> saveCommunity(@Valid @RequestBody SaveCommunityRequestDto saveCommunityRequestDto,
+	public ResponseEntity<Void> saveCommunity(
+		@Valid @RequestBody SaveCommunityRequestDto saveCommunityRequestDto,
 		@AuthenticationPrincipal String userEmail) {
 		Long saveId = communityService.save(saveCommunityRequestDto, userEmail);
 		return ResponseEntity.created(URI.create("/api/community/" + saveId)).build();
 	}
 
 	@PostMapping("/like")
-	public ResponseEntity<Void> likeCommunity(@Valid @RequestBody CommunityLikeRequestDto communityLikeRequestDto
+	public ResponseEntity<Void> likeCommunity(
+		@RequestParam Long communityId,
+		@AuthenticationPrincipal String userEmail
 	) {
-		Long likeId = communityService.like(communityLikeRequestDto);
+		Long likeId = communityService.like(communityId, userEmail);
 		return ResponseEntity.created(URI.create("/api/community/like/" + likeId)).build();
 	}
 
@@ -73,16 +74,17 @@ public class CommunityController {
 
 	@DeleteMapping("/like")
 	public ResponseEntity<Void> cancelLikeCommunity(
-		@Valid @RequestBody CommunityLikeRequestDto communityLikeRequestDto) {
-		communityService.cancelLike(communityLikeRequestDto);
+		@RequestParam Long communityId,
+		@AuthenticationPrincipal String userEmail) {
+		communityService.cancelLike(communityId, userEmail);
 		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("/likes")
 	public ResponseEntity<CommunityLikeResDtos> getLikeList(
-		@RequestParam Long id,
+		@AuthenticationPrincipal String userEmail,
 		@RequestParam(required = false) String communityCategory) {
-		return new ResponseEntity<>(communityService.getLikeList(id, communityCategory), HttpStatus.OK);
+		return new ResponseEntity<>(communityService.getLikeList(userEmail, communityCategory), HttpStatus.OK);
 	}
 
 	@PostMapping("/comment/{id}")
@@ -131,7 +133,7 @@ public class CommunityController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteCommunity(
 		@PathVariable("id") Long communityId
-		) {
+	) {
 		communityService.deleteCommunity(communityId);
 		return ResponseEntity.noContent().build();
 	}
