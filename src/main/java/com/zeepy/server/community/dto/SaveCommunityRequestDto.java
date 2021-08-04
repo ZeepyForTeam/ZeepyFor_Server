@@ -20,7 +20,7 @@ import lombok.Setter;
 public class SaveCommunityRequestDto {
 
 	@NotNull(message = "커뮤니티카테고리는 필수값입니다.")
-	private CommunityCategory communityCategory;
+	private String communityCategory;
 
 	@NotNull(message = "커뮤니티 주소는 필수입니다.")
 	private String address;
@@ -47,7 +47,7 @@ public class SaveCommunityRequestDto {
 
 	@Builder
 	public SaveCommunityRequestDto(
-		CommunityCategory communityCategory,
+		String communityCategory,
 		String address,
 		String productName,
 		String purchasePlace,
@@ -73,7 +73,7 @@ public class SaveCommunityRequestDto {
 
 	public Community toEntity() {
 		return Community.builder()
-			.communityCategory(communityCategory)
+			.communityCategory(CommunityCategory.valueOf(communityCategory))
 			.address(address)
 			.productName(productName)
 			.purchasePlace(purchasePlace)

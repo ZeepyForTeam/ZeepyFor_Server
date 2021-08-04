@@ -99,9 +99,11 @@ public class CommunityService {
 		communityToSave.setUser(writer);
 		Community community = communityRepository.save(communityToSave);
 
-		ParticipationDto participationDto = new ParticipationDto(community, writer);
-		Participation participationToSave = participationDto.toEntity();
-		participationRepository.save(participationToSave);
+		if (requestDto.getCommunityCategory().equals("JOINTPURCHASE")) {
+			ParticipationDto participationDto = new ParticipationDto(community, writer);
+			Participation participationToSave = participationDto.toEntity();
+			participationRepository.save(participationToSave);
+		}
 
 		return community.getId();
 	}
@@ -224,10 +226,22 @@ public class CommunityService {
 	}
 
 	@Transactional(readOnly = true)
-	public CommunityResponseDto getCommunity(Long communityId) {
+	public CommunityResponseDto getCommunity(Long communityId, String userEmail) {
 		Community community = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
-		return new CommunityResponseDto(community);
+		User user = getUserByEmail(userEmail);
+
+		CommunityResponseDto responseDto = CommunityResponseDto.of(community);
+
+		Boolean isLiked = community.getLikes().stream()
+			.anyMatch(l -> l.getUser().equals(user));
+		responseDto.setLiked(isLiked);
+
+		Boolean isParticipant = community.getParticipationsList().stream()
+			.anyMatch(p -> p.getUser().equals(user));
+		responseDto.setParticipant(isParticipant);
+
+		return CommunityResponseDto.of(community);
 	}
 
 	@Transactional(readOnly = true)

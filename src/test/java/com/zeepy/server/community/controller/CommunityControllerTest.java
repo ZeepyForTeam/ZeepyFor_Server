@@ -3,6 +3,7 @@ package com.zeepy.server.community.controller;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,6 +42,7 @@ import com.zeepy.server.community.dto.WriteCommentRequestDto;
 import com.zeepy.server.community.dto.WriteOutResDto;
 import com.zeepy.server.community.service.CommunityService;
 import com.zeepy.server.user.domain.User;
+import com.zeepy.server.user.dto.UserDto;
 
 @DisplayName("커뮤니티_컨트롤러_테스트")
 @ExtendWith(SpringExtension.class)
@@ -60,6 +62,25 @@ public class CommunityControllerTest extends ControllerTest {
 
 	private final String userEmail = "test@naver.com";
 
+	private final CommunityResponseDto communityResponseDto = new CommunityResponseDto(
+		1L,
+		CommunityCategory.JOINTPURCHASE,
+		"안산",
+		"공동구매 상품명",
+		"스타프라자에서 만나요",
+		5,
+		"공동구매할싸람",
+		"내용",
+		new UserDto(1L, "yen"),
+		false,
+		false,
+		null,
+		null,
+		null,
+		LocalDateTime.now(),
+		false
+	);
+
 	@Override
 	@BeforeEach
 	public void setUp(WebApplicationContext webApplicationContext) {
@@ -72,7 +93,7 @@ public class CommunityControllerTest extends ControllerTest {
 	public void save() throws Exception {
 		SaveCommunityRequestDto requestDto = SaveCommunityRequestDto.builder()
 			.address("안양")
-			.communityCategory(CommunityCategory.FREESHARING)
+			.communityCategory("JOINTPURCHASE")
 			.title("강의 공동 구매해요!")
 			.content("제곧내")
 			.imageUrls(Arrays.asList("asdasd", "aaaaaaa", "ccccccccc"))
@@ -235,7 +256,7 @@ public class CommunityControllerTest extends ControllerTest {
 	@Test
 	public void getCommunity() throws Exception {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		given(communityService.getCommunity(any(Long.class))).willReturn(any(CommunityResponseDto.class));
+		given(communityService.getCommunity(eq(1L), eq(userEmail))).willReturn(communityResponseDto);
 
 		doGet("/api/community/1", params);
 	}

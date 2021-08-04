@@ -117,8 +117,9 @@ public class CommunityController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CommunityResponseDto> getCommunity(
-		@PathVariable("id") Long communityId) {
-		CommunityResponseDto communityResponseDto = communityService.getCommunity(communityId);
+		@PathVariable("id") Long communityId,
+		@AuthenticationPrincipal String userEmail) {
+		CommunityResponseDto communityResponseDto = communityService.getCommunity(communityId, userEmail);
 		return ResponseEntity.ok().body(communityResponseDto);
 	}
 
