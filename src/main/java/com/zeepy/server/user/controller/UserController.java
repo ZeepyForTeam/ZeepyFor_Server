@@ -70,8 +70,10 @@ public class UserController {
 	}
 
 	@PostMapping("/address")
-	public ResponseEntity<Void> addAddress(@RequestBody AddAddressReqDto addAddressReqDto) {
-		userService.addAddress(addAddressReqDto);
+	public ResponseEntity<Void> addAddress(
+		@RequestBody AddAddressReqDto addAddressReqDto,
+		@AuthenticationPrincipal String userEmail) {
+		userService.addAddress(addAddressReqDto, userEmail);
 		return ResponseEntity.ok().build();
 	}
 
