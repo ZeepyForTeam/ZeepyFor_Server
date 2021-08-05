@@ -23,10 +23,19 @@ public class BuildingRequestDto {
     private String apartmentName;
 
     @NotBlank(message = "shortAddress cannot be Empty")
-    private String shortAddress;
+    private String shortAddress; // 시 + 구 이름으로 구성된 주소
 
-    @NotBlank(message = "address cannot be Empty")
-    private String address;
+    @NotBlank(message = "fullRoadNameAddress cannot be Empty")
+    private String fullRoadNameAddress; // 전체 도로명 주소
+
+    @NotBlank(message = "shortRoadNameAddress cannot be Empty")
+    private String shortRoadNameAddress; // 도로명 + 아파트 이름으로 구성된 주소
+
+    @NotBlank(message = "fullNumberAddress cannot be Empty")
+    private String fullNumberAddress; // 전체 지번 주소
+
+    @NotBlank(message = "shortNumberAddress cannot be Empty")
+    private String shortNumberAddress; // 지번 + 아파트 이름으로 구성된 주소
 
     @NotNull(message = "exclusivePrivateArea cannot be Null")
     private float exclusivePrivateArea;
@@ -44,7 +53,10 @@ public class BuildingRequestDto {
         int buildYear,
         String apartmentName,
         String shortAddress,
-        String address,
+        String fullRoadNameAddress,
+        String shortRoadNameAddress,
+        String fullNumberAddress,
+        String shortNumberAddress,
         float exclusivePrivateArea,
         int areaCode,
         double latitude,
@@ -53,7 +65,10 @@ public class BuildingRequestDto {
         this.buildYear = buildYear;
         this.apartmentName = apartmentName;
         this.shortAddress = shortAddress;
-        this.address = address;
+        this.fullRoadNameAddress = fullRoadNameAddress;
+        this.shortRoadNameAddress = shortRoadNameAddress;
+        this.fullNumberAddress = fullNumberAddress;
+        this.shortNumberAddress = shortNumberAddress;
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
         this.latitude = latitude;
@@ -66,12 +81,14 @@ public class BuildingRequestDto {
             this.buildYear,
             this.apartmentName,
             this.shortAddress,
-            this.address,
+            this.fullRoadNameAddress,
+            this.shortRoadNameAddress,
+            this.fullNumberAddress,
+            this.shortNumberAddress,
             this.exclusivePrivateArea,
             this.areaCode,
             this.latitude,
-            this.longitude,
-            null
+            this.longitude
         );
     }
 }

@@ -2,14 +2,7 @@ package com.zeepy.server.building.domain;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -44,10 +37,19 @@ public class Building extends BaseTimeEntity {
     private String apartmentName; // 아파트 이름
 
     @NotEmpty
-    private String shortAddress; // 동 번지 로 구성된 작은 주소
+    private String shortAddress; // 시 + 구 이름으로 구성된 주소
 
     @NotEmpty
-    private String address; // 전체 주소
+    private String fullRoadNameAddress; // 전체 도로명 주소
+
+    @NotEmpty
+    private String shortRoadNameAddress; // 도로명 + 아파트 이름으로 구성된 주소
+
+    @NotEmpty
+    private String fullNumberAddress; // 전체 지번 주소
+
+    @NotEmpty
+    private String shortNumberAddress; // 지번 + 아파트 이름으로 구성된 주소
 
     @NotNull
     private float exclusivePrivateArea;
@@ -76,30 +78,37 @@ public class Building extends BaseTimeEntity {
         int buildYear,
         String apartmentName,
         String shortAddress,
-        String address,
+        String fullRoadNameAddress,
+        String shortRoadNameAddress,
+        String fullNumberAddress,
+        String shortNumberAddress,
         float exclusivePrivateArea,
         int areaCode,
         double latitude,
-        double longitude,
-        List<Review> reviews
+        double longitude
     ) {
         this.id = id;
         this.buildYear = buildYear;
         this.apartmentName = apartmentName;
         this.shortAddress = shortAddress;
-        this.address = address;
+        this.fullRoadNameAddress = fullRoadNameAddress;
+        this.shortRoadNameAddress = shortRoadNameAddress;
+        this.fullNumberAddress = fullNumberAddress;
+        this.shortNumberAddress = shortNumberAddress;
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.reviews = reviews;
     }
 
     public void update(BuildingRequestDto buildingRequestDto) {
         this.buildYear = buildingRequestDto.getBuildYear();
         this.apartmentName = buildingRequestDto.getApartmentName();
         this.shortAddress = buildingRequestDto.getShortAddress();
-        this.address = buildingRequestDto.getAddress();
+        this.fullRoadNameAddress = buildingRequestDto.getFullRoadNameAddress();
+        this.shortRoadNameAddress = buildingRequestDto.getShortRoadNameAddress();
+        this.fullNumberAddress = buildingRequestDto.getFullNumberAddress();
+        this.shortNumberAddress = buildingRequestDto.getShortNumberAddress();
         this.exclusivePrivateArea = buildingRequestDto.getExclusivePrivateArea();
         this.areaCode = buildingRequestDto.getAreaCode();
         this.latitude = buildingRequestDto.getLatitude();

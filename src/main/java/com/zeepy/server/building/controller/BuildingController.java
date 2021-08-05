@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zeepy.server.building.domain.DealType;
-import com.zeepy.server.building.dto.BuildingAddressResponseDto;
+import com.zeepy.server.building.dto.BuildingAutoCompleteResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.service.BuildingService;
@@ -71,7 +71,7 @@ public class BuildingController {
     }
 
     @GetMapping("/addresses")
-    public ResponseEntity<Page<BuildingAddressResponseDto>> getBuildingAddresses(
+    public ResponseEntity<Page<BuildingAutoCompleteResponseDto>> getBuildingAddresses(
         @RequestParam("address") String address,
         Pageable pageable
     ) {

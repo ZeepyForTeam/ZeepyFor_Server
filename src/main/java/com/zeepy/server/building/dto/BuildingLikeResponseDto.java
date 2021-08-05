@@ -25,9 +25,9 @@ public class BuildingLikeResponseDto {
     private User user;
 
     public BuildingLikeResponseDto(
-        Long id,
-        LocalDateTime likeDate,
-        User user
+            Long id,
+            LocalDateTime likeDate,
+            User user
     ) {
         this.id = id;
         this.likeDate = likeDate;
@@ -36,16 +36,16 @@ public class BuildingLikeResponseDto {
 
     public static BuildingLikeResponseDto of(BuildingLike buildingLike) {
         return new BuildingLikeResponseDto(
-            buildingLike.getId(),
-            buildingLike.getLikeDate(),
-            buildingLike.getUser()
+                buildingLike.getId(),
+                buildingLike.getLikeDate(),
+                buildingLike.getUser()
         );
     }
 
     public static List<BuildingLikeResponseDto> listOf(List<BuildingLike> buildingLikeList) {
         return buildingLikeList
-            .stream()
-            .map(BuildingLikeResponseDto::of)
-            .collect(Collectors.toList());
+                .stream()
+                .map(BuildingLikeResponseDto::of)
+                .collect(Collectors.toList());
     }
 }
