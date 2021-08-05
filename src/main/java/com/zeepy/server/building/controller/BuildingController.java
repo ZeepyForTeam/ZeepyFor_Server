@@ -40,24 +40,26 @@ public class BuildingController {
 
     @GetMapping
     public ResponseEntity<Page<BuildingResponseDto>> getBuildings(
-        @RequestParam(value = "geMonthly", required = false) Integer greaterMonthlyRent,
-        @RequestParam(value = "leMonthly", required = false) Integer lesserMonthlyRent,
-        @RequestParam(value = "geDeposit", required = false) Integer greaterDeposit,
-        @RequestParam(value = "leDeposit", required = false) Integer lesserDeposit,
-        @RequestParam(value = "neType", required = false) DealType notEqualDealType,
-        @RequestParam(value = "eqRoomCount", required = false) String roomCount,
-        @RequestParam(value = "inFurnitures", required = false) List<Furniture> furnitures,
-        Pageable pageable
+            @RequestParam(value = "shortAddress", required = false) String shortAddress,
+            @RequestParam(value = "geMonthly", required = false) Integer greaterMonthlyRent,
+            @RequestParam(value = "leMonthly", required = false) Integer lesserMonthlyRent,
+            @RequestParam(value = "geDeposit", required = false) Integer greaterDeposit,
+            @RequestParam(value = "leDeposit", required = false) Integer lesserDeposit,
+            @RequestParam(value = "neType", required = false) DealType notEqualDealType,
+            @RequestParam(value = "eqRoomCount", required = false) String roomCount,
+            @RequestParam(value = "inFurnitures", required = false) List<Furniture> furnitures,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(buildingService.getAll(
-            greaterMonthlyRent,
-            lesserMonthlyRent,
-            greaterDeposit,
-            lesserDeposit,
-            notEqualDealType,
-            roomCount,
-            furnitures,
-            pageable
+                shortAddress,
+                greaterMonthlyRent,
+                lesserMonthlyRent,
+                greaterDeposit,
+                lesserDeposit,
+                notEqualDealType,
+                roomCount,
+                furnitures,
+                pageable
         ));
     }
 
