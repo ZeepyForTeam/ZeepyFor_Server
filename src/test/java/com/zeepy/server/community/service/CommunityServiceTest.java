@@ -79,7 +79,7 @@ public class CommunityServiceTest {
 		Long communityId = community.getId();
 		Participation participation = createParticipation(community, user);
 
-		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true, 1L);
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true);
 
 		when(communityRepository.findById(any(Long.class))).thenReturn(Optional.of(community));
 		when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(user));

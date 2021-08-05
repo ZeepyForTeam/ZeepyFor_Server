@@ -143,7 +143,7 @@ public class CommunityControllerTest extends ControllerTest {
 		//given
 		long communityId = 1L;
 		long joinUserId = 2L;
-		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true, joinUserId);
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true);
 
 		//when
 		doNothing().when(communityService).joinCommunity(communityId, requestDto, userEmail);
