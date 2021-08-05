@@ -67,13 +67,6 @@ public class AuthController {
 		return ResponseEntity.ok().body(tokenResDto);
 	}
 
-	@GetMapping("/login/test")
-	public ResponseEntity<Void> test(@RequestParam("code") String code, @RequestParam("state") String state) {
-		System.out.println("code : " + code);
-		System.out.println("state : " + state);
-		return ResponseEntity.ok().build();
-	}
-
 	@PostMapping("/login/naver")
 	public ResponseEntity<TokenResDto> naverLogin(@RequestBody SNSLoginReqDto snsLoginReqDto) {
 		GetUserInfoResDto userInfoResDto = naverApi.getUserInfo(
@@ -114,5 +107,12 @@ public class AuthController {
 		TokenResponse tokenResponse = appleService.requestCodeValidations(clientSecret, null, appleRefreshToken);
 		AppleTokenResDto appleTokenResDto = appleService.setAppleTokenResDto(tokenResponse, null);
 		return ResponseEntity.ok().body(appleTokenResDto);
+	}
+
+	@GetMapping("/login/test")
+	public ResponseEntity<Void> test(@RequestParam("code") String code, @RequestParam("state") String state) {
+		System.out.println("code : " + code);
+		System.out.println("state : " + state);
+		return ResponseEntity.ok().build();
 	}
 }
