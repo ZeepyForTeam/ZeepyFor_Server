@@ -14,14 +14,15 @@ import com.zeepy.server.auth.dto.AppleRefreshReqDto;
 import com.zeepy.server.auth.dto.AppleServiceResDto;
 import com.zeepy.server.auth.dto.AppleTokenResDto;
 import com.zeepy.server.auth.dto.GetUserInfoResDto;
-import com.zeepy.server.auth.dto.KakaoLoginReqDto;
 import com.zeepy.server.auth.dto.LoginReqDto;
 import com.zeepy.server.auth.dto.ReIssueReqDto;
+import com.zeepy.server.auth.dto.SNSLoginReqDto;
 import com.zeepy.server.auth.dto.TokenResDto;
 import com.zeepy.server.auth.model.TokenResponse;
 import com.zeepy.server.auth.service.AppleService;
 import com.zeepy.server.auth.service.AuthService;
 import com.zeepy.server.auth.service.KakaoApi;
+import com.zeepy.server.auth.service.NaverApi;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestBodyException;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class AuthController {
 
 	private final AuthService authService;
 	private final KakaoApi kakaoApi;
+	private final NaverApi naverApi;
 	private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
 	@PostMapping("/login")
@@ -55,11 +57,20 @@ public class AuthController {
 	}
 
 	@PostMapping("/login/kakao")
-	public ResponseEntity<TokenResDto> kakaoLogin(@RequestBody KakaoLoginReqDto kakaoLoginReqDto) {
+	public ResponseEntity<TokenResDto> kakaoLogin(@RequestBody SNSLoginReqDto snsLoginReqDto) {
 		GetUserInfoResDto userInfoResDto = kakaoApi.getUserInfo(
-			kakaoLoginReqDto.getAccessToken());
+			snsLoginReqDto.getAccessToken());
 
-		TokenResDto tokenResDto = authService.kakaoLogin(userInfoResDto, kakaoLoginReqDto);
+		TokenResDto tokenResDto = authService.kakaoLogin(userInfoResDto, snsLoginReqDto);
+		return ResponseEntity.ok().body(tokenResDto);
+	}
+
+	@PostMapping("/login/naver")
+	public ResponseEntity<TokenResDto> naverLogin(@RequestBody SNSLoginReqDto snsLoginReqDto) {
+		GetUserInfoResDto userInfoResDto = naverApi.getUserInfo(
+			snsLoginReqDto.getAccessToken());
+
+		TokenResDto tokenResDto = authService.naverLogin(userInfoResDto, snsLoginReqDto);
 		return ResponseEntity.ok().body(tokenResDto);
 	}
 

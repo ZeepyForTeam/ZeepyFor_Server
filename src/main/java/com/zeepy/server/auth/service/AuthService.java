@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.auth.domain.Token;
 import com.zeepy.server.auth.dto.GetUserInfoResDto;
-import com.zeepy.server.auth.dto.KakaoLoginReqDto;
 import com.zeepy.server.auth.dto.LoginReqDto;
 import com.zeepy.server.auth.dto.ReIssueReqDto;
+import com.zeepy.server.auth.dto.SNSLoginReqDto;
 import com.zeepy.server.auth.dto.TokenResDto;
 import com.zeepy.server.auth.repository.TokenRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundPasswordException;
@@ -86,7 +86,7 @@ public class AuthService {
 	}
 
 	@Transactional
-	public TokenResDto kakaoLogin(GetUserInfoResDto userInfoResDto, KakaoLoginReqDto kakaoLoginReqDto) {
+	public TokenResDto kakaoLogin(GetUserInfoResDto userInfoResDto, SNSLoginReqDto snsLoginReqDto) {
 		// String nickname = userInfoResDto.getNickname();
 		String email = userInfoResDto.getEmail();
 
@@ -104,7 +104,7 @@ public class AuthService {
 
 		Token tokens = new Token(accessToken, refreshToken, user);
 		tokens.setKakaoToken(
-			kakaoLoginReqDto.getAccessToken()
+			snsLoginReqDto.getAccessToken()
 		);
 		tokenRepository.save(tokens);
 
@@ -114,5 +114,29 @@ public class AuthService {
 	private User getUserByEmail(String authUserEmail) {
 		return userRepository.findByEmail(authUserEmail)
 			.orElseThrow(NotFoundUserException::new);
+	}
+
+	public TokenResDto naverLogin(GetUserInfoResDto userInfoResDto, SNSLoginReqDto snsLoginReqDto) {
+		String email = userInfoResDto.getEmail();
+
+		//신규회원이면 회원가입
+		User user = userRepository.findByEmail(email)
+			.orElseGet(() -> {
+				User newUser = userInfoResDto.toEntity();
+				User saveUser = userRepository.save(newUser);    //신규회원일때 name = zeepy#000 이런식으로
+				saveUser.setNameById();
+				return saveUser;
+			});
+
+		String accessToken = jwtAuthenticationProvider.createAccessToken(user.getEmail());
+		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
+
+		Token tokens = new Token(accessToken, refreshToken, user);
+		tokens.setNaverToken(
+			snsLoginReqDto.getAccessToken()
+		);
+		tokenRepository.save(tokens);
+
+		return new TokenResDto(accessToken, refreshToken, user);
 	}
 }

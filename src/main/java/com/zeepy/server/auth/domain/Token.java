@@ -33,6 +33,8 @@ public class Token extends BaseTimeEntity {
 
 	private String kakaoAccessToken;
 
+	private String naverAccessToken;
+
 	private String appleRefreshToken;
 
 	private String appleIdToken;
@@ -52,6 +54,10 @@ public class Token extends BaseTimeEntity {
 
 	public void setKakaoToken(String kakaoAccessToken) {
 		this.kakaoAccessToken = kakaoAccessToken;
+	}
+
+	public void setNaverToken(String naverAccessToken) {
+		this.naverAccessToken = naverAccessToken;
 	}
 
 	public void setAppleRefreshToken(String appleRefreshToken) {

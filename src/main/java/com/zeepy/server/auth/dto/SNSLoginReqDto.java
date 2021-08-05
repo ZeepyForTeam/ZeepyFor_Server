@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class KakaoLoginReqDto {
+public class SNSLoginReqDto {
 	private String accessToken;
 }
