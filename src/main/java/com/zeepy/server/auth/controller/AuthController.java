@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zeepy.server.auth.dto.AppleRefreshReqDto;
@@ -63,6 +65,13 @@ public class AuthController {
 
 		TokenResDto tokenResDto = authService.kakaoLogin(userInfoResDto, snsLoginReqDto);
 		return ResponseEntity.ok().body(tokenResDto);
+	}
+
+	@GetMapping("/login/test")
+	public ResponseEntity<Void> test(@RequestParam("code") String code, @RequestParam("state") String state) {
+		System.out.println("code : " + code);
+		System.out.println("state : " + state);
+		return ResponseEntity.ok().build();
 	}
 
 	@PostMapping("/login/naver")

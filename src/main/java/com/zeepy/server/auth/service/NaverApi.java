@@ -45,13 +45,13 @@ public class NaverApi {
 
 			JSONParser jsonParser = new JSONParser();
 			JSONObject jsonObject = (JSONObject)jsonParser.parse(result);
+			System.out.println("object : " + jsonObject);
 
 			JSONObject response = (JSONObject)jsonObject.get("response");
 
-			//String email = response.get("email").toString();
-			String nickname = response.get("nickname").toString();
+			String email = response.get("email").toString();
 
-			userInfoResDto.setEmail(nickname);
+			userInfoResDto.setEmail(email);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
