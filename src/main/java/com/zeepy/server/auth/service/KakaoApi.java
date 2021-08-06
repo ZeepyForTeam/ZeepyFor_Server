@@ -10,7 +10,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 
 import com.zeepy.server.auth.dto.GetUserInfoResDto;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.KakaoUnAuthorization;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAuthorization;
 
 @Service
 public class KakaoApi {
@@ -36,7 +36,7 @@ public class KakaoApi {
 			int responseCode = conn.getResponseCode();
 			System.out.println("responseCode : " + responseCode);
 			if (responseCode == 401 || responseCode == 400) {
-				throw new KakaoUnAuthorization();
+				throw new SNSUnAuthorization();
 			}
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -79,7 +79,7 @@ public class KakaoApi {
 			int responseCode = conn.getResponseCode();
 			System.out.println("responseCode : " + responseCode);
 			if (responseCode == 401) {
-				throw new KakaoUnAuthorization();
+				throw new SNSUnAuthorization();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

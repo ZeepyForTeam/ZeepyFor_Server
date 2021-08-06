@@ -10,11 +10,12 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 
 import com.zeepy.server.auth.dto.GetUserInfoResDto;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAuthorization;
 
 @Service
 public class NaverApi {
-	private final String client_id = "1HysjhGJIqYvpLjZBby0";
-	private final String client_secret = "mUb0mYesqY";
+	private final String client_id = "";
+	private final String client_secret = "";
 
 	public GetUserInfoResDto getUserInfo(String accessToken) {
 		GetUserInfoResDto userInfoResDto = new GetUserInfoResDto();
@@ -35,7 +36,7 @@ public class NaverApi {
 			int responseCode = conn.getResponseCode();
 			System.out.println("responseCode : " + responseCode);
 			if (responseCode != 200) {
-				throw new RuntimeException("네이버 사용자 정보 불러오기 실패");
+				throw new SNSUnAuthorization();
 			}
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -57,7 +58,7 @@ public class NaverApi {
 			userInfoResDto.setEmail(email);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException("네이버 사용자 정보 불러오기 실패2222");
+			throw new RuntimeException(e);
 		}
 		return userInfoResDto;
 	}
@@ -80,7 +81,7 @@ public class NaverApi {
 			int responseCode = conn.getResponseCode();
 			System.out.println("responseCode : " + responseCode);
 			if (responseCode != 200) {
-				throw new RuntimeException();
+				throw new SNSUnAuthorization();
 			}
 
 		} catch (Exception e) {

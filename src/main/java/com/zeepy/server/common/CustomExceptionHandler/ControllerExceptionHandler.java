@@ -20,7 +20,6 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomExce
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateNicknameException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.InvalidRequestParameterException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.KakaoUnAuthorization;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundParticipationException;
@@ -30,6 +29,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUs
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenNotExistException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAuthorization;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -166,8 +166,8 @@ public class ControllerExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(KakaoUnAuthorization.class)
-	public ResponseEntity<ErrorResponse> kakaoUnAuthorization(KakaoUnAuthorization e) {
+	@ExceptionHandler(SNSUnAuthorization.class)
+	public ResponseEntity<ErrorResponse> snsUnAuthorization(SNSUnAuthorization e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
