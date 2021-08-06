@@ -14,12 +14,12 @@ public class CommunityLikeRequestDto {
 	private Long communityId;
 
 	@NotNull(message = "userId값은 필수입니다.")
-	private Long userId;
+	private String userEmail;
 
 	@Builder
-	public CommunityLikeRequestDto(Long communityId, Long userId) {
+	public CommunityLikeRequestDto(Long communityId, String userEmail) {
 		this.communityId = communityId;
-		this.userId = userId;
+		this.userEmail = userEmail;
 	}
 
 }

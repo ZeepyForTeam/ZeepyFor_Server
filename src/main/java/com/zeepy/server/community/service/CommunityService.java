@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.MoreThanOneParticipantException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.community.domain.Comment;
@@ -20,9 +21,9 @@ import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.CommunityLikeDto;
-import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityLikeResDto;
+import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
-import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.ParticipationDto;
@@ -50,12 +51,11 @@ public class CommunityService {
 	private final CommentRepository commentRepository;
 
 	@Transactional
-	public Long like(CommunityLikeRequestDto requestDto) {
-		Community community = communityRepository.findById(requestDto.getCommunityId())
+	public Long like(Long communityId, String userEmail) {
+		Community community = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 
-		User user = userRepository.findById(requestDto.getUserId())
-			.orElseThrow(NotFoundUserException::new);
+		User user = getUserByEmail(userEmail);
 
 		CommunityLikeDto communityLikeDto = new CommunityLikeDto(user, community);
 		CommunityLike communityLike = communityLikeRepository.save(communityLikeDto.toEntity());
@@ -64,24 +64,31 @@ public class CommunityService {
 	}
 
 	@Transactional
-	public void cancelLike(CommunityLikeRequestDto requestDto) {
-		Community community = communityRepository.findById(requestDto.getCommunityId())
+	public void cancelLike(Long communityId, String userEmail) {
+		Community community = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 
-		User user = userRepository.findById(requestDto.getUserId())
-			.orElseThrow(NotFoundUserException::new);
+		User user = getUserByEmail(userEmail);
 
 		CommunityLike communityLike = communityLikeRepository.findByCommunityAndUser(community, user);
 		communityLikeRepository.deleteById(communityLike.getId());
 	}
 
 	@Transactional(readOnly = true)
-	public CommunityResponseDtos getLikeList(Long id) {
-		List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(id);
-		return new CommunityResponseDtos(communityLikeList.stream()
-			.map(CommunityLike::getCommunity)
-			.map(CommunityResponseDto::new)
-			.collect(Collectors.toList()));
+	public CommunityLikeResDtos getLikeList(String userEmail, String communityCategory) {
+		User user = getUserByEmail(userEmail);
+		List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(user.getId());
+
+		if (communityCategory == null || communityCategory.isEmpty()) {
+			return communityLikeList.stream()
+				.map(CommunityLikeResDto::new)
+				.collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
+		}
+
+		return communityLikeList.stream()
+			.map(CommunityLikeResDto::new)
+			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
+			.collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
 	}
 
 	@Transactional
@@ -92,9 +99,11 @@ public class CommunityService {
 		communityToSave.setUser(writer);
 		Community community = communityRepository.save(communityToSave);
 
-		ParticipationDto participationDto = new ParticipationDto(community, writer);
-		Participation participationToSave = participationDto.toEntity();
-		participationRepository.save(participationToSave);
+		if (requestDto.getCommunityCategory().equals("JOINTPURCHASE")) {
+			ParticipationDto participationDto = new ParticipationDto(community, writer);
+			Participation participationToSave = participationDto.toEntity();
+			participationRepository.save(participationToSave);
+		}
 
 		return community.getId();
 	}
@@ -167,23 +176,35 @@ public class CommunityService {
 			.community(community)
 			.writer(writer)
 			.build();
-		commentRepository.save(commentDto
-			.toEntity());
+		commentRepository.save(commentDto.toEntity());
 	}
 
 	@Transactional(readOnly = true)
-	public MyZipJoinResDto getJoinList(String userEmail) {
+	public MyZipJoinResDto getJoinList(String userEmail, String communityCategory) {
 		User findUser = getUserByEmail(userEmail);
 		List<Participation> participationList = participationRepository.findAllByUserId(findUser
 			.getId());
 		List<Community> communityList = communityRepository.findAllByUserId(findUser
 			.getId());
 
+		if (communityCategory == null || communityCategory.isEmpty()) {
+			List<ParticipationResDto> participationResDtoList = participationList.stream()
+				.map(ParticipationResDto::new)
+				.collect(Collectors.toList());
+			List<WriteOutResDto> writeOutResDtoList = communityList.stream()
+				.map(WriteOutResDto::new)
+				.collect(Collectors.toList());
+			return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
+		}
+
 		List<ParticipationResDto> participationResDtoList = participationList.stream()
 			.map(ParticipationResDto::new)
+			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
 			.collect(Collectors.toList());
+
 		List<WriteOutResDto> writeOutResDtoList = communityList.stream()
 			.map(WriteOutResDto::new)
+			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
 			.collect(Collectors.toList());
 
 		return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
@@ -193,6 +214,9 @@ public class CommunityService {
 	public void updateCommunity(Long communityId, UpdateCommunityReqDto updateCommunityReqDto) {
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
+		if (findCommunity.getCurrentNumberOfPeople() > 1) {
+			throw new MoreThanOneParticipantException();
+		}
 		updateCommunityReqDto.updateCommunity(findCommunity);
 	}
 
@@ -202,10 +226,22 @@ public class CommunityService {
 	}
 
 	@Transactional(readOnly = true)
-	public CommunityResponseDto getCommunity(Long communityId) {
+	public CommunityResponseDto getCommunity(Long communityId, String userEmail) {
 		Community community = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
-		return new CommunityResponseDto(community);
+		User user = getUserByEmail(userEmail);
+
+		CommunityResponseDto responseDto = CommunityResponseDto.of(community);
+
+		Boolean isLiked = community.getLikes().stream()
+			.anyMatch(l -> l.getUser().equals(user));
+		responseDto.setLiked(isLiked);
+
+		Boolean isParticipant = community.getParticipationsList().stream()
+			.anyMatch(p -> p.getUser().equals(user));
+		responseDto.setParticipant(isParticipant);
+
+		return CommunityResponseDto.of(community);
 	}
 
 	@Transactional(readOnly = true)
@@ -229,6 +265,16 @@ public class CommunityService {
 			CommunityResponseDto.listOf(communityList.getContent()),
 			pageable,
 			communityList.getTotalElements());
+	}
+
+	public void deleteCommunity(Long communityId) {
+		Community community = communityRepository.findById(communityId)
+			.orElseThrow(NotFoundCommunityException::new);
+		if (community.getCurrentNumberOfPeople() > 1) {
+			throw new MoreThanOneParticipantException();
+		}
+
+		communityRepository.deleteById(communityId);
 	}
 }
 

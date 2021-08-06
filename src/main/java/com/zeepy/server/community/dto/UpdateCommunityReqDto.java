@@ -15,9 +15,9 @@ public class UpdateCommunityReqDto {
 	@NotBlank(message = "제목은 필수 사항입니다.")
 	private String title;
 
-	private String productName;
+	private String content;
 
-	private Integer productPrice;
+	private String productName;
 
 	private String purchasePlace;
 
@@ -29,8 +29,8 @@ public class UpdateCommunityReqDto {
 
 	public void updateCommunity(Community community) {
 		community.update(title,
+			content,
 			productName,
-			productPrice,
 			purchasePlace,
 			sharingMethod,
 			targetNumberOfPeople,

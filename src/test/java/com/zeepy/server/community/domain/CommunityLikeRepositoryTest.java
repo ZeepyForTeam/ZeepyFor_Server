@@ -67,11 +67,11 @@ public class CommunityLikeRepositoryTest {
 		return Community.builder()
 			.communityCategory(CommunityCategory.JOINTPURCHASE)
 			.productName("사료")
-			.productPrice(80000)
 			.user(user)
 			.address("사당")
 			.title("고앵이 사료 공구")
 			.content("고양이 확대 같이 해봐요")
+			.targetNumberOfPeople(4)
 			.build();
 	}
 
@@ -79,7 +79,6 @@ public class CommunityLikeRepositoryTest {
 		return Community.builder()
 			.communityCategory(CommunityCategory.FREESHARING)
 			.productName("기프티콘")
-			.productPrice(80000)
 			.user(user)
 			.address("향남")
 			.title("오늘까지인 기프티콘 나눔")
