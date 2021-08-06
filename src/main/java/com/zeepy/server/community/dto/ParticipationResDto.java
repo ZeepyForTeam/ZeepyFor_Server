@@ -28,12 +28,12 @@ public class ParticipationResDto {
 		this.title = thisCommunity.getTitle();
 		this.content = thisCommunity.getContent();
 		this.createdTime = thisCommunity.getCreatedDate();
-		this.isCompleted = setIsCompleted(
+		this.isCompleted = checkIfCompleted(
 			thisCommunity.getCurrentNumberOfPeople(),
 			thisCommunity.getTargetNumberOfPeople());
 	}
 
-	public Boolean setIsCompleted(Integer currentNumberOfPeople, Integer targetNumberOfPeople) {
+	public Boolean checkIfCompleted(Integer currentNumberOfPeople, Integer targetNumberOfPeople) {
 		if (targetNumberOfPeople == null) {
 			return false;
 		}
