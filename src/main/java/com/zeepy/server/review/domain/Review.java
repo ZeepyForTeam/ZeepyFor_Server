@@ -38,109 +38,112 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Review extends BaseTimeEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_sequence_gen")
-	@SequenceGenerator(name = "review_sequence_gen", sequenceName = "review_sequence")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_sequence_gen")
+    @SequenceGenerator(name = "review_sequence_gen", sequenceName = "review_sequence")
+    private Long id;
 
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private CommuncationTendency communicationTendency;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private CommuncationTendency communicationTendency;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private LessorGender lessorGender;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private LessorGender lessorGender;
 
-	@NotNull
-	@Enumerated(EnumType.ORDINAL)
-	private LessorAge lessorAge;
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
+    private LessorAge lessorAge;
 
-	@NotEmpty
-	@Lob
-	private String lessorReview;
+    @NotEmpty
+    @Lob
+    private String lessorReview;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private RoomCount roomCount;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private RoomCount roomCount;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private MultiChoiceReview soundInsulation;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private MultiChoiceReview soundInsulation;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private MultiChoiceReview pest;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private MultiChoiceReview pest;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private MultiChoiceReview lightning;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private MultiChoiceReview lightning;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private MultiChoiceReview waterPressure;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private MultiChoiceReview waterPressure;
 
-	@ElementCollection(targetClass = Furniture.class)
-	@JoinTable(name = "tblFurnitures", joinColumns = @JoinColumn(name = "reviewID"))
-	@Column(name = "furniture")
-	@Enumerated(EnumType.STRING)
-	private List<Furniture> furnitures;
+    @ElementCollection(targetClass = Furniture.class)
+    @JoinTable(name = "tblFurnitures", joinColumns = @JoinColumn(name = "reviewID"))
+    @Column(name = "furniture")
+    @Enumerated(EnumType.STRING)
+    private List<Furniture> furnitures;
 
-	@NotEmpty
-	@Lob
-	private String review;
+    @NotEmpty
+    @Lob
+    private String review;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private TotalEvaluation totalEvaluation;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private TotalEvaluation totalEvaluation;
 
-	@ElementCollection
-	@JoinTable(name = "tblImageUrls", joinColumns = @JoinColumn(name = "reviewID"))
-	@Column(name = "imageUrl")
-	private List<String> imageUrls;
+    @ElementCollection
+    @JoinTable(name = "tblImageUrls", joinColumns = @JoinColumn(name = "reviewID"))
+    @Column(name = "imageUrl")
+    private List<String> imageUrls;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "building_id")
-	private Building building;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "building_id")
+    private Building building;
 
-	@Builder
-	public Review(Long id,
-		CommuncationTendency communicationTendency,
-		LessorGender lessorGender,
-		LessorAge lessorAge,
-		String lessorReview,
-		RoomCount roomCount,
-		MultiChoiceReview soundInsulation,
-		MultiChoiceReview pest,
-		MultiChoiceReview lightning,
-		MultiChoiceReview waterPressure,
-		List<Furniture> furnitures,
-		String review,
-		TotalEvaluation totalEvaluation,
-		List<String> imageUrls, Building building) {
-		this.id = id;
-		this.communicationTendency = communicationTendency;
-		this.lessorGender = lessorGender;
-		this.lessorAge = lessorAge;
-		this.lessorReview = lessorReview;
-		this.roomCount = roomCount;
-		this.soundInsulation = soundInsulation;
-		this.pest = pest;
-		this.lightning = lightning;
-		this.waterPressure = waterPressure;
-		this.furnitures = furnitures;
-		this.review = review;
-		this.totalEvaluation = totalEvaluation;
-		this.imageUrls = imageUrls;
-		this.building = building;
-	}
+    @Builder
+    public Review(
+            Long id,
+            CommuncationTendency communicationTendency,
+            LessorGender lessorGender,
+            LessorAge lessorAge,
+            String lessorReview,
+            RoomCount roomCount,
+            MultiChoiceReview soundInsulation,
+            MultiChoiceReview pest,
+            MultiChoiceReview lightning,
+            MultiChoiceReview waterPressure,
+            List<Furniture> furnitures,
+            String review,
+            TotalEvaluation totalEvaluation,
+            List<String> imageUrls,
+            Building building
+    ) {
+        this.id = id;
+        this.communicationTendency = communicationTendency;
+        this.lessorGender = lessorGender;
+        this.lessorAge = lessorAge;
+        this.lessorReview = lessorReview;
+        this.roomCount = roomCount;
+        this.soundInsulation = soundInsulation;
+        this.pest = pest;
+        this.lightning = lightning;
+        this.waterPressure = waterPressure;
+        this.furnitures = furnitures;
+        this.review = review;
+        this.totalEvaluation = totalEvaluation;
+        this.imageUrls = imageUrls;
+        this.building = building;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-		user.getReviews().add(this);
-	}
+    public void setUser(User user) {
+        this.user = user;
+        user.getReviews().add(this);
+    }
 }

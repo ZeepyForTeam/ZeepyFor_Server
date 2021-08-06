@@ -136,20 +136,14 @@ public class BuildingService {
                 .ne(dealType);
     }
 
-    private BooleanExpression eqRoomCount(String roomCount) {
-        if (roomCount == null) {
+    private BooleanExpression inRoomCounts(List<RoomCount> roomCounts) {
+        if (roomCounts == null) {
             return null;
-        }
-
-        try {
-            RoomCount.valueOf(roomCount);
-        } catch (Exception e) {
-            throw new InvalidRequestParameterException();
         }
 
         return qReview
                 .roomCount
-                .eq(RoomCount.valueOf(roomCount));
+                .in(roomCounts);
     }
 
     private BooleanExpression inFurnitures(List<Furniture> furnitures) {
@@ -179,7 +173,7 @@ public class BuildingService {
             Integer greaterDeposit,
             Integer lesserDeposit,
             DealType notEqualDealType,
-            String roomCount,
+            List<RoomCount> roomCounts,
             List<Furniture> furnitures,
             Pageable pageable
     ) {
@@ -195,7 +189,7 @@ public class BuildingService {
                         goeDeposit(greaterDeposit),
                         loeDeposit(lesserDeposit),
                         neDealType(notEqualDealType),
-                        eqRoomCount(roomCount),
+                        inRoomCounts(roomCounts),
                         inFurnitures(furnitures)
                 )
                 .orderBy(qBuilding.id.desc())

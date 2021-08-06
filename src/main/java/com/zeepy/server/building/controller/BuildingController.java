@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.zeepy.server.review.domain.RoomCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class BuildingController {
             @RequestParam(value = "geDeposit", required = false) Integer greaterDeposit,
             @RequestParam(value = "leDeposit", required = false) Integer lesserDeposit,
             @RequestParam(value = "neType", required = false) DealType notEqualDealType,
-            @RequestParam(value = "eqRoomCount", required = false) String roomCount,
+            @RequestParam(value = "inRoomCounts", required = false) List<RoomCount> roomCounts,
             @RequestParam(value = "inFurnitures", required = false) List<Furniture> furnitures,
             Pageable pageable
     ) {
@@ -57,7 +58,7 @@ public class BuildingController {
                 greaterDeposit,
                 lesserDeposit,
                 notEqualDealType,
-                roomCount,
+                roomCounts,
                 furnitures,
                 pageable
         ));
