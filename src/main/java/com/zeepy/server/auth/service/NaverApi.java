@@ -13,6 +13,8 @@ import com.zeepy.server.auth.dto.GetUserInfoResDto;
 
 @Service
 public class NaverApi {
+	private final String client_id = "1HysjhGJIqYvpLjZBby0";
+	private final String client_secret = "mUb0mYesqY";
 
 	public GetUserInfoResDto getUserInfo(String accessToken) {
 		GetUserInfoResDto userInfoResDto = new GetUserInfoResDto();
@@ -31,6 +33,7 @@ public class NaverApi {
 			conn.setReadTimeout(5000);
 
 			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode : " + responseCode);
 			if (responseCode != 200) {
 				throw new RuntimeException("네이버 사용자 정보 불러오기 실패");
 			}
@@ -54,7 +57,35 @@ public class NaverApi {
 			userInfoResDto.setEmail(email);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new RuntimeException("네이버 사용자 정보 불러오기 실패2222");
 		}
 		return userInfoResDto;
+	}
+
+	public void logout(String accessToken) {
+		String reqUrl = "https://nid.naver.com/oauth2.0/token";
+		StringBuffer params = new StringBuffer();
+		params.append("grant_type=" + "delete");
+		params.append("client_id" + client_id);
+		params.append("client_secret=" + client_secret);
+		params.append("access_token=").append(accessToken);
+		params.append("service_provider=" + "NAVER");
+
+		reqUrl = reqUrl + "?" + params;
+		try {
+			URL url = new URL(reqUrl);
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("GET");
+
+			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode : " + responseCode);
+			if (responseCode != 200) {
+				throw new RuntimeException();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 }

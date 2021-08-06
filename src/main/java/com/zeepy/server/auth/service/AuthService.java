@@ -30,6 +30,7 @@ public class AuthService {
 	private final PasswordEncoder passwordEncoder;
 	private final JwtAuthenticationProvider jwtAuthenticationProvider;
 	private final KakaoApi kakaoApi;
+	private final NaverApi naverApi;
 
 	@Transactional
 	public TokenResDto login(LoginReqDto loginReqDto) {
@@ -59,6 +60,10 @@ public class AuthService {
 		//만약 token의 카카오가 !null이면 카카오 로그아웃
 		if (findToken.getKakaoAccessToken() != null) {
 			kakaoApi.logout(findToken.getKakaoAccessToken());
+		}
+		//네이버 로그아웃
+		if (findToken.getNaverAccessToken() != null) {
+			naverApi.logout(findToken.getNaverAccessToken());
 		}
 		//나중에 token의 애플이 !null이면 애플 로그아웃
 		tokenRepository.deleteByUserId(userId);
