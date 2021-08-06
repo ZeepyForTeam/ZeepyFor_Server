@@ -15,12 +15,12 @@ import com.zeepy.server.building.domain.Building;
  */
 @Repository
 public interface BuildingRepository extends JpaRepository<Building, Long> {
-    Optional<Building> findByFullNumberAddressContainingOrFullNumberAddressContaining(
+    Optional<Building> findByFullNumberAddressContainingOrFullRoadNameAddressContaining(
             String address1,
             String address2
     );
 
-    Page<Building> findByFullNumberAddressContainingOrFullNumberAddressContaining(
+    Page<Building> findByFullNumberAddressContainingOrFullRoadNameAddressContaining(
             String address1,
             String address2,
             Pageable pageable

@@ -213,7 +213,7 @@ public class BuildingService {
     // READ
     @Transactional(readOnly = true)
     public BuildingResponseDto getByAddress(String address) {
-        Building building = buildingRepository.findByFullNumberAddressContainingOrFullNumberAddressContaining(address, address)
+        Building building = buildingRepository.findByFullNumberAddressContainingOrFullRoadNameAddressContaining(address, address)
                 .orElseThrow(NoContentException::new);
         return BuildingResponseDto.of(building);
     }
@@ -239,7 +239,7 @@ public class BuildingService {
     // READ
     @Transactional(readOnly = true)
     public Page<BuildingAutoCompleteResponseDto> getBuildingAddressesByAddress(String address, Pageable pageable) {
-        Page<Building> buildingList = buildingRepository.findByFullNumberAddressContainingOrFullNumberAddressContaining(address, address, pageable);
+        Page<Building> buildingList = buildingRepository.findByFullNumberAddressContainingOrFullRoadNameAddressContaining(address, address, pageable);
         return new PageImpl<BuildingAutoCompleteResponseDto>(
                 BuildingAutoCompleteResponseDto.listOf(buildingList.getContent()),
                 pageable,
