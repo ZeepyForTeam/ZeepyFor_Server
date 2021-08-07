@@ -39,6 +39,11 @@ import lombok.RequiredArgsConstructor;
 public class BuildingController {
     private final BuildingService buildingService;
 
+    @GetMapping("/all")
+    public ResponseEntity<List<BuildingResponseDto>> getAll() {
+        return ResponseEntity.ok().body(buildingService.getAll());
+    }
+
     @GetMapping
     public ResponseEntity<Page<BuildingResponseDto>> getBuildings(
             @RequestParam(value = "shortAddress", required = false) String shortAddress,
@@ -103,6 +108,14 @@ public class BuildingController {
     ) {
         Long id = buildingService.create(buildingRequestDto);
         return ResponseEntity.created(URI.create("/api/buildings/" + id)).build();
+    }
+
+    @PostMapping("/batch")
+    public ResponseEntity<Void> batchInsertBuilding(
+            @Valid @RequestBody List<BuildingRequestDto> buildingRequestDtoList
+    ) {
+        buildingService.batchInsert(buildingRequestDtoList);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")

@@ -1,7 +1,13 @@
 package com.zeepy.server.building.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import com.zeepy.server.building.domain.*;
+import com.zeepy.server.building.dto.BuildingBulkRequestDto;
+import com.zeepy.server.building.repository.BuildingDealRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -11,11 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.zeepy.server.building.domain.Building;
-import com.zeepy.server.building.domain.DealType;
-import com.zeepy.server.building.domain.QBuilding;
-import com.zeepy.server.building.domain.QBuildingDeal;
-import com.zeepy.server.building.domain.QBuildingLike;
 import com.zeepy.server.building.dto.BuildingAutoCompleteResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
@@ -164,7 +165,27 @@ public class BuildingService {
         return building.getId();
     }
 
-    // READ
+    @Transactional
+    public void batchInsert(List<BuildingRequestDto> buildingRequestDtoList) {
+        int batchCount = 0;
+        List<Building> buildingList = new ArrayList();
+        for (BuildingRequestDto buildingRequestDto : buildingRequestDtoList) {
+            buildingList.add(buildingRequestDto.returnBuildingEntity());
+            batchCount += 1;
+            if (batchCount % 100 == 0) {
+                buildingRepository.saveAll(buildingList);
+                buildingList = new ArrayList();
+            }
+
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<BuildingResponseDto> getAll() {
+        List<Building> buildingList = buildingRepository.findAll();
+        return BuildingResponseDto.listOf(buildingList);
+    }
+
     @Transactional(readOnly = true)
     public Page<BuildingResponseDto> getAll(
             String shortAddress,
@@ -203,6 +224,7 @@ public class BuildingService {
                 pageable,
                 fetchResults.getTotal());
     }
+    // READ
 
     // READ
     @Transactional(readOnly = true)

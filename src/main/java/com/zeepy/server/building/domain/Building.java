@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLInsert;
 
 /**
  * Created by Minky on 2021-05-15
@@ -24,6 +25,22 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"building_id", "fullNumberAddress"})})
+@SQLInsert(sql = "INSERT IGNORE INTO building(" +
+        "CREATED_DATE  " +
+        ",APARTMENT_NAME  " +
+        ",AREA_CODE  " +
+        ",BUILD_YEAR  " +
+        ",EXCLUSIVE_PRIVATE_AREA  " +
+        ",FULL_NUMBER_ADDRESS  " +
+        ",FULL_ROAD_NAME_ADDRESS  " +
+        ",LATITUDE  " +
+        ",LONGITUDE  " +
+        ",SHORT_ADDRESS  " +
+        ",SHORT_NUMBER_ADDRESS  " +
+        ",SHORT_ROAD_NAME_ADDRESS " +
+        ",BUILDING_ID   )" +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 public class Building extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_sequence_gen")
@@ -46,6 +63,7 @@ public class Building extends BaseTimeEntity {
     private String shortRoadNameAddress; // 도로명 + 아파트 이름으로 구성된 주소
 
     @NotEmpty
+    @Column(unique = true)
     private String fullNumberAddress; // 전체 지번 주소
 
     @NotEmpty
@@ -74,18 +92,18 @@ public class Building extends BaseTimeEntity {
 
     @Builder
     public Building(
-        Long id,
-        int buildYear,
-        String apartmentName,
-        String shortAddress,
-        String fullRoadNameAddress,
-        String shortRoadNameAddress,
-        String fullNumberAddress,
-        String shortNumberAddress,
-        float exclusivePrivateArea,
-        int areaCode,
-        double latitude,
-        double longitude
+            Long id,
+            int buildYear,
+            String apartmentName,
+            String shortAddress,
+            String fullRoadNameAddress,
+            String shortRoadNameAddress,
+            String fullNumberAddress,
+            String shortNumberAddress,
+            float exclusivePrivateArea,
+            int areaCode,
+            double latitude,
+            double longitude
     ) {
         this.id = id;
         this.buildYear = buildYear;
