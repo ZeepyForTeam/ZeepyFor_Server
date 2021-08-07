@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class ReviewResponseDto {
     private Long id;
     private ReviewUserResDto user;
+    private String address;
     private CommuncationTendency communcationTendency;
     private LessorGender lessorGender;
     private LessorAge lessorAge;
@@ -32,6 +33,7 @@ public class ReviewResponseDto {
     public ReviewResponseDto(
             Long id,
             User user,
+            String address,
             LessorAge lessorAge,
             LessorGender lessorGender,
             CommuncationTendency communcationTendency,
@@ -48,6 +50,7 @@ public class ReviewResponseDto {
     ) {
         this.id = id;
         this.user = new ReviewUserResDto(user);
+        this.address = address;
         this.lessorAge = lessorAge;
         this.lessorGender = lessorGender;
         this.communcationTendency = communcationTendency;
@@ -85,6 +88,7 @@ public class ReviewResponseDto {
         return new ReviewResponseDto(
                 review.getId(),
                 review.getUser(),
+                review.getAddress(),
                 review.getLessorAge(),
                 review.getLessorGender(),
                 review.getCommunicationTendency(),
