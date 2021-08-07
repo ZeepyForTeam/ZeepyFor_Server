@@ -4,6 +4,8 @@ import static org.mockito.BDDMockito.*;
 
 import java.util.Collections;
 
+import com.zeepy.server.review.dto.SimpleReviewDto;
+import com.zeepy.server.review.dto.SimpleReviewListDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,13 +44,15 @@ public class ReviewControllerTest extends ControllerTest {
     @Test
     @DisplayName("리뷰 조회 기능 테스트")
     public void getReview() throws Exception {
-        doGet("/api/review/hello");
+        SimpleReviewListDto expect = new SimpleReviewListDto(Collections.singletonList(new SimpleReviewDto()));
+        given(reviewService.getUserReviewList(anyString())).willReturn(expect);
+        doGet("/api/review/user");
     }
 
     @Test
     @DisplayName("리뷰 생성 기능 테스트")
     public void saveReview() throws Exception {
-        given(reviewService.create(any(ReviewDto.class), any(String.class))).willReturn(1L);
+        given(reviewService.create(any(), any())).willReturn(1L);
         ReviewDto review = ReviewDto.builder()
             .address("주소")
             .communcationTendency(CommuncationTendency.BUSINESS.name())

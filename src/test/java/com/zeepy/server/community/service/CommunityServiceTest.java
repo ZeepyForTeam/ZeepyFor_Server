@@ -37,7 +37,6 @@ public class CommunityServiceTest {
 	private final User joinUser = User.builder()
 		.id(1L)
 		.name("참여자")
-		.place("구월동")
 		.build();
 	private final Community joinPurhcaseCommunity = Community.builder()
 		.id(1L)

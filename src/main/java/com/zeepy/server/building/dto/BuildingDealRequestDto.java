@@ -19,51 +19,51 @@ import lombok.Setter;
 @Setter
 @Getter
 public class BuildingDealRequestDto {
-	@NotNull(message = "dealDate cannot be Null")
-	private Long dealDate;
+    @NotNull(message = "dealDate cannot be Null")
+    private Long dealDate;
 
-	@NotNull(message = "deposit cannot be Null")
-	private int deposit;
+    @NotNull(message = "deposit cannot be Null")
+    private int deposit;
 
-	@NotNull(message = "monthlyRent cannot be Null")
-	private int monthlyRent;
+    @NotNull(message = "monthlyRent cannot be Null")
+    private int monthlyRent;
 
-	@NotNull(message = "floor cannot be Null")
-	private int floor;
+    @NotNull(message = "floor cannot be Null")
+    private int floor;
 
-	@NotNull(message = "dealCost cannot be Null")
-	private int dealCost;
+    @NotNull(message = "dealCost cannot be Null")
+    private int dealCost;
 
-	@NotNull(message = "buildingId cannot be Null")
-	private Long buildingId;
+    @NotNull(message = "buildingId cannot be Null")
+    private Long buildingId;
 
-	public BuildingDealRequestDto(
-		Long dealDate,
-		int deposit,
-		int monthlyRent,
-		int dealCost,
-		int floor,
-		Long buildingId
-	) {
-		this.dealDate = dealDate;
-		this.deposit = deposit;
-		this.monthlyRent = monthlyRent;
-		this.dealCost = dealCost;
-		this.floor = floor;
-		this.buildingId = buildingId;
-	}
+    public BuildingDealRequestDto(
+            Long dealDate,
+            int deposit,
+            int monthlyRent,
+            int dealCost,
+            int floor,
+            Long buildingId
+    ) {
+        this.dealDate = dealDate;
+        this.deposit = deposit;
+        this.monthlyRent = monthlyRent;
+        this.dealCost = dealCost;
+        this.floor = floor;
+        this.buildingId = buildingId;
+    }
 
-	public BuildingDeal returnBuildingDealEntity() {
-		DealType dealType = DealType.getDealType(dealCost, monthlyRent);
+    public BuildingDeal returnBuildingDealEntity() {
+        DealType dealType = DealType.getDealType(dealCost, monthlyRent);
 
-		return new BuildingDeal(
-			null,
-			new Timestamp(this.dealDate),
-			this.deposit,
-			this.monthlyRent,
-			this.dealCost,
-			this.floor,
-			dealType
-		);
-	}
+        return new BuildingDeal(
+                null,
+                new Timestamp(this.dealDate),
+                this.deposit,
+                this.monthlyRent,
+                this.dealCost,
+                this.floor,
+                dealType
+        );
+    }
 }
