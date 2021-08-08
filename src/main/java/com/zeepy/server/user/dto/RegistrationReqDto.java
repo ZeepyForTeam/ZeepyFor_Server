@@ -34,6 +34,7 @@ public class RegistrationReqDto {
 			.email(email)
 			.password(setBCryptEncoding())
 			.role(Role.ROLE_USER)
+			.profileImage("1234.png") // 기본 이미지 imageUrl을 전달 받아 수정 예정
 			.build();
 	}
 

@@ -56,7 +56,7 @@ public class CommentResDto {
 			.communityId(comment.getCommunity().getId())
 			.superCommentId(comment.getSuperComment().getId())
 			.subComments(CommentResDto.listOf(comment.getSubComments()))
-			.writer(new UserDto(comment.getUser().getId(), comment.getUser().getName()))
+			.writer(UserDto.of(comment.getUser()))
 			.build();
 	}
 

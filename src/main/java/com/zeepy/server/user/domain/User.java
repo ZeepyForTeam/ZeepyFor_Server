@@ -56,6 +56,8 @@ public class User implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
+	private String profileImage;
+
 	@ElementCollection
 	@CollectionTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"))
 	@Column(name = "address")
@@ -74,12 +76,13 @@ public class User implements UserDetails {
 	private List<Review> reviews = new ArrayList<>();
 
 	@Builder
-	public User(Long id, String name, String email, String password, Role role) {
+	public User(Long id, String name, String email, String password, Role role, String profileImage) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.profileImage = profileImage;
 	}
 
 	public void setNameById() {
@@ -92,6 +95,10 @@ public class User implements UserDetails {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
 	}
 
 	@Override

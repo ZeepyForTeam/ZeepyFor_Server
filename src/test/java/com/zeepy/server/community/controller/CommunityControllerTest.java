@@ -71,7 +71,7 @@ public class CommunityControllerTest extends ControllerTest {
 		5,
 		"공동구매할싸람",
 		"내용",
-		new UserDto(1L, "yen"),
+		new UserDto(1L, "yen", "1111.png"),
 		false,
 		false,
 		null,

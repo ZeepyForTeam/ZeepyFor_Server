@@ -72,11 +72,7 @@ public class CommunityResponseDto {
 	public static CommunityResponseDto of(Community community) {
 		return CommunityResponseDto.builder()
 			.id(community.getId())
-			.user(new UserDto(
-				community.getUser()
-					.getId(),
-				community.getUser()
-					.getName()))
+			.user(UserDto.of(community.getUser()))
 			.communityCategory(community.getCommunityCategory())
 			.address(community.getAddress())
 			.productName(community.getProductName())
