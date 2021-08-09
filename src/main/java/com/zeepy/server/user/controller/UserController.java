@@ -69,8 +69,8 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/address")
-	public ResponseEntity<Void> addAddress(
+	@PutMapping("/address")
+	public ResponseEntity<Void> setAddress(
 		@RequestBody AddAddressReqDto addAddressReqDto,
 		@AuthenticationPrincipal String userEmail) {
 		userService.addAddress(addAddressReqDto, userEmail);
@@ -81,6 +81,5 @@ public class UserController {
 	public ResponseEntity<AddressResDto> getAddresses(@AuthenticationPrincipal String userEmail) {
 		AddressResDto addressResDto = userService.getAddresses(userEmail);
 		return ResponseEntity.ok().body(addressResDto);
-
 	}
 }
