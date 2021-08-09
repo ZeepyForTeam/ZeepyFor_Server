@@ -79,6 +79,6 @@ public class UserControllerTest extends ControllerTest {
 		given(userService.getAddresses(any(String.class))).willReturn(addressResDto);
 
 		//then
-		doGet("/api/user/address/1");
+		doGet("/api/user/address");
 	}
 }

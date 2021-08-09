@@ -24,14 +24,14 @@ public class BuildingLikeRequestDto {
     private Long buildingId;
 
     public BuildingLikeRequestDto(
-        Long buildingId
+            Long buildingId
     ) {
         this.buildingId = buildingId;
     }
 
     public BuildingLike returnBuildingLikeEntity() {
         return new BuildingLike(
-            null,
+                null,
                 LocalDateTime.now()
         );
     }

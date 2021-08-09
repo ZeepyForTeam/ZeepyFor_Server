@@ -109,6 +109,7 @@ public class ReviewDto {
 	public Review returnReviewEntity() {
 		return new Review(
 			null,
+			this.address,
 			CommuncationTendency.valueOf(this.communcationTendency),
 			LessorGender.valueOf(this.lessorGender),
 			LessorAge.valueOf(this.lessorAge),
