@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.zeepy.server.building.dto.BuildingBulkRequestDto;
+import com.zeepy.server.building.dto.BuildingRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +61,14 @@ public class BuildingDealController {
     ) {
         Long id = buildingDealService.create(buildingDealRequestDto);
         return ResponseEntity.created(URI.create("/api/deals/" + id)).build();
+    }
+
+    @PostMapping("/batch")
+    public ResponseEntity<Void> batchInsertBuilding(
+            @Valid @RequestBody List<BuildingBulkRequestDto> buildingRequestDtoList
+    ) {
+        buildingDealService.batchInsert(buildingRequestDtoList);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")

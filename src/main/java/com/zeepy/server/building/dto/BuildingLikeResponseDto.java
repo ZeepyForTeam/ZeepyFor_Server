@@ -22,30 +22,30 @@ import lombok.Setter;
 public class BuildingLikeResponseDto {
     private Long id;
     private LocalDateTime likeDate;
-    private User user;
+    private String email;
 
     public BuildingLikeResponseDto(
-        Long id,
-        LocalDateTime likeDate,
-        User user
+            Long id,
+            LocalDateTime likeDate,
+            String email
     ) {
         this.id = id;
         this.likeDate = likeDate;
-        this.user = user;
+        this.email = email;
     }
 
     public static BuildingLikeResponseDto of(BuildingLike buildingLike) {
         return new BuildingLikeResponseDto(
-            buildingLike.getId(),
-            buildingLike.getLikeDate(),
-            buildingLike.getUser()
+                buildingLike.getId(),
+                buildingLike.getLikeDate(),
+                buildingLike.getUser().getEmail()
         );
     }
 
     public static List<BuildingLikeResponseDto> listOf(List<BuildingLike> buildingLikeList) {
         return buildingLikeList
-            .stream()
-            .map(BuildingLikeResponseDto::of)
-            .collect(Collectors.toList());
+                .stream()
+                .map(BuildingLikeResponseDto::of)
+                .collect(Collectors.toList());
     }
 }

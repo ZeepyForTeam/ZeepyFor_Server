@@ -1,22 +1,27 @@
 package com.zeepy.server.building.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import com.zeepy.server.building.domain.Building;
-
+import com.zeepy.server.building.domain.BuildingDeal;
+import com.zeepy.server.building.domain.DealType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+
 /**
- * Created by Minky on 2021-05-15
+ * Created by Minky on 2021-08-07
  */
 
 @NoArgsConstructor
 @Setter
 @Getter
-public class BuildingRequestDto {
+public class BuildingBulkRequestDto {
+    @NotNull(message = "buildingId cannot be Null")
+    private Long buildingId;
+
     private int buildYear; // Null 이 될 가능성이 있음
 
     @NotBlank(message = "apartmentName cannot be Empty")
@@ -49,7 +54,23 @@ public class BuildingRequestDto {
     @NotNull(message = "longitude cannot be Null")
     private double longitude;
 
-    public BuildingRequestDto(
+    @NotNull(message = "dealDate cannot be Null")
+    private Long dealDate;
+
+    @NotNull(message = "deposit cannot be Null")
+    private int deposit;
+
+    @NotNull(message = "monthlyRent cannot be Null")
+    private int monthlyRent;
+
+    @NotNull(message = "floor cannot be Null")
+    private int floor;
+
+    @NotNull(message = "dealCost cannot be Null")
+    private int dealCost;
+
+    public BuildingBulkRequestDto(
+            Long buildingId,
             int buildYear,
             String apartmentName,
             String shortAddress,
@@ -60,8 +81,14 @@ public class BuildingRequestDto {
             float exclusivePrivateArea,
             int areaCode,
             double latitude,
-            double longitude
+            double longitude,
+            Long dealDate,
+            int deposit,
+            int monthlyRent,
+            int dealCost,
+            int floor
     ) {
+        this.buildingId = buildingId;
         this.buildYear = buildYear;
         this.apartmentName = apartmentName;
         this.shortAddress = shortAddress;
@@ -73,11 +100,16 @@ public class BuildingRequestDto {
         this.areaCode = areaCode;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.dealDate = dealDate;
+        this.deposit = deposit;
+        this.monthlyRent = monthlyRent;
+        this.dealCost = dealCost;
+        this.floor = floor;
     }
 
     public Building returnBuildingEntity() {
         return new Building(
-                null,
+                this.buildingId,
                 this.buildYear,
                 this.apartmentName,
                 this.shortAddress,
@@ -89,6 +121,20 @@ public class BuildingRequestDto {
                 this.areaCode,
                 this.latitude,
                 this.longitude
+        );
+    }
+
+    public BuildingDeal returnBuildingDealEntity() {
+        DealType dealType = DealType.getDealType(dealCost, monthlyRent);
+
+        return new BuildingDeal(
+                null,
+                new Timestamp(this.dealDate),
+                this.deposit,
+                this.monthlyRent,
+                this.dealCost,
+                this.floor,
+                dealType
         );
     }
 }

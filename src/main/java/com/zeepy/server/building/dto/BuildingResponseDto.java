@@ -22,7 +22,10 @@ public class BuildingResponseDto {
     private int buildYear; // Null 이 될 가능성이 있음
     private String apartmentName;
     private String shortAddress;
-    private String address;
+    private String fullRoadNameAddress;
+    private String shortRoadNameAddress;
+    private String fullNumberAddress;
+    private String shortNumberAddress;
     private float exclusivePrivateArea;
     private int areaCode;
     private double latitude;
@@ -32,24 +35,30 @@ public class BuildingResponseDto {
     private List<ReviewResponseDto> reviews;
 
     public BuildingResponseDto(
-        Long id,
-        int buildYear,
-        String apartmentName,
-        String shortAddress,
-        String address,
-        float exclusivePrivateArea,
-        int areaCode,
-        double latitude,
-        double longitude,
-        List<BuildingDealResponseDto> buildingDeals,
-        List<BuildingLikeResponseDto> buildingLikes,
-        List<ReviewResponseDto> reviews
+            Long id,
+            int buildYear,
+            String apartmentName,
+            String shortAddress,
+            String fullRoadNameAddress,
+            String shortRoadNameAddress,
+            String fullNumberAddress,
+            String shortNumberAddress,
+            float exclusivePrivateArea,
+            int areaCode,
+            double latitude,
+            double longitude,
+            List<BuildingDealResponseDto> buildingDeals,
+            List<BuildingLikeResponseDto> buildingLikes,
+            List<ReviewResponseDto> reviews
     ) {
         this.id = id;
         this.buildYear = buildYear;
         this.apartmentName = apartmentName;
         this.shortAddress = shortAddress;
-        this.address = address;
+        this.fullRoadNameAddress = fullRoadNameAddress;
+        this.shortRoadNameAddress = shortRoadNameAddress;
+        this.fullNumberAddress = fullNumberAddress;
+        this.shortNumberAddress = shortNumberAddress;
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
         this.latitude = latitude;
@@ -61,25 +70,28 @@ public class BuildingResponseDto {
 
     public static BuildingResponseDto of(Building building) {
         return new BuildingResponseDto(
-            building.getId(),
-            building.getBuildYear(),
-            building.getApartmentName(),
-            building.getShortAddress(),
-            building.getAddress(),
-            building.getExclusivePrivateArea(),
-            building.getAreaCode(),
-            building.getLatitude(),
-            building.getLongitude(),
-            BuildingDealResponseDto.listOf(building.getBuildingDeals()),
-            BuildingLikeResponseDto.listOf(building.getBuildingLikes()),
-            ReviewResponseDto.listOf(building.getReviews())
+                building.getId(),
+                building.getBuildYear(),
+                building.getApartmentName(),
+                building.getShortAddress(),
+                building.getFullRoadNameAddress(),
+                building.getShortRoadNameAddress(),
+                building.getFullNumberAddress(),
+                building.getShortNumberAddress(),
+                building.getExclusivePrivateArea(),
+                building.getAreaCode(),
+                building.getLatitude(),
+                building.getLongitude(),
+                BuildingDealResponseDto.listOf(building.getBuildingDeals()),
+                BuildingLikeResponseDto.listOf(building.getBuildingLikes()),
+                ReviewResponseDto.listOf(building.getReviews())
         );
     }
 
     public static List<BuildingResponseDto> listOf(List<Building> buildingList) {
         return buildingList
-            .stream()
-            .map(BuildingResponseDto::of)
-            .collect(Collectors.toList());
+                .stream()
+                .map(BuildingResponseDto::of)
+                .collect(Collectors.toList());
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.zeepy.server.review.domain.RoomCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zeepy.server.building.domain.DealType;
-import com.zeepy.server.building.dto.BuildingAddressResponseDto;
+import com.zeepy.server.building.dto.BuildingAutoCompleteResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.service.BuildingService;
@@ -38,26 +39,33 @@ import lombok.RequiredArgsConstructor;
 public class BuildingController {
     private final BuildingService buildingService;
 
+    @GetMapping("/all")
+    public ResponseEntity<List<BuildingResponseDto>> getAll() {
+        return ResponseEntity.ok().body(buildingService.getAll());
+    }
+
     @GetMapping
     public ResponseEntity<Page<BuildingResponseDto>> getBuildings(
-        @RequestParam(value = "geMonthly", required = false) Integer greaterMonthlyRent,
-        @RequestParam(value = "leMonthly", required = false) Integer lesserMonthlyRent,
-        @RequestParam(value = "geDeposit", required = false) Integer greaterDeposit,
-        @RequestParam(value = "leDeposit", required = false) Integer lesserDeposit,
-        @RequestParam(value = "neType", required = false) DealType notEqualDealType,
-        @RequestParam(value = "eqRoomCount", required = false) String roomCount,
-        @RequestParam(value = "inFurnitures", required = false) List<Furniture> furnitures,
-        Pageable pageable
+            @RequestParam(value = "shortAddress", required = false) String shortAddress,
+            @RequestParam(value = "geMonthly", required = false) Integer greaterMonthlyRent,
+            @RequestParam(value = "leMonthly", required = false) Integer lesserMonthlyRent,
+            @RequestParam(value = "geDeposit", required = false) Integer greaterDeposit,
+            @RequestParam(value = "leDeposit", required = false) Integer lesserDeposit,
+            @RequestParam(value = "neType", required = false) DealType notEqualDealType,
+            @RequestParam(value = "inRoomCounts", required = false) List<RoomCount> roomCounts,
+            @RequestParam(value = "inFurnitures", required = false) List<Furniture> furnitures,
+            Pageable pageable
     ) {
         return ResponseEntity.ok(buildingService.getAll(
-            greaterMonthlyRent,
-            lesserMonthlyRent,
-            greaterDeposit,
-            lesserDeposit,
-            notEqualDealType,
-            roomCount,
-            furnitures,
-            pageable
+                shortAddress,
+                greaterMonthlyRent,
+                lesserMonthlyRent,
+                greaterDeposit,
+                lesserDeposit,
+                notEqualDealType,
+                roomCounts,
+                furnitures,
+                pageable
         ));
     }
 
@@ -69,7 +77,7 @@ public class BuildingController {
     }
 
     @GetMapping("/addresses")
-    public ResponseEntity<Page<BuildingAddressResponseDto>> getBuildingAddresses(
+    public ResponseEntity<Page<BuildingAutoCompleteResponseDto>> getBuildingAddresses(
         @RequestParam("address") String address,
         Pageable pageable
     ) {
@@ -100,6 +108,14 @@ public class BuildingController {
     ) {
         Long id = buildingService.create(buildingRequestDto);
         return ResponseEntity.created(URI.create("/api/buildings/" + id)).build();
+    }
+
+    @PostMapping("/batch")
+    public ResponseEntity<Void> batchInsertBuilding(
+            @Valid @RequestBody List<BuildingRequestDto> buildingRequestDtoList
+    ) {
+        buildingService.batchInsert(buildingRequestDtoList);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
