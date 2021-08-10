@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -265,7 +266,7 @@ public class CommunityControllerTest extends ControllerTest {
 	@Test
 	public void getCommunityList() throws Exception {
 		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
-		given(communityService.getCommunityList(any(String.class), anyString(), any()))
+		given(communityService.getCommunityList(null, null, PageRequest.of(0, 2)))
 			.willReturn(new PageImpl<>(communityResponseDtoList));
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
