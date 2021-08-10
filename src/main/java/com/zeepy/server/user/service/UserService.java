@@ -47,7 +47,7 @@ public class UserService {
 	@Transactional
 	public void checkFromRedundancyNickname(CheckOfRedundancyNicknameReqDto reqDto) {
 		String nickname = reqDto.getNickname();
-		Optional<User> user = userRepository.findByName(nickname);
+		Optional<User> user = userRepository.findByNickname(nickname);
 		if (user.isPresent()) {
 			throw new DuplicateNicknameException();
 		}
@@ -57,7 +57,7 @@ public class UserService {
 	public void modifyUser(ModifyNicknameReqDto modifyNicknameReqDto, String userEmail) {
 		User user = userRepository.findByEmail(userEmail)
 			.orElseThrow(NotFoundUserException::new);
-		user.setName(modifyNicknameReqDto
+		user.setNickname(modifyNicknameReqDto
 			.getNickname());
 	}
 

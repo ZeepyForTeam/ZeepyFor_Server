@@ -30,6 +30,7 @@ public class UserControllerTest extends ControllerTest {
 	private final User user = User.builder()
 		.id(1L)
 		.name("작성자")
+		.nickname("흰수염범고래")
 		.email("test@gmail.com")
 		.build();
 	@MockBean
@@ -47,9 +48,9 @@ public class UserControllerTest extends ControllerTest {
 		//given
 		String userEmail = user.getEmail();
 
-		AddressDto addressDto1 = new AddressDto("서울특별시 용산구", "용산2가동 새싹빌딩", "101동 305호");
-		AddressDto addressDto2 = new AddressDto("서울특별시 용산구", "김치나베우동 배고픈빌딩", "102동 1604호");
-		AddressDto addressDto3 = new AddressDto("서울특별시 중구", "시키드나동 드루와빌딩", "102동 101호");
+		AddressDto addressDto1 = new AddressDto("서울특별시 용산구", "용산2가동 새싹빌딩");
+		AddressDto addressDto2 = new AddressDto("서울특별시 용산구", "김치나베우동 배고픈빌딩");
+		AddressDto addressDto3 = new AddressDto("서울특별시 중구", "시키드나동 드루와빌딩");
 
 		List<AddressDto> addressDtoList = new ArrayList<>(Arrays.asList(addressDto1, addressDto2, addressDto3));
 		AddAddressReqDto addAddressReqDto = AddAddressReqDto.builder()
@@ -60,16 +61,16 @@ public class UserControllerTest extends ControllerTest {
 		doNothing().when(userService).addAddress(addAddressReqDto, userEmail);
 
 		//then
-		doPostThenOk("/api/user/address", addAddressReqDto);
+		doPut("/api/user/address", addAddressReqDto);
 	}
 
 	@Test
 	@DisplayName("유저 주소 불러오기 테스트")
 	public void getUserAddress() throws Exception {
 		//given
-		Address address1 = new Address("서울특별시 용산구", "용산2가동 새싹빌딩", "101동 305호");
-		Address address2 = new Address("서울특별시 용산구", "김치나베우동 배고픈빌딩", "102동 1604호");
-		Address address3 = new Address("서울특별시 중구", "시키드나동 드루와빌딩", "102동 101호");
+		Address address1 = new Address("서울특별시 용산구", "용산2가동 새싹빌딩");
+		Address address2 = new Address("서울특별시 용산구", "김치나베우동 배고픈빌딩");
+		Address address3 = new Address("서울특별시 중구", "시키드나동 드루와빌딩");
 
 		List<Address> addressList = new ArrayList<>(Arrays.asList(address1, address2, address3));
 

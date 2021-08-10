@@ -38,7 +38,7 @@ public class CommunityResponseDto {
 			community.getUser()
 				.getId(),
 			community.getUser()
-				.getName());
+				.getNickname());
 		this.communityCategory = community.getCommunityCategory();
 		this.address = community.getAddress();
 		this.productName = community.getProductName();
