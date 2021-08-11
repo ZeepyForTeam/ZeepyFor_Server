@@ -15,4 +15,10 @@ public class AddAddressReqDto {
 	public AddAddressReqDto(List<AddressDto> addresses) {
 		this.addresses = addresses;
 	}
+
+	public void validateAddresses() {
+		if (addresses.size() == 1) {
+			addresses.get(0).setIsAddressCheckToTrue();
+		}
+	}
 }

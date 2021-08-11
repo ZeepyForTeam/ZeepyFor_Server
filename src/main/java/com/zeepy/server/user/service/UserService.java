@@ -81,7 +81,8 @@ public class UserService {
 
 	@Transactional
 	public void addAddress(AddAddressReqDto addAddressReqDto, String userEmail) {
-		@Deprecated
+		addAddressReqDto.validateAddresses();
+
 		User user = userRepository.findByEmail(userEmail)
 			.orElseThrow(NotFoundUserException::new);
 

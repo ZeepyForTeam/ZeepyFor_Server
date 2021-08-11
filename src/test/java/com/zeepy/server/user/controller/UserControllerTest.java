@@ -48,9 +48,9 @@ public class UserControllerTest extends ControllerTest {
 		//given
 		String userEmail = user.getEmail();
 
-		AddressDto addressDto1 = new AddressDto("서울특별시 용산구", "용산2가동 새싹빌딩");
-		AddressDto addressDto2 = new AddressDto("서울특별시 용산구", "김치나베우동 배고픈빌딩");
-		AddressDto addressDto3 = new AddressDto("서울특별시 중구", "시키드나동 드루와빌딩");
+		AddressDto addressDto1 = new AddressDto("서울특별시 용산구", "용산2가동 새싹빌딩", false);
+		AddressDto addressDto2 = new AddressDto("서울특별시 용산구", "김치나베우동 배고픈빌딩", false);
+		AddressDto addressDto3 = new AddressDto("서울특별시 중구", "시키드나동 드루와빌딩", false);
 
 		List<AddressDto> addressDtoList = new ArrayList<>(Arrays.asList(addressDto1, addressDto2, addressDto3));
 		AddAddressReqDto addAddressReqDto = AddAddressReqDto.builder()
@@ -68,9 +68,9 @@ public class UserControllerTest extends ControllerTest {
 	@DisplayName("유저 주소 불러오기 테스트")
 	public void getUserAddress() throws Exception {
 		//given
-		Address address1 = new Address("서울특별시 용산구", "용산2가동 새싹빌딩");
-		Address address2 = new Address("서울특별시 용산구", "김치나베우동 배고픈빌딩");
-		Address address3 = new Address("서울특별시 중구", "시키드나동 드루와빌딩");
+		Address address1 = new Address("서울특별시 용산구", "용산2가동 새싹빌딩", false);
+		Address address2 = new Address("서울특별시 용산구", "김치나베우동 배고픈빌딩", false);
+		Address address3 = new Address("서울특별시 중구", "시키드나동 드루와빌딩", false);
 
 		List<Address> addressList = new ArrayList<>(Arrays.asList(address1, address2, address3));
 
