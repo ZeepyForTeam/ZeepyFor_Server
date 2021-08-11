@@ -155,7 +155,7 @@ public class CommunityService {
 	}
 
 	@Transactional
-	public void saveComment(Long communityId, WriteCommentRequestDto writeCommentRequestDto, String userEmail) {
+	public Long saveComment(Long communityId, WriteCommentRequestDto writeCommentRequestDto, String userEmail) {
 		Long superCommentId = writeCommentRequestDto.getSuperCommentId();
 		User writer = getUserByEmail(userEmail);
 		Community community = communityRepository.findById(communityId)
@@ -176,7 +176,7 @@ public class CommunityService {
 			.community(community)
 			.writer(writer)
 			.build();
-		commentRepository.save(commentDto.toEntity());
+		return commentRepository.save(commentDto.toEntity()).getId();
 	}
 
 	@Transactional(readOnly = true)

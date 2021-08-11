@@ -3,6 +3,7 @@ package com.zeepy.server.community.dto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.zeepy.server.community.domain.Comment;
@@ -54,9 +55,10 @@ public class CommentResDto {
 			.isSecret(comment.getIsSecret())
 			.isParticipation(comment.getIsParticipation())
 			.communityId(comment.getCommunity().getId())
-			.superCommentId(comment.getSuperComment().getId())
+			.superCommentId((comment.getSuperComment() == null) ? null : comment.getSuperComment().getId())
 			.subComments(CommentResDto.listOf(comment.getSubComments()))
 			.writer(UserDto.of(comment.getUser()))
+			.createdTime(comment.getCreatedDate())
 			.build();
 	}
 

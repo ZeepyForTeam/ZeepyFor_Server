@@ -215,11 +215,11 @@ public class CommunityControllerTest extends ControllerTest {
 		String url = "/api/community/comment/" + communityId;
 
 		WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", true, null);
-		doNothing().when(communityService).saveComment(communityId, requestDto, userEmail);
+		given(communityService.saveComment(anyLong(), any(WriteCommentRequestDto.class), any())).willReturn(1L);
 
 		//when
 		//then
-		doPostThenOk(url, requestDto);
+		doPost(url, requestDto);
 	}
 
 	@DisplayName("대댓글작성하기")
@@ -230,10 +230,10 @@ public class CommunityControllerTest extends ControllerTest {
 		String url = "/api/community/comment/" + communityId;
 
 		WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", true, 1L);
-		doNothing().when(communityService).saveComment(communityId, requestDto, userEmail);
+		given(communityService.saveComment(anyLong(), any(WriteCommentRequestDto.class), any())).willReturn(1L);
 		//when
 		//then
-		doPostThenOk(url, requestDto);
+		doPost(url, requestDto);
 	}
 
 	@DisplayName("수정하기테스트")
