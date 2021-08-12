@@ -55,23 +55,21 @@ public class UserService {
 
 	@Transactional
 	public void modifyUser(ModifyNicknameReqDto modifyNicknameReqDto, String userEmail) {
-		User user = userRepository.findByEmail(userEmail)
-			.orElseThrow(NotFoundUserException::new);
+		User user = findUserByEmail(userEmail);
 		user.setName(modifyNicknameReqDto
 			.getNickname());
 	}
 
 	@Transactional
 	public void modifyPassword(ModifyPasswordReqDto modifyPasswordReqDto, String userEmail) {
-		User user = userRepository.findByEmail(userEmail)
-			.orElseThrow(NotFoundUserException::new);
+		User user = findUserByEmail(userEmail);
 		user.setPassword(modifyPasswordReqDto
 			.getPassword());
 	}
 
 	@Transactional
 	public void memberShipWithdrawal(String userEmail) {
-		User user = userRepository.findByEmail(userEmail).orElseThrow(NotFoundUserException::new);
+		User user = findUserByEmail(userEmail);
 
 		tokenRepository.deleteByUserId(user
 			.getId());
@@ -82,8 +80,7 @@ public class UserService {
 	@Transactional
 	public void addAddress(AddAddressReqDto addAddressReqDto, String userEmail) {
 		@Deprecated
-		User user = userRepository.findByEmail(userEmail)
-			.orElseThrow(NotFoundUserException::new);
+		User user = findUserByEmail(userEmail);
 
 		user.setAddress(addAddressReqDto.getAddresses().stream()
 			.map(Address::new)
@@ -92,7 +89,18 @@ public class UserService {
 
 	@Transactional
 	public AddressResDto getAddresses(String userEmail) {
-		User user = userRepository.findByEmail(userEmail).orElseThrow(NotFoundUserException::new);
+		User user = findUserByEmail(userEmail);
 		return new AddressResDto(user.getAddresses());
+	}
+
+	@Transactional
+	public void setSendMailCheck(String email) {
+		User user = findUserByEmail(email);
+		user.setSendMailCheck();
+	}
+
+	private User findUserByEmail(String email) {
+		return userRepository.findByEmail(email)
+			.orElseThrow(NotFoundUserException::new);
 	}
 }

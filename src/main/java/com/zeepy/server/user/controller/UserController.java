@@ -81,6 +81,12 @@ public class UserController {
 	public ResponseEntity<AddressResDto> getAddresses(@AuthenticationPrincipal String userEmail) {
 		AddressResDto addressResDto = userService.getAddresses(userEmail);
 		return ResponseEntity.ok().body(addressResDto);
+	}
 
+	@PutMapping("/email")
+	public ResponseEntity<Void> setSendMailCheck(
+		@AuthenticationPrincipal String email) {
+		userService.setSendMailCheck(email);
+		return ResponseEntity.ok().build();
 	}
 }

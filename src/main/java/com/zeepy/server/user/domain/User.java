@@ -96,6 +96,10 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
+	public void setSendMailCheck() {
+		this.sendMailCheck = !this.sendMailCheck;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.singletonList(
