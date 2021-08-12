@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -71,7 +72,7 @@ public class CommunityControllerTest extends ControllerTest {
 		5,
 		"공동구매할싸람",
 		"내용",
-		new UserDto(1L, "yen"),
+		new UserDto(1L, "yen", "1111.png"),
 		false,
 		false,
 		null,
@@ -214,11 +215,11 @@ public class CommunityControllerTest extends ControllerTest {
 		String url = "/api/community/comment/" + communityId;
 
 		WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", true, null);
-		doNothing().when(communityService).saveComment(communityId, requestDto, userEmail);
+		given(communityService.saveComment(anyLong(), any(WriteCommentRequestDto.class), any())).willReturn(1L);
 
 		//when
 		//then
-		doPostThenOk(url, requestDto);
+		doPost(url, requestDto);
 	}
 
 	@DisplayName("대댓글작성하기")
@@ -229,10 +230,10 @@ public class CommunityControllerTest extends ControllerTest {
 		String url = "/api/community/comment/" + communityId;
 
 		WriteCommentRequestDto requestDto = new WriteCommentRequestDto("댓글1", true, 1L);
-		doNothing().when(communityService).saveComment(communityId, requestDto, userEmail);
+		given(communityService.saveComment(anyLong(), any(WriteCommentRequestDto.class), any())).willReturn(1L);
 		//when
 		//then
-		doPostThenOk(url, requestDto);
+		doPost(url, requestDto);
 	}
 
 	@DisplayName("수정하기테스트")
@@ -265,7 +266,7 @@ public class CommunityControllerTest extends ControllerTest {
 	@Test
 	public void getCommunityList() throws Exception {
 		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
-		given(communityService.getCommunityList(any(String.class), anyString(), any()))
+		given(communityService.getCommunityList(null, null, PageRequest.of(0, 2)))
 			.willReturn(new PageImpl<>(communityResponseDtoList));
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
