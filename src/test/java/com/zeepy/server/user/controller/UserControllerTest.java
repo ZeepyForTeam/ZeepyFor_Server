@@ -17,6 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.zeepy.server.common.ControllerTest;
 import com.zeepy.server.user.domain.Address;
+import com.zeepy.server.user.domain.Role;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.dto.AddAddressReqDto;
 import com.zeepy.server.user.dto.AddressDto;
@@ -31,6 +32,8 @@ public class UserControllerTest extends ControllerTest {
 		.id(1L)
 		.name("작성자")
 		.email("test@gmail.com")
+		.sendMailCheck(false)
+		.role(Role.ROLE_USER)
 		.build();
 	@MockBean
 	private UserService userService;

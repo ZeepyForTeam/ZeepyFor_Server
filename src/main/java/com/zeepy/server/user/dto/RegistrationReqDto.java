@@ -20,12 +20,15 @@ public class RegistrationReqDto {
 	private String email;
 	@NotNull(message = "비밀번호는 필수값입니다.")
 	private String password;
+	@NotNull(message = "이메일 여부는 필수값입니다.")
+	private Boolean sendMailCheck;
 
 	@Builder
-	public RegistrationReqDto(String name, String email, String password) {
+	public RegistrationReqDto(String name, String email, String password, Boolean sendMailCheck) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.sendMailCheck = sendMailCheck;
 	}
 
 	public User toEntity() {
@@ -33,6 +36,7 @@ public class RegistrationReqDto {
 			.name(name)
 			.email(email)
 			.password(setBCryptEncoding())
+			.sendMailCheck(sendMailCheck)
 			.role(Role.ROLE_USER)
 			.build();
 	}
