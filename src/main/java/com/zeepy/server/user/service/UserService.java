@@ -19,6 +19,7 @@ import com.zeepy.server.user.dto.CheckOfRedundancyEmailReqDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyNicknameReqDto;
 import com.zeepy.server.user.dto.ModifyPasswordReqDto;
 import com.zeepy.server.user.dto.RegistrationReqDto;
+import com.zeepy.server.user.dto.SendMailCheckResDto;
 import com.zeepy.server.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -97,6 +98,12 @@ public class UserService {
 	public void setSendMailCheck(String email) {
 		User user = findUserByEmail(email);
 		user.setSendMailCheck();
+	}
+
+	@Transactional
+	public SendMailCheckResDto getSendMailCheck(String userEmail) {
+		User user = findUserByEmail(userEmail);
+		return new SendMailCheckResDto(user);
 	}
 
 	private User findUserByEmail(String email) {

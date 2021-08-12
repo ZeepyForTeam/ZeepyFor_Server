@@ -19,6 +19,7 @@ import com.zeepy.server.user.dto.CheckOfRedundancyEmailReqDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyNicknameReqDto;
 import com.zeepy.server.user.dto.ModifyPasswordReqDto;
 import com.zeepy.server.user.dto.RegistrationReqDto;
+import com.zeepy.server.user.dto.SendMailCheckResDto;
 import com.zeepy.server.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -83,10 +84,18 @@ public class UserController {
 		return ResponseEntity.ok().body(addressResDto);
 	}
 
-	@PutMapping("/email")
+	@PutMapping("/mail")
 	public ResponseEntity<Void> setSendMailCheck(
 		@AuthenticationPrincipal String email) {
 		userService.setSendMailCheck(email);
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/mail")
+	public ResponseEntity<SendMailCheckResDto> getSendMailCheck(
+		@AuthenticationPrincipal String userEmail
+	) {
+		SendMailCheckResDto sendMailCheckResDto = userService.getSendMailCheck(userEmail);
+		return ResponseEntity.ok().body(sendMailCheckResDto);
 	}
 }
