@@ -17,6 +17,7 @@ import com.zeepy.server.user.dto.AddAddressReqDto;
 import com.zeepy.server.user.dto.AddressResDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyEmailReqDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyNicknameReqDto;
+import com.zeepy.server.user.dto.GetUserNicknameResDto;
 import com.zeepy.server.user.dto.ModifyPasswordReqDto;
 import com.zeepy.server.user.dto.RegistrationReqDto;
 import com.zeepy.server.user.repository.UserRepository;
@@ -95,5 +96,10 @@ public class UserService {
 	public AddressResDto getAddresses(String userEmail) {
 		User user = userRepository.findByEmail(userEmail).orElseThrow(NotFoundUserException::new);
 		return new AddressResDto(user.getAddresses());
+	}
+
+	public GetUserNicknameResDto getUserNickname(String userEmail) {
+		User user = userRepository.findByEmail(userEmail).orElseThrow(NotFoundUserException::new);
+		return new GetUserNicknameResDto(user);
 	}
 }

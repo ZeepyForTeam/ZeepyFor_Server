@@ -17,6 +17,7 @@ import com.zeepy.server.user.dto.AddAddressReqDto;
 import com.zeepy.server.user.dto.AddressResDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyEmailReqDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyNicknameReqDto;
+import com.zeepy.server.user.dto.GetUserNicknameResDto;
 import com.zeepy.server.user.dto.ModifyPasswordReqDto;
 import com.zeepy.server.user.dto.RegistrationReqDto;
 import com.zeepy.server.user.service.UserService;
@@ -81,5 +82,11 @@ public class UserController {
 	public ResponseEntity<AddressResDto> getAddresses(@AuthenticationPrincipal String userEmail) {
 		AddressResDto addressResDto = userService.getAddresses(userEmail);
 		return ResponseEntity.ok().body(addressResDto);
+	}
+
+	@GetMapping("/nickname")
+	public ResponseEntity<GetUserNicknameResDto> getUserNickname(@AuthenticationPrincipal String userEmail) {
+		GetUserNicknameResDto getUserNicknameResDto = userService.getUserNickname(userEmail);
+		return ResponseEntity.ok().body(getUserNicknameResDto);
 	}
 }
