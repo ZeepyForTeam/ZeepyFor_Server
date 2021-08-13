@@ -93,8 +93,8 @@ public class CommunityController {
 		@Valid @RequestBody WriteCommentRequestDto writeCommentRequestDto,
 		@AuthenticationPrincipal String userEmail
 	) {
-		communityService.saveComment(communityId, writeCommentRequestDto, userEmail);
-		return ResponseEntity.ok().build();
+		Long commentId = communityService.saveComment(communityId, writeCommentRequestDto, userEmail);
+		return ResponseEntity.created(URI.create("/api/community/comment/" + communityId + "/" +commentId)).build();
 	}
 
 	@GetMapping("/participation")

@@ -38,6 +38,8 @@ public class RegistrationReqDto {
 			.password(setBCryptEncoding())
 			.sendMailCheck(sendMailCheck)
 			.role(Role.ROLE_USER)
+			// 모든 사용자 기본 프로필 이미지로 설정 -> 추후 기능 업데이트 시 변경 예정
+			.profileImage("https://zeepy.s3.ap-northeast-2.amazonaws.com/zeepyImage/dummyprofile_28pt.png")
 			.build();
 	}
 

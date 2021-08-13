@@ -26,7 +26,7 @@ public class ParticipantDto {
 	public static ParticipantDto of(Participation participation) {
 		return ParticipantDto.builder()
 			.id(participation.getId())
-			.user(new UserDto(participation.getUser().getId(), participation.getUser().getName()))
+			.user(UserDto.of(participation.getUser()))
 			.build();
 	}
 
