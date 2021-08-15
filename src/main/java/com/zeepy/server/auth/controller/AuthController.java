@@ -88,11 +88,12 @@ public class AuthController {
 		String idToken = appleServiceResDto.getId_token();
 		String clientSecret = appleService.getAppleClientSecret(idToken);
 
-		logger.debug("================================");
-		logger.debug("id_token ‣ " + appleServiceResDto.getId_token());
-		logger.debug("payload ‣ " + appleService.getPayload(appleServiceResDto.getId_token()));
-		logger.debug("client_secret ‣ " + clientSecret);
-		logger.debug("================================");
+		System.out.println("================================");
+		System.out.println("id_token ‣ " + appleServiceResDto.getId_token());
+		System.out.println("payload ‣ " + appleService.getPayload(appleServiceResDto.getId_token()));
+		System.out.println("code ‣ " + code);
+		System.out.println("client_secret ‣ " + clientSecret);
+		System.out.println("================================");
 
 		TokenResponse tokenResponse = appleService.requestCodeValidations(clientSecret, code, null);
 		AppleTokenResDto appleTokenResDto = appleService.setAppleTokenResDto(tokenResponse, idToken);

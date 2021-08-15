@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Key {
 	private String alg;
-	private String o;
+	private String e;
 	private String kid;
 	private String kty;
 	private String n;

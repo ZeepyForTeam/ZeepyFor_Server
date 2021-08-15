@@ -2,9 +2,11 @@ package com.zeepy.server.auth.utils;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSSigner;
@@ -38,27 +41,27 @@ import sun.security.ec.ECPrivateKeyImpl;
 public class AppleUtils {
 
 	// @Value("${APPLE.PUBLICKEY.URL}")
-	private String APPLE_PUBLIC_KEYS_URL = "https://appleid.apple.com/auth/keys";
-
-	// @Value("${APPLE.ISS}")
-	private String ISS = "ISS";
-	// 발급기관
-
-	// @Value("${APPLE.AUD}")
-	private String AUD = "tesservice.endpoints.example-project";
-	// 대상
-
-	// @Value("${APPLE.TEAM.ID}")
-	private String TEAM_ID = "TEAM_ID";
-
-	// @Value("${APPLE.KEY.ID}")
-	private String KEY_ID = "KEY_ID";
-
-	// @Value("${APPLE.KEY.PATH}")
-	private String KEY_PATH = "";
+	private String APPLE_PUBLIC_KEYS_URL = "";
 
 	// @Value("${APPLE.AUTH.TOKEN.URL}")
 	private String AUTH_TOKEN_URL = "";
+
+	// @Value("${APPLE.ISS}")
+	private String ISS = "";
+	// 발급기관
+
+	// @Value("${APPLE.AUD}")
+	private String AUD = "";
+	// 대상
+
+	// @Value("${APPLE.TEAM.ID}")
+	private String TEAM_ID = "";
+
+	// @Value("${APPLE.KEY.ID}")
+	private String KEY_ID = "";
+
+	// @Value("${APPLE.KEY.PATH}")
+	private String KEY_PATH = "";
 
 	// @Value("${APPLE.WEBSITE.URL}")
 	private String APPLE_WEBSITE_URL = "";
@@ -73,21 +76,30 @@ public class AppleUtils {
 			if (!currentTime.before(payload.getExpirationTime())) {    //현재시간이 exp보다 크면 exp시간이 오버된것이므로 유효성검사 실패
 				return false;
 			}
+			System.out.println("token값 : " + signedJWT);
+
+			System.out.println("clain값 : " + payload.getClaims());
+			System.out.println("nonce 값 : " + payload.getClaim("nonce"));
 
 			//NONCE, ISS, AUD
-			if (!"NONCE임의의 값".equals(payload.getClaim("nonce")) || !ISS.equals(payload.getIssuer()) || !AUD.equals(
+			if (!"f2acb684cc464e79ee6c37626bc6c6803b76ac4a33831d8f89a65e84426465e8".equals(payload.getClaim("nonce"))
+				|| !ISS.equals(payload.getIssuer()) || !AUD.equals(
 				payload.getAudience().get(0))) {
+				System.out.println("NOCE, ISS, AUD 실패");
 				return false;
 			}
+			System.out.println("NOCE, ISS, AUD 통과");
 
 			//RSA
 			if (verifyPublicKey(signedJWT)) {
+				System.out.println("RSA 통과");
 				return true;
 			}
 
 		} catch (RuntimeException | ParseException e) {
 			e.printStackTrace();
 		}
+		System.out.println("token validation 실패");
 		return false;
 	}
 
@@ -116,7 +128,7 @@ public class AppleUtils {
 	/**
 	 * cilent_secret jwt 생성성	 */
 	public String createClientSecret() {
-		JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.HS256)
+		JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.ES256)
 			.keyID(KEY_ID)
 			.build();
 		Date now = new Date();
@@ -133,11 +145,14 @@ public class AppleUtils {
 
 		try {
 			ECPrivateKey ecPrivateKey = new ECPrivateKeyImpl(readPrivateKey());
-			JWSSigner jwsSigner = new ECDSASigner((ECPrivateKey)ecPrivateKey.getS());
+			JWSSigner jwsSigner = new ECDSASigner(ecPrivateKey);
+
 			jwt.sign(jwsSigner);
-		} catch (Exception e) {
+
+		} catch (InvalidKeyException | JOSEException e) {
 			e.printStackTrace();
 		}
+
 		return jwt.serialize();
 	}
 
@@ -148,14 +163,21 @@ public class AppleUtils {
 		Resource resource = new ClassPathResource(KEY_PATH);
 		byte[] content = null;
 
-		try {
-			FileReader keyReader = new FileReader(resource.getURI().getPath());
-			PemReader pemReader = new PemReader(keyReader);
-			PemObject pemObject = pemReader.readPemObject();
-			content = pemObject.getContent();
+		try (FileReader keyReader = new FileReader(resource.getURI().getPath());
+			 PemReader pemReader = new PemReader(keyReader)) {
+			{
+				System.out.println("keyReader : " + keyReader);
+				System.out.println("pemReader : " + pemReader);
+				PemObject pemObject = pemReader.readPemObject();
+				System.out.println("pemObject : " + Arrays.toString(pemObject.getContent()));
+				System.out.println("pemContent : " + pemObject.getContent());
+				System.out.println("size : " + pemObject.getContent().length);
+				content = pemObject.getContent();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("content : " + content);
 		return content;
 	}
 
@@ -182,7 +204,7 @@ public class AppleUtils {
 		tokenRequest.put("client_secret", clientSecret);
 		tokenRequest.put("code", code);
 		tokenRequest.put("grant_type", "authorization_code");
-		tokenRequest.put("redirect_uri", APPLE_WEBSITE_URL);
+		//tokenRequest.put("redirect_uri", APPLE_WEBSITE_URL);
 
 		return getTokenResponse(tokenRequest);
 	}

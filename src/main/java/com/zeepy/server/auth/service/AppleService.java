@@ -36,17 +36,20 @@ public class AppleService {
 		TokenResponse tokenResponse = new TokenResponse();
 
 		if (clientSecret != null && code != null && appleRefreshToken == null) { //최초 로그인
+			System.out.println("최초 애플 로그인");
 			tokenResponse = appleUtils.validateAuthorizationGrantCode(clientSecret, code);
 			if (tokenResponse == null) {
 				System.out.println("null 일떄는 어떻게 처리하지");
 			}
 		}
 		if (clientSecret != null && code == null && appleRefreshToken != null) {    //토큰 리프레시 & 기존회원 로그인
+			System.out.println("기존회원 애플 로그인");
 			tokenResponse = appleUtils.validateAnExistingRefreshToken(clientSecret, appleRefreshToken);
 			if (tokenResponse == null) {
 				System.out.println("null 일떄는 어떻게 처리하지");
 			}
 		}
+		System.out.println("통신성공!!!!");
 		return tokenResponse;
 	}
 
