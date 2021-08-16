@@ -1,16 +1,15 @@
 package com.zeepy.server.building.dto;
 
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.zeepy.server.building.domain.BuildingDeal;
 import com.zeepy.server.building.domain.DealType;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Minky on 2021-05-15

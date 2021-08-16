@@ -1,14 +1,31 @@
 package com.zeepy.server.building.domain;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.SQLInsert;
+
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.review.domain.Review;
-import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by Minky on 2021-05-15
@@ -18,6 +35,22 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"building_id", "fullNumberAddress"})})
+@SQLInsert(sql = "INSERT IGNORE INTO building(" +
+    "CREATED_DATE  " +
+    ",APARTMENT_NAME  " +
+    ",AREA_CODE  " +
+    ",BUILD_YEAR  " +
+    ",EXCLUSIVE_PRIVATE_AREA  " +
+    ",FULL_NUMBER_ADDRESS  " +
+    ",FULL_ROAD_NAME_ADDRESS  " +
+    ",LATITUDE  " +
+    ",LONGITUDE  " +
+    ",SHORT_ADDRESS  " +
+    ",SHORT_NUMBER_ADDRESS  " +
+    ",SHORT_ROAD_NAME_ADDRESS " +
+    ",BUILDING_ID   )" +
+    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 public class Building extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_sequence_gen")
@@ -31,10 +64,20 @@ public class Building extends BaseTimeEntity {
     private String apartmentName; // 아파트 이름
 
     @NotEmpty
-    private String shortAddress; // 동 번지 로 구성된 작은 주소
+    private String shortAddress; // 시 + 구 이름으로 구성된 주소
 
     @NotEmpty
-    private String address; // 전체 주소
+    private String fullRoadNameAddress; // 전체 도로명 주소
+
+    @NotEmpty
+    private String shortRoadNameAddress; // 도로명 + 아파트 이름으로 구성된 주소
+
+    @NotEmpty
+    @Column(unique = true)
+    private String fullNumberAddress; // 전체 지번 주소
+
+    @NotEmpty
+    private String shortNumberAddress; // 지번 + 아파트 이름으로 구성된 주소
 
     @NotNull
     private float exclusivePrivateArea;
@@ -59,34 +102,41 @@ public class Building extends BaseTimeEntity {
 
     @Builder
     public Building(
-            Long id,
-            int buildYear,
-            String apartmentName,
-            String shortAddress,
-            String address,
-            float exclusivePrivateArea,
-            int areaCode,
-            double latitude,
-            double longitude,
-            List<Review> reviews
+        Long id,
+        int buildYear,
+        String apartmentName,
+        String shortAddress,
+        String fullRoadNameAddress,
+        String shortRoadNameAddress,
+        String fullNumberAddress,
+        String shortNumberAddress,
+        float exclusivePrivateArea,
+        int areaCode,
+        double latitude,
+        double longitude
     ) {
         this.id = id;
         this.buildYear = buildYear;
         this.apartmentName = apartmentName;
         this.shortAddress = shortAddress;
-        this.address = address;
+        this.fullRoadNameAddress = fullRoadNameAddress;
+        this.shortRoadNameAddress = shortRoadNameAddress;
+        this.fullNumberAddress = fullNumberAddress;
+        this.shortNumberAddress = shortNumberAddress;
         this.exclusivePrivateArea = exclusivePrivateArea;
         this.areaCode = areaCode;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.reviews = reviews;
     }
 
     public void update(BuildingRequestDto buildingRequestDto) {
         this.buildYear = buildingRequestDto.getBuildYear();
         this.apartmentName = buildingRequestDto.getApartmentName();
         this.shortAddress = buildingRequestDto.getShortAddress();
-        this.address = buildingRequestDto.getAddress();
+        this.fullRoadNameAddress = buildingRequestDto.getFullRoadNameAddress();
+        this.shortRoadNameAddress = buildingRequestDto.getShortRoadNameAddress();
+        this.fullNumberAddress = buildingRequestDto.getFullNumberAddress();
+        this.shortNumberAddress = buildingRequestDto.getShortNumberAddress();
         this.exclusivePrivateArea = buildingRequestDto.getExclusivePrivateArea();
         this.areaCode = buildingRequestDto.getAreaCode();
         this.latitude = buildingRequestDto.getLatitude();

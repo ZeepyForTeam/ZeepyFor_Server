@@ -1,8 +1,9 @@
 package com.zeepy.server.common.annotation;
 
+import java.util.List;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.List;
 
 /**
  * Created by Minky on 2021-07-16
@@ -26,11 +27,11 @@ public class EnumListValidator implements ConstraintValidator<EnumList, List<Str
         }
 
         for (String valueOne : value) {
-            if (isEnumValid(valueOne, enumValues) == false) {
-                result = false;
-                break;
-            }
-        }
+			if (!isEnumValid(valueOne, enumValues)) {
+				result = false;
+				break;
+			}
+		}
 
         return result;
     }
@@ -39,12 +40,12 @@ public class EnumListValidator implements ConstraintValidator<EnumList, List<Str
         boolean result = false;
 
         for (Object enumValue : enumValues) {
-            if (valueOne.equals(enumValue.toString()) || (this.annotation.ignoreCase() && valueOne.equalsIgnoreCase(
-                    enumValue.toString()))) {
-                result = true;
-                break;
-            }
-        }
+			if (valueOne.equals(enumValue.toString()) || (this.annotation.ignoreCase() && valueOne.equalsIgnoreCase(
+				enumValue.toString()))) {
+				result = true;
+				break;
+			}
+		}
 
         return result;
     }

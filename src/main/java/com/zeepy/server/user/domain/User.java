@@ -5,17 +5,20 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 
-import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,13 +26,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
+import com.zeepy.server.review.domain.Review;
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @Entity
 public class User implements UserDetails {
 	@Id
+	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence_gen")
 	@SequenceGenerator(name = "user_sequence_gen", sequenceName = "user_sequence")
 	private Long id;
@@ -53,6 +66,13 @@ public class User implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
+	private String profileImage;
+
+	@ElementCollection
+	@CollectionTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"))
+	@Column(name = "address")
+	private List<Address> addresses = new ArrayList<>();
+
 	@OneToMany(mappedBy = "user")
 	private List<CommunityLike> likedCommunities = new ArrayList<>();
 
@@ -62,9 +82,13 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user")
 	private List<Community> communities = new ArrayList<>();
 
+	@OneToMany(mappedBy = "user")
+	private List<Review> reviews = new ArrayList<>();
+
 	@Builder
-	public User(Long id, String name, String email, String password, String address, String building, String place, Boolean accessNotify,
-		Role role) {
+	public User(Long id, String name, String email, String password, String address, String building, String place,
+		Boolean accessNotify,
+		Role role, String profileImage) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -74,6 +98,23 @@ public class User implements UserDetails {
 		this.place = place;
 		this.accessNotify = accessNotify;
 		this.role = role;
+		this.profileImage = profileImage;
+	}
+
+	public void setNameById() {
+		this.name = "Zeepy#" + this.id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
 	}
 
 	@Override
@@ -107,4 +148,9 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+
+	public void setAddress(List<Address> addresses) {
+		this.addresses = addresses;
+	}
+
 }

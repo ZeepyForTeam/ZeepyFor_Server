@@ -1,7 +1,5 @@
 package com.zeepy.server.review.domain;
 
-import com.zeepy.server.review.dto.ReviewResponseDto;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,8 +23,8 @@ public enum Furniture {
 
 	public static List<Furniture> listOf(List<String> furnitures) {
 		return furnitures
-				.stream()
-				.map(Furniture::of)
-				.collect(Collectors.toList());
+			.stream()
+			.map(Furniture::of)
+			.collect(Collectors.toList());
 	}
 }

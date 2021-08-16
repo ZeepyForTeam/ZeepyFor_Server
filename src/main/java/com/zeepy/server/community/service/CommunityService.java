@@ -3,21 +3,27 @@ package com.zeepy.server.community.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.zeepy.server.community.domain.*;
-import com.zeepy.server.push.util.FirebaseCloudMessageUtility;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.MoreThanOneParticipantException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
+import com.zeepy.server.community.domain.Comment;
+import com.zeepy.server.community.domain.Community;
+import com.zeepy.server.community.domain.CommunityCategory;
+import com.zeepy.server.community.domain.CommunityLike;
+import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.CommunityLikeDto;
-import com.zeepy.server.community.dto.CommunityLikeRequestDto;
+import com.zeepy.server.community.dto.CommunityLikeResDto;
+import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
-import com.zeepy.server.community.dto.CommunityResponseDtos;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.ParticipationDto;
@@ -30,6 +36,7 @@ import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
+import com.zeepy.server.push.util.FirebaseCloudMessageUtility;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
 
@@ -48,12 +55,11 @@ public class CommunityService {
     private final FirebaseCloudMessageUtility firebaseCloudMessageUtility;
 
     @Transactional
-    public Long like(CommunityLikeRequestDto requestDto) {
-        Community community = communityRepository.findById(requestDto.getCommunityId())
-                .orElseThrow(NotFoundCommunityException::new);
+    public Long like(Long communityId, String userEmail) {
+        Community community = communityRepository.findById(communityId)
+            .orElseThrow(NotFoundCommunityException::new);
 
-        User user = userRepository.findById(requestDto.getUserId())
-                .orElseThrow(NotFoundUserException::new);
+        User user = getUserByEmail(userEmail);
 
         CommunityLikeDto communityLikeDto = new CommunityLikeDto(user, community);
         CommunityLike communityLike = communityLikeRepository.save(communityLikeDto.toEntity());
@@ -62,37 +68,46 @@ public class CommunityService {
     }
 
     @Transactional
-    public void cancelLike(CommunityLikeRequestDto requestDto) {
-        Community community = communityRepository.findById(requestDto.getCommunityId())
-                .orElseThrow(NotFoundCommunityException::new);
+    public void cancelLike(Long communityId, String userEmail) {
+        Community community = communityRepository.findById(communityId)
+            .orElseThrow(NotFoundCommunityException::new);
 
-        User user = userRepository.findById(requestDto.getUserId())
-                .orElseThrow(NotFoundUserException::new);
+        User user = getUserByEmail(userEmail);
 
         CommunityLike communityLike = communityLikeRepository.findByCommunityAndUser(community, user);
         communityLikeRepository.deleteById(communityLike.getId());
     }
 
     @Transactional(readOnly = true)
-    public CommunityResponseDtos getLikeList(Long id) {
-        List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(id);
-        return new CommunityResponseDtos(communityLikeList.stream()
-                .map(CommunityLike::getCommunity)
-                .map(CommunityResponseDto::new)
-                .collect(Collectors.toList()));
+    public CommunityLikeResDtos getLikeList(String userEmail, String communityCategory) {
+        User user = getUserByEmail(userEmail);
+        List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(user.getId());
+
+        if (communityCategory == null || communityCategory.isEmpty()) {
+            return communityLikeList.stream()
+                .map(CommunityLikeResDto::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
+        }
+
+        return communityLikeList.stream()
+            .map(CommunityLikeResDto::new)
+            .filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
+            .collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
     }
 
     @Transactional
     public Long save(SaveCommunityRequestDto requestDto, String userEmail) {
         User writer = getUserByEmail(userEmail);
-        requestDto.setUser(writer);
 
         Community communityToSave = requestDto.toEntity();
+        communityToSave.setUser(writer);
         Community community = communityRepository.save(communityToSave);
 
-        ParticipationDto participationDto = new ParticipationDto(community, writer);
-        Participation participationToSave = participationDto.toEntity();
-        participationRepository.save(participationToSave);
+        if (requestDto.getCommunityCategory().equals("JOINTPURCHASE")) {
+            ParticipationDto participationDto = new ParticipationDto(community, writer);
+            Participation participationToSave = participationDto.toEntity();
+            participationRepository.save(participationToSave);
+        }
 
         return community.getId();
     }
@@ -203,17 +218,17 @@ public class CommunityService {
     }
 
     @Transactional
-    public void saveComment(Long communityId, WriteCommentRequestDto writeCommentRequestDto, String userEmail) {
+    public Long saveComment(Long communityId, WriteCommentRequestDto writeCommentRequestDto, String userEmail) {
         Long superCommentId = writeCommentRequestDto.getSuperCommentId();
         User writer = getUserByEmail(userEmail);
         Community community = communityRepository.findById(communityId)
-                .orElseThrow(NotFoundCommunityException::new);
+            .orElseThrow(NotFoundCommunityException::new);
 
         Comment superComment = null;
 
         if (superCommentId != null) {
             superComment = commentRepository.findById(superCommentId)
-                    .orElseThrow(BadRequestCommentException::new);
+                .orElseThrow(BadRequestCommentException::new);
         }
 
         String comment = writeCommentRequestDto.getComment();
@@ -225,8 +240,6 @@ public class CommunityService {
                 .community(community)
                 .writer(writer)
                 .build();
-        commentRepository.save(commentDto
-                .toEntity());
 
         /**
          * PUSH 알림 추가 로직
@@ -242,49 +255,112 @@ public class CommunityService {
 
         if (superComment != null) {
             firebaseCloudMessageUtility.sendTopicMessage(
-                    superCommentId.toString(),
-                    "새로운 대댓글이 달렸어요.",
-                    makeMessageBodyAboutComment(community.getTitle(), superComment));
+                superCommentId.toString(),
+                "새로운 대댓글이 달렸어요.",
+                makeMessageBodyAboutComment(community.getTitle(), superComment));
             firebaseCloudMessageUtility.sendTopicMessage(
-                    communityUserId.toString(),
-                    "새로운 대댓글이 달렸어요.",
-                    makeMessageBodyAboutComment(community.getTitle(), superComment));
+                communityUserId.toString(),
+                "새로운 대댓글이 달렸어요.",
+                makeMessageBodyAboutComment(community.getTitle(), superComment));
         } else {
             firebaseCloudMessageUtility.sendTopicMessage(
-                    communityUserId.toString(),
-                    "새로운 댓글이 달렸어요.",
-                    makeMessageBodyAboutComment(community.getTitle(), superComment));
+                communityUserId.toString(),
+                "새로운 댓글이 달렸어요.",
+                makeMessageBodyAboutComment(community.getTitle(), superComment));
         }
+        return commentRepository.save(commentDto
+            .toEntity()).getId();
+
     }
 
     @Transactional(readOnly = true)
-    public MyZipJoinResDto getJoinList(String userEmail) {
+    public MyZipJoinResDto getJoinList(String userEmail, String communityCategory) {
         User findUser = getUserByEmail(userEmail);
         List<Participation> participationList = participationRepository.findAllByUserId(findUser
-                .getId());
+            .getId());
         List<Community> communityList = communityRepository.findAllByUserId(findUser
-                .getId());
+            .getId());
 
-        List<ParticipationResDto> participationResDtoList = participationList.stream()
+        if (communityCategory == null || communityCategory.isEmpty()) {
+            List<ParticipationResDto> participationResDtoList = participationList.stream()
                 .map(ParticipationResDto::new)
                 .collect(Collectors.toList());
-        List<WriteOutResDto> writeOutResDtoList = communityList.stream()
+            List<WriteOutResDto> writeOutResDtoList = communityList.stream()
                 .map(WriteOutResDto::new)
                 .collect(Collectors.toList());
+            return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
+        }
 
+        List<ParticipationResDto> participationResDtoList = participationList.stream()
+            .map(ParticipationResDto::new)
+            .filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
+            .collect(Collectors.toList());
+
+        List<WriteOutResDto> writeOutResDtoList = communityList.stream()
+            .map(WriteOutResDto::new)
+            .filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
+            .collect(Collectors.toList());
         return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
     }
 
     @Transactional
     public void updateCommunity(Long communityId, UpdateCommunityReqDto updateCommunityReqDto) {
         Community findCommunity = communityRepository.findById(communityId)
-                .orElseThrow(NotFoundCommunityException::new);
+            .orElseThrow(NotFoundCommunityException::new);
+        if (findCommunity.getCurrentNumberOfPeople() > 1) {
+            throw new MoreThanOneParticipantException();
+        }
         updateCommunityReqDto.updateCommunity(findCommunity);
+    }
+
+    @Transactional(readOnly = true)
+    public CommunityResponseDto getCommunity(Long communityId, String userEmail) {
+        Community community = communityRepository.findById(communityId)
+            .orElseThrow(NotFoundCommunityException::new);
+        User user = getUserByEmail(userEmail);
+
+        CommunityResponseDto responseDto = CommunityResponseDto.of(community);
+
+        Boolean isLiked = community.getLikes().stream()
+            .anyMatch(l -> l.getUser().equals(user));
+        responseDto.setLiked(isLiked);
+
+        Boolean isParticipant = community.getParticipationsList().stream()
+            .anyMatch(p -> p.getUser().equals(user));
+        responseDto.setParticipant(isParticipant);
+
+        return CommunityResponseDto.of(community);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CommunityResponseDto> getCommunityList(String address, String communityType, Pageable pageable) {
+        Page<Community> communityList;
+
+        if (address == null || address.isEmpty()) {
+            if (communityType == null || communityType.isEmpty()) {
+                communityList = communityRepository.findAll(pageable);
+            } else {
+                communityList = communityRepository.findByCommunityCategory(CommunityCategory.valueOf(communityType),
+                    pageable);
+            }
+        } else {
+            if (communityType == null || communityType.isEmpty()) {
+                communityList = communityRepository.findByAddress(address, pageable);
+            } else {
+                communityList = communityRepository.findByAddressAndCommunityCategory(address,
+                    CommunityCategory.valueOf(communityType), pageable);
+            }
+        }
+
+        return new PageImpl<CommunityResponseDto>(
+            CommunityResponseDto.listOf(communityList.getContent()),
+            pageable,
+            communityList.getTotalElements());
     }
 
     private User getUserByEmail(String authUserEmail) {
         return userRepository.findByEmail(authUserEmail)
-                .orElseThrow(NotFoundUserException::new);
+            .orElseThrow(NotFoundUserException::new);
     }
 
     private String makeMessageBodyAboutParticipationComplete(Community community, Boolean isWriter) {
@@ -315,6 +391,16 @@ public class CommunityService {
             return "[" + title + "]" + " 글에 새로운 댓글이 달렸어요!";
         }
         return "[" + title + "]" + " 글에 남긴 댓글에 누군가 대댓글을 작성했어요.";
+    }
+
+    public void deleteCommunity(Long communityId) {
+        Community community = communityRepository.findById(communityId)
+            .orElseThrow(NotFoundCommunityException::new);
+        if (community.getCurrentNumberOfPeople() > 1) {
+            throw new MoreThanOneParticipantException();
+        }
+
+        communityRepository.deleteById(communityId);
     }
 }
 

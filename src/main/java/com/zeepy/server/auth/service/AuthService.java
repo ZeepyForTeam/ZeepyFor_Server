@@ -5,11 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.auth.domain.Token;
+import com.zeepy.server.auth.dto.GetUserInfoResDto;
+import com.zeepy.server.auth.dto.KakaoLoginReqDto;
 import com.zeepy.server.auth.dto.LoginReqDto;
 import com.zeepy.server.auth.dto.ReIssueReqDto;
 import com.zeepy.server.auth.dto.TokenResDto;
 import com.zeepy.server.auth.repository.TokenRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundPasswordException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundTokenException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenNotExistException;
@@ -26,6 +29,7 @@ public class AuthService {
 	private final TokenRepository tokenRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtAuthenticationProvider jwtAuthenticationProvider;
+	private final KakaoApi kakaoApi;
 
 	@Transactional
 	public TokenResDto login(LoginReqDto loginReqDto) {
@@ -44,14 +48,20 @@ public class AuthService {
 		Token tokens = new Token(accessToken, refreshToken, user);
 		tokenRepository.save(tokens);
 
-		return new TokenResDto(accessToken, refreshToken);
+		return new TokenResDto(accessToken, refreshToken, user);
 	}
 
 	@Transactional
 	public void logout(String userEmail) {
-		User user = getUserByEmail(userEmail);
-		tokenRepository.deleteByUserId(user
-			.getId());
+		Long userId = getUserByEmail(userEmail).getId();
+		Token findToken = tokenRepository.findByUserId(userId)
+			.orElseThrow(NotFoundTokenException::new);//사용자의 등록된 토큰이 없습니다.(401??)
+		//만약 token의 카카오가 !null이면 카카오 로그아웃
+		if (findToken.getKakaoAccessToken() != null) {
+			kakaoApi.logout(findToken.getKakaoAccessToken());
+		}
+		//나중에 token의 애플이 !null이면 애플 로그아웃
+		tokenRepository.deleteByUserId(userId);
 	}
 
 	@Transactional
@@ -69,7 +79,36 @@ public class AuthService {
 		String userEmail = jwtAuthenticationProvider.getUserEmail(accessToken);
 		String newAccessToken = jwtAuthenticationProvider.createAccessToken(userEmail);
 		String newRefreshToken = jwtAuthenticationProvider.createRefreshToken();
-		return new TokenResDto(newAccessToken, newRefreshToken);
+
+		User findUser = userRepository.findByEmail(userEmail)
+			.orElseThrow(NotFoundUserException::new);
+		return new TokenResDto(newAccessToken, newRefreshToken, findUser);
+	}
+
+	@Transactional
+	public TokenResDto kakaoLogin(GetUserInfoResDto userInfoResDto, KakaoLoginReqDto kakaoLoginReqDto) {
+		// String nickname = userInfoResDto.getNickname();
+		String email = userInfoResDto.getEmail();
+
+		//신규회원이면 회원가입
+		User user = userRepository.findByEmail(email)
+			.orElseGet(() -> {
+				User newUser = userInfoResDto.toEntity();
+				User saveUser = userRepository.save(newUser);    //신규회원일때 name = zeepy#000 이런식으로
+				saveUser.setNameById();
+				return saveUser;
+			});
+
+		String accessToken = jwtAuthenticationProvider.createAccessToken(user.getEmail());
+		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
+
+		Token tokens = new Token(accessToken, refreshToken, user);
+		tokens.setKakaoToken(
+			kakaoLoginReqDto.getAccessToken()
+		);
+		tokenRepository.save(tokens);
+
+		return new TokenResDto(accessToken, refreshToken, user);
 	}
 
 	private User getUserByEmail(String authUserEmail) {

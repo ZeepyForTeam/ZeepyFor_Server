@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import com.zeepy.server.push.util.FirebaseCloudMessageUtility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +26,7 @@ import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
+import com.zeepy.server.push.util.FirebaseCloudMessageUtility;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
 
@@ -38,14 +38,11 @@ public class CommunityServiceTest {
 	private final User joinUser = User.builder()
 		.id(1L)
 		.name("참여자")
-		.place("구월동")
 		.build();
 	private final Community joinPurhcaseCommunity = Community.builder()
 		.id(1L)
 		.communityCategory(CommunityCategory.JOINTPURCHASE)
 		.productName("공동구매물건")
-		.productPrice(10000)
-		.place("구월동")
 		.sharingMethod("만나서")
 		.targetNumberOfPeople(2)
 		.currentNumberOfPeople(0)
@@ -85,11 +82,11 @@ public class CommunityServiceTest {
 		Long communityId = community.getId();
 		Participation participation = createParticipation(community, user);
 
-		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true, 1L);
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true);
 
 		when(communityRepository.findById(any(Long.class))).thenReturn(Optional.of(community));
 		when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(user));
-		when(participationRepository.findById(any(Long.class))).thenReturn(Optional.of(participation));
+		lenient().when(participationRepository.findById(any(Long.class))).thenReturn(Optional.of(participation));
 		when(participationRepository.save(any(Participation.class))).thenReturn(participation);
 		when(participationRepository.findAll()).thenReturn(Collections.singletonList(participation));
 

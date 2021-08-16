@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zeepy.server.auth.dto.GetUserInfoResDto;
+import com.zeepy.server.auth.dto.KakaoLoginReqDto;
 import com.zeepy.server.auth.dto.LoginReqDto;
 import com.zeepy.server.auth.dto.ReIssueReqDto;
 import com.zeepy.server.auth.dto.TokenResDto;
 import com.zeepy.server.auth.service.AuthService;
+import com.zeepy.server.auth.service.KakaoApi;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class AuthController {
 	private final AuthService authService;
+	private final KakaoApi kakaoApi;
 
 	@PostMapping("/login")
 	public ResponseEntity<TokenResDto> login(@RequestBody LoginReqDto loginReqDto) {
@@ -36,6 +40,15 @@ public class AuthController {
 	@PostMapping("/reissue")
 	public ResponseEntity<TokenResDto> reissue(@RequestBody ReIssueReqDto reIssueReqDto) {
 		TokenResDto tokenResDto = authService.reissue(reIssueReqDto);
+		return ResponseEntity.ok().body(tokenResDto);
+	}
+
+	@PostMapping("/login/kakao")
+	public ResponseEntity<TokenResDto> kakaoLogin(@RequestBody KakaoLoginReqDto kakaoLoginReqDto) {
+		GetUserInfoResDto userInfoResDto = kakaoApi.getUserInfo(
+			kakaoLoginReqDto.getAccessToken());
+
+		TokenResDto tokenResDto = authService.kakaoLogin(userInfoResDto, kakaoLoginReqDto);
 		return ResponseEntity.ok().body(tokenResDto);
 	}
 }

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
-import com.zeepy.server.user.domain.User;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -20,19 +19,18 @@ import lombok.Setter;
 public class SaveCommunityRequestDto {
 
 	@NotNull(message = "커뮤니티카테고리는 필수값입니다.")
-	private CommunityCategory communityCategory;
+	private String communityCategory;
+
+	@NotNull(message = "커뮤니티 주소는 필수입니다.")
+	private String address;
 
 	private String productName;
-
-	private Integer productPrice;
 
 	private String purchasePlace;
 
 	private String sharingMethod;
 
 	private Integer targetNumberOfPeople;
-
-	private Integer currentNumberOfPeople = 0;
 
 	@NotEmpty(message = "제목은 필수입니다.")
 	private String title;
@@ -44,50 +42,44 @@ public class SaveCommunityRequestDto {
 
 	private List<String> imageUrls;
 
-	private User user;
-
 	@Builder
-	public SaveCommunityRequestDto(CommunityCategory communityCategory,
+	public SaveCommunityRequestDto(
+		String communityCategory,
+		String address,
 		String productName,
-		Integer productPrice,String purchasePlace,
+		String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
-
 		String title,
 		String content,
 		String instructions,
-		User user,List<String> imageUrls) {
+		List<String> imageUrls
+	) {
 		this.communityCategory = communityCategory;
+		this.address = address;
 		this.productName = productName;
-		this.productPrice = productPrice;
-		this.purchasePlace = purchasePlace;this.sharingMethod = sharingMethod;
+		this.purchasePlace = purchasePlace;
+		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
-
 		this.title = title;
-		this.content = content;this.instructions = instructions;
-		this.user = user;
+		this.content = content;
+		this.instructions = instructions;
 		this.imageUrls = imageUrls;
 	}
 
 	public Community toEntity() {
 		return Community.builder()
-			.communityCategory(communityCategory)
+			.communityCategory(CommunityCategory.valueOf(communityCategory))
+			.address(address)
 			.productName(productName)
-			.productPrice(productPrice)
 			.purchasePlace(purchasePlace)
 			.sharingMethod(sharingMethod)
 			.targetNumberOfPeople(targetNumberOfPeople)
-			.currentNumberOfPeople(currentNumberOfPeople)
+			.currentNumberOfPeople(0)
 			.title(title)
 			.content(content)
-			.place(user.getPlace())
 			.instructions(instructions)
-			.user(user)
 			.imageUrls(imageUrls)
 			.build();
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 }

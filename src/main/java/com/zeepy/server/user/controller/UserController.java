@@ -1,16 +1,29 @@
 package com.zeepy.server.user.controller;
 
-import com.zeepy.server.user.dto.AccessNotifyRequestDto;
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.zeepy.server.user.domain.ModifyNicknameReqDto;
+import com.zeepy.server.user.dto.AccessNotifyRequestDto;
+import com.zeepy.server.user.dto.AddAddressReqDto;
+import com.zeepy.server.user.dto.AddressResDto;
+import com.zeepy.server.user.dto.CheckOfRedundancyEmailReqDto;
+import com.zeepy.server.user.dto.CheckOfRedundancyNicknameReqDto;
+import com.zeepy.server.user.dto.ModifyPasswordReqDto;
 import com.zeepy.server.user.dto.RegistrationReqDto;
 import com.zeepy.server.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-
-import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
@@ -19,17 +32,66 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping("/registration")
-	public ResponseEntity<Void> registration(@RequestBody RegistrationReqDto registrationReqDto) {
+	public ResponseEntity<Void> registration(@Valid @RequestBody RegistrationReqDto registrationReqDto) {
 		userService.registration(registrationReqDto);
 		return ResponseEntity.ok().build();
 	}
 
 	@PatchMapping("notify")
 	public ResponseEntity<Void> setAccessNotify(
-			@Valid @RequestBody AccessNotifyRequestDto accessNotifyRequestDto,
-			@AuthenticationPrincipal String userEmail
+		@Valid @RequestBody AccessNotifyRequestDto accessNotifyRequestDto,
+		@AuthenticationPrincipal String userEmail
 	) {
 		userService.setAccessNotify(accessNotifyRequestDto, userEmail);
 		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/redundancy/email")
+	public ResponseEntity<Void> checkForRedundancyEmail(
+		@RequestBody CheckOfRedundancyEmailReqDto checkOfRedundancyEmailReqDto) {
+		userService.checkForRedundancyEmail(checkOfRedundancyEmailReqDto);
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/redundancy/nickname")
+	public ResponseEntity<Void> checkFromRedundancyNickname(
+		@RequestBody CheckOfRedundancyNicknameReqDto checkOfRedundancyNicknameReqDto) {
+		userService.checkFromRedundancyNickname(checkOfRedundancyNicknameReqDto);
+		return ResponseEntity.ok().build();
+	}
+
+	@PutMapping("/nickname")
+	public ResponseEntity<Void> modifyNickname(@RequestBody ModifyNicknameReqDto modifyNicknameReqDto,
+		@AuthenticationPrincipal String userEmail) {
+		userService.modifyUser(modifyNicknameReqDto, userEmail);
+		return ResponseEntity.ok().build();
+	}
+
+	@PutMapping("/password")
+	public ResponseEntity<Void> modifyPassword(@RequestBody ModifyPasswordReqDto modifyPasswordReqDto,
+		@AuthenticationPrincipal String userEmail) {
+		userService.modifyPassword(modifyPasswordReqDto, userEmail);
+		return ResponseEntity.ok().build();
+	}
+
+	@DeleteMapping("/withdrawal")
+	public ResponseEntity<Void> memberShipWithdrawal(@AuthenticationPrincipal String userEmail) {
+		userService.memberShipWithdrawal(userEmail);
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/address")
+	public ResponseEntity<Void> addAddress(
+		@RequestBody AddAddressReqDto addAddressReqDto,
+		@AuthenticationPrincipal String userEmail) {
+		userService.addAddress(addAddressReqDto, userEmail);
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/address")
+	public ResponseEntity<AddressResDto> getAddresses(@AuthenticationPrincipal String userEmail) {
+		AddressResDto addressResDto = userService.getAddresses(userEmail);
+		return ResponseEntity.ok().body(addressResDto);
+
 	}
 }

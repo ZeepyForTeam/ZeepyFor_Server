@@ -1,5 +1,7 @@
 package com.zeepy.server.user.dto;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.zeepy.server.user.domain.Role;
@@ -12,8 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class RegistrationReqDto {
+    @NotNull(message = "이름은 필수값입니다.")
     private String name;
+    @NotNull(message = "이메일은 필수값입니다.")
     private String email;
+    @NotNull(message = "비밀번호는 필수값입니다.")
     private String password;
     private String address;
     private String building;
@@ -29,14 +34,16 @@ public class RegistrationReqDto {
 
     public User toEntity() {
         return User.builder()
-                .name(name)
-                .email(email)
-                .password(setBCryptEncoding())
-                .address(address)
-                .building(building)
-                .accessNotify(false)
-                .role(Role.ROLE_USER)
-                .build();
+            .name(name)
+            .email(email)
+            .password(setBCryptEncoding())
+            .address(address)
+            .building(building)
+            .accessNotify(false)
+            .role(Role.ROLE_USER)
+            // 모든 사용자 기본 프로필 이미지로 설정 -> 추후 기능 업데이트 시 변경 예정
+            .profileImage("https://zeepy.s3.ap-northeast-2.amazonaws.com/zeepyImage/dummyprofile_28pt.png")
+            .build();
     }
 
     private String setBCryptEncoding() {

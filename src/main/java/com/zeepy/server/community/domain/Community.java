@@ -3,6 +3,7 @@ package com.zeepy.server.community.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -42,11 +43,11 @@ public class Community extends BaseTimeEntity {
 	@Enumerated(EnumType.STRING)
 	private CommunityCategory communityCategory;
 
-	@Nullable
-	private String productName;
+	@NotNull
+	private String address;
 
 	@Nullable
-	private Integer productPrice;
+	private String productName;
 
 	@Nullable
 	private String purchasePlace;
@@ -67,9 +68,6 @@ public class Community extends BaseTimeEntity {
 	private String content;
 
 	@Nullable
-	private String place;
-
-	@Nullable
 	private String instructions;
 
 	@NotNull
@@ -77,13 +75,13 @@ public class Community extends BaseTimeEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(mappedBy = "community")
+	@OneToMany(mappedBy = "community", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<CommunityLike> likes = new ArrayList<>();
 
-	@OneToMany(mappedBy = "community")
+	@OneToMany(mappedBy = "community", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<Comment> comments = new ArrayList<>();
 
-	@OneToMany(mappedBy = "community")
+	@OneToMany(mappedBy = "community", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<Participation> participationsList = new ArrayList<>();
 
 	@ElementCollection
@@ -92,33 +90,36 @@ public class Community extends BaseTimeEntity {
 
 	@Builder
 	public Community(
-		Long id,CommunityCategory communityCategory,
+		Long id,
+		CommunityCategory communityCategory,
+		String address,
 		String productName,
-		Integer productPrice,String purchasePlace,
+		String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
 		Integer currentNumberOfPeople,
 		User user,
 		String title,
 		String content,
-		String place,
 		String instructions,
 		List<String> imageUrls
 	) {
-		this.id = id;this.communityCategory = communityCategory;
+		this.id = id;
+		this.communityCategory = communityCategory;
+		this.address = address;
 		this.productName = productName;
-		this.productPrice = productPrice;
 		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
 		this.currentNumberOfPeople = currentNumberOfPeople;
 		this.purchasePlace = purchasePlace;
 		this.user = user;
-		this.user = user;
-		this.title = title;this.place = place;
-		this.content = content;this.instructions = instructions;
+		this.title = title;
+		this.content = content;
+		this.instructions = instructions;
 		this.imageUrls = imageUrls;
 	}
-public void addCurrentNumberOfPeople() {
+
+	public void addCurrentNumberOfPeople() {
 		if (communityCategory == CommunityCategory.JOINTPURCHASE && targetNumberOfPeople != null) {
 			this.currentNumberOfPeople++;
 		}
@@ -140,18 +141,23 @@ public void addCurrentNumberOfPeople() {
 	}
 
 	public void update(String title,
+		String content,
 		String productName,
-		Integer productPrice,
 		String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
 		String instructions) {
 		this.title = title;
+		this.content = content;
 		this.productName = productName;
-		this.productPrice = productPrice;
 		this.purchasePlace = purchasePlace;
 		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
 		this.instructions = instructions;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+		user.getCommunities().add(this);
 	}
 }

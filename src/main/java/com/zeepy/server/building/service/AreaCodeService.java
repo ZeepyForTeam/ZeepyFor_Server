@@ -1,13 +1,15 @@
 package com.zeepy.server.building.service;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.zeepy.server.building.domain.AreaCode;
 import com.zeepy.server.building.dto.AreaCodeRequestDto;
 import com.zeepy.server.building.repository.AreaCodeRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Minky on 2021-05-15
@@ -28,9 +30,9 @@ public class AreaCodeService {
     // UPDATE
     @Transactional
     public void update(Long id, AreaCodeRequestDto areaCodeRequestDto) {
-        AreaCode areaCode = areaCodeRepository
-                .findById(id)
-                .orElseThrow(NoContentException::new);
+		AreaCode areaCode = areaCodeRepository
+			.findById(id)
+			.orElseThrow(NoContentException::new);
         areaCode.update(areaCodeRequestDto);
         areaCodeRepository.save(areaCode);
     }
