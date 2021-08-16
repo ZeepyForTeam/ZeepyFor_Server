@@ -1,6 +1,6 @@
 package com.zeepy.server.report.service;
 
-import com.zeepy.server.email.domain.Email;
+import com.zeepy.server.email.domain.AdminEmail;
 import com.zeepy.server.email.repository.EmailRepository;
 import com.zeepy.server.email.util.EmailSendUtility;
 import com.zeepy.server.report.domain.Report;
@@ -41,10 +41,10 @@ public class ReportService {
          * Email 전송 로직 추가
          */
 
-        List<Email> emails = emailRepository.findAll();
-        for (Email email : emails) {
+        List<AdminEmail> adminEmails = emailRepository.findAll();
+        for (AdminEmail adminEmail : adminEmails) {
             emailSendUtility.mailSend(
-                    email.getEmail(),
+                    adminEmail.getEmail(),
                     "유저 신고가 들어왔습니다.",
                     save.getDescription());
         }

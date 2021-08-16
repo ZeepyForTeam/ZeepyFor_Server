@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 @Entity
-public class Email {
+public class AdminEmail {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_sequence_gen")
     @SequenceGenerator(name = "email_sequence_gen", sequenceName = "email_sequence")
@@ -24,7 +24,7 @@ public class Email {
     private String email; // 상세 설명
 
     @Builder
-    public Email(
+    public AdminEmail(
             Long id,
             String email
     ) {

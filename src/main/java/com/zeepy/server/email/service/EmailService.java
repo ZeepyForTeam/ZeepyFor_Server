@@ -1,6 +1,6 @@
 package com.zeepy.server.email.service;
 
-import com.zeepy.server.email.domain.Email;
+import com.zeepy.server.email.domain.AdminEmail;
 import com.zeepy.server.email.dto.EmailRequestDto;
 import com.zeepy.server.email.repository.EmailRepository;
 import lombok.AccessLevel;
@@ -19,8 +19,8 @@ public class EmailService {
 
     @Transactional
     public Long create(EmailRequestDto emailRequestDto) {
-        Email email = emailRequestDto.returnEmailEntity();
-        Email save = emailRepository.save(email);
+        AdminEmail adminEmail = emailRequestDto.returnEmailEntity();
+        AdminEmail save = emailRepository.save(adminEmail);
         return save.getId();
     }
 }
