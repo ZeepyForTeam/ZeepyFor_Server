@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -52,6 +51,8 @@ public class User implements UserDetails {
 
 	private String password;
 
+	private Boolean sendMailCheck;
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -76,11 +77,12 @@ public class User implements UserDetails {
 	private List<Review> reviews = new ArrayList<>();
 
 	@Builder
-	public User(Long id, String name, String email, String password, Role role, String profileImage) {
+	public User(Long id, String name, String email, String password, Boolean sendMailCheck, Role role, String profileImage) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.sendMailCheck = sendMailCheck;
 		this.role = role;
 		this.profileImage = profileImage;
 	}
@@ -96,6 +98,11 @@ public class User implements UserDetails {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+
+	public void setSendMailCheck() {
+		this.sendMailCheck = !this.sendMailCheck;
+  }
 
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
