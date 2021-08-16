@@ -62,6 +62,8 @@ public class User implements UserDetails {
 	@NotNull
 	private Boolean accessNotify;
 
+	private Boolean sendMailCheck;
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -87,8 +89,7 @@ public class User implements UserDetails {
 
 	@Builder
 	public User(Long id, String name, String email, String password, String address, String building, String place,
-		Boolean accessNotify,
-		Role role, String profileImage) {
+		Boolean accessNotify, Role role, String profileImage, Boolean sendMailCheck) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -97,6 +98,7 @@ public class User implements UserDetails {
 		this.building = building;
 		this.place = place;
 		this.accessNotify = accessNotify;
+		this.sendMailCheck = sendMailCheck;
 		this.role = role;
 		this.profileImage = profileImage;
 	}
@@ -111,6 +113,10 @@ public class User implements UserDetails {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setSendMailCheck() {
+		this.sendMailCheck = !this.sendMailCheck;
 	}
 
 	public void setProfileImage(String profileImage) {
