@@ -9,6 +9,7 @@ import com.zeepy.server.review.domain.RoomCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,6 +66,17 @@ public class BuildingController {
                 notEqualDealType,
                 roomCounts,
                 furnitures,
+                pageable
+        ));
+    }
+
+    @GetMapping("/like")
+    public ResponseEntity<Page<BuildingResponseDto>> getBuildingsUserLike(
+            @AuthenticationPrincipal String userEmail,
+            Pageable pageable
+    ) {
+        return ResponseEntity.ok(buildingService.getUserLike(
+                userEmail,
                 pageable
         ));
     }
