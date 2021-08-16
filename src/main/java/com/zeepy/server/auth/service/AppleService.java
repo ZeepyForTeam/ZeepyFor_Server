@@ -43,7 +43,7 @@ public class AppleService {
 			}
 		}
 		if (clientSecret != null && code == null && appleRefreshToken != null) {    //토큰 리프레시 & 기존회원 로그인
-			System.out.println("기존회원 애플 로그인");
+			System.out.println("기존회원 애플 로그인!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			tokenResponse = appleUtils.validateAnExistingRefreshToken(clientSecret, appleRefreshToken);
 			if (tokenResponse == null) {
 				System.out.println("null 일떄는 어떻게 처리하지");
@@ -53,11 +53,15 @@ public class AppleService {
 		return tokenResponse;
 	}
 
-	public AppleTokenResDto setAppleTokenResDto(TokenResponse tokenResponse, String idToken) {
+	public AppleTokenResDto setAppleTokenResDto(TokenResponse tokenResponse, String idToken, String clientSecret) {
 
 		if (idToken == null) {
 			Token token = getTokenByAppleRefreshToken(tokenResponse.getRefresh_token());
 			idToken = token.getAppleIdToken();
+		}
+
+		if (clientSecret.length() < 1) {
+			System.out.println("clientSecret값이 없어요...");
 		}
 
 		String appleRefreshToken = tokenResponse.getRefresh_token();
@@ -76,7 +80,7 @@ public class AppleService {
 		String accessToken = jwtAuthenticationProvider.createAccessToken(findUser.getEmail());
 		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
 
-		Token token = new Token(accessToken, refreshToken, findUser);
+		Token token = new Token(accessToken, refreshToken, findUser, clientSecret);
 		token.setAppleRefreshToken(appleRefreshToken);
 		tokenRepository.save(token);
 		return new AppleTokenResDto(accessToken, refreshToken, appleRefreshToken, findUser.getId());

@@ -41,13 +41,13 @@ import sun.security.ec.ECPrivateKeyImpl;
 public class AppleUtils {
 
 	// @Value("${APPLE.PUBLICKEY.URL}")
-	private String APPLE_PUBLIC_KEYS_URL = "";
+	private String APPLE_PUBLIC_KEYS_URL = "https://appleid.apple.com/auth/keys";
 
 	// @Value("${APPLE.AUTH.TOKEN.URL}")
-	private String AUTH_TOKEN_URL = "";
+	private String AUTH_TOKEN_URL = "https://appleid.apple.com/auth/token";
 
 	// @Value("${APPLE.ISS}")
-	private String ISS = "";
+	private String ISS = "https://appleid.apple.com";
 	// 발급기관
 
 	// @Value("${APPLE.AUD}")
@@ -61,7 +61,7 @@ public class AppleUtils {
 	private String KEY_ID = "";
 
 	// @Value("${APPLE.KEY.PATH}")
-	private String KEY_PATH = "";
+	private String KEY_PATH = "static/AuthKey_CMLD397J88.p8";
 
 	// @Value("${APPLE.WEBSITE.URL}")
 	private String APPLE_WEBSITE_URL = "";
@@ -216,6 +216,11 @@ public class AppleUtils {
 		tokenRequest.put("client_secret", clientSecret);
 		tokenRequest.put("grant_type", "refresh_token");
 		tokenRequest.put("refresh_token", appleRefreshToken);
+
+		System.out.println("utilrs의 통신전!!!");
+		System.out.println("clientSecret : " + clientSecret);
+		System.out.println("appleRefreshToken : " + appleRefreshToken);
+		System.out.println("200통신 기원!!!!!");
 
 		return getTokenResponse(tokenRequest);
 	}

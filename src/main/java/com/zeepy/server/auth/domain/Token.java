@@ -52,6 +52,14 @@ public class Token extends BaseTimeEntity {
 		this.user = user;
 	}
 
+	@Builder
+	public Token(String accessToken, String refreshToken, User user, String appleClientSecret) {
+		this.accessToken = accessToken;
+		this.refreshToken = refreshToken;
+		this.user = user;
+		this.appleClientSecret = appleClientSecret;
+	}
+
 	public void setKakaoToken(String kakaoAccessToken) {
 		this.kakaoAccessToken = kakaoAccessToken;
 	}

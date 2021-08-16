@@ -51,17 +51,17 @@ public class AppleApi {
 				postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
 			}
 			byte[] postDataBytes = postData.toString().getBytes(StandardCharsets.UTF_8);
-			System.out.println("client_id : " + tokenRequest.get("client_id"));
-			System.out.println("client_secret : " + tokenRequest.get("client_secret"));
-			System.out.println("grant_type : " + tokenRequest.get("grant_type"));
-			System.out.println("code : " + tokenRequest.get("code"));
-
+			// System.out.println("client_id : "+tokenRequest.get("client_id"));
+			// System.out.println("client_secret : "+tokenRequest.get("client_secret"));
+			// System.out.println("grant_type : "+tokenRequest.get("grant_type"));
+			// System.out.println("code : "+tokenRequest.get("code"));
+			//
 			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			//conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-			conn.setRequestProperty("client_id", tokenRequest.get("client_id"));
-			conn.setRequestProperty("client_secret", tokenRequest.get("client_secret"));
-			conn.setRequestProperty("grant_type", tokenRequest.get("grant_type"));
-			conn.setRequestProperty("code", tokenRequest.get("code"));
+			// //conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+			// conn.setRequestProperty("client_id",tokenRequest.get("client_id"));
+			// conn.setRequestProperty("client_secret",tokenRequest.get("client_secret"));
+			// conn.setRequestProperty("grant_type",tokenRequest.get("grant_type"));
+			// conn.setRequestProperty("code",tokenRequest.get("code"));
 
 			conn.setDoInput(true);
 			conn.setDoOutput(true);

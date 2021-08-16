@@ -96,7 +96,7 @@ public class AuthController {
 		System.out.println("================================");
 
 		TokenResponse tokenResponse = appleService.requestCodeValidations(clientSecret, code, null);
-		AppleTokenResDto appleTokenResDto = appleService.setAppleTokenResDto(tokenResponse, idToken);
+		AppleTokenResDto appleTokenResDto = appleService.setAppleTokenResDto(tokenResponse, idToken, clientSecret);
 		return ResponseEntity.ok().body(appleTokenResDto);
 	}
 
@@ -104,9 +104,10 @@ public class AuthController {
 	public ResponseEntity<AppleTokenResDto> appleRefresh(@RequestBody AppleRefreshReqDto appleRefreshReqDto) {
 		String appleRefreshToken = appleRefreshReqDto.getAppleRefreshToken();
 		String clientSecret = appleService.getClientSecretByModel(appleRefreshToken);
+		System.out.println("clientSecret : " + clientSecret);
 
 		TokenResponse tokenResponse = appleService.requestCodeValidations(clientSecret, null, appleRefreshToken);
-		AppleTokenResDto appleTokenResDto = appleService.setAppleTokenResDto(tokenResponse, null);
+		AppleTokenResDto appleTokenResDto = appleService.setAppleTokenResDto(tokenResponse, null, clientSecret);
 		return ResponseEntity.ok().body(appleTokenResDto);
 	}
 
