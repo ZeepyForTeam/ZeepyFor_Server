@@ -157,6 +157,16 @@ public class BuildingService {
                 .in(furnitures);
     }
 
+    private BooleanExpression eqEmail(String email) {
+        if (email == null) {
+            return null;
+        }
+        return qBuildingLike
+                .user
+                .email
+                .eq(email);
+    }
+
     // CREATE
     @Transactional
     public Long create(BuildingRequestDto buildingRequestDto) {
@@ -186,6 +196,7 @@ public class BuildingService {
         return BuildingResponseDto.listOf(buildingList);
     }
 
+    // READ
     @Transactional(readOnly = true)
     public Page<BuildingResponseDto> getAll(
             String shortAddress,
@@ -224,7 +235,33 @@ public class BuildingService {
                 pageable,
                 fetchResults.getTotal());
     }
+
     // READ
+    @Transactional(readOnly = true)
+    public Page<BuildingResponseDto> getUserLike(
+            String email,
+            Pageable pageable
+    ) {
+        QueryResults<Building> fetchResults = jpaQueryFactory
+                .selectDistinct(qBuilding)
+                .from(qBuilding)
+                .leftJoin(qBuilding.reviews, qReview)
+                .leftJoin(qBuilding.buildingLikes, qBuildingLike)
+                .innerJoin(qBuilding.buildingDeals, qBuildingDeal)
+                .where(
+                        eqEmail(email)
+                )
+                .orderBy(qBuilding.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchJoin()
+                .fetchResults();
+
+        return new PageImpl<BuildingResponseDto>(
+                BuildingResponseDto.listOf(fetchResults.getResults()),
+                pageable,
+                fetchResults.getTotal());
+    }
 
     // READ
     @Transactional(readOnly = true)
