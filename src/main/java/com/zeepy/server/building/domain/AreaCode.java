@@ -22,22 +22,22 @@ import lombok.Setter;
 @Setter
 @Entity
 public class AreaCode extends BaseTimeEntity {
-    @Id
-    private Long areaCode;
+	@Id
+	private Long areaCode;
 
-    @NotEmpty
-    private String name;
+	@NotEmpty
+	private String name;
 
-    @Builder
-    public AreaCode(
-        Long areaCode,
-        String name
-    ) {
-        this.areaCode = areaCode;
-        this.name = name;
-    }
+	@Builder
+	public AreaCode(
+		Long areaCode,
+		String name
+	) {
+		this.areaCode = areaCode;
+		this.name = name;
+	}
 
-    public void update(AreaCodeRequestDto areaCodeRequestDto) {
-        this.name = areaCodeRequestDto.getName();
-    }
+	public void update(AreaCodeRequestDto areaCodeRequestDto) {
+		this.name = areaCodeRequestDto.getName();
+	}
 }

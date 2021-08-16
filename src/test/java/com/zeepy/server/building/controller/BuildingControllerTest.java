@@ -11,13 +11,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.zeepy.server.building.dto.BuildingAddressResponseDto;
+import com.zeepy.server.building.dto.BuildingAutoCompleteResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.service.BuildingService;
@@ -27,7 +29,8 @@ import com.zeepy.server.common.ControllerTest;
  * Created by Minky on 2021-05-19
  */
 @DisplayName("Building Controller Test")
-@WebMvcTest(controllers = BuildingController.class)
+@WebMvcTest(controllers = {BuildingController.class}, includeFilters = @ComponentScan.Filter(classes = {
+	EnableWebSecurity.class}))
 @MockBean(JpaMetamodelMappingContext.class)
 class BuildingControllerTest extends ControllerTest {
 	@MockBean
@@ -36,6 +39,9 @@ class BuildingControllerTest extends ControllerTest {
 	private BuildingRequestDto makeBuildingRequestDto() {
 		return new BuildingRequestDto(
 			0,
+			"test",
+			"test",
+			"test",
 			"test",
 			"test",
 			"test",
@@ -53,6 +59,9 @@ class BuildingControllerTest extends ControllerTest {
 			"test",
 			"test",
 			"test",
+			"test",
+			"test",
+			"test",
 			0.1f,
 			1100,
 			32.0,
@@ -63,9 +72,12 @@ class BuildingControllerTest extends ControllerTest {
 		);
 	}
 
-	private BuildingAddressResponseDto makeBuildingAddressResponseDto() {
-		return new BuildingAddressResponseDto(
+	private BuildingAutoCompleteResponseDto makeBuildingAddressResponseDto() {
+		return new BuildingAutoCompleteResponseDto(
 			1L,
+			"test",
+			"test",
+			"test",
 			"test",
 			"test",
 			"test"

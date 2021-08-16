@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.AppleUnAuthrizationException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestBodyException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
@@ -185,20 +183,6 @@ public class ControllerExceptionHandler {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-	}
-
-	@ExceptionHandler(AppleUnAuthrizationException.class)
-	public ResponseEntity<ErrorResponse> appleAuthorization(AppleUnAuthrizationException e) {
-		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
-
-		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-	}
-
-	@ExceptionHandler(BadRequestBodyException.class)
-	public ResponseEntity<ErrorResponse> badRequestBody(BadRequestBodyException e) {
-		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
-
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
 	public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {

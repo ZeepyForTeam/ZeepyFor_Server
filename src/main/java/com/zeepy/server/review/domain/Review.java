@@ -108,7 +108,8 @@ public class Review extends BaseTimeEntity {
 	private Building building;
 
 	@Builder
-	public Review(Long id,
+	public Review(
+		Long id,
 		CommuncationTendency communicationTendency,
 		LessorGender lessorGender,
 		LessorAge lessorAge,
@@ -121,7 +122,9 @@ public class Review extends BaseTimeEntity {
 		List<Furniture> furnitures,
 		String review,
 		TotalEvaluation totalEvaluation,
-		List<String> imageUrls, Building building) {
+		List<String> imageUrls,
+		Building building
+	) {
 		this.id = id;
 		this.communicationTendency = communicationTendency;
 		this.lessorGender = lessorGender;

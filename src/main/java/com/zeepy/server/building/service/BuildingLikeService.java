@@ -2,9 +2,6 @@ package com.zeepy.server.building.service;
 
 import java.util.List;
 
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
-import com.zeepy.server.user.domain.User;
-import com.zeepy.server.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +12,9 @@ import com.zeepy.server.building.dto.BuildingLikeResponseDto;
 import com.zeepy.server.building.repository.BuildingLikeRepository;
 import com.zeepy.server.building.repository.BuildingRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
+import com.zeepy.server.user.domain.User;
+import com.zeepy.server.user.repository.UserRepository;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +38,8 @@ public class BuildingLikeService {
 			.orElseThrow(NoContentException::new);
 
 		User user = userRepository
-				.findByEmail(userEmail)
-				.orElseThrow(NotFoundUserException::new);
+			.findByEmail(userEmail)
+			.orElseThrow(NotFoundUserException::new);
 
 		BuildingLike buildingLike = buildingLikeRequestDto.returnBuildingLikeEntity();
 		buildingLike.setBuilding(building);

@@ -1,6 +1,5 @@
 package com.zeepy.server.building.dto;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
@@ -24,15 +23,15 @@ public class BuildingLikeRequestDto {
     private Long buildingId;
 
     public BuildingLikeRequestDto(
-        Long buildingId
+            Long buildingId
     ) {
         this.buildingId = buildingId;
     }
 
     public BuildingLike returnBuildingLikeEntity() {
-        return new BuildingLike(
-            null,
-                LocalDateTime.now()
-        );
-    }
+		return new BuildingLike(
+			null,
+			LocalDateTime.now()
+		);
+	}
 }

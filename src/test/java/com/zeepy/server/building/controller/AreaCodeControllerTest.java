@@ -8,7 +8,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.zeepy.server.building.dto.AreaCodeRequestDto;
@@ -19,7 +21,8 @@ import com.zeepy.server.common.ControllerTest;
  * Created by Minky on 2021-05-20
  */
 @DisplayName("AreaCode Controller Test")
-@WebMvcTest(AreaCodeController.class)
+@WebMvcTest(controllers = {AreaCodeController.class}, includeFilters = @ComponentScan.Filter(classes = {
+	EnableWebSecurity.class}))
 @MockBean(JpaMetamodelMappingContext.class)
 class AreaCodeControllerTest extends ControllerTest {
 

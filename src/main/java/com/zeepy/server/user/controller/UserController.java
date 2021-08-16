@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zeepy.server.user.domain.ModifyNicknameReqDto;
+import com.zeepy.server.user.dto.AccessNotifyRequestDto;
 import com.zeepy.server.user.dto.AddAddressReqDto;
 import com.zeepy.server.user.dto.AddressResDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyEmailReqDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyNicknameReqDto;
 import com.zeepy.server.user.dto.ModifyPasswordReqDto;
 import com.zeepy.server.user.dto.RegistrationReqDto;
+import com.zeepy.server.user.dto.SendMailCheckResDto;
 import com.zeepy.server.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,6 +35,15 @@ public class UserController {
 	@PostMapping("/registration")
 	public ResponseEntity<Void> registration(@Valid @RequestBody RegistrationReqDto registrationReqDto) {
 		userService.registration(registrationReqDto);
+		return ResponseEntity.ok().build();
+	}
+
+	@PatchMapping("notify")
+	public ResponseEntity<Void> setAccessNotify(
+		@Valid @RequestBody AccessNotifyRequestDto accessNotifyRequestDto,
+		@AuthenticationPrincipal String userEmail
+	) {
+		userService.setAccessNotify(accessNotifyRequestDto, userEmail);
 		return ResponseEntity.ok().build();
 	}
 
@@ -81,6 +93,20 @@ public class UserController {
 	public ResponseEntity<AddressResDto> getAddresses(@AuthenticationPrincipal String userEmail) {
 		AddressResDto addressResDto = userService.getAddresses(userEmail);
 		return ResponseEntity.ok().body(addressResDto);
+	}
 
+	@PutMapping("/mail")
+	public ResponseEntity<Void> setSendMailCheck(
+		@AuthenticationPrincipal String email) {
+		userService.setSendMailCheck(email);
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/mail")
+	public ResponseEntity<SendMailCheckResDto> getSendMailCheck(
+		@AuthenticationPrincipal String userEmail
+	) {
+		SendMailCheckResDto sendMailCheckResDto = userService.getSendMailCheck(userEmail);
+		return ResponseEntity.ok().body(sendMailCheckResDto);
 	}
 }

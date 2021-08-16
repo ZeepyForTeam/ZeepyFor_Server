@@ -19,6 +19,8 @@ public class ParticipationDto {
 		community.addCurrentNumberOfPeople();
 		participation.setCommunity(this.community);
 		participation.setUser(this.user);
+		this.community.getParticipationsList().add(participation);
+		this.user.getParticipatingCommunities().add(participation);
 		return participation;
 	}
 
@@ -27,6 +29,8 @@ public class ParticipationDto {
 			.build();
 		participation.setCommunity(this.community);
 		participation.setUser(this.user);
+		this.community.getParticipationsList().add(participation);
+		this.user.getParticipatingCommunities().add(participation);
 		return participation;
 	}
 }

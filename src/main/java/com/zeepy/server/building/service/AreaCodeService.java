@@ -30,12 +30,12 @@ public class AreaCodeService {
     // UPDATE
     @Transactional
     public void update(Long id, AreaCodeRequestDto areaCodeRequestDto) {
-        AreaCode areaCode = areaCodeRepository
-            .findById(id)
-            .orElseThrow(NoContentException::new);
-        areaCode.update(areaCodeRequestDto);
-        areaCodeRepository.save(areaCode);
-    }
+		AreaCode areaCode = areaCodeRepository
+			.findById(id)
+			.orElseThrow(NoContentException::new);
+		areaCode.update(areaCodeRequestDto);
+		areaCodeRepository.save(areaCode);
+	}
 
     // DELETE
     @Transactional

@@ -46,18 +46,18 @@ public class BuildingLikeController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> uploadBuildingLike(
-            @AuthenticationPrincipal String userEmail,
-            @Valid @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
-    ) {
-        Long id = buildingLikeService.create(buildingLikeRequestDto, userEmail);
-        return ResponseEntity.created(URI.create("/api/likes/buildings/" + id)).build();
-    }
+	public ResponseEntity<Void> uploadBuildingLike(
+		@AuthenticationPrincipal String userEmail,
+		@Valid @RequestBody BuildingLikeRequestDto buildingLikeRequestDto
+	) {
+		Long id = buildingLikeService.create(buildingLikeRequestDto, userEmail);
+		return ResponseEntity.created(URI.create("/api/likes/buildings/" + id)).build();
+	}
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateBuildingLike(
-            @PathVariable Long id
-    ) {
+		@PathVariable Long id
+	) {
         buildingLikeService.update(id);
         return ResponseEntity.ok().build();
     }

@@ -24,17 +24,17 @@ public class AreaCodeRequestDto {
     private String name;
 
     public AreaCodeRequestDto(
-        Long areaCode,
-        String name
-    ) {
-        this.areaCode = areaCode;
-        this.name = name;
-    }
+		Long areaCode,
+		String name
+	) {
+		this.areaCode = areaCode;
+		this.name = name;
+	}
 
     public AreaCode returnAreaCodeEntity() {
-        return new AreaCode(
-            this.areaCode,
-            this.name
-        );
+		return new AreaCode(
+			this.areaCode,
+			this.name
+		);
     }
 }
