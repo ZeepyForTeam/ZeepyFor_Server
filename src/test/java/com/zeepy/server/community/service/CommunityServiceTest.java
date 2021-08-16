@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.zeepy.server.push.util.FirebaseCloudMessageUtility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,11 +65,13 @@ public class CommunityServiceTest {
 	private UserRepository userRepository;
 	@Mock
 	private CommentRepository commentRepository;
+	@Mock
+	private FirebaseCloudMessageUtility firebaseCloudMessageUtility;
 
 	@BeforeEach
 	public void setUp() {
 		this.communityService = new CommunityService(communityRepository, communityLikeRepository, userRepository,
-			participationRepository, commentRepository);
+			participationRepository, commentRepository, firebaseCloudMessageUtility);
 	}
 
 	@DisplayName("참여하기_서비스로직_테스트")

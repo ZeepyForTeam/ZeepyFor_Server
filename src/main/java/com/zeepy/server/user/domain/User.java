@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,13 +24,9 @@ import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Entity
 public class User implements UserDetails {
 	@Id
@@ -50,6 +47,9 @@ public class User implements UserDetails {
 	private String place;
 
 	@NotNull
+	private Boolean accessNotify;
+
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
@@ -63,7 +63,7 @@ public class User implements UserDetails {
 	private List<Community> communities = new ArrayList<>();
 
 	@Builder
-	public User(Long id, String name, String email, String password, String address, String building, String place,
+	public User(Long id, String name, String email, String password, String address, String building, String place, Boolean accessNotify,
 		Role role) {
 		this.id = id;
 		this.name = name;
@@ -72,6 +72,7 @@ public class User implements UserDetails {
 		this.address = address;
 		this.building = building;
 		this.place = place;
+		this.accessNotify = accessNotify;
 		this.role = role;
 	}
 
