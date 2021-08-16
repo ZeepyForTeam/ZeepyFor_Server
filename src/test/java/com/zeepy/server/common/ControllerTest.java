@@ -93,13 +93,14 @@ public abstract class ControllerTest {
 			.andExpect(status().isOk());
 	}
 
-	protected <T> ResultActions doDeleteWithParams(String path, MultiValueMap<String, String> params) throws Exception{
+	protected <T> ResultActions doDeleteWithParams(String path, MultiValueMap<String, String> params) throws Exception {
 		return mockMvc.perform(delete(path)
 			.contentType(MediaType.APPLICATION_JSON)
 			.params(params))
 			.andExpect(status().isNoContent())
 			.andDo(MockMvcResultHandlers.print());
 	}
+
 	protected <T> ResultActions doDelete(String path) throws Exception {
 		return mockMvc.perform(delete(path)
 			.contentType(MediaType.APPLICATION_JSON)

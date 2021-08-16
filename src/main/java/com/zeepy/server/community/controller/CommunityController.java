@@ -94,7 +94,7 @@ public class CommunityController {
 		@AuthenticationPrincipal String userEmail
 	) {
 		Long commentId = communityService.saveComment(communityId, writeCommentRequestDto, userEmail);
-		return ResponseEntity.created(URI.create("/api/community/comment/" + communityId + "/" +commentId)).build();
+		return ResponseEntity.created(URI.create("/api/community/comment/" + communityId + "/" + commentId)).build();
 	}
 
 	@GetMapping("/participation")

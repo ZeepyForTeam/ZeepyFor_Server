@@ -35,21 +35,21 @@ public class BuildingResponseDto {
     private List<ReviewResponseDto> reviews;
 
     public BuildingResponseDto(
-            Long id,
-            int buildYear,
-            String apartmentName,
-            String shortAddress,
-            String fullRoadNameAddress,
-            String shortRoadNameAddress,
-            String fullNumberAddress,
-            String shortNumberAddress,
-            float exclusivePrivateArea,
-            int areaCode,
-            double latitude,
-            double longitude,
-            List<BuildingDealResponseDto> buildingDeals,
-            List<BuildingLikeResponseDto> buildingLikes,
-            List<ReviewResponseDto> reviews
+        Long id,
+        int buildYear,
+        String apartmentName,
+        String shortAddress,
+        String fullRoadNameAddress,
+        String shortRoadNameAddress,
+        String fullNumberAddress,
+        String shortNumberAddress,
+        float exclusivePrivateArea,
+        int areaCode,
+        double latitude,
+        double longitude,
+        List<BuildingDealResponseDto> buildingDeals,
+        List<BuildingLikeResponseDto> buildingLikes,
+        List<ReviewResponseDto> reviews
     ) {
         this.id = id;
         this.buildYear = buildYear;
@@ -70,28 +70,28 @@ public class BuildingResponseDto {
 
     public static BuildingResponseDto of(Building building) {
         return new BuildingResponseDto(
-                building.getId(),
-                building.getBuildYear(),
-                building.getApartmentName(),
-                building.getShortAddress(),
-                building.getFullRoadNameAddress(),
-                building.getShortRoadNameAddress(),
-                building.getFullNumberAddress(),
-                building.getShortNumberAddress(),
-                building.getExclusivePrivateArea(),
-                building.getAreaCode(),
-                building.getLatitude(),
-                building.getLongitude(),
-                BuildingDealResponseDto.listOf(building.getBuildingDeals()),
-                BuildingLikeResponseDto.listOf(building.getBuildingLikes()),
-                ReviewResponseDto.listOf(building.getReviews())
+            building.getId(),
+            building.getBuildYear(),
+            building.getApartmentName(),
+            building.getShortAddress(),
+            building.getFullRoadNameAddress(),
+            building.getShortRoadNameAddress(),
+            building.getFullNumberAddress(),
+            building.getShortNumberAddress(),
+            building.getExclusivePrivateArea(),
+            building.getAreaCode(),
+            building.getLatitude(),
+            building.getLongitude(),
+            BuildingDealResponseDto.listOf(building.getBuildingDeals()),
+            BuildingLikeResponseDto.listOf(building.getBuildingLikes()),
+            ReviewResponseDto.listOf(building.getReviews())
         );
     }
 
     public static List<BuildingResponseDto> listOf(List<Building> buildingList) {
         return buildingList
-                .stream()
-                .map(BuildingResponseDto::of)
-                .collect(Collectors.toList());
+            .stream()
+            .map(BuildingResponseDto::of)
+            .collect(Collectors.toList());
     }
 }

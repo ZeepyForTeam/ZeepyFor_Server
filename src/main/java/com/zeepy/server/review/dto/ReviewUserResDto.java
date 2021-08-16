@@ -2,7 +2,6 @@ package com.zeepy.server.review.dto;
 
 import java.util.List;
 
-import com.zeepy.server.user.domain.Address;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.dto.AddressDto;
 

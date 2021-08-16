@@ -33,11 +33,13 @@ public class CommunityLikeRepositoryTest {
 	private final User userA = User.builder()
 		.name("A")
 		.role(Role.ROLE_USER)
+		.accessNotify(true)
 		.build();
 
 	private final User userB = User.builder()
 		.name("B")
 		.role(Role.ROLE_USER)
+		.accessNotify(false)
 		.build();
 
 	@DisplayName("좋아요 누른 커뮤니티 GET 테스트")

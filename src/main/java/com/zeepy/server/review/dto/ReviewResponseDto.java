@@ -3,7 +3,14 @@ package com.zeepy.server.review.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.zeepy.server.review.domain.*;
+import com.zeepy.server.review.domain.CommuncationTendency;
+import com.zeepy.server.review.domain.Furniture;
+import com.zeepy.server.review.domain.LessorAge;
+import com.zeepy.server.review.domain.LessorGender;
+import com.zeepy.server.review.domain.MultiChoiceReview;
+import com.zeepy.server.review.domain.Review;
+import com.zeepy.server.review.domain.RoomCount;
+import com.zeepy.server.review.domain.TotalEvaluation;
 import com.zeepy.server.user.domain.User;
 
 import lombok.AccessLevel;
@@ -30,21 +37,21 @@ public class ReviewResponseDto {
     private List<String> imageUrls;
 
     public ReviewResponseDto(
-            Long id,
-            User user,
-            LessorAge lessorAge,
-            LessorGender lessorGender,
-            CommuncationTendency communcationTendency,
-            MultiChoiceReview soundInsulation,
-            MultiChoiceReview pest,
-            MultiChoiceReview lightning,
-            MultiChoiceReview waterPressure,
-            String lessorReview,
-            RoomCount roomCount,
-            List<Furniture> furnitures,
-            String review,
-            TotalEvaluation totalEvaluation,
-            List<String> imageUrls
+        Long id,
+        User user,
+        LessorAge lessorAge,
+        LessorGender lessorGender,
+        CommuncationTendency communcationTendency,
+        MultiChoiceReview soundInsulation,
+        MultiChoiceReview pest,
+        MultiChoiceReview lightning,
+        MultiChoiceReview waterPressure,
+        String lessorReview,
+        RoomCount roomCount,
+        List<Furniture> furnitures,
+        String review,
+        TotalEvaluation totalEvaluation,
+        List<String> imageUrls
     ) {
         this.id = id;
         this.user = new ReviewUserResDto(user);
@@ -83,21 +90,21 @@ public class ReviewResponseDto {
 
     public static ReviewResponseDto of(Review review) {
         return new ReviewResponseDto(
-                review.getId(),
-                review.getUser(),
-                review.getLessorAge(),
-                review.getLessorGender(),
-                review.getCommunicationTendency(),
-                review.getSoundInsulation(),
-                review.getPest(),
-                review.getLightning(),
-                review.getWaterPressure(),
-                review.getLessorReview(),
-                review.getRoomCount(),
-                review.getFurnitures(),
-                review.getReview(),
-                review.getTotalEvaluation(),
-                review.getImageUrls()
+            review.getId(),
+            review.getUser(),
+            review.getLessorAge(),
+            review.getLessorGender(),
+            review.getCommunicationTendency(),
+            review.getSoundInsulation(),
+            review.getPest(),
+            review.getLightning(),
+            review.getWaterPressure(),
+            review.getLessorReview(),
+            review.getRoomCount(),
+            review.getFurnitures(),
+            review.getReview(),
+            review.getTotalEvaluation(),
+            review.getImageUrls()
         );
     }
 

@@ -3,13 +3,12 @@ package com.zeepy.server.building.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.zeepy.server.building.dto.BuildingBulkRequestDto;
-import com.zeepy.server.building.dto.BuildingRequestDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.building.domain.BuildingDeal;
+import com.zeepy.server.building.dto.BuildingBulkRequestDto;
 import com.zeepy.server.building.dto.BuildingDealRequestDto;
 import com.zeepy.server.building.dto.BuildingDealResponseDto;
 import com.zeepy.server.building.repository.BuildingDealRepository;
@@ -46,7 +45,7 @@ public class BuildingDealService {
 	@Transactional
 	public void batchInsert(List<BuildingBulkRequestDto> buildingDealRequestDtoList) {
 		int batchCount = 0;
-		List<BuildingDeal> buildingDealList = new ArrayList();
+		List<BuildingDeal> buildingDealList = new ArrayList<>();
 		for (BuildingBulkRequestDto buildingDealRequestDto : buildingDealRequestDtoList) {
 
 			BuildingDeal buildingDeal = buildingDealRequestDto.returnBuildingDealEntity();
@@ -58,7 +57,7 @@ public class BuildingDealService {
 			batchCount += 1;
 			if (batchCount % 100 == 0) {
 				buildingDealRepository.saveAll(buildingDealList);
-				buildingDealList = new ArrayList();
+				buildingDealList = new ArrayList<>();
 			}
 		}
 	}

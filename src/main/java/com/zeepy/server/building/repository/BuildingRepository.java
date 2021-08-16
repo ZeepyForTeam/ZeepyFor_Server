@@ -18,20 +18,20 @@ public interface BuildingRepository extends JpaRepository<Building, Long> {
     Optional<Building> findByFullNumberAddress(String address);
 
     Optional<Building> findByFullNumberAddressContainingOrFullRoadNameAddressContaining(
-            String address1,
-            String address2
+        String address1,
+        String address2
     );
 
     Page<Building> findByFullNumberAddressContainingOrFullRoadNameAddressContaining(
-            String address1,
-            String address2,
-            Pageable pageable
+        String address1,
+        String address2,
+        Pageable pageable
     );
 
     List<Building> findByLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(
-            double latitudeGreater,
-            double latitudeLess,
-            double longitudeGreater,
-            double longitudeLess
+        double latitudeGreater,
+        double latitudeLess,
+        double longitudeGreater,
+        double longitudeLess
     );
 }

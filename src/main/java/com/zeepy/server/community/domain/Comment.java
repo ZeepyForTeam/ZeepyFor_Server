@@ -16,7 +16,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.zeepy.server.common.domain.BaseTimeEntity;
-import com.zeepy.server.community.dto.CommentResDto;
 import com.zeepy.server.user.domain.User;
 
 import lombok.AccessLevel;

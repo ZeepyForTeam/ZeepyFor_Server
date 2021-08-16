@@ -13,6 +13,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUs
 import com.zeepy.server.user.domain.Address;
 import com.zeepy.server.user.domain.ModifyNicknameReqDto;
 import com.zeepy.server.user.domain.User;
+import com.zeepy.server.user.dto.AccessNotifyRequestDto;
 import com.zeepy.server.user.dto.AddAddressReqDto;
 import com.zeepy.server.user.dto.AddressResDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyEmailReqDto;
@@ -34,6 +35,13 @@ public class UserService {
 	public void registration(RegistrationReqDto registrationReqDto) {
 		userRepository.save(registrationReqDto
 			.toEntity());
+	}
+
+	@Transactional
+	public void setAccessNotify(AccessNotifyRequestDto accessNotifyRequestDto, String email) {
+		User user = userRepository.findByEmail(email).orElseThrow(NotFoundUserException::new);
+		user.setAccessNotify(accessNotifyRequestDto.getAccessNotify());
+		userRepository.save(user);
 	}
 
 	@Transactional

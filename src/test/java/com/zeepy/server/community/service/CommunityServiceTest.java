@@ -26,6 +26,7 @@ import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
+import com.zeepy.server.push.util.FirebaseCloudMessageUtility;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
 
@@ -61,11 +62,13 @@ public class CommunityServiceTest {
 	private UserRepository userRepository;
 	@Mock
 	private CommentRepository commentRepository;
+	@Mock
+	private FirebaseCloudMessageUtility firebaseCloudMessageUtility;
 
 	@BeforeEach
 	public void setUp() {
 		this.communityService = new CommunityService(communityRepository, communityLikeRepository, userRepository,
-			participationRepository, commentRepository);
+			participationRepository, commentRepository, firebaseCloudMessageUtility);
 	}
 
 	@DisplayName("참여하기_서비스로직_테스트")

@@ -33,10 +33,12 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Entity
 public class User implements UserDetails {
 	@Id
@@ -50,6 +52,15 @@ public class User implements UserDetails {
 	private String email;
 
 	private String password;
+
+	private String address;
+
+	private String building;
+
+	private String place;
+
+	@NotNull
+	private Boolean accessNotify;
 
 	private Boolean sendMailCheck;
 
@@ -77,11 +88,16 @@ public class User implements UserDetails {
 	private List<Review> reviews = new ArrayList<>();
 
 	@Builder
-	public User(Long id, String name, String email, String password, Boolean sendMailCheck, Role role, String profileImage) {
+	public User(Long id, String name, String email, String password, String address, String building, String place,
+		Boolean accessNotify, Role role, String profileImage, Boolean sendMailCheck) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.address = address;
+		this.building = building;
+		this.place = place;
+		this.accessNotify = accessNotify;
 		this.sendMailCheck = sendMailCheck;
 		this.role = role;
 		this.profileImage = profileImage;
@@ -99,10 +115,9 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
-
 	public void setSendMailCheck() {
 		this.sendMailCheck = !this.sendMailCheck;
-  }
+	}
 
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;

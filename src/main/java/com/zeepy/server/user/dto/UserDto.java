@@ -3,7 +3,6 @@ package com.zeepy.server.user.dto;
 import com.zeepy.server.user.domain.User;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

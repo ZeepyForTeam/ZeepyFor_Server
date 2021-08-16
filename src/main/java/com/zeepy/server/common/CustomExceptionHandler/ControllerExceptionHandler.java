@@ -17,6 +17,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequest
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateNicknameException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.FirebaseCloudMessageException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.InvalidRequestParameterException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.KakaoUnAuthorization;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.MoreThanOneParticipantException;
@@ -86,7 +87,7 @@ public class ControllerExceptionHandler {
 	) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(NoContentException.class)
@@ -173,6 +174,13 @@ public class ControllerExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(FirebaseCloudMessageException.class)
+	public ResponseEntity<ErrorResponse> firebaseMessagingException(FirebaseCloudMessageException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 	@ExceptionHandler(NotFoundTokenException.class)
 	public ResponseEntity<ErrorResponse> notFoundTokenException(NotFoundTokenException e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
@@ -202,7 +210,6 @@ public class ControllerExceptionHandler {
 	}
 
 	public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
-
 		final ErrorCode errorCode = e.getErrorCode();
 		int errorStatus = errorCode.getStatus();
 		String errorMessage = errorCode.getMessage();

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
-import com.zeepy.server.user.domain.User;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -55,7 +54,7 @@ public class SaveCommunityRequestDto {
 		String content,
 		String instructions,
 		List<String> imageUrls
-		) {
+	) {
 		this.communityCategory = communityCategory;
 		this.address = address;
 		this.productName = productName;

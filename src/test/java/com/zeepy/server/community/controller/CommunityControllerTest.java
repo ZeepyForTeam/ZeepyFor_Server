@@ -56,13 +56,6 @@ public class CommunityControllerTest extends ControllerTest {
 	@MockBean
 	CustomDetailsService customDetailsService;
 
-	private CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
-		.communityId(1L)
-		.userEmail("hey@naver.com")
-		.build();
-
-	private final String userEmail = "test@naver.com";
-
 	private final CommunityResponseDto communityResponseDto = new CommunityResponseDto(
 		1L,
 		CommunityCategory.JOINTPURCHASE,
@@ -81,6 +74,12 @@ public class CommunityControllerTest extends ControllerTest {
 		LocalDateTime.now(),
 		false
 	);
+
+	private final String userEmail = "test@naver.com";
+	private CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
+		.communityId(1L)
+		.userEmail("hey@naver.com")
+		.build();
 
 	@Override
 	@BeforeEach
