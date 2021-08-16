@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.zeepy.server.review.domain.CommuncationTendency;
 import com.zeepy.server.review.domain.LessorAge;
+import com.zeepy.server.review.domain.LessorGender;
 import com.zeepy.server.review.domain.MultiChoiceReview;
 import com.zeepy.server.review.domain.Review;
 
@@ -16,6 +17,7 @@ public class SimpleReviewDto {
 	private Long id;
 	private String address;
 	private LessorAge lessorAge;
+	private LessorGender lessorGender;
 	private CommuncationTendency communcationTendency;
 	private MultiChoiceReview soundInsulation;
 	private MultiChoiceReview pest;
@@ -27,6 +29,7 @@ public class SimpleReviewDto {
 		this.id = review.getId();
 		this.address = review.getAddress();
 		this.lessorAge = review.getLessorAge();
+		this.lessorGender = review.getLessorGender();
 		this.communcationTendency = review.getCommunicationTendency();
 		this.soundInsulation = review.getSoundInsulation();
 		this.pest = review.getPest();
