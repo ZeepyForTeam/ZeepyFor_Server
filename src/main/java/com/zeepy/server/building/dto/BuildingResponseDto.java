@@ -30,6 +30,7 @@ public class BuildingResponseDto {
     private int areaCode;
     private double latitude;
     private double longitude;
+    private String buildingType;
     private List<BuildingDealResponseDto> buildingDeals;
     private List<BuildingLikeResponseDto> buildingLikes;
     private List<ReviewResponseDto> reviews;
@@ -47,6 +48,7 @@ public class BuildingResponseDto {
         int areaCode,
         double latitude,
         double longitude,
+        String buildingType,
         List<BuildingDealResponseDto> buildingDeals,
         List<BuildingLikeResponseDto> buildingLikes,
         List<ReviewResponseDto> reviews
@@ -63,6 +65,7 @@ public class BuildingResponseDto {
         this.areaCode = areaCode;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.buildingType = buildingType;
         this.buildingDeals = buildingDeals;
         this.buildingLikes = buildingLikes;
         this.reviews = reviews;
@@ -82,6 +85,7 @@ public class BuildingResponseDto {
             building.getAreaCode(),
             building.getLatitude(),
             building.getLongitude(),
+            building.getBuildingType().name(),
             BuildingDealResponseDto.listOf(building.getBuildingDeals()),
             BuildingLikeResponseDto.listOf(building.getBuildingLikes()),
             ReviewResponseDto.listOf(building.getReviews())
