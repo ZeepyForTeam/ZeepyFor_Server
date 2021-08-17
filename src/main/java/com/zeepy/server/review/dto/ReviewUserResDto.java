@@ -17,7 +17,7 @@ public class ReviewUserResDto {
 
 	public ReviewUserResDto(User user) {
 		this.id = user.getId();
-		this.name = user.getName();
+		this.name = user.getNickname();
 		this.addresses = AddressDto.listOf(user.getAddresses());
 	}
 }

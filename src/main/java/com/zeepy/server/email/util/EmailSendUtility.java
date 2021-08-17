@@ -1,12 +1,11 @@
 package com.zeepy.server.email.util;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Created by Minky on 2021-07-25
@@ -19,9 +18,9 @@ public class EmailSendUtility {
     private final String fromEmail = "no_reply@zeepy.com";
 
     public void mailSend(
-            String email,
-            String title,
-            String description
+        String email,
+        String title,
+        String description
     ) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);

@@ -48,6 +48,9 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotEmpty
+    private String address;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private CommuncationTendency communicationTendency;
@@ -110,6 +113,7 @@ public class Review extends BaseTimeEntity {
     @Builder
     public Review(
         Long id,
+        String address,
         CommuncationTendency communicationTendency,
         LessorGender lessorGender,
         LessorAge lessorAge,
@@ -126,6 +130,7 @@ public class Review extends BaseTimeEntity {
         Building building
     ) {
         this.id = id;
+        this.address = address;
         this.communicationTendency = communicationTendency;
         this.lessorGender = lessorGender;
         this.lessorAge = lessorAge;

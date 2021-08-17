@@ -32,10 +32,10 @@ import lombok.Setter;
 @Setter
 @Entity
 public class BuildingDeal extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_deal_sequence_gen")
-    @SequenceGenerator(name = "building_deal_sequence_gen", sequenceName = "building_deal_sequence")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_deal_sequence_gen")
+	@SequenceGenerator(name = "building_deal_sequence_gen", sequenceName = "building_deal_sequence")
+	private Long id;
 
 	@NotNull
 	private Timestamp dealDate;
@@ -88,7 +88,7 @@ public class BuildingDeal extends BaseTimeEntity {
 		if (this.monthlyRent == 0) {
 			this.dealType = DealType.JEONSE;
 		} else {
-            this.dealType = DealType.MONTHLY;
-        }
-    }
+			this.dealType = DealType.MONTHLY;
+		}
+	}
 }

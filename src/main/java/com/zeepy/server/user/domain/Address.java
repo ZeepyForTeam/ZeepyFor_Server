@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 public class Address {
 	private String cityDistinct;
 	private String primaryAddress;
-	private String detailAddress;
+	private Boolean isAddressCheck;
 
 	public Address(AddressDto addressDto) {
 		this.cityDistinct = addressDto.getCityDistinct();
 		this.primaryAddress = addressDto.getPrimaryAddress();
-		this.detailAddress = addressDto.getDetailAddress();
+		this.isAddressCheck = addressDto.getIsAddressCheck();
 	}
 }

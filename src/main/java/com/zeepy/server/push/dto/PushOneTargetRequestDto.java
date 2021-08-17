@@ -1,10 +1,10 @@
 package com.zeepy.server.push.dto;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.constraints.NotBlank;
 
 /**
  * Created by Minky on 2021-07-22

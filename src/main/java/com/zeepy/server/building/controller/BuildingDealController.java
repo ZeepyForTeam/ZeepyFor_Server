@@ -32,10 +32,10 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/deals")
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class BuildingDealController {
-    private final BuildingDealService buildingDealService;
+	private final BuildingDealService buildingDealService;
 
-    @GetMapping
-    public ResponseEntity<List<BuildingDealResponseDto>> getBuildingDeals() {
+	@GetMapping
+	public ResponseEntity<List<BuildingDealResponseDto>> getBuildingDeals() {
 		return ResponseEntity.ok(buildingDealService.getAll());
 	}
 

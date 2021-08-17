@@ -33,9 +33,9 @@ public class AreaCodeService {
 		AreaCode areaCode = areaCodeRepository
 			.findById(id)
 			.orElseThrow(NoContentException::new);
-        areaCode.update(areaCodeRequestDto);
-        areaCodeRepository.save(areaCode);
-    }
+		areaCode.update(areaCodeRequestDto);
+		areaCodeRepository.save(areaCode);
+	}
 
     // DELETE
     @Transactional

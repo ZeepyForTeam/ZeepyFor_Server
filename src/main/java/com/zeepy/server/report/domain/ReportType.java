@@ -13,9 +13,9 @@ package com.zeepy.server.report.domain;
  * 기타 사유 선택
  */
 public enum ReportType {
-    MISMATCHING,
-    ABUSE,
-    FALSE_FACTS,
-    SCAM,
-    ETC
+	MISMATCHING,
+	ABUSE,
+	FALSE_FACTS,
+	SCAM,
+	ETC
 }

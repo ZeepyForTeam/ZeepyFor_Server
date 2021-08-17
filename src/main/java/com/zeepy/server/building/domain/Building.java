@@ -2,7 +2,18 @@ package com.zeepy.server.building.domain;
 
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -28,21 +39,21 @@ import lombok.Setter;
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"building_id", "fullNumberAddress"})})
 @SQLInsert(sql = "INSERT IGNORE INTO building(" +
-        "CREATED_DATE  " +
-        ",APARTMENT_NAME  " +
-        ",AREA_CODE  " +
-        ",BUILD_YEAR  " +
-        ",BUILDING_TYPE  " +
-        ",EXCLUSIVE_PRIVATE_AREA  " +
-        ",FULL_NUMBER_ADDRESS  " +
-        ",FULL_ROAD_NAME_ADDRESS  " +
-        ",LATITUDE  " +
-        ",LONGITUDE  " +
-        ",SHORT_ADDRESS  " +
-        ",SHORT_NUMBER_ADDRESS  " +
-        ",SHORT_ROAD_NAME_ADDRESS " +
-        ",BUILDING_ID   )" +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+    "CREATED_DATE  " +
+    ",APARTMENT_NAME  " +
+    ",AREA_CODE  " +
+    ",BUILD_YEAR  " +
+    ",BUILDING_TYPE  " +
+    ",EXCLUSIVE_PRIVATE_AREA  " +
+    ",FULL_NUMBER_ADDRESS  " +
+    ",FULL_ROAD_NAME_ADDRESS  " +
+    ",LATITUDE  " +
+    ",LONGITUDE  " +
+    ",SHORT_ADDRESS  " +
+    ",SHORT_NUMBER_ADDRESS  " +
+    ",SHORT_ROAD_NAME_ADDRESS " +
+    ",BUILDING_ID   )" +
+    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 public class Building extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_sequence_gen")
@@ -98,19 +109,19 @@ public class Building extends BaseTimeEntity {
 
     @Builder
     public Building(
-            Long id,
-            int buildYear,
-            String apartmentName,
-            String shortAddress,
-            String fullRoadNameAddress,
-            String shortRoadNameAddress,
-            String fullNumberAddress,
-            String shortNumberAddress,
-            float exclusivePrivateArea,
-            int areaCode,
-            double latitude,
-            double longitude,
-            BuildingType buildingType
+        Long id,
+        int buildYear,
+        String apartmentName,
+        String shortAddress,
+        String fullRoadNameAddress,
+        String shortRoadNameAddress,
+        String fullNumberAddress,
+        String shortNumberAddress,
+        float exclusivePrivateArea,
+        int areaCode,
+        double latitude,
+        double longitude,
+        BuildingType buildingType
     ) {
         this.id = id;
         this.buildYear = buildYear;

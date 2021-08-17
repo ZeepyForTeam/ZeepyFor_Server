@@ -6,7 +6,6 @@ import static org.mockito.BDDMockito.*;
 import java.util.Arrays;
 import java.util.List;
 
-import com.zeepy.server.building.domain.BuildingType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +19,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.zeepy.server.building.domain.BuildingType;
 import com.zeepy.server.building.dto.BuildingAutoCompleteResponseDto;
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
@@ -31,7 +31,7 @@ import com.zeepy.server.common.ControllerTest;
  */
 @DisplayName("Building Controller Test")
 @WebMvcTest(controllers = {BuildingController.class}, includeFilters = @ComponentScan.Filter(classes = {
-        EnableWebSecurity.class}))
+    EnableWebSecurity.class}))
 @MockBean(JpaMetamodelMappingContext.class)
 class BuildingControllerTest extends ControllerTest {
     @MockBean
@@ -39,39 +39,39 @@ class BuildingControllerTest extends ControllerTest {
 
     private BuildingRequestDto makeBuildingRequestDto() {
         return new BuildingRequestDto(
-                0,
-                "test",
-                "test",
-                "test",
-                "test",
-                "test",
-                "test",
-                0.1f,
-                1100,
-                32.0,
-                124.0,
-                BuildingType.OFFICETEL.name()
+            0,
+            "test",
+            "test",
+            "test",
+            "test",
+            "test",
+            "test",
+            0.1f,
+            1100,
+            32.0,
+            124.0,
+            BuildingType.OFFICETEL.name()
         );
     }
 
     private BuildingResponseDto makeBuildingResponseDto() {
         return new BuildingResponseDto(
-                1L,
-                0,
-                "test",
-                "test",
-                "test",
-                "test",
-                "test",
-                "test",
-                0.1f,
-                1100,
-                32.0,
-                124.0,
-                BuildingType.OFFICETEL.name(),
-                null,
-                null,
-                null
+            1L,
+            0,
+            "test",
+            "test",
+            "test",
+            "test",
+            "test",
+            "test",
+            0.1f,
+            1100,
+            32.0,
+            124.0,
+            BuildingType.OFFICETEL.name(),
+            null,
+            null,
+            null
         );
     }
 

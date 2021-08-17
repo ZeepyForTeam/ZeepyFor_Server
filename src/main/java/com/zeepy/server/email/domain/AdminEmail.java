@@ -1,8 +1,19 @@
 package com.zeepy.server.email.domain;
 
-import lombok.*;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotEmpty;
+
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by Minky on 2021-07-25
@@ -25,8 +36,8 @@ public class AdminEmail {
 
     @Builder
     public AdminEmail(
-            Long id,
-            String email
+        Long id,
+        String email
     ) {
         this.id = id;
         this.email = email;

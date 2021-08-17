@@ -11,7 +11,7 @@ package com.zeepy.server.report.domain;
  * 커뮤니티 테이블
  */
 public enum TargetTableType {
-    REVIEW,
-    COMMENT,
-    COMMUNITY
+	REVIEW,
+	COMMENT,
+	COMMUNITY
 }

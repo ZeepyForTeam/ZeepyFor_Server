@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 public class RegistrationReqDto {
     @NotNull(message = "이름은 필수값입니다.")
     private String name;
+    @NotNull(message = "닉네임은 필수값입니다.")
+    private String nickname;
     @NotNull(message = "이메일은 필수값입니다.")
     private String email;
     @NotNull(message = "비밀번호는 필수값입니다.")
@@ -26,9 +28,11 @@ public class RegistrationReqDto {
     private Boolean sendMailCheck;
 
     @Builder
-    public RegistrationReqDto(String name, String email, String password, String address, String building,
+    public RegistrationReqDto(String name, String nickname, String email, String password, String address,
+        String building,
         Boolean sendMailCheck) {
         this.name = name;
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.address = address;
@@ -39,6 +43,7 @@ public class RegistrationReqDto {
     public User toEntity() {
         return User.builder()
             .name(name)
+            .nickname(nickname)
             .email(email)
             .password(setBCryptEncoding())
             .address(address)

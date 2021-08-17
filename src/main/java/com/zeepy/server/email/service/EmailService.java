@@ -1,12 +1,14 @@
 package com.zeepy.server.email.service;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.zeepy.server.email.domain.AdminEmail;
 import com.zeepy.server.email.dto.EmailRequestDto;
 import com.zeepy.server.email.repository.EmailRepository;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Minky on 2021-07-25
