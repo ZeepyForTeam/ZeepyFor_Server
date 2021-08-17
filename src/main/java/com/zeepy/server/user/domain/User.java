@@ -30,14 +30,19 @@ import com.zeepy.server.review.domain.Review;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Entity
 public class User implements UserDetails {
 	@Id
+	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence_gen")
 	@SequenceGenerator(name = "user_sequence_gen", sequenceName = "user_sequence")
 	private Long id;
@@ -50,9 +55,22 @@ public class User implements UserDetails {
 
 	private String password;
 
+	private String address;
+
+	private String building;
+
+	private String place;
+
+	@NotNull
+	private Boolean accessNotify;
+
+	private Boolean sendMailCheck;
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Role role;
+
+	private String profileImage;
 
 	@ElementCollection
 	@CollectionTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"))
@@ -72,13 +90,21 @@ public class User implements UserDetails {
 	private List<Review> reviews = new ArrayList<>();
 
 	@Builder
-	public User(Long id, String name, String nickname, String email, String password, Role role) {
+	public User(Long id, String name, String nickname, String email, String password, String address, String building,
+		String place,
+		Boolean accessNotify, Role role, String profileImage, Boolean sendMailCheck) {
 		this.id = id;
 		this.name = name;
 		this.nickname = nickname;
 		this.email = email;
 		this.password = password;
+		this.address = address;
+		this.building = building;
+		this.place = place;
+		this.accessNotify = accessNotify;
+		this.sendMailCheck = sendMailCheck;
 		this.role = role;
+		this.profileImage = profileImage;
 	}
 
 	public void setNickNameById() {
@@ -91,6 +117,14 @@ public class User implements UserDetails {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setSendMailCheck() {
+		this.sendMailCheck = !this.sendMailCheck;
+	}
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
 	}
 
 	@Override
@@ -128,4 +162,5 @@ public class User implements UserDetails {
 	public void setAddress(List<Address> addresses) {
 		this.addresses = addresses;
 	}
+
 }

@@ -17,10 +17,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.zeepy.server.common.ControllerTest;
 import com.zeepy.server.user.domain.Address;
+import com.zeepy.server.user.domain.Role;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.dto.AddAddressReqDto;
 import com.zeepy.server.user.dto.AddressDto;
 import com.zeepy.server.user.dto.AddressResDto;
+import com.zeepy.server.user.dto.SendMailCheckResDto;
 import com.zeepy.server.user.service.UserService;
 
 @DisplayName("UserController_테스트_클래스")
@@ -32,6 +34,8 @@ public class UserControllerTest extends ControllerTest {
 		.name("작성자")
 		.nickname("흰수염범고래")
 		.email("test@gmail.com")
+		.sendMailCheck(false)
+		.role(Role.ROLE_USER)
 		.build();
 	@MockBean
 	private UserService userService;
@@ -81,5 +85,32 @@ public class UserControllerTest extends ControllerTest {
 
 		//then
 		doGet("/api/user/address");
+	}
+
+	@Test
+	@DisplayName("메일 수신 동의 변경")
+	public void setSendMailCheckTest() throws Exception {
+		//given
+		String userEmail = user.getEmail();
+
+		//then
+		doNothing().when(userService).setSendMailCheck(userEmail);
+
+		//when
+		doPut("/api/user/mail", null);
+	}
+
+	@Test
+	@DisplayName("메일 수신 동의 보기")
+	public void getSendMailCheck() throws Exception {
+		//given
+		String userEmail = user.getEmail();
+		SendMailCheckResDto sendMailCheckResDto = new SendMailCheckResDto(user);
+
+		//then
+		given(userService.getSendMailCheck(userEmail)).willReturn(sendMailCheckResDto);
+
+		//when
+		doGet("/api/user/mail");
 	}
 }

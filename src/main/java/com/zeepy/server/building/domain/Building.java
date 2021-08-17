@@ -2,9 +2,22 @@ package com.zeepy.server.building.domain;
 
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.SQLInsert;
 
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
@@ -15,7 +28,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLInsert;
 
 /**
  * Created by Minky on 2021-05-15
@@ -27,20 +39,21 @@ import org.hibernate.annotations.SQLInsert;
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"building_id", "fullNumberAddress"})})
 @SQLInsert(sql = "INSERT IGNORE INTO building(" +
-        "CREATED_DATE  " +
-        ",APARTMENT_NAME  " +
-        ",AREA_CODE  " +
-        ",BUILD_YEAR  " +
-        ",EXCLUSIVE_PRIVATE_AREA  " +
-        ",FULL_NUMBER_ADDRESS  " +
-        ",FULL_ROAD_NAME_ADDRESS  " +
-        ",LATITUDE  " +
-        ",LONGITUDE  " +
-        ",SHORT_ADDRESS  " +
-        ",SHORT_NUMBER_ADDRESS  " +
-        ",SHORT_ROAD_NAME_ADDRESS " +
-        ",BUILDING_ID   )" +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+    "CREATED_DATE  " +
+    ",APARTMENT_NAME  " +
+    ",AREA_CODE  " +
+    ",BUILD_YEAR  " +
+    ",BUILDING_TYPE  " +
+    ",EXCLUSIVE_PRIVATE_AREA  " +
+    ",FULL_NUMBER_ADDRESS  " +
+    ",FULL_ROAD_NAME_ADDRESS  " +
+    ",LATITUDE  " +
+    ",LONGITUDE  " +
+    ",SHORT_ADDRESS  " +
+    ",SHORT_NUMBER_ADDRESS  " +
+    ",SHORT_ROAD_NAME_ADDRESS " +
+    ",BUILDING_ID   )" +
+    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 public class Building extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_sequence_gen")
@@ -81,6 +94,10 @@ public class Building extends BaseTimeEntity {
     @NotNull
     private double longitude;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private BuildingType buildingType;
+
     @OneToMany(mappedBy = "building", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<BuildingDeal> buildingDeals;
 
@@ -92,18 +109,19 @@ public class Building extends BaseTimeEntity {
 
     @Builder
     public Building(
-            Long id,
-            int buildYear,
-            String apartmentName,
-            String shortAddress,
-            String fullRoadNameAddress,
-            String shortRoadNameAddress,
-            String fullNumberAddress,
-            String shortNumberAddress,
-            float exclusivePrivateArea,
-            int areaCode,
-            double latitude,
-            double longitude
+        Long id,
+        int buildYear,
+        String apartmentName,
+        String shortAddress,
+        String fullRoadNameAddress,
+        String shortRoadNameAddress,
+        String fullNumberAddress,
+        String shortNumberAddress,
+        float exclusivePrivateArea,
+        int areaCode,
+        double latitude,
+        double longitude,
+        BuildingType buildingType
     ) {
         this.id = id;
         this.buildYear = buildYear;
@@ -117,6 +135,7 @@ public class Building extends BaseTimeEntity {
         this.areaCode = areaCode;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.buildingType = buildingType;
     }
 
     public void update(BuildingRequestDto buildingRequestDto) {
@@ -131,5 +150,6 @@ public class Building extends BaseTimeEntity {
         this.areaCode = buildingRequestDto.getAreaCode();
         this.latitude = buildingRequestDto.getLatitude();
         this.longitude = buildingRequestDto.getLongitude();
+        this.buildingType = BuildingType.valueOf(buildingRequestDto.getBuildingType());
     }
 }

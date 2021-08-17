@@ -112,22 +112,22 @@ public class Review extends BaseTimeEntity {
 
     @Builder
     public Review(
-            Long id,
-            String address,
-            CommuncationTendency communicationTendency,
-            LessorGender lessorGender,
-            LessorAge lessorAge,
-            String lessorReview,
-            RoomCount roomCount,
-            MultiChoiceReview soundInsulation,
-            MultiChoiceReview pest,
-            MultiChoiceReview lightning,
-            MultiChoiceReview waterPressure,
-            List<Furniture> furnitures,
-            String review,
-            TotalEvaluation totalEvaluation,
-            List<String> imageUrls,
-            Building building
+        Long id,
+        String address,
+        CommuncationTendency communicationTendency,
+        LessorGender lessorGender,
+        LessorAge lessorAge,
+        String lessorReview,
+        RoomCount roomCount,
+        MultiChoiceReview soundInsulation,
+        MultiChoiceReview pest,
+        MultiChoiceReview lightning,
+        MultiChoiceReview waterPressure,
+        List<Furniture> furnitures,
+        String review,
+        TotalEvaluation totalEvaluation,
+        List<String> imageUrls,
+        Building building
     ) {
         this.id = id;
         this.address = address;

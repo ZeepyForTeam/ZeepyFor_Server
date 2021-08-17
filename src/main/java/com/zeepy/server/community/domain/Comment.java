@@ -3,6 +3,7 @@ package com.zeepy.server.community.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.user.domain.User;
@@ -26,7 +28,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Comment extends BaseTimeEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_sequence_gen")
+	@SequenceGenerator(name = "comment_sequence_gen", sequenceName = "comment_sequence")
 	private Long id;
 
 	private String comment;
@@ -36,11 +39,11 @@ public class Comment extends BaseTimeEntity {
 	@Column(columnDefinition = "boolean default false")
 	private Boolean isParticipation;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "community_id")
 	private Community community;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "super_comment_id")
 	private Comment superComment;
 
@@ -85,4 +88,5 @@ public class Comment extends BaseTimeEntity {
 	public void cancelParticipation() {
 		this.isParticipation = false;
 	}
+
 }

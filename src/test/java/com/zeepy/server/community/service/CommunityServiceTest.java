@@ -20,12 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
+import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
+import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
+import com.zeepy.server.push.util.FirebaseCloudMessageUtility;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
 
@@ -34,6 +37,12 @@ import com.zeepy.server.user.repository.UserRepository;
 @SpringBootTest
 @Transactional
 public class CommunityServiceTest {
+	private final String dummyEmail = "Zeepy@test.com";
+	private final User likeUser = User.builder()
+		.id(2L)
+		.name("좋아요 누른 유저")
+		.email(dummyEmail)
+		.build();
 	private final User joinUser = User.builder()
 		.id(1L)
 		.name("참여자")
@@ -42,7 +51,6 @@ public class CommunityServiceTest {
 		.id(1L)
 		.communityCategory(CommunityCategory.JOINTPURCHASE)
 		.productName("공동구매물건")
-		.productPrice(10000)
 		.sharingMethod("만나서")
 		.targetNumberOfPeople(2)
 		.currentNumberOfPeople(0)
@@ -62,11 +70,13 @@ public class CommunityServiceTest {
 	private UserRepository userRepository;
 	@Mock
 	private CommentRepository commentRepository;
+	@Mock
+	private FirebaseCloudMessageUtility firebaseCloudMessageUtility;
 
 	@BeforeEach
 	public void setUp() {
 		this.communityService = new CommunityService(communityRepository, communityLikeRepository, userRepository,
-			participationRepository, commentRepository);
+			participationRepository, commentRepository, firebaseCloudMessageUtility);
 	}
 
 	@DisplayName("참여하기_서비스로직_테스트")
@@ -80,7 +90,7 @@ public class CommunityServiceTest {
 		Long communityId = community.getId();
 		Participation participation = createParticipation(community, user);
 
-		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true, 1L);
+		JoinCommunityRequestDto requestDto = new JoinCommunityRequestDto("댓글", true);
 
 		when(communityRepository.findById(any(Long.class))).thenReturn(Optional.of(community));
 		when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(user));
@@ -102,5 +112,24 @@ public class CommunityServiceTest {
 			.community(community)
 			.user(user)
 			.build();
+	}
+
+	@DisplayName("커뮤니티 상세 보기 테스트")
+	@Test
+	public void getCommunity() {
+		// given - likeUser가 joinPurchaseCommunity 글에 좋아요를 눌렀다
+		CommunityLike communityLike = new CommunityLike(1L, joinPurhcaseCommunity, likeUser);
+		joinPurhcaseCommunity.getLikes().add(communityLike);
+
+		when(userRepository.findByEmail(any())).thenReturn(Optional.of(likeUser));
+		when(communityRepository.findById(anyLong())).thenReturn(Optional.of(joinPurhcaseCommunity));
+
+		// when - 커뮤니티 불러오기
+		CommunityResponseDto dto = communityService.getCommunity(1L, dummyEmail);
+
+		// then
+		assertThat(dto.getUser().getId()).isEqualTo(joinUser.getId());
+		assertThat(dto.getIsLiked()).isTrue();
+		assertThat(dto.getIsParticipant()).isFalse();
 	}
 }

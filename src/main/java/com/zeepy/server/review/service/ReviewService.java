@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.building.repository.BuildingRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundReviewException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.review.domain.Review;
 import com.zeepy.server.review.dto.ReviewDto;
@@ -28,7 +29,8 @@ public class ReviewService {
 	@Transactional(readOnly = true)
 	public ReviewResponseDto getReview(Long reviewId) {
 		Review findReview = reviewRepository.findById(reviewId)
-			.orElseThrow(RuntimeException::new); //customException만들어줄꺼임
+			.orElseThrow(NotFoundReviewException::new);
+
 		return new ReviewResponseDto(findReview);
 	}
 

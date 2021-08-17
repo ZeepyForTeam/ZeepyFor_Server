@@ -3,6 +3,7 @@ package com.zeepy.server.community.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -77,13 +78,13 @@ public class Community extends BaseTimeEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(mappedBy = "community")
+	@OneToMany(mappedBy = "community", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<CommunityLike> likes = new ArrayList<>();
 
-	@OneToMany(mappedBy = "community")
+	@OneToMany(mappedBy = "community", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<Comment> comments = new ArrayList<>();
 
-	@OneToMany(mappedBy = "community")
+	@OneToMany(mappedBy = "community", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<Participation> participationsList = new ArrayList<>();
 
 	@ElementCollection
@@ -96,7 +97,6 @@ public class Community extends BaseTimeEntity {
 		CommunityCategory communityCategory,
 		String address,
 		String productName,
-		Integer productPrice,
 		String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
@@ -111,7 +111,6 @@ public class Community extends BaseTimeEntity {
 		this.communityCategory = communityCategory;
 		this.address = address;
 		this.productName = productName;
-		this.productPrice = productPrice;
 		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
 		this.currentNumberOfPeople = currentNumberOfPeople;
@@ -132,20 +131,28 @@ public class Community extends BaseTimeEntity {
 		}
 	}
 
+	public Boolean checkCurrentNumberOfPeople() {
+		if (targetNumberOfPeople != null && targetNumberOfPeople <= currentNumberOfPeople) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public void substractCurrentNumberOfPeople() {
 		currentNumberOfPeople--;
 	}
 
 	public void update(String title,
+		String content,
 		String productName,
-		Integer productPrice,
 		String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
 		String instructions) {
 		this.title = title;
+		this.content = content;
 		this.productName = productName;
-		this.productPrice = productPrice;
 		this.purchasePlace = purchasePlace;
 		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;

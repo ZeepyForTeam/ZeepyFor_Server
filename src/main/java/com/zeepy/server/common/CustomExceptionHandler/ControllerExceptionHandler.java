@@ -17,12 +17,15 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequest
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateNicknameException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.FirebaseCloudMessageException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.InvalidRequestParameterException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.KakaoUnAuthorization;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.MoreThanOneParticipantException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundParticipationException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundPasswordException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundReviewException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundTokenException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
@@ -84,7 +87,7 @@ public class ControllerExceptionHandler {
 	) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(NoContentException.class)
@@ -122,6 +125,20 @@ public class ControllerExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(NotFoundReviewException.class)
+	public ResponseEntity<ErrorResponse> notFoundReviewException(NotFoundReviewException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(MoreThanOneParticipantException.class)
+	public ResponseEntity<ErrorResponse> notFoundReviewException(MoreThanOneParticipantException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
+
 	@ExceptionHandler(BadRequestCommentException.class)
 	public ResponseEntity<ErrorResponse> badRequestComment(BadRequestCommentException e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
@@ -144,7 +161,7 @@ public class ControllerExceptionHandler {
 	}
 
 	@ExceptionHandler(RefreshTokenException.class)
-	public ResponseEntity<ErrorResponse> refreshToeknException(RefreshTokenException e) {
+	public ResponseEntity<ErrorResponse> refreshTokenException(RefreshTokenException e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
@@ -155,6 +172,13 @@ public class ControllerExceptionHandler {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(FirebaseCloudMessageException.class)
+	public ResponseEntity<ErrorResponse> firebaseMessagingException(FirebaseCloudMessageException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(NotFoundTokenException.class)

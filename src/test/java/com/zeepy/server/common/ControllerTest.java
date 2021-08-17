@@ -62,6 +62,14 @@ public abstract class ControllerTest {
 			.andDo(MockMvcResultHandlers.print());
 	}
 
+	protected <T> ResultActions doPostWithParams(String path, MultiValueMap<String, String> params) throws Exception {
+		return mockMvc.perform(post(path)
+			.contentType(MediaType.APPLICATION_JSON)
+			.params(params))
+			.andExpect(status().isCreated())
+			.andDo(MockMvcResultHandlers.print());
+	}
+
 	protected <T> ResultActions doGet(String path) throws Exception {
 		return mockMvc.perform(get(path)
 			.contentType(MediaType.APPLICATION_JSON)
@@ -83,6 +91,14 @@ public abstract class ControllerTest {
 			.content(objectMapper.writeValueAsBytes(request))
 		)
 			.andExpect(status().isOk());
+	}
+
+	protected <T> ResultActions doDeleteWithParams(String path, MultiValueMap<String, String> params) throws Exception {
+		return mockMvc.perform(delete(path)
+			.contentType(MediaType.APPLICATION_JSON)
+			.params(params))
+			.andExpect(status().isNoContent())
+			.andDo(MockMvcResultHandlers.print());
 	}
 
 	protected <T> ResultActions doDelete(String path) throws Exception {
