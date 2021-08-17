@@ -20,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
+import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
+import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
@@ -35,6 +37,12 @@ import com.zeepy.server.user.repository.UserRepository;
 @SpringBootTest
 @Transactional
 public class CommunityServiceTest {
+	private final String dummyEmail = "Zeepy@test.com";
+	private final User likeUser = User.builder()
+		.id(2L)
+		.name("좋아요 누른 유저")
+		.email(dummyEmail)
+		.build();
 	private final User joinUser = User.builder()
 		.id(1L)
 		.name("참여자")
@@ -104,5 +112,24 @@ public class CommunityServiceTest {
 			.community(community)
 			.user(user)
 			.build();
+	}
+
+	@DisplayName("커뮤니티 상세 보기 테스트")
+	@Test
+	public void getCommunity() {
+		// given - likeUser가 joinPurchaseCommunity 글에 좋아요를 눌렀다
+		CommunityLike communityLike = new CommunityLike(1L, joinPurhcaseCommunity, likeUser);
+		joinPurhcaseCommunity.getLikes().add(communityLike);
+
+		when(userRepository.findByEmail(any())).thenReturn(Optional.of(likeUser));
+		when(communityRepository.findById(anyLong())).thenReturn(Optional.of(joinPurhcaseCommunity));
+
+		// when - 커뮤니티 불러오기
+		CommunityResponseDto dto = communityService.getCommunity(1L, dummyEmail);
+
+		// then
+		assertThat(dto.getUser().getId()).isEqualTo(joinUser.getId());
+		assertThat(dto.getIsLiked()).isTrue();
+		assertThat(dto.getIsParticipant()).isFalse();
 	}
 }

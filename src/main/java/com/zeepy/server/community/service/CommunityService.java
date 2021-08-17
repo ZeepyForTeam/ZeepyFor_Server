@@ -322,14 +322,16 @@ public class CommunityService {
         CommunityResponseDto responseDto = CommunityResponseDto.of(community);
 
         Boolean isLiked = community.getLikes().stream()
-            .anyMatch(l -> l.getUser().equals(user));
+            .map(CommunityLike::getUser)
+            .anyMatch(l -> l.equals(user));
         responseDto.setLiked(isLiked);
 
         Boolean isParticipant = community.getParticipationsList().stream()
-            .anyMatch(p -> p.getUser().equals(user));
+            .map(Participation::getUser)
+            .anyMatch(p -> p.equals(user));
         responseDto.setParticipant(isParticipant);
 
-        return CommunityResponseDto.of(community);
+        return responseDto;
     }
 
     @Transactional(readOnly = true)
