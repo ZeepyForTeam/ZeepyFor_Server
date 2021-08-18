@@ -263,7 +263,7 @@ public class CommunityControllerTest extends ControllerTest {
 	@DisplayName("커뮤니티 목록 불러오기 테스트")
 	@Test
 	public void getCommunityList() throws Exception {
-		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
+		List<CommunitySimpleResDto> communityResponseDtoList = new ArrayList<>();
 		given(communityService.getCommunityList(null, null, PageRequest.of(0, 2)))
 			.willReturn(new PageImpl<>(communityResponseDtoList));
 

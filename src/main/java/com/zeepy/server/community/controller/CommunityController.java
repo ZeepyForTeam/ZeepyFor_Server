@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunitySimpleResDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
@@ -124,7 +125,7 @@ public class CommunityController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<CommunityResponseDto>> getCommunityList(
+	public ResponseEntity<Page<CommunitySimpleResDto>> getCommunityList(
 		@RequestParam(required = false) String address,
 		@RequestParam(required = false) String communityType,
 		Pageable pageable) {

@@ -334,7 +334,7 @@ public class CommunityService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<CommunityResponseDto> getCommunityList(String address, String communityType, Pageable pageable) {
+	public Page<CommunitySimpleResDto> getCommunityList(String address, String communityType, Pageable pageable) {
 		Page<Community> communityList;
 
 		if (address == null || address.isEmpty()) {
@@ -353,8 +353,8 @@ public class CommunityService {
 			}
 		}
 
-		return new PageImpl<CommunityResponseDto>(
-			CommunityResponseDto.listOf(communityList.getContent()),
+		return new PageImpl<>(
+			CommunitySimpleResDto.listOf(communityList.getContent()),
 			pageable,
 			communityList.getTotalElements());
 	}
