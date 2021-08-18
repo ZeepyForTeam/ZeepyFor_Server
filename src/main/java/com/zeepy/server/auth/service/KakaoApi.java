@@ -7,20 +7,26 @@ import java.net.URL;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 import com.zeepy.server.auth.dto.GetUserInfoResDto;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAuthorization;
 
-@Service
+@Component
+@PropertySource(value = {"classpath:security/application.properties"})
 public class KakaoApi {
+	@Value("${KAKAO.GETUSER.URL}")
+	private String GetUserURL;
+	@Value("${KAKAO.LOGOUT.URL}")
+	private String LogoutURL;
 
 	public GetUserInfoResDto getUserInfo(String accessToken) {
 		System.out.println("accessToken !!!!!!! : " + accessToken);
 		GetUserInfoResDto userInfoResDto = new GetUserInfoResDto();
-		String reqUrl = "https://kapi.kakao.com/v2/user/me";
 		try {
-			URL url = new URL(reqUrl);
+			URL url = new URL(GetUserURL);
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setRequestMethod("GET");
 
@@ -67,9 +73,8 @@ public class KakaoApi {
 
 	public void logout(String accessToken) {
 		System.out.println("accessToken : " + accessToken);
-		String reqUrl = "https://kapi.kakao.com/v1/user/logout";
 		try {
-			URL url = new URL(reqUrl);
+			URL url = new URL(LogoutURL);
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setRequestMethod("POST");
 

@@ -7,24 +7,32 @@ import java.net.URL;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 import com.zeepy.server.auth.dto.GetUserInfoResDto;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAuthorization;
 
-@Service
+@Component
+@PropertySource(value = {"classpath:security/application.properties"})
 public class NaverApi {
-	private final String client_id = "";
-	private final String client_secret = "";
+	@Value("${NAVER.CLIENT.ID}")
+	private String client_id;
+	@Value("${NAVER.SECRET}")
+	private String client_secret;
+	@Value("${NAVER.GETUSER.URL}")
+	private String GetUserURL;
+	@Value("${NAVER.AUTH.URL}")
+	private String AuthURL;
 
 	public GetUserInfoResDto getUserInfo(String accessToken) {
 		GetUserInfoResDto userInfoResDto = new GetUserInfoResDto();
-		String reqUrl = "https://openapi.naver.com/v1/nid/me";
 		//Get메소드에 accessToken을 헤더에 넣고
 		//https://openapi.naver.com/v1/nid/me에 요청
 		//반환받은 값을 보내주고 email로 로그인을 해준다.
 		try {
-			URL url = new URL(reqUrl);
+			URL url = new URL(GetUserURL);
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setRequestMethod("GET");
 
@@ -64,7 +72,6 @@ public class NaverApi {
 	}
 
 	public void logout(String accessToken) {
-		String reqUrl = "https://nid.naver.com/oauth2.0/token";
 		StringBuffer params = new StringBuffer();
 		params.append("grant_type=" + "delete");
 		params.append("client_id" + client_id);
@@ -72,9 +79,9 @@ public class NaverApi {
 		params.append("access_token=").append(accessToken);
 		params.append("service_provider=" + "NAVER");
 
-		reqUrl = reqUrl + "?" + params;
+		String reqURL = AuthURL + "?" + params;
 		try {
-			URL url = new URL(reqUrl);
+			URL url = new URL(reqURL);
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setRequestMethod("GET");
 

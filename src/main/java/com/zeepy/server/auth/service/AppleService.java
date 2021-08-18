@@ -57,7 +57,7 @@ public class AppleService {
 				GetUserInfoResDto UserInfoResDto = new GetUserInfoResDto(userEmail);
 				User newUser = UserInfoResDto.toEntity();
 				User saveUser = userRepository.save(newUser);
-				saveUser.setNameById();
+				saveUser.setNickNameById();
 				System.out.println("저장된 사용자의 이름 : " + saveUser.getName());
 				return saveUser;
 			});
