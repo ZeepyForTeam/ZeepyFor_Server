@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -31,16 +32,13 @@ import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
-import com.zeepy.server.community.dto.CommunityLikeResDto;
-import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunitySimpleResDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
-import com.zeepy.server.community.dto.MyZipJoinResDto;
-import com.zeepy.server.community.dto.ParticipationResDto;
+import com.zeepy.server.community.dto.MyZipResponseDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.dto.UpdateCommunityReqDto;
 import com.zeepy.server.community.dto.WriteCommentRequestDto;
-import com.zeepy.server.community.dto.WriteOutResDto;
 import com.zeepy.server.community.service.CommunityService;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.dto.UserDto;
@@ -124,18 +122,6 @@ public class CommunityControllerTest extends ControllerTest {
 		doDeleteWithParams("/api/community/like", params);
 	}
 
-	@DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
-	@Test
-	public void getLikeList() throws Exception {
-		List<CommunityLikeResDto> dtoList = new ArrayList<>();
-		CommunityLikeResDtos dtos = new CommunityLikeResDtos(dtoList);
-		given(communityService.getLikeList("hey@naver.com", "JOINTPURCHASE")).willReturn(dtos);
-
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("id", "1");
-		doGet("/api/community/likes", params);
-	}
-
 	@DisplayName("참가하기_테스트")
 	@Test
 	@WithMockUser("test@naver.com")
@@ -173,23 +159,17 @@ public class CommunityControllerTest extends ControllerTest {
 			.user(writerUser2)
 			.build();
 		Participation participation = Participation.builder().id(1L).community(otherCommunity).user(joinUser).build();
-		ParticipationResDto participationResDto = new ParticipationResDto(participation);
-		WriteOutResDto writeOutResDto = new WriteOutResDto(writeCommunity);
 
-		List<ParticipationResDto> participationResDtoList = new ArrayList<>();
-		participationResDtoList.add(participationResDto);
-
-		List<WriteOutResDto> writeOutResDtoList = new ArrayList<>();
-		writeOutResDtoList.add(writeOutResDto);
-
-		MyZipJoinResDto resultResDto = new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
+		MyZipResponseDto resultResDto = new MyZipResponseDto();
+		resultResDto.addCommunities(Collections.singletonList(participation.getCommunity()));
+		resultResDto.addCommunities(Collections.singletonList(writeCommunity));
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		given(communityService.getJoinList(userEmail, "NEIGHBORHOODFRIEND")).willReturn(resultResDto);
+		given(communityService.getMyZipList(userEmail, "NEIGHBORHOODFRIEND")).willReturn(resultResDto);
 
 		//when
 		//then
-		doGet("/api/community/participation", params);
+		doGet("/api/community/myzip", params);
 	}
 
 	@DisplayName("참여취소하기")
@@ -264,7 +244,7 @@ public class CommunityControllerTest extends ControllerTest {
 	@DisplayName("커뮤니티 목록 불러오기 테스트")
 	@Test
 	public void getCommunityList() throws Exception {
-		List<CommunityResponseDto> communityResponseDtoList = new ArrayList<>();
+		List<CommunitySimpleResDto> communityResponseDtoList = new ArrayList<>();
 		given(communityService.getCommunityList(null, null, PageRequest.of(0, 2)))
 			.willReturn(new PageImpl<>(communityResponseDtoList));
 
