@@ -270,7 +270,7 @@ public class CommunityService {
 		myZipResponseDto.addCommunities(communityList);
 		myZipResponseDto.addCommunities(likedCommunities);
 
-		if (communityCategory != null) {
+		if (!(communityCategory == null || communityCategory.isEmpty())) {
 			myZipResponseDto.filtering(CommunityCategory.valueOf(communityCategory));
 		}
 
