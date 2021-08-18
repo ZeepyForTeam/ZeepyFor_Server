@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class MyZipJoinResDto {
-	private List<ParticipationResDto> participationResDtoList;
-	private List<WriteOutResDto> writeOutResDtoList;
+	private List<CommunitySimpleResDto> participatedCommunities;
+	private List<CommunitySimpleResDto> myCommunities;
 
 	@Builder
-	public MyZipJoinResDto(List<ParticipationResDto> participationResDtoList, List<WriteOutResDto> writeOutResDtoList) {
-		this.participationResDtoList = participationResDtoList;
-		this.writeOutResDtoList = writeOutResDtoList;
+	public MyZipJoinResDto(List<CommunitySimpleResDto> participatedCommunities, List<CommunitySimpleResDto> myCommunities) {
+		this.participatedCommunities = participatedCommunities;
+		this.myCommunities = myCommunities;
 	}
 }

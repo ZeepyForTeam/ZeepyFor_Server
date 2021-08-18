@@ -34,13 +34,12 @@ import com.zeepy.server.community.dto.CommunityLikeRequestDto;
 import com.zeepy.server.community.dto.CommunityLikeResDto;
 import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunitySimpleResDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
-import com.zeepy.server.community.dto.ParticipationResDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.dto.UpdateCommunityReqDto;
 import com.zeepy.server.community.dto.WriteCommentRequestDto;
-import com.zeepy.server.community.dto.WriteOutResDto;
 import com.zeepy.server.community.service.CommunityService;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.dto.UserDto;
@@ -173,13 +172,13 @@ public class CommunityControllerTest extends ControllerTest {
 			.user(writerUser2)
 			.build();
 		Participation participation = Participation.builder().id(1L).community(otherCommunity).user(joinUser).build();
-		ParticipationResDto participationResDto = new ParticipationResDto(participation);
-		WriteOutResDto writeOutResDto = new WriteOutResDto(writeCommunity);
+		CommunitySimpleResDto participationResDto = CommunitySimpleResDto.of(participation.getCommunity());
+		CommunitySimpleResDto writeOutResDto = CommunitySimpleResDto.of(writeCommunity);
 
-		List<ParticipationResDto> participationResDtoList = new ArrayList<>();
+		List<CommunitySimpleResDto> participationResDtoList = new ArrayList<>();
 		participationResDtoList.add(participationResDto);
 
-		List<WriteOutResDto> writeOutResDtoList = new ArrayList<>();
+		List<CommunitySimpleResDto> writeOutResDtoList = new ArrayList<>();
 		writeOutResDtoList.add(writeOutResDto);
 
 		MyZipJoinResDto resultResDto = new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);

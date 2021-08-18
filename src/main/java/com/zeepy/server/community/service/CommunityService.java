@@ -24,14 +24,13 @@ import com.zeepy.server.community.dto.CommunityLikeDto;
 import com.zeepy.server.community.dto.CommunityLikeResDto;
 import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunitySimpleResDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
 import com.zeepy.server.community.dto.MyZipJoinResDto;
 import com.zeepy.server.community.dto.ParticipationDto;
-import com.zeepy.server.community.dto.ParticipationResDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.dto.UpdateCommunityReqDto;
 import com.zeepy.server.community.dto.WriteCommentRequestDto;
-import com.zeepy.server.community.dto.WriteOutResDto;
 import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
@@ -282,25 +281,25 @@ public class CommunityService {
 			.getId());
 
 		if (communityCategory == null || communityCategory.isEmpty()) {
-			List<ParticipationResDto> participationResDtoList = participationList.stream()
-				.map(ParticipationResDto::new)
+			List<CommunitySimpleResDto> participatedCommunities = participationList.stream()
+				.map(Participation::getCommunity)
+                .map(CommunitySimpleResDto::of)
 				.collect(Collectors.toList());
-			List<WriteOutResDto> writeOutResDtoList = communityList.stream()
-				.map(WriteOutResDto::new)
-				.collect(Collectors.toList());
-			return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
+			List<CommunitySimpleResDto> myCommunities = CommunitySimpleResDto.listOf(communityList);
+			return new MyZipJoinResDto(participatedCommunities, myCommunities);
 		}
 
-		List<ParticipationResDto> participationResDtoList = participationList.stream()
-			.map(ParticipationResDto::new)
+		List<CommunitySimpleResDto> participatedCommunities = participationList.stream()
+			.map(Participation::getCommunity)
+            .map(CommunitySimpleResDto::of)
 			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
 			.collect(Collectors.toList());
 
-		List<WriteOutResDto> writeOutResDtoList = communityList.stream()
-			.map(WriteOutResDto::new)
+		List<CommunitySimpleResDto> myCommunities = communityList.stream()
+			.map(CommunitySimpleResDto::of)
 			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
 			.collect(Collectors.toList());
-		return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
+		return new MyZipJoinResDto(participatedCommunities, myCommunities);
 	}
 
 	@Transactional
