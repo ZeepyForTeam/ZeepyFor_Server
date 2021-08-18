@@ -1,9 +1,11 @@
 package com.zeepy.server.community.service;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -23,12 +25,15 @@ import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunitySimpleResDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
+import com.zeepy.server.community.dto.MyZipResponseDto;
 import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
 import com.zeepy.server.community.repository.ParticipationRepository;
 import com.zeepy.server.push.util.FirebaseCloudMessageUtility;
+import com.zeepy.server.user.domain.Role;
 import com.zeepy.server.user.domain.User;
 import com.zeepy.server.user.repository.UserRepository;
 
@@ -132,4 +137,81 @@ public class CommunityServiceTest {
 		assertThat(dto.getIsLiked()).isTrue();
 		assertThat(dto.getIsParticipant()).isFalse();
 	}
+
+	@DisplayName("마이집 조회")
+	@Test
+	public void getMyZipList() {
+		// 현 사용자
+		User user = User.builder()
+			.name("겨울")
+			.accessNotify(true)
+			.role(Role.ROLE_USER)
+			.build();
+
+		// 내가 참여하고 있는 커뮤니티
+		Community c1 = Community.builder()
+			.id(1L)
+			.user(likeUser)
+			.communityCategory(CommunityCategory.JOINTPURCHASE)
+			.address("경기도 안양시")
+			.build();
+
+		// 내가 좋아하는 커뮤니티
+		Community c2 = Community.builder()
+			.id(2L)
+			.user(likeUser)
+			.communityCategory(CommunityCategory.NEIGHBORHOODFRIEND)
+			.address("경기도 안양시")
+			.build();
+
+		// 내가 작성한 커뮤니티
+		Community c3 = Community.builder()
+			.id(3L)
+			.user(user)
+			.communityCategory(CommunityCategory.FREESHARING)
+			.address("경기도 안양시")
+			.build();
+
+		// 내 참여
+		Participation p1 = Participation.builder()
+			.id(1L)
+			.community(c1)
+			.user(user)
+			.build();
+
+		// 내 좋아요
+		CommunityLike cl = CommunityLike.builder()
+			.id(1L)
+			.community(c2)
+			.user(user)
+			.build();
+
+		String userEmail = "test@test.com";
+		String communityCategory = "";
+
+		//when
+		when(userRepository.findByEmail(any())).thenReturn(Optional.ofNullable(user));
+		when(participationRepository.findAllByUserId(any())).thenReturn(Collections.singletonList(p1));
+		when(communityLikeRepository.findAllByUserId(any())).thenReturn(Collections.singletonList(cl));
+		when(communityRepository.findAllByUserId(any())).thenReturn(Collections.singletonList(c3));
+
+		//then
+		List<Community> expectCommunities = new ArrayList<>();
+		expectCommunities.add(c1);
+		expectCommunities.add(c2);
+		expectCommunities.add(c3);
+
+		MyZipResponseDto expect = MyZipResponseDto.builder()
+			.myZip(new ArrayList<>())
+			.build();
+		expect.addCommunities(expectCommunities);
+
+		MyZipResponseDto actual = communityService.getMyZipList(userEmail, communityCategory);
+		assertAll(() -> assertThat(actual.getMyZip().size()).isEqualTo(3),
+			() -> assertThat(CommunitySimpleResDto.of(c1).getTitle()).isEqualTo(actual.getMyZip().get(0).getTitle()),
+			() -> assertThat(CommunitySimpleResDto.of(c2).getTitle()).isEqualTo(actual.getMyZip().get(1).getTitle()),
+			() -> assertThat(CommunitySimpleResDto.of(c3).getTitle()).isEqualTo(actual.getMyZip().get(2).getTitle())
+		);
+	}
+
 }
