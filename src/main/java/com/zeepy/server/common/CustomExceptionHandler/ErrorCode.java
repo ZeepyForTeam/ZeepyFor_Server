@@ -20,7 +20,7 @@ public enum ErrorCode {
 	REFRESH_TOKEN_EXPIRED(401, "RefreshToken의 유효시간이 만료되었습니다"),
 	REFRESH_TOKEN_NOT_EXIST(400, "RefreshToken이 존재하지 않습니다. 다시 로그인 해주세요."),
 	NOT_FOUND_TOKEN(401, "등록된 토큰이 존재하지 않습니다, 로그인을 다시해야합니다."),
-	SNS_UNAUTHORIZATION(401, "잘못된 SNS 토큰입니다."),
+	SNS_UNAUTHORIZATION(401, "SNS로그인에 실패했습니다."),
 	Duplicate_Email(400, "중복된 이메일입니다."),
 	Duplicate_Nickname(400, "중복된 닉네임입니다."),
 	APPLE_UNAUTHORIZATION(401, "애플 유효성 검사에 실패했습니다."),

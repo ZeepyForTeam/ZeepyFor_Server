@@ -6,13 +6,14 @@ import java.security.InvalidKeyException;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -34,37 +35,37 @@ import com.zeepy.server.auth.model.Keys;
 import com.zeepy.server.auth.model.Payload;
 import com.zeepy.server.auth.model.TokenResponse;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AppleUnAuthrizationException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAuthorization;
 
 import sun.security.ec.ECPrivateKeyImpl;
 
 @Component
+@PropertySource(value = {"classpath:security/application.properties"})
 public class AppleUtils {
 
-	// @Value("${APPLE.PUBLICKEY.URL}")
-	private String APPLE_PUBLIC_KEYS_URL = "https://appleid.apple.com/auth/keys";
+	@Value("${APPLE.PUBLICKEY.URL}")
+	private String APPLE_PUBLIC_KEYS_URL;
 
-	// @Value("${APPLE.AUTH.TOKEN.URL}")
-	private String AUTH_TOKEN_URL = "https://appleid.apple.com/auth/token";
+	@Value("${APPLE.AUTH.TOKEN.URL}")
+	private String AUTH_TOKEN_URL;
 
-	// @Value("${APPLE.ISS}")
-	private String ISS = "https://appleid.apple.com";
-	// 발급기관
+	@Value("${APPLE.ISS}")
+	private String ISS;
 
-	// @Value("${APPLE.AUD}")
-	private String AUD = "";
-	// 대상
+	@Value("${APPLE.AUD}")
+	private String AUD;
 
-	// @Value("${APPLE.TEAM.ID}")
-	private String TEAM_ID = "";
+	@Value("${APPLE.TEAM.ID}")
+	private String TEAM_ID;
 
-	// @Value("${APPLE.KEY.ID}")
-	private String KEY_ID = "";
+	@Value("${APPLE.KEY.ID}")
+	private String KEY_ID;
 
-	// @Value("${APPLE.KEY.PATH}")
-	private String KEY_PATH = "static/AuthKey_CMLD397J88.p8";
+	@Value("${APPLE.KEY.PATH}")
+	private String KEY_PATH;
 
-	// @Value("${APPLE.WEBSITE.URL}")
-	private String APPLE_WEBSITE_URL = "";
+	@Value(("${APPLE.NONCE}"))
+	private String NONCE;
 
 	public boolean verifyIdentityToken(String idToken) {
 		try {
@@ -81,8 +82,18 @@ public class AppleUtils {
 			System.out.println("clain값 : " + payload.getClaims());
 			System.out.println("nonce 값 : " + payload.getClaim("nonce"));
 
+			if (!NONCE.equals(payload.getClaim("nonce"))) {
+				System.out.println("nonce 다름!");
+			}
+			if (!ISS.equals(payload.getIssuer())) {
+				System.out.println("issue 다름!");
+			}
+			if (!AUD.equals(payload.getAudience().get(0))) {
+				System.out.println("aud 다름!");
+			}
+			System.out.println("AUD : " + AUD + " " + "AUD2 : " + payload.getAudience().get(0));
 			//NONCE, ISS, AUD
-			if (!"f2acb684cc464e79ee6c37626bc6c6803b76ac4a33831d8f89a65e84426465e8".equals(payload.getClaim("nonce"))
+			if (!NONCE.equals(payload.getClaim("nonce"))
 				|| !ISS.equals(payload.getIssuer()) || !AUD.equals(
 				payload.getAudience().get(0))) {
 				System.out.println("NOCE, ISS, AUD 실패");
@@ -98,6 +109,7 @@ public class AppleUtils {
 
 		} catch (RuntimeException | ParseException e) {
 			e.printStackTrace();
+			throw new SNSUnAuthorization();
 		}
 		System.out.println("token validation 실패");
 		return false;
@@ -151,6 +163,7 @@ public class AppleUtils {
 
 		} catch (InvalidKeyException | JOSEException e) {
 			e.printStackTrace();
+			throw new SNSUnAuthorization();
 		}
 
 		return jwt.serialize();
@@ -166,18 +179,13 @@ public class AppleUtils {
 		try (FileReader keyReader = new FileReader(resource.getURI().getPath());
 			 PemReader pemReader = new PemReader(keyReader)) {
 			{
-				System.out.println("keyReader : " + keyReader);
-				System.out.println("pemReader : " + pemReader);
 				PemObject pemObject = pemReader.readPemObject();
-				System.out.println("pemObject : " + Arrays.toString(pemObject.getContent()));
-				System.out.println("pemContent : " + pemObject.getContent());
-				System.out.println("size : " + pemObject.getContent().length);
 				content = pemObject.getContent();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new SNSUnAuthorization();
 		}
-		System.out.println("content : " + content);
 		return content;
 	}
 
@@ -193,6 +201,7 @@ public class AppleUtils {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new SNSUnAuthorization();
 		}
 		throw new AppleUnAuthrizationException();
 	}
@@ -204,23 +213,6 @@ public class AppleUtils {
 		tokenRequest.put("client_secret", clientSecret);
 		tokenRequest.put("code", code);
 		tokenRequest.put("grant_type", "authorization_code");
-		//tokenRequest.put("redirect_uri", APPLE_WEBSITE_URL);
-
-		return getTokenResponse(tokenRequest);
-	}
-
-	public TokenResponse validateAnExistingRefreshToken(String clientSecret, String appleRefreshToken) {
-		Map<String, String> tokenRequest = new HashMap<>();
-
-		tokenRequest.put("client_id", AUD);
-		tokenRequest.put("client_secret", clientSecret);
-		tokenRequest.put("grant_type", "refresh_token");
-		tokenRequest.put("refresh_token", appleRefreshToken);
-
-		System.out.println("utilrs의 통신전!!!");
-		System.out.println("clientSecret : " + clientSecret);
-		System.out.println("appleRefreshToken : " + appleRefreshToken);
-		System.out.println("200통신 기원!!!!!");
 
 		return getTokenResponse(tokenRequest);
 	}
@@ -240,6 +232,7 @@ public class AppleUtils {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new SNSUnAuthorization();
 		}
 		throw new AppleUnAuthrizationException();
 	}

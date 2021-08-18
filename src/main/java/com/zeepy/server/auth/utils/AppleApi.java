@@ -8,6 +8,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAuthorization;
+
 public class AppleApi {
 
 	public static String doGet(String reqUrl) {
@@ -18,6 +20,9 @@ public class AppleApi {
 
 			int responseCode = conn.getResponseCode();
 			System.out.println("responseCode : " + responseCode);
+			if (responseCode != 200) {
+				throw new SNSUnAuthorization();
+			}
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -32,7 +37,7 @@ public class AppleApi {
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException(e);
+			throw new SNSUnAuthorization();
 		}
 	}
 
@@ -51,17 +56,7 @@ public class AppleApi {
 				postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
 			}
 			byte[] postDataBytes = postData.toString().getBytes(StandardCharsets.UTF_8);
-			// System.out.println("client_id : "+tokenRequest.get("client_id"));
-			// System.out.println("client_secret : "+tokenRequest.get("client_secret"));
-			// System.out.println("grant_type : "+tokenRequest.get("grant_type"));
-			// System.out.println("code : "+tokenRequest.get("code"));
-			//
 			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			// //conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-			// conn.setRequestProperty("client_id",tokenRequest.get("client_id"));
-			// conn.setRequestProperty("client_secret",tokenRequest.get("client_secret"));
-			// conn.setRequestProperty("grant_type",tokenRequest.get("grant_type"));
-			// conn.setRequestProperty("code",tokenRequest.get("code"));
 
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
@@ -80,7 +75,7 @@ public class AppleApi {
 			System.out.println("responseResult : " + result);
 
 			if (responseCode != 200) {
-				System.out.println("뺴애애애애애액");
+				throw new SNSUnAuthorization();
 			}
 
 			br.close();
@@ -89,7 +84,7 @@ public class AppleApi {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException(e);
+			throw new SNSUnAuthorization();
 		}
 	}
 }

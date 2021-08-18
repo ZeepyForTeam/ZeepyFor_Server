@@ -19,6 +19,8 @@ public class GetUserInfoResDto {
 		return User.builder()
 			.email(email)
 			.role(Role.ROLE_USER)
+			.accessNotify(false)
+			.sendMailCheck(false)
 			.build();
 	}
 }

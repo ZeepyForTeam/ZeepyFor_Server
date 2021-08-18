@@ -1,5 +1,6 @@
 package com.zeepy.server.auth.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +38,7 @@ public class Token extends BaseTimeEntity {
 
 	private String appleRefreshToken;
 
+	@Column(length = 1000)
 	private String appleIdToken;
 
 	private String appleClientSecret;
@@ -53,11 +55,13 @@ public class Token extends BaseTimeEntity {
 	}
 
 	@Builder
-	public Token(String accessToken, String refreshToken, User user, String appleClientSecret) {
+	public Token(User user) {
+		this.user = user;
+	}
+
+	public void setServiceToken(String accessToken, String refreshToken) {
 		this.accessToken = accessToken;
 		this.refreshToken = refreshToken;
-		this.user = user;
-		this.appleClientSecret = appleClientSecret;
 	}
 
 	public void setKakaoToken(String kakaoAccessToken) {
