@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,11 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.CommunitySimpleResDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
-import com.zeepy.server.community.dto.MyZipJoinResDto;
+import com.zeepy.server.community.dto.MyZipResponseDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.dto.UpdateCommunityReqDto;
 import com.zeepy.server.community.dto.WriteCommentRequestDto;
@@ -81,13 +79,6 @@ public class CommunityController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping("/likes")
-	public ResponseEntity<CommunityLikeResDtos> getLikeList(
-		@AuthenticationPrincipal String userEmail,
-		@RequestParam(required = false) String communityCategory) {
-		return new ResponseEntity<>(communityService.getLikeList(userEmail, communityCategory), HttpStatus.OK);
-	}
-
 	@PostMapping("/comment/{id}")
 	public ResponseEntity<Void> writeComment(
 		@PathVariable("id") Long communityId,
@@ -98,13 +89,13 @@ public class CommunityController {
 		return ResponseEntity.created(URI.create("/api/community/comment/" + communityId + "/" + commentId)).build();
 	}
 
-	@GetMapping("/participation")
-	public ResponseEntity<MyZipJoinResDto> getMyZipJoinList(
+	@GetMapping("/myzip")
+	public ResponseEntity<MyZipResponseDto> getMyZipList(
 		@AuthenticationPrincipal String userEmail,
 		@RequestParam(required = false) String communityCategory) {
 		System.out.println("authenticationPrincipal : " + userEmail);
-		MyZipJoinResDto myZipJoinList = communityService.getJoinList(userEmail, communityCategory);
-		return ResponseEntity.ok().body(myZipJoinList);
+		MyZipResponseDto myZipList = communityService.getMyZipList(userEmail, communityCategory);
+		return ResponseEntity.ok().body(myZipList);
 	}
 
 	@PutMapping("/{id}")

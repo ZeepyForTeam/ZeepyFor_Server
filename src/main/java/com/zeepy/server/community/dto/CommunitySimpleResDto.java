@@ -8,12 +8,15 @@ import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class CommunitySimpleResDto {
+	@EqualsAndHashCode.Include
 	private Long id;
 	private CommunityCategory communityCategory;
 	private String title;

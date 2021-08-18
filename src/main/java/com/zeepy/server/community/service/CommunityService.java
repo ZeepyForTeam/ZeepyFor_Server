@@ -21,11 +21,10 @@ import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.CommunityLikeDto;
-import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.CommunitySimpleResDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
-import com.zeepy.server.community.dto.MyZipJoinResDto;
+import com.zeepy.server.community.dto.MyZipResponseDto;
 import com.zeepy.server.community.dto.ParticipationDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.dto.UpdateCommunityReqDto;
@@ -74,25 +73,6 @@ public class CommunityService {
 
 		CommunityLike communityLike = communityLikeRepository.findByCommunityAndUser(community, user);
 		communityLikeRepository.deleteById(communityLike.getId());
-	}
-
-	@Transactional(readOnly = true)
-	public CommunityLikeResDtos getLikeList(String userEmail, String communityCategory) {
-		User user = getUserByEmail(userEmail);
-		List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(user.getId());
-
-		if (communityCategory == null || communityCategory.isEmpty()) {
-			return communityLikeList.stream()
-				.map(CommunityLike::getCommunity)
-				.map(CommunitySimpleResDto::of)
-				.collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
-		}
-
-		return communityLikeList.stream()
-			.map(CommunityLike::getCommunity)
-			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
-			.map(CommunitySimpleResDto::of)
-			.collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
 	}
 
 	@Transactional
@@ -272,33 +252,29 @@ public class CommunityService {
 	}
 
 	@Transactional(readOnly = true)
-	public MyZipJoinResDto getJoinList(String userEmail, String communityCategory) {
+	public MyZipResponseDto getMyZipList(String userEmail, String communityCategory) {
 		User findUser = getUserByEmail(userEmail);
-		List<Participation> participationList = participationRepository.findAllByUserId(findUser
-			.getId());
-		List<Community> communityList = communityRepository.findAllByUserId(findUser
-			.getId());
+		List<Participation> participationList = participationRepository.findAllByUserId(findUser.getId());
+		List<Community> communityList = communityRepository.findAllByUserId(findUser.getId());
+		List<CommunityLike> likeList = communityLikeRepository.findAllByUserId(findUser.getId());
 
-		if (communityCategory == null || communityCategory.isEmpty()) {
-			List<CommunitySimpleResDto> participatedCommunities = participationList.stream()
-				.map(Participation::getCommunity)
-				.map(CommunitySimpleResDto::of)
-				.collect(Collectors.toList());
-			List<CommunitySimpleResDto> myCommunities = CommunitySimpleResDto.listOf(communityList);
-			return new MyZipJoinResDto(participatedCommunities, myCommunities);
+		List<Community> participatedCommunities = participationList.stream()
+			.map(Participation::getCommunity)
+			.collect(Collectors.toList());
+		List<Community> likedCommunities = likeList.stream()
+			.map(CommunityLike::getCommunity)
+			.collect(Collectors.toList());
+
+		MyZipResponseDto myZipResponseDto = new MyZipResponseDto();
+		myZipResponseDto.addCommunities(participatedCommunities);
+		myZipResponseDto.addCommunities(communityList);
+		myZipResponseDto.addCommunities(likedCommunities);
+
+		if (communityCategory != null) {
+			myZipResponseDto.filtering(CommunityCategory.valueOf(communityCategory));
 		}
 
-		List<CommunitySimpleResDto> participatedCommunities = participationList.stream()
-			.map(Participation::getCommunity)
-			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
-			.map(CommunitySimpleResDto::of)
-			.collect(Collectors.toList());
-
-		List<CommunitySimpleResDto> myCommunities = communityList.stream()
-			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
-			.map(CommunitySimpleResDto::of)
-			.collect(Collectors.toList());
-		return new MyZipJoinResDto(participatedCommunities, myCommunities);
+		return myZipResponseDto;
 	}
 
 	@Transactional
