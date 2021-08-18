@@ -14,20 +14,20 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class EmailSendUtility {
-	private final JavaMailSender javaMailSender;
-	private final String fromEmail = "no_reply@zeepy.com";
+    private final JavaMailSender javaMailSender;
+    private final String fromEmail = "no_reply@zeepy.com";
 
-	public void mailSend(
-		String email,
-		String title,
-		String description
-	) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(email);
-		message.setFrom(fromEmail);
-		message.setSubject(title);
-		message.setText(description);
+    public void mailSend(
+        String email,
+        String title,
+        String description
+    ) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setFrom(fromEmail);
+        message.setSubject(title);
+        message.setText(description);
 
-		javaMailSender.send(message);
-	}
+        javaMailSender.send(message);
+    }
 }

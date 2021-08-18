@@ -24,13 +24,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/emails")
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class EmailController {
-	private final EmailService emailService;
+    private final EmailService emailService;
 
-	@PostMapping
-	public ResponseEntity<Void> saveEmail(
-		@Valid @RequestBody EmailRequestDto emailRequestDto
-	) {
-		Long id = emailService.create(emailRequestDto);
-		return ResponseEntity.created(URI.create("api/emails/" + id)).build();
-	}
+    @PostMapping
+    public ResponseEntity<Void> saveEmail(
+        @Valid @RequestBody EmailRequestDto emailRequestDto
+    ) {
+        Long id = emailService.create(emailRequestDto);
+        return ResponseEntity.created(URI.create("api/emails/" + id)).build();
+    }
 }

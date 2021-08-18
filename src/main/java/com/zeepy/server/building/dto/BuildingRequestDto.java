@@ -4,6 +4,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.zeepy.server.building.domain.Building;
+import com.zeepy.server.building.domain.BuildingType;
+import com.zeepy.server.common.annotation.Enum;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,6 +51,9 @@ public class BuildingRequestDto {
 	@NotNull(message = "longitude cannot be Null")
 	private double longitude;
 
+	@Enum(enumClass = BuildingType.class, ignoreCase = true, message = "BuildingType is not valid")
+	private String buildingType;
+
 	public BuildingRequestDto(
 		int buildYear,
 		String apartmentName,
@@ -60,7 +65,8 @@ public class BuildingRequestDto {
 		float exclusivePrivateArea,
 		int areaCode,
 		double latitude,
-		double longitude
+		double longitude,
+		String buildingType
 	) {
 		this.buildYear = buildYear;
 		this.apartmentName = apartmentName;
@@ -73,6 +79,7 @@ public class BuildingRequestDto {
 		this.areaCode = areaCode;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.buildingType = buildingType;
 	}
 
 	public Building returnBuildingEntity() {
@@ -88,7 +95,8 @@ public class BuildingRequestDto {
 			this.exclusivePrivateArea,
 			this.areaCode,
 			this.latitude,
-			this.longitude
+			this.longitude,
+			BuildingType.valueOf(this.buildingType)
 		);
 	}
 }

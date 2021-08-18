@@ -23,39 +23,39 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReportService {
-	private final ReportRepository reportRepository;
-	private final EmailRepository emailRepository;
-	private final EmailSendUtility emailSendUtility;
+    private final ReportRepository reportRepository;
+    private final EmailRepository emailRepository;
+    private final EmailSendUtility emailSendUtility;
 
-	@Transactional(readOnly = true)
-	public List<ReportResponseDto> getReportList() {
-		List<Report> reportList = reportRepository.findAll();
-		return ReportResponseDto.listOf(reportList);
-	}
+    @Transactional(readOnly = true)
+    public List<ReportResponseDto> getReportList() {
+        List<Report> reportList = reportRepository.findAll();
+        return ReportResponseDto.listOf(reportList);
+    }
 
-	@Transactional
-	public Long create(ReportRequestDto reportRequestDto) {
-		// TODO:(테이블 검증 로직 추가)
-		Report report = reportRequestDto.returnReportEntity();
-		Report save = reportRepository.save(report);
+    @Transactional
+    public Long create(ReportRequestDto reportRequestDto) {
+        // TODO:(테이블 검증 로직 추가)
+        Report report = reportRequestDto.returnReportEntity();
+        Report save = reportRepository.save(report);
 
-		/**
-		 * Email 전송 로직 추가
-		 */
+        /**
+         * Email 전송 로직 추가
+         */
 
-		List<AdminEmail> adminEmails = emailRepository.findAll();
-		for (AdminEmail adminEmail : adminEmails) {
-			emailSendUtility.mailSend(
-				adminEmail.getEmail(),
-				"유저 신고가 들어왔습니다.",
-				save.getDescription());
-		}
+        List<AdminEmail> adminEmails = emailRepository.findAll();
+        for (AdminEmail adminEmail : adminEmails) {
+            emailSendUtility.mailSend(
+                adminEmail.getEmail(),
+                "유저 신고가 들어왔습니다.",
+                save.getDescription());
+        }
 
-		return save.getId();
-	}
+        return save.getId();
+    }
 
-	@Transactional
-	public void deleteReportById(Long id) {
-		reportRepository.deleteById(id);
-	}
+    @Transactional
+    public void deleteReportById(Long id) {
+        reportRepository.deleteById(id);
+    }
 }

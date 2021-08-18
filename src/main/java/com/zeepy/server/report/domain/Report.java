@@ -30,50 +30,50 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Report extends BaseTimeEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "report_sequence_gen")
-	@SequenceGenerator(name = "report_sequence_gen", sequenceName = "report_sequence")
-	@Column(name = "report_id")
-	private Long id; // PK
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "report_sequence_gen")
+    @SequenceGenerator(name = "report_sequence_gen", sequenceName = "report_sequence")
+    @Column(name = "report_id")
+    private Long id; // PK
 
-	@NotNull
-	@Column(name = "report_target_id")
-	private Long reportId; // 신고하 테이블 의 PK
+    @NotNull
+    @Column(name = "report_target_id")
+    private Long reportId; // 신고하 테이블 의 PK
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private TargetTableType targetTableType; // 신고 매칭 테이블 종류
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private TargetTableType targetTableType; // 신고 매칭 테이블 종류
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private ReportType reportType; // 신고 유형
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private ReportType reportType; // 신고 유형
 
-	@Deprecated
-	private Long reportUser; // 신고한 유저 ID
+    @Deprecated
+    private Long reportUser; // 신고한 유저 ID
 
-	@Deprecated
-	private Long targetUser; // 신고 당하는 유저 ID
+    @Deprecated
+    private Long targetUser; // 신고 당하는 유저 ID
 
-	@NotEmpty
-	@Lob
-	private String description; // 상세 설명
+    @NotEmpty
+    @Lob
+    private String description; // 상세 설명
 
-	@Builder
-	public Report(
-		Long id,
-		Long reportId,
-		TargetTableType targetTableType,
-		ReportType reportType,
-		Long reportUser,
-		Long targetUser,
-		String description
-	) {
-		this.id = id;
-		this.reportId = reportId;
-		this.targetTableType = targetTableType;
-		this.reportType = reportType;
-		this.reportUser = reportUser;
-		this.targetUser = targetUser;
-		this.description = description;
-	}
+    @Builder
+    public Report(
+        Long id,
+        Long reportId,
+        TargetTableType targetTableType,
+        ReportType reportType,
+        Long reportUser,
+        Long targetUser,
+        String description
+    ) {
+        this.id = id;
+        this.reportId = reportId;
+        this.targetTableType = targetTableType;
+        this.reportType = reportType;
+        this.reportUser = reportUser;
+        this.targetUser = targetUser;
+        this.description = description;
+    }
 }

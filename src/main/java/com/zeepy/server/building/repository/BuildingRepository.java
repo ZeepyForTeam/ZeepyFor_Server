@@ -17,7 +17,7 @@ import com.zeepy.server.building.domain.Building;
 public interface BuildingRepository extends JpaRepository<Building, Long> {
 	Optional<Building> findByFullNumberAddress(String address);
 
-	Optional<Building> findByFullNumberAddressContainingOrFullRoadNameAddressContaining(
+	Optional<Building> findByFullNumberAddressOrFullRoadNameAddress(
 		String address1,
 		String address2
 	);

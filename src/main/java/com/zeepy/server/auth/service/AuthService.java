@@ -100,7 +100,7 @@ public class AuthService {
 			.orElseGet(() -> {
 				User newUser = userInfoResDto.toEntity();
 				User saveUser = userRepository.save(newUser);    //신규회원일때 name = zeepy#000 이런식으로
-				saveUser.setNameById();
+				saveUser.setNickNameById();
 				return saveUser;
 			});
 
@@ -129,7 +129,7 @@ public class AuthService {
 			.orElseGet(() -> {
 				User newUser = userInfoResDto.toEntity();
 				User saveUser = userRepository.save(newUser);    //신규회원일때 name = zeepy#000 이런식으로
-				saveUser.setNameById();
+				saveUser.setNickNameById();
 				return saveUser;
 			});
 

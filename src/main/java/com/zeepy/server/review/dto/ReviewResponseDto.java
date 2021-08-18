@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 public class ReviewResponseDto {
 	private Long id;
 	private ReviewUserResDto user;
+	private String address;
 	private CommuncationTendency communcationTendency;
 	private LessorGender lessorGender;
 	private LessorAge lessorAge;
@@ -39,6 +40,7 @@ public class ReviewResponseDto {
 	public ReviewResponseDto(
 		Long id,
 		User user,
+		String address,
 		LessorAge lessorAge,
 		LessorGender lessorGender,
 		CommuncationTendency communcationTendency,
@@ -55,6 +57,7 @@ public class ReviewResponseDto {
 	) {
 		this.id = id;
 		this.user = new ReviewUserResDto(user);
+		this.address = address;
 		this.lessorAge = lessorAge;
 		this.lessorGender = lessorGender;
 		this.communcationTendency = communcationTendency;
@@ -70,7 +73,7 @@ public class ReviewResponseDto {
 		this.imageUrls = imageUrls;
 	}
 
-    public ReviewResponseDto(Review review) {
+	public ReviewResponseDto(Review review) {
 		this.id = review.getId();
 		this.user = new ReviewUserResDto(review.getUser());
 		this.lessorAge = review.getLessorAge();
@@ -92,6 +95,7 @@ public class ReviewResponseDto {
 		return new ReviewResponseDto(
 			review.getId(),
 			review.getUser(),
+			review.getAddress(),
 			review.getLessorAge(),
 			review.getLessorGender(),
 			review.getCommunicationTendency(),
@@ -106,7 +110,7 @@ public class ReviewResponseDto {
 			review.getTotalEvaluation(),
 			review.getImageUrls()
 		);
-    }
+	}
 
     public static List<ReviewResponseDto> listOf(List<Review> reviewList) {
 		return reviewList

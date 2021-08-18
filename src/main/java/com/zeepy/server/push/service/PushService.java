@@ -19,28 +19,28 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class PushService {
-	private final FirebaseCloudMessageUtility firebaseCloudMessageUtility;
-	private final UserRepository userRepository;
+    private final FirebaseCloudMessageUtility firebaseCloudMessageUtility;
+    private final UserRepository userRepository;
 
-	public void pushByAllUsers(
-		PushManyTargetRequestDto pushManyTargetRequestDto
-	) {
-		firebaseCloudMessageUtility.sendTopicMessage(
-			"notify",
-			pushManyTargetRequestDto.getTitle(),
-			pushManyTargetRequestDto.getBody()
-		);
-	}
+    public void pushByAllUsers(
+        PushManyTargetRequestDto pushManyTargetRequestDto
+    ) {
+        firebaseCloudMessageUtility.sendTopicMessage(
+            "notify",
+            pushManyTargetRequestDto.getTitle(),
+            pushManyTargetRequestDto.getBody()
+        );
+    }
 
-	public void pushByTargetUsersUsingTopic(
-		PushOneTargetRequestDto pushOneTargetRequestDto
-	) {
-		User user = userRepository.findByEmail(pushOneTargetRequestDto.getEmail())
-			.orElseThrow(NotFoundUserException::new);
-		firebaseCloudMessageUtility.sendTopicMessage(
-			user.getId().toString(),
-			pushOneTargetRequestDto.getTitle(),
-			pushOneTargetRequestDto.getBody()
-		);
-	}
+    public void pushByTargetUsersUsingTopic(
+        PushOneTargetRequestDto pushOneTargetRequestDto
+    ) {
+        User user = userRepository.findByEmail(pushOneTargetRequestDto.getEmail())
+            .orElseThrow(NotFoundUserException::new);
+        firebaseCloudMessageUtility.sendTopicMessage(
+            user.getId().toString(),
+            pushOneTargetRequestDto.getTitle(),
+            pushOneTargetRequestDto.getBody()
+        );
+    }
 }

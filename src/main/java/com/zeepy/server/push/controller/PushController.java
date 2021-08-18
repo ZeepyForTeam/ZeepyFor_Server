@@ -23,21 +23,21 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/push")
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class PushController {
-	private final PushService pushService;
+    private final PushService pushService;
 
-	@PostMapping("/all")
-	public ResponseEntity<Void> notifyAllUsers(
-		@Valid @RequestBody PushManyTargetRequestDto pushManyTargetRequestDto
-	) {
-		pushService.pushByAllUsers(pushManyTargetRequestDto);
-		return ResponseEntity.ok().build();
-	}
+    @PostMapping("/all")
+    public ResponseEntity<Void> notifyAllUsers(
+        @Valid @RequestBody PushManyTargetRequestDto pushManyTargetRequestDto
+    ) {
+        pushService.pushByAllUsers(pushManyTargetRequestDto);
+        return ResponseEntity.ok().build();
+    }
 
-	@PostMapping("/target")
-	public ResponseEntity<Void> notifyTargetUsers(
-		@Valid @RequestBody PushOneTargetRequestDto pushOneTargetRequestDto
-	) {
-		pushService.pushByTargetUsersUsingTopic(pushOneTargetRequestDto);
-		return ResponseEntity.ok().build();
-	}
+    @PostMapping("/target")
+    public ResponseEntity<Void> notifyTargetUsers(
+        @Valid @RequestBody PushOneTargetRequestDto pushOneTargetRequestDto
+    ) {
+        pushService.pushByTargetUsersUsingTopic(pushOneTargetRequestDto);
+        return ResponseEntity.ok().build();
+    }
 }

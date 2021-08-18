@@ -18,6 +18,7 @@ import com.zeepy.server.user.dto.AddAddressReqDto;
 import com.zeepy.server.user.dto.AddressResDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyEmailReqDto;
 import com.zeepy.server.user.dto.CheckOfRedundancyNicknameReqDto;
+import com.zeepy.server.user.dto.GetUserNicknameResDto;
 import com.zeepy.server.user.dto.ModifyPasswordReqDto;
 import com.zeepy.server.user.dto.RegistrationReqDto;
 import com.zeepy.server.user.dto.SendMailCheckResDto;
@@ -44,7 +45,7 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public void checkForRedundancyEmail(CheckOfRedundancyEmailReqDto reqDto) {
 		String email = reqDto.getEmail();
 		Optional<User> user = userRepository.findByEmail(email);
@@ -53,10 +54,10 @@ public class UserService {
 		}
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public void checkFromRedundancyNickname(CheckOfRedundancyNicknameReqDto reqDto) {
 		String nickname = reqDto.getNickname();
-		Optional<User> user = userRepository.findByName(nickname);
+		Optional<User> user = userRepository.findByNickname(nickname);
 		if (user.isPresent()) {
 			throw new DuplicateNicknameException();
 		}
@@ -65,7 +66,7 @@ public class UserService {
 	@Transactional
 	public void modifyUser(ModifyNicknameReqDto modifyNicknameReqDto, String userEmail) {
 		User user = findUserByEmail(userEmail);
-		user.setName(modifyNicknameReqDto
+		user.setNickname(modifyNicknameReqDto
 			.getNickname());
 	}
 
@@ -88,7 +89,8 @@ public class UserService {
 
 	@Transactional
 	public void addAddress(AddAddressReqDto addAddressReqDto, String userEmail) {
-		@Deprecated
+		addAddressReqDto.validateAddresses();
+
 		User user = findUserByEmail(userEmail);
 
 		user.setAddress(addAddressReqDto.getAddresses().stream()
@@ -96,10 +98,16 @@ public class UserService {
 			.collect(Collectors.toList()));
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public AddressResDto getAddresses(String userEmail) {
 		User user = findUserByEmail(userEmail);
 		return new AddressResDto(user.getAddresses());
+	}
+
+	@Transactional(readOnly = true)
+	public GetUserNicknameResDto getUserNickname(String userEmail) {
+		User user = userRepository.findByEmail(userEmail).orElseThrow(NotFoundUserException::new);
+		return new GetUserNicknameResDto(user);
 	}
 
 	@Transactional

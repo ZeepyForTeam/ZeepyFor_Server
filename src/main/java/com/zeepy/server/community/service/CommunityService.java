@@ -21,17 +21,14 @@ import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.CommunityLikeDto;
-import com.zeepy.server.community.dto.CommunityLikeResDto;
-import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
+import com.zeepy.server.community.dto.CommunitySimpleResDto;
 import com.zeepy.server.community.dto.JoinCommunityRequestDto;
-import com.zeepy.server.community.dto.MyZipJoinResDto;
+import com.zeepy.server.community.dto.MyZipResponseDto;
 import com.zeepy.server.community.dto.ParticipationDto;
-import com.zeepy.server.community.dto.ParticipationResDto;
 import com.zeepy.server.community.dto.SaveCommunityRequestDto;
 import com.zeepy.server.community.dto.UpdateCommunityReqDto;
 import com.zeepy.server.community.dto.WriteCommentRequestDto;
-import com.zeepy.server.community.dto.WriteOutResDto;
 import com.zeepy.server.community.repository.CommentRepository;
 import com.zeepy.server.community.repository.CommunityLikeRepository;
 import com.zeepy.server.community.repository.CommunityRepository;
@@ -78,38 +75,19 @@ public class CommunityService {
 		communityLikeRepository.deleteById(communityLike.getId());
 	}
 
-	@Transactional(readOnly = true)
-	public CommunityLikeResDtos getLikeList(String userEmail, String communityCategory) {
-		User user = getUserByEmail(userEmail);
-		List<CommunityLike> communityLikeList = communityLikeRepository.findAllByUserId(user.getId());
-
-		if (communityCategory == null || communityCategory.isEmpty()) {
-			return communityLikeList.stream()
-				.map(CommunityLikeResDto::new)
-				.collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
-		}
-
-		return communityLikeList.stream()
-			.map(CommunityLikeResDto::new)
-			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
-			.collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
-	}
-
 	@Transactional
 	public Long save(SaveCommunityRequestDto requestDto, String userEmail) {
 		User writer = getUserByEmail(userEmail);
-
 		Community communityToSave = requestDto.toEntity();
 		communityToSave.setUser(writer);
-		Community community = communityRepository.save(communityToSave);
 
 		if (requestDto.getCommunityCategory().equals("JOINTPURCHASE")) {
-			ParticipationDto participationDto = new ParticipationDto(community, writer);
-			Participation participationToSave = participationDto.toEntity();
+			ParticipationDto participationDto = new ParticipationDto(communityToSave, writer);
+			Participation participationToSave = participationDto.toUpdateEntity();
 			participationRepository.save(participationToSave);
 		}
 
-		return community.getId();
+		return communityRepository.save(communityToSave).getId();
 	}
 
 	@Transactional
@@ -274,33 +252,29 @@ public class CommunityService {
 	}
 
 	@Transactional(readOnly = true)
-	public MyZipJoinResDto getJoinList(String userEmail, String communityCategory) {
+	public MyZipResponseDto getMyZipList(String userEmail, String communityCategory) {
 		User findUser = getUserByEmail(userEmail);
-		List<Participation> participationList = participationRepository.findAllByUserId(findUser
-			.getId());
-		List<Community> communityList = communityRepository.findAllByUserId(findUser
-			.getId());
+		List<Participation> participationList = participationRepository.findAllByUserId(findUser.getId());
+		List<Community> communityList = communityRepository.findAllByUserId(findUser.getId());
+		List<CommunityLike> likeList = communityLikeRepository.findAllByUserId(findUser.getId());
 
-		if (communityCategory == null || communityCategory.isEmpty()) {
-			List<ParticipationResDto> participationResDtoList = participationList.stream()
-				.map(ParticipationResDto::new)
-				.collect(Collectors.toList());
-			List<WriteOutResDto> writeOutResDtoList = communityList.stream()
-				.map(WriteOutResDto::new)
-				.collect(Collectors.toList());
-			return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
+		List<Community> participatedCommunities = participationList.stream()
+			.map(Participation::getCommunity)
+			.collect(Collectors.toList());
+		List<Community> likedCommunities = likeList.stream()
+			.map(CommunityLike::getCommunity)
+			.collect(Collectors.toList());
+
+		MyZipResponseDto myZipResponseDto = new MyZipResponseDto();
+		myZipResponseDto.addCommunities(participatedCommunities);
+		myZipResponseDto.addCommunities(communityList);
+		myZipResponseDto.addCommunities(likedCommunities);
+
+		if (!(communityCategory == null || communityCategory.isEmpty())) {
+			myZipResponseDto.filtering(CommunityCategory.valueOf(communityCategory));
 		}
 
-		List<ParticipationResDto> participationResDtoList = participationList.stream()
-			.map(ParticipationResDto::new)
-			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
-			.collect(Collectors.toList());
-
-		List<WriteOutResDto> writeOutResDtoList = communityList.stream()
-			.map(WriteOutResDto::new)
-			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
-			.collect(Collectors.toList());
-		return new MyZipJoinResDto(participationResDtoList, writeOutResDtoList);
+		return myZipResponseDto;
 	}
 
 	@Transactional
@@ -322,18 +296,20 @@ public class CommunityService {
 		CommunityResponseDto responseDto = CommunityResponseDto.of(community);
 
 		Boolean isLiked = community.getLikes().stream()
-			.anyMatch(l -> l.getUser().equals(user));
+			.map(CommunityLike::getUser)
+			.anyMatch(l -> l.equals(user));
 		responseDto.setLiked(isLiked);
 
 		Boolean isParticipant = community.getParticipationsList().stream()
-			.anyMatch(p -> p.getUser().equals(user));
+			.map(Participation::getUser)
+			.anyMatch(p -> p.equals(user));
 		responseDto.setParticipant(isParticipant);
 
-		return CommunityResponseDto.of(community);
+		return responseDto;
 	}
 
 	@Transactional(readOnly = true)
-	public Page<CommunityResponseDto> getCommunityList(String address, String communityType, Pageable pageable) {
+	public Page<CommunitySimpleResDto> getCommunityList(String address, String communityType, Pageable pageable) {
 		Page<Community> communityList;
 
 		if (address == null || address.isEmpty()) {
@@ -352,8 +328,8 @@ public class CommunityService {
 			}
 		}
 
-		return new PageImpl<CommunityResponseDto>(
-			CommunityResponseDto.listOf(communityList.getContent()),
+		return new PageImpl<>(
+			CommunitySimpleResDto.listOf(communityList.getContent()),
 			pageable,
 			communityList.getTotalElements());
 	}

@@ -20,6 +20,7 @@ public class CommunityResponseDto {
 	private CommunityCategory communityCategory;
 	private String address;
 	private String productName;
+	private Integer productPrice;
 	private String sharingMethod;
 	private Integer targetNumberOfPeople;
 	private String title;
@@ -32,6 +33,26 @@ public class CommunityResponseDto {
 	private List<String> imageUrls;
 	private LocalDateTime createdTime;
 	private Boolean isCompleted;
+
+	public CommunityResponseDto(Community community) {
+		this.id = community.getId();
+		this.user = new UserDto(
+			community.getUser()
+				.getId(),
+			community.getUser()
+				.getNickname(),
+			community.getUser()
+				.getProfileImage());
+		this.communityCategory = community.getCommunityCategory();
+		this.address = community.getAddress();
+		this.productName = community.getProductName();
+		this.productPrice = community.getProductPrice();
+		this.sharingMethod = community.getSharingMethod();
+		this.targetNumberOfPeople = community.getTargetNumberOfPeople();
+		this.title = community.getTitle();
+		this.content = community.getContent();
+		// this.isLiked = isLiked(community);
+	}
 
 	@Builder
 	public CommunityResponseDto(

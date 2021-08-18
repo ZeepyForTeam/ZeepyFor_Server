@@ -265,8 +265,7 @@ public class BuildingService {
 	// READ
 	@Transactional(readOnly = true)
 	public BuildingResponseDto getByAddress(String address) {
-		Building building = buildingRepository.findByFullNumberAddressContainingOrFullRoadNameAddressContaining(address,
-			address)
+		Building building = buildingRepository.findByFullNumberAddress(address)
 			.orElseThrow(NoContentException::new);
 		return BuildingResponseDto.of(building);
 	}

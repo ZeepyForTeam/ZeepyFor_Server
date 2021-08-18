@@ -29,26 +29,26 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/reports")
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class ReportController {
-	private final ReportService reportService;
+    private final ReportService reportService;
 
-	@GetMapping
-	public ResponseEntity<List<ReportResponseDto>> getReports() {
-		return ResponseEntity.ok().body(reportService.getReportList());
-	}
+    @GetMapping
+    public ResponseEntity<List<ReportResponseDto>> getReports() {
+        return ResponseEntity.ok().body(reportService.getReportList());
+    }
 
-	@PostMapping
-	public ResponseEntity<Void> saveReport(
-		@Valid @RequestBody ReportRequestDto reportRequestDto
-	) {
-		Long id = reportService.create(reportRequestDto);
-		return ResponseEntity.created(URI.create("api/reports/" + id)).build();
-	}
+    @PostMapping
+    public ResponseEntity<Void> saveReport(
+        @Valid @RequestBody ReportRequestDto reportRequestDto
+    ) {
+        Long id = reportService.create(reportRequestDto);
+        return ResponseEntity.created(URI.create("api/reports/" + id)).build();
+    }
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteReport(
-		@PathVariable Long id
-	) {
-		reportService.deleteReportById(id);
-		return ResponseEntity.noContent().build();
-	}
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReport(
+        @PathVariable Long id
+    ) {
+        reportService.deleteReportById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

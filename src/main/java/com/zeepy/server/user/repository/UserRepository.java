@@ -2,6 +2,7 @@ package com.zeepy.server.user.repository;
 
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByEmail(String userEmail);
 
-	Optional<User> findByName(String name);
+	Optional<User> findByNickname(String name);
 
-	void deleteById(Long userId);
+	void deleteById(@NotNull Long userId);
 }

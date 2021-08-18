@@ -49,6 +49,8 @@ public class User implements UserDetails {
 
 	private String name;
 
+	private String nickname;
+
 	private String email;
 
 	private String password;
@@ -88,10 +90,12 @@ public class User implements UserDetails {
 	private List<Review> reviews = new ArrayList<>();
 
 	@Builder
-	public User(Long id, String name, String email, String password, String address, String building, String place,
+	public User(Long id, String name, String nickname, String email, String password, String address, String building,
+		String place,
 		Boolean accessNotify, Role role, String profileImage, Boolean sendMailCheck) {
 		this.id = id;
 		this.name = name;
+		this.nickname = nickname;
 		this.email = email;
 		this.password = password;
 		this.address = address;
@@ -103,12 +107,12 @@ public class User implements UserDetails {
 		this.profileImage = profileImage;
 	}
 
-	public void setNameById() {
-		this.name = "Zeepy#" + this.id;
+	public void setNickNameById() {
+		this.nickname = "Zeepy#" + this.id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNickname(String name) {
+		this.nickname = name;
 	}
 
 	public void setPassword(String password) {

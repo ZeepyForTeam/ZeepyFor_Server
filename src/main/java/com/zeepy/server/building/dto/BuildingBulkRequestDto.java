@@ -7,7 +7,9 @@ import javax.validation.constraints.NotNull;
 
 import com.zeepy.server.building.domain.Building;
 import com.zeepy.server.building.domain.BuildingDeal;
+import com.zeepy.server.building.domain.BuildingType;
 import com.zeepy.server.building.domain.DealType;
+import com.zeepy.server.common.annotation.Enum;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,6 +58,9 @@ public class BuildingBulkRequestDto {
 	@NotNull(message = "longitude cannot be Null")
 	private double longitude;
 
+	@Enum(enumClass = BuildingType.class, ignoreCase = true, message = "BuildingType is not valid")
+	private String buildingType;
+
 	@NotNull(message = "dealDate cannot be Null")
 	private Long dealDate;
 
@@ -84,6 +89,7 @@ public class BuildingBulkRequestDto {
 		int areaCode,
 		double latitude,
 		double longitude,
+		String buildingType,
 		Long dealDate,
 		int deposit,
 		int monthlyRent,
@@ -102,6 +108,7 @@ public class BuildingBulkRequestDto {
 		this.areaCode = areaCode;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.buildingType = buildingType;
 		this.dealDate = dealDate;
 		this.deposit = deposit;
 		this.monthlyRent = monthlyRent;
@@ -122,7 +129,8 @@ public class BuildingBulkRequestDto {
 			this.exclusivePrivateArea,
 			this.areaCode,
 			this.latitude,
-			this.longitude
+			this.longitude,
+			BuildingType.valueOf(this.buildingType)
 		);
 	}
 
