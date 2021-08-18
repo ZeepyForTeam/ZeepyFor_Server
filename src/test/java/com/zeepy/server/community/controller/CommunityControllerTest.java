@@ -31,7 +31,6 @@ import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CommunityLikeRequestDto;
-import com.zeepy.server.community.dto.CommunityLikeResDto;
 import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.CommunitySimpleResDto;
@@ -126,7 +125,7 @@ public class CommunityControllerTest extends ControllerTest {
 	@DisplayName("좋아요_누른_커뮤니티_불러오기_테스트")
 	@Test
 	public void getLikeList() throws Exception {
-		List<CommunityLikeResDto> dtoList = new ArrayList<>();
+		List<CommunitySimpleResDto> dtoList = new ArrayList<>();
 		CommunityLikeResDtos dtos = new CommunityLikeResDtos(dtoList);
 		given(communityService.getLikeList("hey@naver.com", "JOINTPURCHASE")).willReturn(dtos);
 

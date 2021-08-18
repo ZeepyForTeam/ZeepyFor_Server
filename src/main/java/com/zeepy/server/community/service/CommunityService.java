@@ -21,7 +21,6 @@ import com.zeepy.server.community.domain.CommunityLike;
 import com.zeepy.server.community.domain.Participation;
 import com.zeepy.server.community.dto.CommentDto;
 import com.zeepy.server.community.dto.CommunityLikeDto;
-import com.zeepy.server.community.dto.CommunityLikeResDto;
 import com.zeepy.server.community.dto.CommunityLikeResDtos;
 import com.zeepy.server.community.dto.CommunityResponseDto;
 import com.zeepy.server.community.dto.CommunitySimpleResDto;
@@ -84,31 +83,31 @@ public class CommunityService {
 
 		if (communityCategory == null || communityCategory.isEmpty()) {
 			return communityLikeList.stream()
-				.map(CommunityLikeResDto::new)
+				.map(CommunityLike::getCommunity)
+				.map(CommunitySimpleResDto::of)
 				.collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
 		}
 
 		return communityLikeList.stream()
-			.map(CommunityLikeResDto::new)
+			.map(CommunityLike::getCommunity)
 			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
+			.map(CommunitySimpleResDto::of)
 			.collect(Collectors.collectingAndThen(Collectors.toList(), CommunityLikeResDtos::new));
 	}
 
 	@Transactional
 	public Long save(SaveCommunityRequestDto requestDto, String userEmail) {
 		User writer = getUserByEmail(userEmail);
-
 		Community communityToSave = requestDto.toEntity();
 		communityToSave.setUser(writer);
-		Community community = communityRepository.save(communityToSave);
 
 		if (requestDto.getCommunityCategory().equals("JOINTPURCHASE")) {
-			ParticipationDto participationDto = new ParticipationDto(community, writer);
-			Participation participationToSave = participationDto.toEntity();
+			ParticipationDto participationDto = new ParticipationDto(communityToSave, writer);
+			Participation participationToSave = participationDto.toUpdateEntity();
 			participationRepository.save(participationToSave);
 		}
 
-		return community.getId();
+		return communityRepository.save(communityToSave).getId();
 	}
 
 	@Transactional
@@ -283,7 +282,7 @@ public class CommunityService {
 		if (communityCategory == null || communityCategory.isEmpty()) {
 			List<CommunitySimpleResDto> participatedCommunities = participationList.stream()
 				.map(Participation::getCommunity)
-                .map(CommunitySimpleResDto::of)
+				.map(CommunitySimpleResDto::of)
 				.collect(Collectors.toList());
 			List<CommunitySimpleResDto> myCommunities = CommunitySimpleResDto.listOf(communityList);
 			return new MyZipJoinResDto(participatedCommunities, myCommunities);
@@ -291,13 +290,13 @@ public class CommunityService {
 
 		List<CommunitySimpleResDto> participatedCommunities = participationList.stream()
 			.map(Participation::getCommunity)
-            .map(CommunitySimpleResDto::of)
 			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
+			.map(CommunitySimpleResDto::of)
 			.collect(Collectors.toList());
 
 		List<CommunitySimpleResDto> myCommunities = communityList.stream()
-			.map(CommunitySimpleResDto::of)
 			.filter(c -> c.getCommunityCategory().equals(CommunityCategory.valueOf(communityCategory)))
+			.map(CommunitySimpleResDto::of)
 			.collect(Collectors.toList());
 		return new MyZipJoinResDto(participatedCommunities, myCommunities);
 	}

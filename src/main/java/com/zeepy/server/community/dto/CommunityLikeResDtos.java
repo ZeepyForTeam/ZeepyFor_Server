@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class CommunityLikeResDtos {
-	private List<CommunityLikeResDto> communityLikeResDtoList;
+	private List<CommunitySimpleResDto> communityLikeResDtoList;
 
 	@Builder
-	public CommunityLikeResDtos(List<CommunityLikeResDto> communityLikeResDtoList) {
-		this.communityLikeResDtoList = communityLikeResDtoList;
+	public CommunityLikeResDtos(List<CommunitySimpleResDto> CommunitySimpleResDtos) {
+		this.communityLikeResDtoList = CommunitySimpleResDtos;
 	}
 }
