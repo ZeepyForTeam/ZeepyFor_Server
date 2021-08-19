@@ -16,6 +16,7 @@ public enum ErrorCode {
 	BAD_REQUEST_COMMENT(400, "Comment에 대해 잘못된 요청입니다."),
 	OVERFLOW_ACHIEVEMENT(400, "더이상 참여할수 없습니다."),
 	ALREADY_PARTICIPATION(400, "이미 참여한 사용자입니다."),
+	JOINTPURCHASE_OWNER(400, "본인이 작성한 글은 참여 취소할 수 없습니다"),
 	MORE_THAN_ONE_PARTICIPANT(400, "본인 제외 참여한 사람이 있어 글을 수정 또는 삭제할 수 없습니다."),
 	REFRESH_TOKEN_EXPIRED(401, "RefreshToken의 유효시간이 만료되었습니다"),
 	REFRESH_TOKEN_NOT_EXIST(400, "RefreshToken이 존재하지 않습니다. 다시 로그인 해주세요."),

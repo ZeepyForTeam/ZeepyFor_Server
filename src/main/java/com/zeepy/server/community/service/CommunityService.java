@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.JointPurchaseOwner;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.MoreThanOneParticipantException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
@@ -168,6 +169,10 @@ public class CommunityService {
 		Community findCommunity = communityRepository.findById(communityId)
 			.orElseThrow(NotFoundCommunityException::new);
 
+		if (findUser.equals(findCommunity.getUser())) {
+			throw new JointPurchaseOwner();
+		}
+
 		Long findUserId = findUser.getId();
 		Long findCommunityId = findCommunity.getId();
 		participationRepository.deleteByUserIdAndCommunityId(findUserId, findCommunityId);
@@ -179,8 +184,8 @@ public class CommunityService {
 			.findFirst()
 			.orElseThrow(BadRequestCommentException::new);
 		superComment.cancelParticipation();
-
 		findCommunity.substractCurrentNumberOfPeople();
+		commentRepository.deleteById(superComment.getId());
 
 		/**
 		 * PUSH 알림 추가 로직

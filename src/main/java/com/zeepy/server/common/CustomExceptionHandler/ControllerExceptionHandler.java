@@ -19,6 +19,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateE
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateNicknameException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.FirebaseCloudMessageException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.InvalidRequestParameterException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.JointPurchaseOwner;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.KakaoUnAuthorization;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.MoreThanOneParticipantException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
@@ -155,6 +156,13 @@ public class ControllerExceptionHandler {
 
 	@ExceptionHandler(AlreadyParticipationException.class)
 	public ResponseEntity<ErrorResponse> alreadyParticipationException(AlreadyParticipationException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(JointPurchaseOwner.class)
+	public ResponseEntity<ErrorResponse> jointPurchaseOwner(JointPurchaseOwner e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

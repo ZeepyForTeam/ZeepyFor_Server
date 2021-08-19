@@ -20,6 +20,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.JointPurchaseOwner;
+import com.zeepy.server.community.domain.Comment;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.CommunityLike;
@@ -214,4 +216,39 @@ public class CommunityServiceTest {
 		);
 	}
 
+	@DisplayName("공동 구매 작성자가 공동 구매 참여 취소를 누르는 경우")
+	@Test
+	public void cancelJointPurchaseException() {
+		// given
+		// 작성자
+		User user = User.builder()
+			.name("작성자")
+			.accessNotify(true)
+			.role(Role.ROLE_USER)
+			.build();
+
+		// 작성한 커뮤니티
+		Community c1 = Community.builder()
+			.id(1L)
+			.user(user)
+			.communityCategory(CommunityCategory.JOINTPURCHASE)
+			.address("서울특별시 도봉구")
+			.build();
+
+		// 참여
+		Participation participation = Participation.builder()
+			.id(1L)
+			.user(user)
+			.community(c1)
+			.build();
+
+		when(userRepository.findByEmail(any())).thenReturn(Optional.ofNullable(user));
+		when(communityRepository.findById(any())).thenReturn(Optional.ofNullable(c1));
+
+		// when
+		// then
+		assertThrows(JointPurchaseOwner.class, () -> {
+			communityService.cancelJoinCommunity(1L, dummyEmail);
+		});
+	}
 }
