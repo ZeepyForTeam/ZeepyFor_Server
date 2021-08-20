@@ -119,6 +119,10 @@ public class User implements UserDetails {
 		this.profileImage = profileImage;
 	}
 
+	public Boolean validNickNameLenth(){
+		return nickname.length() > 0;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.singletonList(
