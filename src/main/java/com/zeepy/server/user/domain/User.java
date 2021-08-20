@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -55,12 +56,6 @@ public class User implements UserDetails {
 
 	private String password;
 
-	private String address;
-
-	private String building;
-
-	private String place;
-
 	@NotNull
 	private Boolean accessNotify;
 
@@ -74,6 +69,7 @@ public class User implements UserDetails {
 
 	@ElementCollection
 	@CollectionTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"))
+	@Size(max = 3)
 	@Column(name = "address")
 	private List<Address> addresses = new ArrayList<>();
 
@@ -90,17 +86,13 @@ public class User implements UserDetails {
 	private List<Review> reviews = new ArrayList<>();
 
 	@Builder
-	public User(Long id, String name, String nickname, String email, String password, String address, String building,
-		String place,
+	public User(Long id, String name, String nickname, String email, String password,
 		Boolean accessNotify, Role role, String profileImage, Boolean sendMailCheck) {
 		this.id = id;
 		this.name = name;
 		this.nickname = nickname;
 		this.email = email;
 		this.password = password;
-		this.address = address;
-		this.building = building;
-		this.place = place;
 		this.accessNotify = accessNotify;
 		this.sendMailCheck = sendMailCheck;
 		this.role = role;

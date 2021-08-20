@@ -22,21 +22,16 @@ public class RegistrationReqDto {
     private String email;
     @NotNull(message = "비밀번호는 필수값입니다.")
     private String password;
-    private String address;
-    private String building;
     @NotNull(message = "이메일 여부는 필수값입니다.")
     private Boolean sendMailCheck;
 
     @Builder
-    public RegistrationReqDto(String name, String nickname, String email, String password, String address,
-        String building,
+    public RegistrationReqDto(String name, String nickname, String email, String password,
         Boolean sendMailCheck) {
         this.name = name;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
-        this.address = address;
-        this.building = building;
         this.sendMailCheck = sendMailCheck;
     }
 
@@ -46,8 +41,6 @@ public class RegistrationReqDto {
             .nickname(nickname)
             .email(email)
             .password(setBCryptEncoding())
-            .address(address)
-            .building(building)
             .accessNotify(false)
             .sendMailCheck(sendMailCheck)
             .role(Role.ROLE_USER)

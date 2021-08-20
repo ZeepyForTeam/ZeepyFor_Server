@@ -18,37 +18,39 @@ import com.zeepy.server.auth.service.KakaoApi;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 @RestController
 public class AuthController {
-	private final AuthService authService;
-	private final KakaoApi kakaoApi;
+    private final AuthService authService;
+    private final KakaoApi kakaoApi;
 
-	@PostMapping("/login")
-	public ResponseEntity<TokenResDto> login(@RequestBody LoginReqDto loginReqDto) {
-		TokenResDto tokenResDto = authService.login(loginReqDto);
-		return ResponseEntity.ok().body(tokenResDto);
-	}
+    @PostMapping("/login")
+    public ResponseEntity<TokenResDto> login(@Valid @RequestBody LoginReqDto loginReqDto) {
+        TokenResDto tokenResDto = authService.login(loginReqDto);
+        return ResponseEntity.ok().body(tokenResDto);
+    }
 
-	@DeleteMapping("/logout")
-	public ResponseEntity<Void> logout(@AuthenticationPrincipal String userEmail) {
-		authService.logout(userEmail);
-		return ResponseEntity.ok().build();
-	}
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(@AuthenticationPrincipal String userEmail) {
+        authService.logout(userEmail);
+        return ResponseEntity.ok().build();
+    }
 
-	@PostMapping("/reissue")
-	public ResponseEntity<TokenResDto> reissue(@RequestBody ReIssueReqDto reIssueReqDto) {
-		TokenResDto tokenResDto = authService.reissue(reIssueReqDto);
-		return ResponseEntity.ok().body(tokenResDto);
-	}
+    @PostMapping("/reissue")
+    public ResponseEntity<TokenResDto> reissue(@RequestBody ReIssueReqDto reIssueReqDto) {
+        TokenResDto tokenResDto = authService.reissue(reIssueReqDto);
+        return ResponseEntity.ok().body(tokenResDto);
+    }
 
-	@PostMapping("/login/kakao")
-	public ResponseEntity<TokenResDto> kakaoLogin(@RequestBody KakaoLoginReqDto kakaoLoginReqDto) {
-		GetUserInfoResDto userInfoResDto = kakaoApi.getUserInfo(
-			kakaoLoginReqDto.getAccessToken());
+    @PostMapping("/login/kakao")
+    public ResponseEntity<TokenResDto> kakaoLogin(@RequestBody KakaoLoginReqDto kakaoLoginReqDto) {
+        GetUserInfoResDto userInfoResDto = kakaoApi.getUserInfo(
+                kakaoLoginReqDto.getAccessToken());
 
-		TokenResDto tokenResDto = authService.kakaoLogin(userInfoResDto, kakaoLoginReqDto);
-		return ResponseEntity.ok().body(tokenResDto);
-	}
+        TokenResDto tokenResDto = authService.kakaoLogin(userInfoResDto, kakaoLoginReqDto);
+        return ResponseEntity.ok().body(tokenResDto);
+    }
 }

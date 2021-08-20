@@ -23,6 +23,7 @@ public enum ErrorCode {
 	KAKAO_UNAUTHORIZATION(401, "잘못된 카카오 토큰입니다."),
 	Duplicate_Email(400, "중복된 이메일입니다."),
 	Duplicate_Nickname(400, "중복된 닉네임입니다."),
+	INVALID_ADDRESSES(400, "올바르지 못한 주소 리스트입니다."),
 	FCM_NOT_ALLOWED(500, "Firebase 오류입니다. 서버팀에 문의하여 주세요");
 
 	private final int status;
