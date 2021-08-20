@@ -50,9 +50,6 @@ public class Community extends BaseTimeEntity {
 	private String productName;
 
 	@Nullable
-	private Integer productPrice;
-
-	@Nullable
 	private String purchasePlace;
 
 	@Nullable

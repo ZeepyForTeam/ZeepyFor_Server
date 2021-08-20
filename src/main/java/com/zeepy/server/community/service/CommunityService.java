@@ -185,7 +185,6 @@ public class CommunityService {
 			.orElseThrow(BadRequestCommentException::new);
 		superComment.cancelParticipation();
 		findCommunity.substractCurrentNumberOfPeople();
-		commentRepository.deleteById(superComment.getId());
 
 		/**
 		 * PUSH 알림 추가 로직
