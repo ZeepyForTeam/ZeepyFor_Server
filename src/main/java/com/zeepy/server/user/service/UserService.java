@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.auth.repository.TokenRepository;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyExistUserException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateNicknameException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
@@ -34,6 +35,12 @@ public class UserService {
 
 	@Transactional
 	public void registration(RegistrationReqDto registrationReqDto) {
+		if (userRepository.findByEmail(registrationReqDto
+			.getEmail())
+			.isPresent()) {
+			throw new AlreadyExistUserException();
+		}
+
 		userRepository.save(registrationReqDto
 			.toEntity());
 	}

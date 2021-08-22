@@ -25,6 +25,7 @@ public enum ErrorCode {
 	Duplicate_Email(400, "중복된 이메일입니다."),
 	Duplicate_Nickname(400, "중복된 닉네임입니다."),
 	APPLE_UNAUTHORIZATION(401, "애플 유효성 검사에 실패했습니다."),
+	ALREADY_EXIST_USER(400, "이미존재하는 사용자입니다."),
 	FCM_NOT_ALLOWED(500, "Firebase 오류입니다. 서버팀에 문의하여 주세요");
 
 	private final int status;
