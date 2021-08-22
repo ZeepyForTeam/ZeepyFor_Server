@@ -74,253 +74,253 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class BuildingService {
-    private final BuildingRepository buildingRepository;
-    private final JPAQueryFactory jpaQueryFactory;
+	private final BuildingRepository buildingRepository;
+	private final JPAQueryFactory jpaQueryFactory;
 
-    private QBuilding qBuilding = QBuilding.building;
-    private QBuildingDeal qBuildingDeal = QBuildingDeal.buildingDeal;
-    private QBuildingLike qBuildingLike = QBuildingLike.buildingLike;
-    private QReview qReview = QReview.review1;
+	private QBuilding qBuilding = QBuilding.building;
+	private QBuildingDeal qBuildingDeal = QBuildingDeal.buildingDeal;
+	private QBuildingLike qBuildingLike = QBuildingLike.buildingLike;
+	private QReview qReview = QReview.review1;
 
-    private BooleanExpression containShortAddress(String shortAddress) {
-        if (shortAddress == null) {
-            return null;
-        }
-        return qBuilding
-            .shortAddress
-            .contains(shortAddress);
-    }
+	private BooleanExpression containShortAddress(String shortAddress) {
+		if (shortAddress == null) {
+			return null;
+		}
+		return qBuilding
+			.shortAddress
+			.contains(shortAddress);
+	}
 
-    private BooleanExpression goeMonthlyRent(Integer monthlyRent) {
-        if (monthlyRent == null) {
-            return null;
-        }
-        return qBuildingDeal
-            .monthlyRent
-            .goe(monthlyRent);
-    }
+	private BooleanExpression goeMonthlyRent(Integer monthlyRent) {
+		if (monthlyRent == null) {
+			return null;
+		}
+		return qBuildingDeal
+			.monthlyRent
+			.goe(monthlyRent);
+	}
 
-    private BooleanExpression loeMonthlyRent(Integer monthlyRent) {
-        if (monthlyRent == null) {
-            return null;
-        }
-        return qBuildingDeal
-            .monthlyRent
-            .loe(monthlyRent);
-    }
+	private BooleanExpression loeMonthlyRent(Integer monthlyRent) {
+		if (monthlyRent == null) {
+			return null;
+		}
+		return qBuildingDeal
+			.monthlyRent
+			.loe(monthlyRent);
+	}
 
-    private BooleanExpression goeDeposit(Integer deposit) {
-        if (deposit == null) {
-            return null;
-        }
-        return qBuildingDeal
-            .deposit
-            .goe(deposit);
-    }
+	private BooleanExpression goeDeposit(Integer deposit) {
+		if (deposit == null) {
+			return null;
+		}
+		return qBuildingDeal
+			.deposit
+			.goe(deposit);
+	}
 
-    private BooleanExpression loeDeposit(Integer deposit) {
-        if (deposit == null) {
-            return null;
-        }
-        return qBuildingDeal
-            .deposit
-            .loe(deposit);
-    }
+	private BooleanExpression loeDeposit(Integer deposit) {
+		if (deposit == null) {
+			return null;
+		}
+		return qBuildingDeal
+			.deposit
+			.loe(deposit);
+	}
 
-    private BooleanExpression neDealType(DealType dealType) {
-        if (dealType == null) {
-            return null;
-        }
-        return qBuildingDeal
-            .dealType
-            .ne(dealType);
-    }
+	private BooleanExpression neDealType(DealType dealType) {
+		if (dealType == null) {
+			return null;
+		}
+		return qBuildingDeal
+			.dealType
+			.ne(dealType);
+	}
 
-    private BooleanExpression inRoomCounts(List<RoomCount> roomCounts) {
-        if (roomCounts == null) {
-            return null;
-        }
+	private BooleanExpression inRoomCounts(List<RoomCount> roomCounts) {
+		if (roomCounts == null) {
+			return null;
+		}
 
-        return qReview
-            .roomCount
-            .in(roomCounts);
-    }
+		return qReview
+			.roomCount
+			.in(roomCounts);
+	}
 
-    private BooleanExpression inFurnitures(List<Furniture> furnitures) {
-        if (furnitures == null) {
-            return null;
-        }
-        return qReview
-            .furnitures
-            .any()
-            .in(furnitures);
-    }
+	private BooleanExpression inFurnitures(List<Furniture> furnitures) {
+		if (furnitures == null) {
+			return null;
+		}
+		return qReview
+			.furnitures
+			.any()
+			.in(furnitures);
+	}
 
-    private BooleanExpression eqEmail(String email) {
-        if (email == null) {
-            return null;
-        }
-        return qBuildingLike
-            .user
-            .email
-            .eq(email);
-    }
+	private BooleanExpression eqEmail(String email) {
+		if (email == null) {
+			return null;
+		}
+		return qBuildingLike
+			.user
+			.email
+			.eq(email);
+	}
 
-    // CREATE
-    @Transactional
-    public Long create(BuildingRequestDto buildingRequestDto) {
-        Building building = buildingRepository
-            .save(buildingRequestDto.returnBuildingEntity());
-        return building.getId();
-    }
+	// CREATE
+	@Transactional
+	public Long create(BuildingRequestDto buildingRequestDto) {
+		Building building = buildingRepository
+			.save(buildingRequestDto.returnBuildingEntity());
+		return building.getId();
+	}
 
-    @Transactional
-    public void batchInsert(List<BuildingRequestDto> buildingRequestDtoList) {
-        int batchCount = 0;
-        List<Building> buildingList = new ArrayList<>();
-        for (BuildingRequestDto buildingRequestDto : buildingRequestDtoList) {
-            buildingList.add(buildingRequestDto.returnBuildingEntity());
-            batchCount += 1;
-            if (batchCount % 100 == 0) {
-                buildingRepository.saveAll(buildingList);
-                buildingList = new ArrayList<>();
-            }
+	@Transactional
+	public void batchInsert(List<BuildingRequestDto> buildingRequestDtoList) {
+		int batchCount = 0;
+		List<Building> buildingList = new ArrayList<>();
+		for (BuildingRequestDto buildingRequestDto : buildingRequestDtoList) {
+			buildingList.add(buildingRequestDto.returnBuildingEntity());
+			batchCount += 1;
+			if (batchCount % 100 == 0) {
+				buildingRepository.saveAll(buildingList);
+				buildingList = new ArrayList<>();
+			}
 
-        }
-    }
+		}
+	}
 
-    @Transactional(readOnly = true)
-    public List<BuildingResponseDto> getAll() {
-        List<Building> buildingList = buildingRepository.findAll();
-        return BuildingResponseDto.listOf(buildingList);
-    }
+	@Transactional(readOnly = true)
+	public List<BuildingResponseDto> getAll() {
+		List<Building> buildingList = buildingRepository.findAll();
+		return BuildingResponseDto.listOf(buildingList);
+	}
 
-    // READ
-    @Transactional(readOnly = true)
-    public Page<BuildingResponseDto> getAll(
-        String shortAddress,
-        Integer greaterMonthlyRent,
-        Integer lesserMonthlyRent,
-        Integer greaterDeposit,
-        Integer lesserDeposit,
-        DealType notEqualDealType,
-        List<RoomCount> roomCounts,
-        List<Furniture> furnitures,
-        Pageable pageable
-    ) {
-        QueryResults<Building> fetchResults = jpaQueryFactory
-            .selectDistinct(qBuilding)
-            .from(qBuilding)
-            .leftJoin(qBuilding.reviews, qReview)
-            .innerJoin(qBuilding.buildingDeals, qBuildingDeal)
-            .where(
-                containShortAddress(shortAddress),
-                goeMonthlyRent(greaterMonthlyRent),
-                loeMonthlyRent(lesserMonthlyRent),
-                goeDeposit(greaterDeposit),
-                loeDeposit(lesserDeposit),
-                neDealType(notEqualDealType),
-                inRoomCounts(roomCounts),
-                inFurnitures(furnitures)
-            )
-            .orderBy(qBuilding.id.desc())
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize())
-            .fetchJoin()
-            .fetchResults();
+	// READ
+	@Transactional(readOnly = true)
+	public Page<BuildingResponseDto> getAll(
+		String shortAddress,
+		Integer greaterMonthlyRent,
+		Integer lesserMonthlyRent,
+		Integer greaterDeposit,
+		Integer lesserDeposit,
+		DealType notEqualDealType,
+		List<RoomCount> roomCounts,
+		List<Furniture> furnitures,
+		Pageable pageable
+	) {
+		QueryResults<Building> fetchResults = jpaQueryFactory
+			.selectDistinct(qBuilding)
+			.from(qBuilding)
+			.leftJoin(qBuilding.reviews, qReview)
+			.innerJoin(qBuilding.buildingDeals, qBuildingDeal)
+			.where(
+				containShortAddress(shortAddress),
+				goeMonthlyRent(greaterMonthlyRent),
+				loeMonthlyRent(lesserMonthlyRent),
+				goeDeposit(greaterDeposit),
+				loeDeposit(lesserDeposit),
+				neDealType(notEqualDealType),
+				inRoomCounts(roomCounts),
+				inFurnitures(furnitures)
+			)
+			.orderBy(qBuilding.id.desc())
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
+			.fetchJoin()
+			.fetchResults();
 
-        return new PageImpl<BuildingResponseDto>(
-            BuildingResponseDto.listOf(fetchResults.getResults()),
-            pageable,
-            fetchResults.getTotal());
-    }
+		return new PageImpl<BuildingResponseDto>(
+			BuildingResponseDto.listOf(fetchResults.getResults()),
+			pageable,
+			fetchResults.getTotal());
+	}
 
-    // READ
-    @Transactional(readOnly = true)
-    public Page<BuildingResponseDto> getUserLike(
-        String email,
-        Pageable pageable
-    ) {
-        QueryResults<Building> fetchResults = jpaQueryFactory
-            .selectDistinct(qBuilding)
-            .from(qBuilding)
-            .leftJoin(qBuilding.reviews, qReview)
-            .leftJoin(qBuilding.buildingLikes, qBuildingLike)
-            .innerJoin(qBuilding.buildingDeals, qBuildingDeal)
-            .where(
-                eqEmail(email)
-            )
-            .orderBy(qBuilding.id.desc())
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize())
-            .fetchJoin()
-            .fetchResults();
+	// READ
+	@Transactional(readOnly = true)
+	public Page<BuildingResponseDto> getUserLike(
+		String email,
+		Pageable pageable
+	) {
+		QueryResults<Building> fetchResults = jpaQueryFactory
+			.selectDistinct(qBuilding)
+			.from(qBuilding)
+			.leftJoin(qBuilding.reviews, qReview)
+			.leftJoin(qBuilding.buildingLikes, qBuildingLike)
+			.innerJoin(qBuilding.buildingDeals, qBuildingDeal)
+			.where(
+				eqEmail(email)
+			)
+			.orderBy(qBuilding.id.desc())
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
+			.fetchJoin()
+			.fetchResults();
 
-        return new PageImpl<BuildingResponseDto>(
-            BuildingResponseDto.listOf(fetchResults.getResults()),
-            pageable,
-            fetchResults.getTotal());
-    }
+		return new PageImpl<BuildingResponseDto>(
+			BuildingResponseDto.listOf(fetchResults.getResults()),
+			pageable,
+			fetchResults.getTotal());
+	}
 
-    // READ
-    @Transactional(readOnly = true)
-    public BuildingResponseDto getByAddress(String address) {
-        Building building = buildingRepository.findByFullNumberAddress(address)
-                .orElseThrow(NoContentException::new);
-        return BuildingResponseDto.of(building);
-    }
+	// READ
+	@Transactional(readOnly = true)
+	public BuildingResponseDto getByAddress(String address) {
+		Building building = buildingRepository.findByFullNumberAddress(address)
+			.orElseThrow(NoContentException::new);
+		return BuildingResponseDto.of(building);
+	}
 
-    // READ
-    @Transactional(readOnly = true)
-    public List<BuildingResponseDto> getByLatitudeAndLongitude(
-        double latitudeGreater,
-        double latitudeLess,
-        double longitudeGreater,
-        double longitudeLess
-    ) {
-        List<Building> buildingList = buildingRepository
-            .findByLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(
-                latitudeGreater,
-                latitudeLess,
-                longitudeGreater,
-                longitudeLess
-            );
-        return BuildingResponseDto.listOf(buildingList);
-    }
+	// READ
+	@Transactional(readOnly = true)
+	public List<BuildingResponseDto> getByLatitudeAndLongitude(
+		double latitudeGreater,
+		double latitudeLess,
+		double longitudeGreater,
+		double longitudeLess
+	) {
+		List<Building> buildingList = buildingRepository
+			.findByLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(
+				latitudeGreater,
+				latitudeLess,
+				longitudeGreater,
+				longitudeLess
+			);
+		return BuildingResponseDto.listOf(buildingList);
+	}
 
-    // READ
-    @Transactional(readOnly = true)
-    public Page<BuildingAutoCompleteResponseDto> getBuildingAddressesByAddress(String address, Pageable pageable) {
-        Page<Building> buildingList = buildingRepository.findByFullNumberAddressContainingOrFullRoadNameAddressContaining(
-            address, address, pageable);
-        return new PageImpl<BuildingAutoCompleteResponseDto>(
-            BuildingAutoCompleteResponseDto.listOf(buildingList.getContent()),
-            pageable,
-            buildingList.getTotalElements());
-    }
+	// READ
+	@Transactional(readOnly = true)
+	public Page<BuildingAutoCompleteResponseDto> getBuildingAddressesByAddress(String address, Pageable pageable) {
+		Page<Building> buildingList = buildingRepository.findByFullNumberAddressContainingOrFullRoadNameAddressContaining(
+			address, address, pageable);
+		return new PageImpl<BuildingAutoCompleteResponseDto>(
+			BuildingAutoCompleteResponseDto.listOf(buildingList.getContent()),
+			pageable,
+			buildingList.getTotalElements());
+	}
 
-    // READ
-    @Transactional(readOnly = true)
-    public BuildingResponseDto getById(Long id) {
-        Building building = buildingRepository
-            .findById(id)
-            .orElseThrow(NoContentException::new);
-        return BuildingResponseDto.of(building);
-    }
+	// READ
+	@Transactional(readOnly = true)
+	public BuildingResponseDto getById(Long id) {
+		Building building = buildingRepository
+			.findById(id)
+			.orElseThrow(NoContentException::new);
+		return BuildingResponseDto.of(building);
+	}
 
-    // UPDATE
-    @Transactional
-    public void update(Long id, BuildingRequestDto buildingRequestDto) {
-        Building building = buildingRepository
-            .findById(id)
-            .orElseThrow(NoContentException::new);
-        building.update(buildingRequestDto);
-        buildingRepository.save(building);
-    }
+	// UPDATE
+	@Transactional
+	public void update(Long id, BuildingRequestDto buildingRequestDto) {
+		Building building = buildingRepository
+			.findById(id)
+			.orElseThrow(NoContentException::new);
+		building.update(buildingRequestDto);
+		buildingRepository.save(building);
+	}
 
-    // DELETE
-    @Transactional
-    public void deleteById(Long id) {
-        buildingRepository.deleteById(id);
-    }
+	// DELETE
+	@Transactional
+	public void deleteById(Long id) {
+		buildingRepository.deleteById(id);
+	}
 }

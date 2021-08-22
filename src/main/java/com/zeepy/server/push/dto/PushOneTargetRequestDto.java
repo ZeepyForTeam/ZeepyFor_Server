@@ -15,18 +15,18 @@ import lombok.Setter;
 @Getter
 public class PushOneTargetRequestDto {
 
-    @NotBlank(message = "email cannot be Empty")
-    private String email;
+	@NotBlank(message = "email cannot be Empty")
+	private String email;
 
-    @NotBlank(message = "title cannot be Empty")
-    private String title;
+	@NotBlank(message = "title cannot be Empty")
+	private String title;
 
-    @NotBlank(message = "body cannot be Empty")
-    private String body;
+	@NotBlank(message = "body cannot be Empty")
+	private String body;
 
-    public PushOneTargetRequestDto(String email, String title, String body) {
-        this.email = email;
-        this.title = title;
-        this.body = body;
-    }
+	public PushOneTargetRequestDto(String email, String title, String body) {
+		this.email = email;
+		this.title = title;
+		this.body = body;
+	}
 }

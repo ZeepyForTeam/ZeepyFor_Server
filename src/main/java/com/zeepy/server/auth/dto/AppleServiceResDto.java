@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
-public class KakaoLoginReqDto {
-	private String accessToken;
+public class AppleServiceResDto {
+	private String state;
+	private String code;
+	private String id_token;
+	private String user;
 }

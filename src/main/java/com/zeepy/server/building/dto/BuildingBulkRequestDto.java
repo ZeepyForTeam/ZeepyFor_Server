@@ -143,8 +143,8 @@ public class BuildingBulkRequestDto {
 			this.deposit,
 			this.monthlyRent,
 			this.dealCost,
-                this.floor,
-                dealType
-        );
-    }
+			this.floor,
+			dealType
+		);
+	}
 }

@@ -20,7 +20,6 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateN
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.FirebaseCloudMessageException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.InvalidRequestParameterException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.JointPurchaseOwner;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.KakaoUnAuthorization;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.MoreThanOneParticipantException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
@@ -32,6 +31,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUs
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenNotExistException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAuthorization;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -169,7 +169,7 @@ public class ControllerExceptionHandler {
 	}
 
 	@ExceptionHandler(RefreshTokenException.class)
-	public ResponseEntity<ErrorResponse> refreshTokenException(RefreshTokenException e) {
+	public ResponseEntity<ErrorResponse> refreshToeknException(RefreshTokenException e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
@@ -196,8 +196,8 @@ public class ControllerExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(KakaoUnAuthorization.class)
-	public ResponseEntity<ErrorResponse> kakaoUnAuthorization(KakaoUnAuthorization e) {
+	@ExceptionHandler(SNSUnAuthorization.class)
+	public ResponseEntity<ErrorResponse> snsUnAuthorization(SNSUnAuthorization e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);

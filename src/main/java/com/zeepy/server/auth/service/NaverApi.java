@@ -16,32 +16,34 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAutho
 
 @Component
 @PropertySource(value = {"classpath:security/application.properties"})
-public class KakaoApi {
-	@Value("${KAKAO.GETUSER.URL}")
+public class NaverApi {
+	@Value("${NAVER.CLIENT.ID}")
+	private String client_id;
+	@Value("${NAVER.SECRET}")
+	private String client_secret;
+	@Value("${NAVER.GETUSER.URL}")
 	private String GetUserURL;
-	@Value("${KAKAO.LOGOUT.URL}")
-	private String LogoutURL;
+	@Value("${NAVER.AUTH.URL}")
+	private String AuthURL;
 
 	public GetUserInfoResDto getUserInfo(String accessToken) {
-		System.out.println("accessToken !!!!!!! : " + accessToken);
 		GetUserInfoResDto userInfoResDto = new GetUserInfoResDto();
+		//Get메소드에 accessToken을 헤더에 넣고
+		//https://openapi.naver.com/v1/nid/me에 요청
+		//반환받은 값을 보내주고 email로 로그인을 해준다.
 		try {
 			URL url = new URL(GetUserURL);
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setRequestMethod("GET");
 
-			//요청에 필요한 Header에 포함될 내용
-			String authorizationHeader = "Bearer " + accessToken.trim();
-			System.out.println("code : " + authorizationHeader);
 			conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-			System.out.println("method : " + conn.getRequestMethod());
 
 			conn.setConnectTimeout(10000);
 			conn.setReadTimeout(5000);
 
 			int responseCode = conn.getResponseCode();
 			System.out.println("responseCode : " + responseCode);
-			if (responseCode == 401 || responseCode == 400) {
+			if (responseCode != 200) {
 				throw new SNSUnAuthorization();
 			}
 
@@ -55,14 +57,12 @@ public class KakaoApi {
 
 			JSONParser jsonParser = new JSONParser();
 			JSONObject jsonObject = (JSONObject)jsonParser.parse(result);
+			System.out.println("object : " + jsonObject);
 
-			JSONObject properties = (JSONObject)jsonObject.get("properties");
-			JSONObject kakao_account = (JSONObject)jsonObject.get("kakao_account");
+			JSONObject response = (JSONObject)jsonObject.get("response");
 
-			String nickname = properties.get("nickname").toString();
-			String email = kakao_account.get("email").toString();
+			String email = response.get("email").toString();
 
-			// userInfoResDto.setNickname(nickname);
 			userInfoResDto.setEmail(email);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,20 +72,25 @@ public class KakaoApi {
 	}
 
 	public void logout(String accessToken) {
-		System.out.println("accessToken : " + accessToken);
-		try {
-			URL url = new URL(LogoutURL);
-			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-			conn.setRequestMethod("POST");
+		StringBuffer params = new StringBuffer();
+		params.append("grant_type=" + "delete");
+		params.append("client_id" + client_id);
+		params.append("client_secret=" + client_secret);
+		params.append("access_token=").append(accessToken);
+		params.append("service_provider=" + "NAVER");
 
-			conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		String reqURL = AuthURL + "?" + params;
+		try {
+			URL url = new URL(reqURL);
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("GET");
 
 			int responseCode = conn.getResponseCode();
 			System.out.println("responseCode : " + responseCode);
-			if (responseCode == 401) {
+			if (responseCode != 200) {
 				throw new SNSUnAuthorization();
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

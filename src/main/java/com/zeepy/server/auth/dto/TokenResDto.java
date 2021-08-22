@@ -11,10 +11,12 @@ public class TokenResDto {
 	private String accessToken;
 	private String refreshToken;
 	private Long userId;
+	private String userEmail;
 
 	public TokenResDto(String accessToken, String refreshToken, User user) {
 		this.accessToken = accessToken;
 		this.refreshToken = refreshToken;
 		this.userId = user.getId();
+		this.userEmail = user.getEmail();
 	}
 }

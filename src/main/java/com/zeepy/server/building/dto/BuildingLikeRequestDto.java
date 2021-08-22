@@ -29,9 +29,9 @@ public class BuildingLikeRequestDto {
     }
 
     public BuildingLike returnBuildingLikeEntity() {
-        return new BuildingLike(
+		return new BuildingLike(
 			null,
 			LocalDateTime.now()
 		);
-    }
+	}
 }
