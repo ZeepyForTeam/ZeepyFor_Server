@@ -92,11 +92,10 @@ public class AuthService {
 
 	@Transactional
 	public TokenResDto kakaoLogin(GetUserInfoResDto userInfoResDto, SNSLoginReqDto snsLoginReqDto) {
-		// String nickname = userInfoResDto.getNickname();
-		String email = userInfoResDto.getEmail();
+		String id = userInfoResDto.getId();
 
 		//신규회원이면 회원가입
-		User user = userRepository.findByEmail(email)
+		User user = userRepository.findByEmail(id)
 			.orElseGet(() -> {
 				User newUser = userInfoResDto.toEntity();
 				User saveUser = userRepository.save(newUser);    //신규회원일때 name = zeepy#000 이런식으로
@@ -122,10 +121,10 @@ public class AuthService {
 	}
 
 	public TokenResDto naverLogin(GetUserInfoResDto userInfoResDto, SNSLoginReqDto snsLoginReqDto) {
-		String email = userInfoResDto.getEmail();
+		String id = userInfoResDto.getId();
 
 		//신규회원이면 회원가입
-		User user = userRepository.findByEmail(email)
+		User user = userRepository.findByEmail(id)
 			.orElseGet(() -> {
 				User newUser = userInfoResDto.toEntity();
 				User saveUser = userRepository.save(newUser);    //신규회원일때 name = zeepy#000 이런식으로
