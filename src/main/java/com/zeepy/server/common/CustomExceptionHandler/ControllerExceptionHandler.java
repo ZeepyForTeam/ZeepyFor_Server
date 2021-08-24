@@ -2,6 +2,7 @@ package com.zeepy.server.common.CustomExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,27 +12,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateNicknameException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.FirebaseCloudMessageException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.InvalidRequestParameterException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.JointPurchaseOwner;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.KakaoUnAuthorization;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.MoreThanOneParticipantException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundCommunityException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundParticipationException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundPasswordException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundReviewException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundTokenException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.OverflowAchievementRateException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenException;
-import com.zeepy.server.common.CustomExceptionHandler.CustomException.RefreshTokenNotExistException;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -215,6 +195,13 @@ public class ControllerExceptionHandler {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(BadRequestAddressException.class)
+	public ResponseEntity<ErrorResponse> overLimitAddresses(BadRequestAddressException e){
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
 	public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
