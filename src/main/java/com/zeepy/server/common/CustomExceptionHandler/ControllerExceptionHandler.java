@@ -19,6 +19,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomExce
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateNicknameException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.FirebaseCloudMessageException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.InValidEmailException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.InvalidRequestParameterException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.JointPurchaseOwner;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.MoreThanOneParticipantException;
@@ -220,6 +221,13 @@ public class ControllerExceptionHandler {
 
 	@ExceptionHandler(AlreadyExistUserException.class)
 	public ResponseEntity<ErrorResponse> alreadyExistUser(AlreadyExistUserException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(InValidEmailException.class)
+	public ResponseEntity<ErrorResponse> invalidEmail(InValidEmailException e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

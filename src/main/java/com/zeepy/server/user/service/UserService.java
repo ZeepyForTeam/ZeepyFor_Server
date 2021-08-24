@@ -10,6 +10,7 @@ import com.zeepy.server.auth.repository.TokenRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyExistUserException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateNicknameException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.InValidEmailException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.user.domain.Address;
 import com.zeepy.server.user.domain.ModifyNicknameReqDto;
@@ -120,12 +121,16 @@ public class UserService {
 	@Transactional
 	public void setSendMailCheck(String email) {
 		User user = findUserByEmail(email);
+
+		if(!user.isValidEmail()){throw new InValidEmailException();}
+
 		user.setSendMailCheck();
 	}
 
 	@Transactional
 	public SendMailCheckResDto getSendMailCheck(String userEmail) {
 		User user = findUserByEmail(userEmail);
+
 		return new SendMailCheckResDto(user);
 	}
 
