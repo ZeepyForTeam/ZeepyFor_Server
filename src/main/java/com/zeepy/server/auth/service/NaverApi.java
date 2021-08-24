@@ -64,8 +64,8 @@ public class NaverApi {
 //			String email = response.get("email").toString();
 			String id = response.get("id").toString();
 
-//			userInfoResDto.setEmail(email);
-			userInfoResDto.setId(id);
+			userInfoResDto.setEmail(id);
+//			userInfoResDto.setId(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

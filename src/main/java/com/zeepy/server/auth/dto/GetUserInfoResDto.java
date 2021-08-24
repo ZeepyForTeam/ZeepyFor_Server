@@ -13,12 +13,12 @@ import lombok.Setter;
 @Setter
 @Getter
 public class GetUserInfoResDto {
-//	private String email;
-	private String id;
+	private String email;
+//	private String id;
 
 	public User toEntity() {
 		return User.builder()
-			.email(id)
+			.email(email)
 			.role(Role.ROLE_USER)
 			.accessNotify(false)
 			.sendMailCheck(false)

@@ -87,7 +87,7 @@ public class AuthController {
 		System.out.println("================================");
 
 		TokenResponse tokenResponse = appleService.requestCodeValidations(clientSecret, code);
-		AppleTokenResDto appleTokenResDto = appleService.setAppleTokenResDto(tokenResponse);
+		AppleTokenResDto appleTokenResDto = appleService.setAppleTokenResDto(tokenResponse, code);
 		return ResponseEntity.ok().body(appleTokenResDto);
 	}
 }

@@ -62,7 +62,7 @@ public class KakaoApi {
 //			String email = kakao_account.get("email").toString();
 
 //			userInfoResDto.setEmail(email);
-			userInfoResDto.setId(id);
+			userInfoResDto.setEmail(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
