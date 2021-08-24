@@ -20,6 +20,7 @@ public class CommunityResponseDto {
 	private CommunityCategory communityCategory;
 	private String address;
 	private String productName;
+	private String productPrice;
 	private String sharingMethod;
 	private Integer targetNumberOfPeople;
 	private String title;
@@ -45,6 +46,7 @@ public class CommunityResponseDto {
 		this.communityCategory = community.getCommunityCategory();
 		this.address = community.getAddress();
 		this.productName = community.getProductName();
+		this.productPrice = community.getProductPrice();
 		this.sharingMethod = community.getSharingMethod();
 		this.targetNumberOfPeople = community.getTargetNumberOfPeople();
 		this.title = community.getTitle();
@@ -57,6 +59,7 @@ public class CommunityResponseDto {
 		CommunityCategory communityCategory,
 		String address,
 		String productName,
+		String productPrice,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
 		String title,
@@ -73,6 +76,7 @@ public class CommunityResponseDto {
 		this.communityCategory = communityCategory;
 		this.address = address;
 		this.productName = productName;
+		this.productPrice = productPrice;
 		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
 		this.title = title;
