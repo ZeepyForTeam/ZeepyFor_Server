@@ -141,6 +141,13 @@ public class ControllerExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(JointPurchaseOwner.class)
+	public ResponseEntity<ErrorResponse> jointPurchaseOwner(JointPurchaseOwner e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
 	@ExceptionHandler(RefreshTokenException.class)
 	public ResponseEntity<ErrorResponse> refreshTokenException(RefreshTokenException e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);

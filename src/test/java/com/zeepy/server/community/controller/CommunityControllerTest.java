@@ -74,10 +74,6 @@ public class CommunityControllerTest extends ControllerTest {
 	);
 
 	private final String userEmail = "test@naver.com";
-	private CommunityLikeRequestDto communityLikeRequestDto = CommunityLikeRequestDto.builder()
-		.communityId(1L)
-		.userEmail("hey@naver.com")
-		.build();
 
 	@Override
 	@BeforeEach
