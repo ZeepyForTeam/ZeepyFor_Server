@@ -44,12 +44,12 @@ public class AppleService {
 	}
 
 	@Transactional
-	public AppleTokenResDto setAppleTokenResDto(TokenResponse tokenResponse,String code) {
-//		String idToken = tokenResponse.getId_token();
+	public AppleTokenResDto setAppleTokenResDto(TokenResponse tokenResponse, String code) {
+		//		String idToken = tokenResponse.getId_token();
 
 		String appleRefreshToken = tokenResponse.getRefresh_token();
-//		Payload payload = getPayload(idToken);
-//		String userEmail = payload.getEmail();
+		//		Payload payload = getPayload(idToken);
+		//		String userEmail = payload.getEmail();
 		String userEmail = code;
 
 		User findUser = userRepository.findByEmail(userEmail)
@@ -68,7 +68,7 @@ public class AppleService {
 		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
 
 		Token findToken = tokenRepository.findByUserId(findUser
-			.getId())
+				.getId())
 			.orElseGet(() -> new Token(findUser));
 
 		findToken.setServiceToken(accessToken, refreshToken);

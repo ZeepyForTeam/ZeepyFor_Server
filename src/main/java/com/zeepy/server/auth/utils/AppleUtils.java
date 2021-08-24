@@ -36,6 +36,7 @@ import com.zeepy.server.auth.model.Payload;
 import com.zeepy.server.auth.model.TokenResponse;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AppleUnAuthrizationException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAuthorization;
+
 import sun.security.ec.ECPrivateKeyImpl;
 
 @Component

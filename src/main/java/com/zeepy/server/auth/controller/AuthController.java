@@ -1,7 +1,5 @@
 package com.zeepy.server.auth.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,7 +32,6 @@ public class AuthController {
 	private final AuthService authService;
 	private final KakaoApi kakaoApi;
 	private final NaverApi naverApi;
-	private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
 	@PostMapping("/login")
 	public ResponseEntity<TokenResDto> login(@RequestBody LoginReqDto loginReqDto) {
