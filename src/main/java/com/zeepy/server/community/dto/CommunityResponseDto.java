@@ -20,7 +20,10 @@ public class CommunityResponseDto {
 	private CommunityCategory communityCategory;
 	private String address;
 	private String productName;
+	private String productPrice;
+	private String purchasePlace;
 	private String sharingMethod;
+	private Integer currentNumberOfPeople;
 	private Integer targetNumberOfPeople;
 	private String title;
 	private String content;
@@ -45,7 +48,10 @@ public class CommunityResponseDto {
 		this.communityCategory = community.getCommunityCategory();
 		this.address = community.getAddress();
 		this.productName = community.getProductName();
+		this.productPrice = community.getProductPrice();
+		this.purchasePlace = community.getPurchasePlace();
 		this.sharingMethod = community.getSharingMethod();
+		this.currentNumberOfPeople = community.getCurrentNumberOfPeople();
 		this.targetNumberOfPeople = community.getTargetNumberOfPeople();
 		this.title = community.getTitle();
 		this.content = community.getContent();
@@ -57,7 +63,10 @@ public class CommunityResponseDto {
 		CommunityCategory communityCategory,
 		String address,
 		String productName,
+		String productPrice,
+		String purchasePlace,
 		String sharingMethod,
+		Integer currentNumberOfPeople,
 		Integer targetNumberOfPeople,
 		String title,
 		String content,
@@ -73,7 +82,10 @@ public class CommunityResponseDto {
 		this.communityCategory = communityCategory;
 		this.address = address;
 		this.productName = productName;
+		this.productPrice = productPrice;
+		this.purchasePlace = purchasePlace;
 		this.sharingMethod = sharingMethod;
+		this.currentNumberOfPeople = currentNumberOfPeople;
 		this.targetNumberOfPeople = targetNumberOfPeople;
 		this.title = title;
 		this.content = content;
@@ -94,7 +106,10 @@ public class CommunityResponseDto {
 			.communityCategory(community.getCommunityCategory())
 			.address(community.getAddress())
 			.productName(community.getProductName())
+			.productPrice(community.getProductPrice())
+			.purchasePlace(community.getPurchasePlace())
 			.sharingMethod(community.getSharingMethod())
+			.currentNumberOfPeople(community.getCurrentNumberOfPeople())
 			.targetNumberOfPeople(community.getTargetNumberOfPeople())
 			.title(community.getTitle())
 			.content(community.getContent())

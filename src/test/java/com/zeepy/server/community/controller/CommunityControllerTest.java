@@ -59,7 +59,10 @@ public class CommunityControllerTest extends ControllerTest {
 		CommunityCategory.JOINTPURCHASE,
 		"안산",
 		"공동구매 상품명",
+		"1000원",
+		"쿠팡",
 		"스타프라자에서 만나요",
+		2,
 		5,
 		"공동구매할싸람",
 		"내용",
@@ -69,7 +72,7 @@ public class CommunityControllerTest extends ControllerTest {
 		null,
 		null,
 		null,
-		LocalDateTime.now(),
+		LocalDateTime.of(2021, 8, 24, 18, 52),
 		false
 	);
 
@@ -217,7 +220,7 @@ public class CommunityControllerTest extends ControllerTest {
 		//given
 		long communityId = 1L;
 		UpdateCommunityReqDto updateCommunityReqDto = new UpdateCommunityReqDto("수정된 제목", "수정된 내용", "수정된 제품명",
-			"수정된 구매장소",
+			"수정된 가격", "수정된 구매장소",
 			"수정된 공유방법", 3, "수정된 설명");
 		String url = "/api/community/" + communityId;
 

@@ -50,6 +50,9 @@ public class Community extends BaseTimeEntity {
 	private String productName;
 
 	@Nullable
+	private String productPrice;
+
+	@Nullable
 	private String purchasePlace;
 
 	@Nullable
@@ -94,6 +97,7 @@ public class Community extends BaseTimeEntity {
 		CommunityCategory communityCategory,
 		String address,
 		String productName,
+		String productPrice,
 		String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
@@ -108,10 +112,11 @@ public class Community extends BaseTimeEntity {
 		this.communityCategory = communityCategory;
 		this.address = address;
 		this.productName = productName;
+		this.productPrice = productPrice;
+		this.purchasePlace = purchasePlace;
 		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
 		this.currentNumberOfPeople = currentNumberOfPeople;
-		this.purchasePlace = purchasePlace;
 		this.user = user;
 		this.title = title;
 		this.content = content;
@@ -140,9 +145,11 @@ public class Community extends BaseTimeEntity {
 		currentNumberOfPeople--;
 	}
 
-	public void update(String title,
+	public void update(
+		String title,
 		String content,
 		String productName,
+		String productPrice,
 		String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
