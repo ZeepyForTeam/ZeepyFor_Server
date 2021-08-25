@@ -3,6 +3,7 @@ package com.zeepy.server.common.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -42,8 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/h2-console/*").permitAll()
 			.antMatchers("/api/user/**").permitAll()
 			.antMatchers("/api/auth/**").permitAll()
-			.antMatchers("/api/buildings/**").permitAll()
-			.antMatchers("/api/deals/**").permitAll()
+			.antMatchers(HttpMethod.GET, "/api/buildings/address", "/api/buildings/addresses").hasRole("ADMIN")
+			.antMatchers(HttpMethod.POST, "/api/buildings", "/api/buildings/{id}", "/api/deals").hasRole("ADMIN")
+			.antMatchers(HttpMethod.PUT, "/api/buildings/{id}", "/api/deals/{id}").hasRole("ADMIN")
+			.antMatchers(HttpMethod.DELETE, "/api/buildings/{id}", "/api/deals/{id}").hasRole("ADMIN")
 			.anyRequest().authenticated()
 
 			.and()

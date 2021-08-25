@@ -139,12 +139,12 @@ public class BuildingController {
 		return ResponseEntity.ok().build();
 	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBuilding(
-        @PathVariable Long id
-    ) {
-        buildingService.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteBuilding(
+		@PathVariable Long id
+	) {
+		buildingService.deleteById(id);
+		return ResponseEntity.noContent().build();
+	}
 
 }
