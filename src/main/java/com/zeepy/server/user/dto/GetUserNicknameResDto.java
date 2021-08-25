@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class GetUserNicknameResDto {
 	private String nickname;
+	private String email;
 
 	public GetUserNicknameResDto(User user) {
 		this.nickname = user.getNickname();
+		this.email = user.getEmail();
 	}
 }

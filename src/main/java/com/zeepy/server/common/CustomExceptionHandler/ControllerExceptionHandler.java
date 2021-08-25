@@ -14,6 +14,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyExistUserException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.AlreadyParticipationException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestAddressException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.BadRequestCommentException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
@@ -171,7 +172,7 @@ public class ControllerExceptionHandler {
 	}
 
 	@ExceptionHandler(RefreshTokenException.class)
-	public ResponseEntity<ErrorResponse> refreshToeknException(RefreshTokenException e) {
+	public ResponseEntity<ErrorResponse> refreshTokenException(RefreshTokenException e) {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
@@ -217,6 +218,13 @@ public class ControllerExceptionHandler {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(BadRequestAddressException.class)
+	public ResponseEntity<ErrorResponse> overLimitAddresses(BadRequestAddressException e){
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(AlreadyExistUserException.class)

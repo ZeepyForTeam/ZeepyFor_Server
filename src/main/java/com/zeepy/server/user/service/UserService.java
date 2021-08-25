@@ -42,8 +42,9 @@ public class UserService {
 			throw new AlreadyExistUserException();
 		}
 
-		userRepository.save(registrationReqDto
+		User saveUser = userRepository.save(registrationReqDto
 			.toEntity());
+		if(!saveUser.validNickNameLenth()) saveUser.setNickNameById();
 	}
 
 	@Transactional

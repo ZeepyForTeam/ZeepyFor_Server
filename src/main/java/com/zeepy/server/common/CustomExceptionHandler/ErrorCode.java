@@ -24,6 +24,7 @@ public enum ErrorCode {
 	SNS_UNAUTHORIZATION(401, "SNS로그인에 실패했습니다."),
 	Duplicate_Email(400, "중복된 이메일입니다."),
 	Duplicate_Nickname(400, "중복된 닉네임입니다."),
+	INVALID_ADDRESSES(400, "올바르지 못한 주소 리스트입니다."),
 	APPLE_UNAUTHORIZATION(401, "애플 유효성 검사에 실패했습니다."),
 	ALREADY_EXIST_USER(400, "이미존재하는 사용자입니다."),
 	INVALID_EMAIL(400, "이메일 형식이 올바르지 않습니다."),

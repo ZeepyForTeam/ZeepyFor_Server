@@ -96,8 +96,8 @@ public class UserController {
 		return ResponseEntity.ok().body(addressResDto);
 	}
 
-	@GetMapping("/nickname")
-	public ResponseEntity<GetUserNicknameResDto> getUserNickname(@AuthenticationPrincipal String userEmail) {
+	@GetMapping("/nickname/email")
+	public ResponseEntity<GetUserNicknameResDto> getUserNicknameAndEmail(@AuthenticationPrincipal String userEmail) {
 		GetUserNicknameResDto getUserNicknameResDto = userService.getUserNickname(userEmail);
 		return ResponseEntity.ok().body(getUserNicknameResDto);
 	}

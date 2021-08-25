@@ -23,27 +23,28 @@ import com.zeepy.server.auth.service.NaverApi;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 @RestController
 public class AuthController {
+    private final AuthService authService;
+    private final KakaoApi kakaoApi;
 	private final AppleService appleService;
-
-	private final AuthService authService;
-	private final KakaoApi kakaoApi;
 	private final NaverApi naverApi;
 
-	@PostMapping("/login")
-	public ResponseEntity<TokenResDto> login(@RequestBody LoginReqDto loginReqDto) {
-		TokenResDto tokenResDto = authService.login(loginReqDto);
-		return ResponseEntity.ok().body(tokenResDto);
-	}
+    @PostMapping("/login")
+    public ResponseEntity<TokenResDto> login(@Valid @RequestBody LoginReqDto loginReqDto) {
+        TokenResDto tokenResDto = authService.login(loginReqDto);
+        return ResponseEntity.ok().body(tokenResDto);
+    }
 
-	@DeleteMapping("/logout")
-	public ResponseEntity<Void> logout(@AuthenticationPrincipal String userEmail) {
-		authService.logout(userEmail);
-		return ResponseEntity.ok().build();
-	}
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(@AuthenticationPrincipal String userEmail) {
+        authService.logout(userEmail);
+        return ResponseEntity.ok().build();
+    }
 
 	@PostMapping("/reissue")
 	public ResponseEntity<TokenResDto> reissue(@RequestBody ReIssueReqDto reIssueReqDto) {
