@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -157,6 +159,14 @@ public class User implements UserDetails {
 
 	public void setAddress(List<Address> addresses) {
 		this.addresses = addresses;
+	}
+
+	public Boolean isValidEmail(){
+		String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(email);
+
+		return m.matches();
 	}
 
 }

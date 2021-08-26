@@ -1,5 +1,6 @@
 package com.zeepy.server.auth.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,6 +34,15 @@ public class Token extends BaseTimeEntity {
 
 	private String kakaoAccessToken;
 
+	private String naverAccessToken;
+
+	private String appleRefreshToken;
+
+	@Column(length = 1000)
+	private String appleIdToken;
+
+	private String appleClientSecret;
+
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -44,7 +54,25 @@ public class Token extends BaseTimeEntity {
 		this.user = user;
 	}
 
+	@Builder
+	public Token(User user) {
+		this.user = user;
+	}
+
+	public void setServiceToken(String accessToken, String refreshToken) {
+		this.accessToken = accessToken;
+		this.refreshToken = refreshToken;
+	}
+
 	public void setKakaoToken(String kakaoAccessToken) {
 		this.kakaoAccessToken = kakaoAccessToken;
+	}
+
+	public void setNaverToken(String naverAccessToken) {
+		this.naverAccessToken = naverAccessToken;
+	}
+
+	public void setAppleRefreshToken(String appleRefreshToken) {
+		this.appleRefreshToken = appleRefreshToken;
 	}
 }

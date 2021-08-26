@@ -2,8 +2,8 @@ package com.zeepy.server.common.CustomExceptionHandler.CustomException;
 
 import com.zeepy.server.common.CustomExceptionHandler.ErrorCode;
 
-public class KakaoUnAuthorization extends CustomException {
-	public KakaoUnAuthorization() {
-		super(ErrorCode.KAKAO_UNAUTHORIZATION);
+public class SNSUnAuthorization extends CustomException {
+	public SNSUnAuthorization() {
+		super(ErrorCode.SNS_UNAUTHORIZATION);
 	}
 }

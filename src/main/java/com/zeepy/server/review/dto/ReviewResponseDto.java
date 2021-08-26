@@ -20,13 +20,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewResponseDto {
-    private Long id;
-    private ReviewUserResDto user;
-    private String address;
-    private CommuncationTendency communcationTendency;
-    private LessorGender lessorGender;
-    private LessorAge lessorAge;
-    private String lessorReview;
+	private Long id;
+	private ReviewUserResDto user;
+	private String address;
+	private CommuncationTendency communcationTendency;
+	private LessorGender lessorGender;
+	private LessorAge lessorAge;
+	private String lessorReview;
 	private RoomCount roomCount;
 	private MultiChoiceReview soundInsulation;
 	private MultiChoiceReview pest;
@@ -75,21 +75,21 @@ public class ReviewResponseDto {
 
 	public ReviewResponseDto(Review review) {
 		this.id = review.getId();
-        this.user = new ReviewUserResDto(review.getUser());
-        this.lessorAge = review.getLessorAge();
-        this.lessorGender = review.getLessorGender();
-        this.communcationTendency = review.getCommunicationTendency();
-        this.soundInsulation = review.getSoundInsulation();
-        this.pest = review.getPest();
-        this.lightning = review.getLightning();
-        this.waterPressure = review.getWaterPressure();
-        this.lessorReview = review.getLessorReview();
-        this.roomCount = review.getRoomCount();
-        this.furnitures = review.getFurnitures();
-        this.review = review.getReview();
-        this.totalEvaluation = review.getTotalEvaluation();
-        this.imageUrls = review.getImageUrls();
-    }
+		this.user = new ReviewUserResDto(review.getUser());
+		this.lessorAge = review.getLessorAge();
+		this.lessorGender = review.getLessorGender();
+		this.communcationTendency = review.getCommunicationTendency();
+		this.soundInsulation = review.getSoundInsulation();
+		this.pest = review.getPest();
+		this.lightning = review.getLightning();
+		this.waterPressure = review.getWaterPressure();
+		this.lessorReview = review.getLessorReview();
+		this.roomCount = review.getRoomCount();
+		this.furnitures = review.getFurnitures();
+		this.review = review.getReview();
+		this.totalEvaluation = review.getTotalEvaluation();
+		this.imageUrls = review.getImageUrls();
+	}
 
     public static ReviewResponseDto of(Review review) {
 		return new ReviewResponseDto(
@@ -113,9 +113,9 @@ public class ReviewResponseDto {
 	}
 
     public static List<ReviewResponseDto> listOf(List<Review> reviewList) {
-        return reviewList
-                .stream()
-                .map(ReviewResponseDto::of)
-                .collect(Collectors.toList());
-    }
+		return reviewList
+			.stream()
+			.map(ReviewResponseDto::of)
+			.collect(Collectors.toList());
+	}
 }

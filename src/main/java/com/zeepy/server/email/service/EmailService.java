@@ -17,12 +17,12 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class EmailService {
-    private final EmailRepository emailRepository;
+	private final EmailRepository emailRepository;
 
-    @Transactional
-    public Long create(EmailRequestDto emailRequestDto) {
-        AdminEmail adminEmail = emailRequestDto.returnEmailEntity();
-        AdminEmail save = emailRepository.save(adminEmail);
-        return save.getId();
-    }
+	@Transactional
+	public Long create(EmailRequestDto emailRequestDto) {
+		AdminEmail adminEmail = emailRequestDto.returnEmailEntity();
+		AdminEmail save = emailRepository.save(adminEmail);
+		return save.getId();
+	}
 }

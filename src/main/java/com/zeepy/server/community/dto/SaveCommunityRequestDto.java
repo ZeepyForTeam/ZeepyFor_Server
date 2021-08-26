@@ -26,6 +26,8 @@ public class SaveCommunityRequestDto {
 
 	private String productName;
 
+	private String productPrice;
+
 	private String purchasePlace;
 
 	private String sharingMethod;
@@ -47,6 +49,7 @@ public class SaveCommunityRequestDto {
 		String communityCategory,
 		String address,
 		String productName,
+		String productPrice,
 		String purchasePlace,
 		String sharingMethod,
 		Integer targetNumberOfPeople,
@@ -58,6 +61,7 @@ public class SaveCommunityRequestDto {
 		this.communityCategory = communityCategory;
 		this.address = address;
 		this.productName = productName;
+		this.productPrice = productPrice;
 		this.purchasePlace = purchasePlace;
 		this.sharingMethod = sharingMethod;
 		this.targetNumberOfPeople = targetNumberOfPeople;
@@ -72,6 +76,7 @@ public class SaveCommunityRequestDto {
 			.communityCategory(CommunityCategory.valueOf(communityCategory))
 			.address(address)
 			.productName(productName)
+			.productPrice(productPrice)
 			.purchasePlace(purchasePlace)
 			.sharingMethod(sharingMethod)
 			.targetNumberOfPeople(targetNumberOfPeople)
