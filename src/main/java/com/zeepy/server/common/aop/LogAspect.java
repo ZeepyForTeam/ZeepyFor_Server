@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class LogAspect {
     private final Logger logger = LoggerFactory.getLogger(LogAspect.class);
 
-    @Around("execution(* com.zeepy.server..controller.*Controller.*(..))\n || execution(* com.zeepy.server..service.*Service.*(..))\n")
+    @Around("execution(* com.zeepy.server..controller.*Controller.*(..))\n")
     public Object infoLogging(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result = joinPoint.proceed();
         logger.info("Execute : { package : " + joinPoint.getSignature().getDeclaringTypeName() + " }, method : "
