@@ -20,23 +20,23 @@ import lombok.Setter;
 public class BuildingLikeResponseDto {
 	private Long id;
 	private LocalDateTime likeDate;
-	private String email;
+	private Long userId;
 
 	public BuildingLikeResponseDto(
 		Long id,
 		LocalDateTime likeDate,
-		String email
+		Long userId
 	) {
 		this.id = id;
 		this.likeDate = likeDate;
-		this.email = email;
+		this.userId = userId;
 	}
 
 	public static BuildingLikeResponseDto of(BuildingLike buildingLike) {
 		return new BuildingLikeResponseDto(
 			buildingLike.getId(),
 			buildingLike.getLikeDate(),
-			buildingLike.getUser().getEmail()
+			buildingLike.getUser().getId()
 		);
 	}
 

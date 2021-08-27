@@ -44,7 +44,7 @@ public class UserService {
 
 		User saveUser = userRepository.save(registrationReqDto
 			.toEntity());
-		if(!saveUser.validNickNameLenth()) saveUser.setNickNameById();
+		if(saveUser.validNickNameLength()) saveUser.setNickNameById();
 	}
 
 	@Transactional

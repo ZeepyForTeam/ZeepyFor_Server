@@ -19,6 +19,8 @@ public class UpdateCommunityReqDto {
 
 	private String productName;
 
+	private String productPrice;
+
 	private String purchasePlace;
 
 	private String sharingMethod;
@@ -31,6 +33,7 @@ public class UpdateCommunityReqDto {
 		community.update(title,
 			content,
 			productName,
+			productPrice,
 			purchasePlace,
 			sharingMethod,
 			targetNumberOfPeople,

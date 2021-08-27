@@ -121,7 +121,7 @@ public class User implements UserDetails {
 		this.profileImage = profileImage;
 	}
 
-	public Boolean validNickNameLenth() {
+	public Boolean validNickNameLength() {
 		return nickname.isEmpty();
 	}
 
