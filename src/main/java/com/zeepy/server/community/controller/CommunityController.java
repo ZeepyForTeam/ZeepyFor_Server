@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -119,7 +121,7 @@ public class CommunityController {
 	public ResponseEntity<Page<CommunitySimpleResDto>> getCommunityList(
 		@RequestParam(required = false) String address,
 		@RequestParam(required = false) String communityType,
-		Pageable pageable) {
+		@PageableDefault(sort = {"createdDate"}, direction = Sort.Direction.DESC, size = 20) Pageable pageable) {
 		return ResponseEntity.ok().body(communityService.getCommunityList(address, communityType, pageable));
 	}
 
