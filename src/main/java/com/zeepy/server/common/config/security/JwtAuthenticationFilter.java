@@ -24,7 +24,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 		ServletException {
 		String token = jwtAuthenticationProvider.resolveToken((HttpServletRequest)request);
 		System.out.println("token !!!!!!!!!!!!!!!!! " + token);
-		if (token != null && jwtAuthenticationProvider.validateToken(token)) {
+		if (token != null && jwtAuthenticationProvider.validateToken((HttpServletRequest)request,token)) {
 			System.out.println("토큰 유효성검사 통과!!!!!!!!!!!!!!!!");
 			String userEmail = jwtAuthenticationProvider.getUserEmail(token);
 			System.out.println("userEmail !!!!!!!!!!!! : " + userEmail);
