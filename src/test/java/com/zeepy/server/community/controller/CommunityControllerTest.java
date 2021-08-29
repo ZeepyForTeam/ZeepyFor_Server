@@ -64,6 +64,7 @@ public class CommunityControllerTest extends ControllerTest {
 		"스타프라자에서 만나요",
 		2,
 		5,
+		"instructions",
 		"공동구매할싸람",
 		"내용",
 		new UserDto(1L, "yen", "1111.png"),
