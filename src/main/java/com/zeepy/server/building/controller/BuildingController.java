@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.zeepy.server.review.domain.CommuncationTendency;
 import com.zeepy.server.review.domain.MultiChoiceReview;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +59,7 @@ public class BuildingController {
             @RequestParam(value = "inPest", required = false) MultiChoiceReview pest,
             @RequestParam(value = "inLightning", required = false) MultiChoiceReview lightning,
             @RequestParam(value = "inWaterPressure", required = false) MultiChoiceReview waterPressure,
+            @RequestParam(value = "inCommunicationTendency", required = false) CommuncationTendency communcationTendency,
             @RequestParam(value = "inRoomCounts", required = false) List<RoomCount> roomCounts,
             @RequestParam(value = "inFurnitures", required = false) List<Furniture> furnitures,
             Pageable pageable
@@ -73,6 +75,7 @@ public class BuildingController {
                 pest,
                 lightning,
                 waterPressure,
+                communcationTendency,
                 roomCounts,
                 furnitures,
                 pageable

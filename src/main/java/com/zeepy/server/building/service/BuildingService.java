@@ -3,7 +3,7 @@ package com.zeepy.server.building.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.zeepy.server.review.domain.MultiChoiceReview;
+import com.zeepy.server.review.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,15 +23,22 @@ import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.building.dto.BuildingResponseDto;
 import com.zeepy.server.building.repository.BuildingRepository;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NoContentException;
-import com.zeepy.server.review.domain.Furniture;
-import com.zeepy.server.review.domain.QReview;
-import com.zeepy.server.review.domain.RoomCount;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 /**
  * Created by Minky on 2021-05-15
+ * <p>
+ * Query DSL
+ * 환경 세팅 -> Gradle 참조
+ * 빌드 시 Gradle Build 를 따로 해주셔야 Q Class 가 생성됩니다.
+ * Q Class 는 QueryDsl 에서 사용하는 Entity Class 로 생각하시면 편합니다.
+ * <p>
+ * Query DSL
+ * 환경 세팅 -> Gradle 참조
+ * 빌드 시 Gradle Build 를 따로 해주셔야 Q Class 가 생성됩니다.
+ * Q Class 는 QueryDsl 에서 사용하는 Entity Class 로 생각하시면 편합니다.
  * <p>
  * Query DSL
  * 환경 세팅 -> Gradle 참조
@@ -240,6 +247,18 @@ public class BuildingService {
                 .in(waterPressure);
     }
 
+    private BooleanExpression inCommunicationTendency(CommuncationTendency communcationTendency) {
+        /**
+         * 방음 평가 포함 체크 동적 쿼리
+         */
+        if (communcationTendency == null) {
+            return null;
+        }
+        return qReview
+                .communicationTendency
+                .in(communcationTendency);
+    }
+
     // CREATE
     @Transactional
     public Long create(BuildingRequestDto buildingRequestDto) {
@@ -282,6 +301,7 @@ public class BuildingService {
             MultiChoiceReview pest,
             MultiChoiceReview lightning,
             MultiChoiceReview waterPressure,
+            CommuncationTendency communcationTendency,
             List<RoomCount> roomCounts,
             List<Furniture> furnitures,
             Pageable pageable
@@ -303,7 +323,8 @@ public class BuildingService {
                         inLightning(lightning),
                         inWaterPressure(waterPressure),
                         inRoomCounts(roomCounts),
-                        inFurnitures(furnitures)
+                        inFurnitures(furnitures),
+                        inCommunicationTendency(communcationTendency)
                 )
                 .orderBy(qBuilding.id.desc())
                 .offset(pageable.getOffset())
