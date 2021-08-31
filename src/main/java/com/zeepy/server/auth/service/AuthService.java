@@ -48,8 +48,7 @@ public class AuthService {
 			user.getEmail());
 		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
 
-		Token tokens = new Token(accessToken, refreshToken, user);
-		tokenRepository.save(tokens);
+		validToken(accessToken, refreshToken, user);
 
 		return new TokenResDto(accessToken, refreshToken, user);
 	}
@@ -76,7 +75,7 @@ public class AuthService {
 		String accessToken = reIssueReqDto.getAccessToken();
 		String refreshToken = reIssueReqDto.getRefreshToken();
 
-		tokenRepository.findByRefreshToken(refreshToken)
+		Token findToken = tokenRepository.findByRefreshToken(refreshToken)
 			.orElseThrow(RefreshTokenNotExistException::new);
 
 		if (!jwtAuthenticationProvider.validateToken(request,refreshToken)) {
@@ -89,6 +88,9 @@ public class AuthService {
 
 		User findUser = userRepository.findByEmail(userEmail)
 			.orElseThrow(NotFoundUserException::new);
+
+		findToken.setServiceToken(newAccessToken, newRefreshToken);
+
 		return new TokenResDto(newAccessToken, newRefreshToken, findUser);
 	}
 
@@ -108,20 +110,16 @@ public class AuthService {
 		String accessToken = jwtAuthenticationProvider.createAccessToken(user.getEmail());
 		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
 
-		Token tokens = new Token(accessToken, refreshToken, user);
+		// Token tokens = new Token(accessToken, refreshToken, user);
+		Token tokens = validToken(accessToken, refreshToken, user);
 		tokens.setKakaoToken(
 			snsLoginReqDto.getAccessToken()
 		);
-		tokenRepository.save(tokens);
 
 		return new TokenResDto(accessToken, refreshToken, user);
 	}
 
-	private User getUserByEmail(String authUserEmail) {
-		return userRepository.findByEmail(authUserEmail)
-			.orElseThrow(NotFoundUserException::new);
-	}
-
+	@Transactional
 	public TokenResDto naverLogin(GetUserInfoResDto userInfoResDto, SNSLoginReqDto snsLoginReqDto) {
 		String email = userInfoResDto.getEmail();
 
@@ -137,7 +135,7 @@ public class AuthService {
 		String accessToken = jwtAuthenticationProvider.createAccessToken(user.getEmail());
 		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
 
-		Token tokens = new Token(accessToken, refreshToken, user);
+		Token tokens = validToken(accessToken, refreshToken, user);
 		tokens.setNaverToken(
 			snsLoginReqDto.getAccessToken()
 		);
@@ -145,4 +143,23 @@ public class AuthService {
 
 		return new TokenResDto(accessToken, refreshToken, user);
 	}
+
+	private User getUserByEmail(String authUserEmail) {
+		return userRepository.findByEmail(authUserEmail)
+			.orElseThrow(NotFoundUserException::new);
+	}
+
+	private Token validToken(String accessToken, String refreshToken, User user){
+		Token findToken = tokenRepository.findByUserId(user.getId())
+			.orElseGet(()->{
+				Token newTokenOnlyUser = Token.builder()
+					.user(user)
+					.build();
+				return tokenRepository.save(newTokenOnlyUser);
+			});
+		findToken.setServiceToken(accessToken, refreshToken);
+
+		return findToken;
+	}
+
 }
