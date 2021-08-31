@@ -23,6 +23,12 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException authException) throws IOException, ServletException {
 		logger.error(authException.getMessage());
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "인증에 실패했습니다.");
+		final String expired = (String) request.getAttribute("expired");
+		System.out.println(expired);
+		if (expired!=null){
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "요휴시간 만료");
+		}else{
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "유효하지 않은 토큰입니다.");
+		}
 	}
 }

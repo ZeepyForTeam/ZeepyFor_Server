@@ -46,7 +46,7 @@ public class JwtAuthenticationProvider {
 		return request.getHeader("X-AUTH-TOKEN");
 	}
 
-	public boolean validateToken(String token) {
+	public boolean validateToken(HttpServletRequest request,String token) {
 		try {
 			Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 			return !claims.getBody().getExpiration().before(new Date());
@@ -56,6 +56,7 @@ public class JwtAuthenticationProvider {
 			logger.error("Invalid JWT token");
 		} catch (ExpiredJwtException e) {
 			logger.error("Expired JWT token");
+			request.setAttribute("expired",e.getMessage());
 		} catch (UnsupportedJwtException e) {
 			logger.error("Unsupported JWT token");
 		} catch (IllegalArgumentException e) {

@@ -23,6 +23,7 @@ import com.zeepy.server.auth.service.NaverApi;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
@@ -47,8 +48,11 @@ public class AuthController {
     }
 
 	@PostMapping("/reissue")
-	public ResponseEntity<TokenResDto> reissue(@RequestBody ReIssueReqDto reIssueReqDto) {
-		TokenResDto tokenResDto = authService.reissue(reIssueReqDto);
+	public ResponseEntity<TokenResDto> reissue(
+		@RequestBody ReIssueReqDto reIssueReqDto,
+		HttpServletRequest request
+	) {
+		TokenResDto tokenResDto = authService.reissue(request,reIssueReqDto);
 		return ResponseEntity.ok().body(tokenResDto);
 	}
 

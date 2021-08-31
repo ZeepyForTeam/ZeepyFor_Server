@@ -56,12 +56,12 @@ public class KakaoApi {
 			JSONParser jsonParser = new JSONParser();
 			JSONObject jsonObject = (JSONObject)jsonParser.parse(result);
 
-			JSONObject kakao_account = (JSONObject)jsonObject.get("kakao_account");
+			// JSONObject kakao_account = (JSONObject)jsonObject.get("kakao_account");
 
-			String id = (String) jsonObject.get("id");
-//			String email = kakao_account.get("email").toString();
-
-//			userInfoResDto.setEmail(email);
+			String id = jsonObject.get("id").toString();
+			//			String email = kakao_account.get("email").toString();
+			System.out.println("testId : " + id);
+			//			userInfoResDto.setEmail(email);
 			userInfoResDto.setEmail(id);
 		} catch (Exception e) {
 			e.printStackTrace();

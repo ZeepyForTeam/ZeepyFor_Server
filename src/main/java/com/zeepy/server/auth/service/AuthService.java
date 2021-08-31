@@ -1,5 +1,7 @@
 package com.zeepy.server.auth.service;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,14 +72,14 @@ public class AuthService {
 	}
 
 	@Transactional
-	public TokenResDto reissue(ReIssueReqDto reIssueReqDto) {
+	public TokenResDto reissue(HttpServletRequest request,ReIssueReqDto reIssueReqDto) {
 		String accessToken = reIssueReqDto.getAccessToken();
 		String refreshToken = reIssueReqDto.getRefreshToken();
 
 		tokenRepository.findByRefreshToken(refreshToken)
 			.orElseThrow(RefreshTokenNotExistException::new);
 
-		if (!jwtAuthenticationProvider.validateToken(refreshToken)) {
+		if (!jwtAuthenticationProvider.validateToken(request,refreshToken)) {
 			throw new RefreshTokenException();
 		}
 
