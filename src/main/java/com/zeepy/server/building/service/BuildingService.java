@@ -199,64 +199,64 @@ public class BuildingService {
                 .eq(email);
     }
 
-    private BooleanExpression inSoundInsulation(MultiChoiceReview soundInsulation) {
+    private BooleanExpression eqSoundInsulation(MultiChoiceReview soundInsulation) {
         /**
          * 방음 평가 포함 체크 동적 쿼리
          */
         if (soundInsulation == null) {
             return null;
         }
-        return qReview
-                .soundInsulation
-                .in(soundInsulation);
+        return qBuilding
+                .averageSoundInsulation
+                .eq(soundInsulation);
     }
 
-    private BooleanExpression inPest(MultiChoiceReview pest) {
+    private BooleanExpression eqPest(MultiChoiceReview pest) {
         /**
          * 방음 평가 포함 체크 동적 쿼리
          */
         if (pest == null) {
             return null;
         }
-        return qReview
-                .pest
-                .in(pest);
+        return qBuilding
+                .averagePest
+                .eq(pest);
     }
 
-    private BooleanExpression inLightning(MultiChoiceReview lightning) {
+    private BooleanExpression eqLightning(MultiChoiceReview lightning) {
         /**
          * 방음 평가 포함 체크 동적 쿼리
          */
         if (lightning == null) {
             return null;
         }
-        return qReview
-                .lightning
-                .in(lightning);
+        return qBuilding
+                .averageLightning
+                .eq(lightning);
     }
 
-    private BooleanExpression inWaterPressure(MultiChoiceReview waterPressure) {
+    private BooleanExpression eqWaterPressure(MultiChoiceReview waterPressure) {
         /**
          * 방음 평가 포함 체크 동적 쿼리
          */
         if (waterPressure == null) {
             return null;
         }
-        return qReview
-                .waterPressure
-                .in(waterPressure);
+        return qBuilding
+                .averageWaterPressure
+                .eq(waterPressure);
     }
 
-    private BooleanExpression inCommunicationTendency(CommuncationTendency communcationTendency) {
+    private BooleanExpression eqCommunicationTendency(CommuncationTendency communcationTendency) {
         /**
          * 방음 평가 포함 체크 동적 쿼리
          */
         if (communcationTendency == null) {
             return null;
         }
-        return qReview
-                .communicationTendency
-                .in(communcationTendency);
+        return qBuilding
+                .averageCommunicationTendency
+                .eq(communcationTendency);
     }
 
     // CREATE
@@ -318,13 +318,13 @@ public class BuildingService {
                         goeDeposit(greaterDeposit),
                         loeDeposit(lesserDeposit),
                         neDealType(notEqualDealType),
-                        inSoundInsulation(soundInsulation),
-                        inPest(pest),
-                        inLightning(lightning),
-                        inWaterPressure(waterPressure),
+                        eqSoundInsulation(soundInsulation),
+                        eqPest(pest),
+                        eqLightning(lightning),
+                        eqWaterPressure(waterPressure),
                         inRoomCounts(roomCounts),
                         inFurnitures(furnitures),
-                        inCommunicationTendency(communcationTendency)
+                        eqCommunicationTendency(communcationTendency)
                 )
                 .orderBy(qBuilding.id.desc())
                 .offset(pageable.getOffset())

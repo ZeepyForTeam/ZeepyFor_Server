@@ -31,7 +31,7 @@ import com.zeepy.server.common.ControllerTest;
  */
 @DisplayName("Building Controller Test")
 @WebMvcTest(controllers = {BuildingController.class}, includeFilters = @ComponentScan.Filter(classes = {
-    EnableWebSecurity.class}))
+        EnableWebSecurity.class}))
 @MockBean(JpaMetamodelMappingContext.class)
 class BuildingControllerTest extends ControllerTest {
     @MockBean
@@ -39,51 +39,56 @@ class BuildingControllerTest extends ControllerTest {
 
     private BuildingRequestDto makeBuildingRequestDto() {
         return new BuildingRequestDto(
-            0,
-            "test",
-            "test",
-            "test",
-            "test",
-            "test",
-            "test",
-            0.1f,
-            1100,
-            32.0,
-            124.0,
-            BuildingType.OFFICETEL.name()
+                0,
+                "test",
+                "test",
+                "test",
+                "test",
+                "test",
+                "test",
+                0.1f,
+                1100,
+                32.0,
+                124.0,
+                BuildingType.OFFICETEL.name()
         );
     }
 
     private BuildingResponseDto makeBuildingResponseDto() {
         return new BuildingResponseDto(
-            1L,
-            0,
-            "test",
-            "test",
-            "test",
-            "test",
-            "test",
-            "test",
-            0.1f,
-            1100,
-            32.0,
-            124.0,
-            BuildingType.OFFICETEL.name(),
-            null,
-            null,
-            null
+                1L,
+                0,
+                "test",
+                "test",
+                "test",
+                "test",
+                "test",
+                "test",
+                0.1f,
+                1100,
+                32.0,
+                124.0,
+                BuildingType.OFFICETEL.name(),
+                "",
+                "",
+                "",
+                "",
+                "",
+                null,
+                null,
+                null
         );
     }
 
     private BuildingAutoCompleteResponseDto makeBuildingAddressResponseDto() {
         return new BuildingAutoCompleteResponseDto(
-            1L,
-            "test",
-            "test",
-            "test",
-            "test",
-            "test",
-            "test"
+                1L,
+                "test",
+                "test",
+                "test",
+                "test",
+                "test",
+                "test"
         );
     }
 
@@ -108,7 +113,7 @@ class BuildingControllerTest extends ControllerTest {
     @DisplayName("GET Building By Address Test")
     void getBuildingByAddress() throws Exception {
         given(buildingService.getByAddress(any(String.class)))
-            .willReturn(makeBuildingResponseDto());
+                .willReturn(makeBuildingResponseDto());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("address", "test");
         doGet("/api/buildings/address", params);
@@ -119,10 +124,10 @@ class BuildingControllerTest extends ControllerTest {
     @DisplayName("GET Building Addresses (AutoComplete) Test")
     void getBuildingAddresses() throws Exception {
         given(buildingService.getBuildingAddressesByAddress(any(String.class), any()))
-            .willReturn(new PageImpl<>(Arrays.asList(
-                makeBuildingAddressResponseDto(),
-                makeBuildingAddressResponseDto()
-            )));
+                .willReturn(new PageImpl<>(Arrays.asList(
+                        makeBuildingAddressResponseDto(),
+                        makeBuildingAddressResponseDto()
+                )));
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("address", "test");
         doGet("/api/buildings/addresses", params);
@@ -132,7 +137,7 @@ class BuildingControllerTest extends ControllerTest {
     @DisplayName("GET Buildings By Location Test")
     void getBuildingsByLocation() throws Exception {
         given(buildingService.getByLatitudeAndLongitude(anyDouble(), anyDouble(), anyDouble(), anyDouble()))
-            .willReturn(makeBuildingResponseDtoList());
+                .willReturn(makeBuildingResponseDtoList());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("latitudeGreater", "32.0");
         params.add("latitudeLess", "32.0");
@@ -145,7 +150,7 @@ class BuildingControllerTest extends ControllerTest {
     @DisplayName("GET Building Test")
     void getBuilding() throws Exception {
         given(buildingService.getById(anyLong()))
-            .willReturn(makeBuildingResponseDto());
+                .willReturn(makeBuildingResponseDto());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         doGet("/api/buildings/1", params);
     }
