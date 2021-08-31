@@ -25,6 +25,7 @@ public class CommunityResponseDto {
 	private String sharingMethod;
 	private Integer currentNumberOfPeople;
 	private Integer targetNumberOfPeople;
+	private String instructions;
 	private String title;
 	private String content;
 	private UserDto user;
@@ -53,6 +54,7 @@ public class CommunityResponseDto {
 		this.sharingMethod = community.getSharingMethod();
 		this.currentNumberOfPeople = community.getCurrentNumberOfPeople();
 		this.targetNumberOfPeople = community.getTargetNumberOfPeople();
+		this.instructions = community.getInstructions();
 		this.title = community.getTitle();
 		this.content = community.getContent();
 	}
@@ -68,6 +70,7 @@ public class CommunityResponseDto {
 		String sharingMethod,
 		Integer currentNumberOfPeople,
 		Integer targetNumberOfPeople,
+		String instructions,
 		String title,
 		String content,
 		UserDto user,
@@ -87,6 +90,7 @@ public class CommunityResponseDto {
 		this.sharingMethod = sharingMethod;
 		this.currentNumberOfPeople = currentNumberOfPeople;
 		this.targetNumberOfPeople = targetNumberOfPeople;
+		this.instructions = instructions;
 		this.title = title;
 		this.content = content;
 		this.user = user;
@@ -111,6 +115,7 @@ public class CommunityResponseDto {
 			.sharingMethod(community.getSharingMethod())
 			.currentNumberOfPeople(community.getCurrentNumberOfPeople())
 			.targetNumberOfPeople(community.getTargetNumberOfPeople())
+			.instructions(community.getInstructions())
 			.title(community.getTitle())
 			.content(community.getContent())
 			.comments(CommentResDto.listOf(community.getComments().stream()

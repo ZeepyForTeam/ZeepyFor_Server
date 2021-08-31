@@ -23,7 +23,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.FirebaseCl
 
 @Component
 public class FirebaseCloudMessageUtility {
-    private final String firebaseAdminServiceAccountPath = "src/main/resources/security/zeepy-7b1f7-firebase-adminsdk-g5eng-1df0561a25.json";
+    private final String firebaseAdminServiceAccountPath = "src/main/resources/config/zeepy-7b1f7-firebase-adminsdk-g5eng-1df0561a25.json";
     private FirebaseMessaging instance;
 
     @PostConstruct // 실행 전에 먼저 해당 함수를 실행 시키는 어노테이션

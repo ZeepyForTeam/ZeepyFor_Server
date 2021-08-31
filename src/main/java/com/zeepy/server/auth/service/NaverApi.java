@@ -15,7 +15,7 @@ import com.zeepy.server.auth.dto.GetUserInfoResDto;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAuthorization;
 
 @Component
-@PropertySource(value = {"classpath:security/application.properties"})
+@PropertySource(value = {"classpath:config/application-local.properties"})
 public class NaverApi {
 	@Value("${NAVER.CLIENT.ID}")
 	private String client_id;
