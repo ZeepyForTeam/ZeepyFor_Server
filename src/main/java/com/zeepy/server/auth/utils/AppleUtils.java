@@ -40,7 +40,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.SNSUnAutho
 import sun.security.ec.ECPrivateKeyImpl;
 
 @Component
-@PropertySource(value = {"classpath:security/application.properties"})
+@PropertySource(value = {"classpath:config/application-local.properties"})
 public class AppleUtils {
 
 	@Value("${APPLE.PUBLICKEY.URL}")

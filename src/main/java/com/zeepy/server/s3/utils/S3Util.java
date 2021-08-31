@@ -19,7 +19,7 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.zeepy.server.s3.dto.GetPresignedUrlResDto;
 
 @Component
-@PropertySource(value = "classpath:security/application.properties")
+@PropertySource(value = "classpath:config/application-local.properties")
 public class S3Util {
 
 	@Value("${S3.REGION}")
