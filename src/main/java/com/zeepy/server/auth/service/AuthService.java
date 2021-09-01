@@ -115,6 +115,7 @@ public class AuthService {
 		tokens.setKakaoToken(
 			snsLoginReqDto.getAccessToken()
 		);
+		tokenRepository.save(tokens);
 
 		return new TokenResDto(accessToken, refreshToken, user);
 	}
