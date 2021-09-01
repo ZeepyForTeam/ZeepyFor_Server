@@ -28,7 +28,8 @@ public enum ErrorCode {
 	APPLE_UNAUTHORIZATION(401, "애플 유효성 검사에 실패했습니다."),
 	ALREADY_EXIST_USER(400, "이미존재하는 사용자입니다."),
 	INVALID_EMAIL(400, "이메일 형식이 올바르지 않습니다."),
-	FCM_NOT_ALLOWED(500, "Firebase 오류입니다. 서버팀에 문의하여 주세요");
+	FCM_NOT_ALLOWED(500, "Firebase 오류입니다. 서버팀에 문의하여 주세요"),
+	IMAGE_UPLOAD_ERROR(500, "이미지 형식이 잘못되었습니다. 서버팀에 문의하여 주세요.");
 
 	private final int status;
 	private final String message;

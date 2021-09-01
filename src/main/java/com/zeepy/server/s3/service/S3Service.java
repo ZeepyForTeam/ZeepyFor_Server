@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.ImageUploadException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.NotFoundUserException;
 import com.zeepy.server.s3.dto.GetPresignedUrlResDto;
 import com.zeepy.server.s3.dto.ImageUrlResDto;
@@ -40,9 +41,8 @@ public class S3Service {
 				try {
 					return new ImageUrlResDto(s3Uploader.upload(image));
 				} catch (IOException e) {
-					e.printStackTrace();
+					throw new ImageUploadException();
 				}
-				return new ImageUrlResDto();
 			})
 			.collect(Collectors.collectingAndThen(Collectors.toList(), ImageUrlResDtos::new));
 	}
