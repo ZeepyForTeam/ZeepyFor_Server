@@ -2,6 +2,7 @@ package com.zeepy.server.report.service;
 
 import java.util.List;
 
+import com.zeepy.server.common.job.AsyncJob;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final EmailRepository emailRepository;
     private final EmailSendUtility emailSendUtility;
+    private final AsyncJob asyncJob;
 
     @Transactional(readOnly = true)
     public List<ReportResponseDto> getReportList() {
@@ -43,13 +45,15 @@ public class ReportService {
          * Email 전송 로직 추가
          */
 
-        List<AdminEmail> adminEmails = emailRepository.findAll();
-        for (AdminEmail adminEmail : adminEmails) {
-            emailSendUtility.mailSend(
-                adminEmail.getEmail(),
-                "유저 신고가 들어왔습니다.",
-                save.getDescription());
-        }
+        asyncJob.onStart(() -> {
+            List<AdminEmail> adminEmails = emailRepository.findAll();
+            for (AdminEmail adminEmail : adminEmails) {
+                emailSendUtility.mailSend(
+                        adminEmail.getEmail(),
+                        "유저 신고가 들어왔습니다.",
+                        save.getDescription());
+            }
+        });
 
         return save.getId();
     }

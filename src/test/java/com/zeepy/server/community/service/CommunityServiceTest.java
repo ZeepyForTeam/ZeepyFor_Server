@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.zeepy.server.common.job.AsyncJob;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -79,11 +80,13 @@ public class CommunityServiceTest {
 	private CommentRepository commentRepository;
 	@Mock
 	private FirebaseCloudMessageUtility firebaseCloudMessageUtility;
+	@Mock
+	private AsyncJob asyncJob;
 
 	@BeforeEach
 	public void setUp() {
 		this.communityService = new CommunityService(communityRepository, communityLikeRepository, userRepository,
-			participationRepository, commentRepository, firebaseCloudMessageUtility);
+			participationRepository, commentRepository, firebaseCloudMessageUtility, asyncJob);
 	}
 
 	@DisplayName("참여하기_서비스로직_테스트")
