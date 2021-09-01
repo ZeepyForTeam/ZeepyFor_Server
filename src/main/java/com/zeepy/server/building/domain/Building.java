@@ -2,6 +2,7 @@ package com.zeepy.server.building.domain;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.zeepy.server.review.domain.CommuncationTendency;
+import com.zeepy.server.review.domain.MultiChoiceReview;
 import org.hibernate.annotations.SQLInsert;
 
 import com.zeepy.server.building.dto.BuildingRequestDto;
@@ -39,21 +42,26 @@ import lombok.Setter;
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"building_id", "fullNumberAddress"})})
 @SQLInsert(sql = "INSERT IGNORE INTO building(" +
-    "CREATED_DATE  " +
-    ",APARTMENT_NAME  " +
-    ",AREA_CODE  " +
-    ",BUILD_YEAR  " +
-    ",BUILDING_TYPE  " +
-    ",EXCLUSIVE_PRIVATE_AREA  " +
-    ",FULL_NUMBER_ADDRESS  " +
-    ",FULL_ROAD_NAME_ADDRESS  " +
-    ",LATITUDE  " +
-    ",LONGITUDE  " +
-    ",SHORT_ADDRESS  " +
-    ",SHORT_NUMBER_ADDRESS  " +
-    ",SHORT_ROAD_NAME_ADDRESS " +
-    ",BUILDING_ID   )" +
-    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        "CREATED_DATE  " +
+        ",APARTMENT_NAME  " +
+        ",AREA_CODE  " +
+        ",AVERAGE_COMMUNICATION_TENDENCY " +
+        ",AVERAGE_LIGHTNING " +
+        ",AVERAGE_PEST " +
+        ",AVERAGE_SOUND_INSULATION " +
+        ",AVERAGE_WATER_PRESSURE" +
+        ",BUILD_YEAR  " +
+        ",BUILDING_TYPE  " +
+        ",EXCLUSIVE_PRIVATE_AREA  " +
+        ",FULL_NUMBER_ADDRESS  " +
+        ",FULL_ROAD_NAME_ADDRESS  " +
+        ",LATITUDE  " +
+        ",LONGITUDE  " +
+        ",SHORT_ADDRESS  " +
+        ",SHORT_NUMBER_ADDRESS  " +
+        ",SHORT_ROAD_NAME_ADDRESS " +
+        ",BUILDING_ID   )" +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 public class Building extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_sequence_gen")
@@ -98,6 +106,33 @@ public class Building extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private BuildingType buildingType;
 
+    /**
+     * Building Average Review Condition
+     */
+
+    @Nullable
+    @Enumerated(EnumType.STRING)
+    private CommuncationTendency averageCommunicationTendency;
+
+    @Nullable
+    @Enumerated(EnumType.STRING)
+    private MultiChoiceReview averageSoundInsulation;
+
+    @Nullable
+    @Enumerated(EnumType.STRING)
+    private MultiChoiceReview averagePest;
+
+    @Nullable
+    @Enumerated(EnumType.STRING)
+    private MultiChoiceReview averageLightning;
+
+    @Nullable
+    @Enumerated(EnumType.STRING)
+    private MultiChoiceReview averageWaterPressure;
+
+    /**
+     * Building Relation Mapping
+     */
     @OneToMany(mappedBy = "building", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<BuildingDeal> buildingDeals;
 
@@ -109,19 +144,19 @@ public class Building extends BaseTimeEntity {
 
     @Builder
     public Building(
-        Long id,
-        int buildYear,
-        String apartmentName,
-        String shortAddress,
-        String fullRoadNameAddress,
-        String shortRoadNameAddress,
-        String fullNumberAddress,
-        String shortNumberAddress,
-        float exclusivePrivateArea,
-        int areaCode,
-        double latitude,
-        double longitude,
-        BuildingType buildingType
+            Long id,
+            int buildYear,
+            String apartmentName,
+            String shortAddress,
+            String fullRoadNameAddress,
+            String shortRoadNameAddress,
+            String fullNumberAddress,
+            String shortNumberAddress,
+            float exclusivePrivateArea,
+            int areaCode,
+            double latitude,
+            double longitude,
+            BuildingType buildingType
     ) {
         this.id = id;
         this.buildYear = buildYear;
