@@ -64,7 +64,7 @@ public class AppleUtils {
 	@Value("${APPLE.KEY.PATH}")
 	private String KEY_PATH;
 
-	@Value(("${APPLE.NONCE}"))
+	@Value("${APPLE.NONCE}")
 	private String NONCE;
 
 	public boolean verifyIdentityToken(String idToken) {
