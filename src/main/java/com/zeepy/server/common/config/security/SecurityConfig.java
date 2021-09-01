@@ -43,8 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/h2-console/*").permitAll()
 			.antMatchers("/api/user/registration").permitAll()
 			.antMatchers("/api/auth/**").permitAll()
-				.antMatchers("/api/emails/**").permitAll()
-				.antMatchers("/api/reports/**").permitAll()
 			// .antMatchers(HttpMethod.GET, "/api/buildings/address", "/api/buildings/addresses").hasRole("ADMIN")
 			.antMatchers(HttpMethod.POST, "/api/buildings", "/api/buildings/{id}", "/api/deals").hasRole("ADMIN")
 			.antMatchers(HttpMethod.PUT, "/api/buildings/{id}", "/api/deals/{id}").hasRole("ADMIN")
