@@ -22,13 +22,13 @@ import com.zeepy.server.s3.dto.GetPresignedUrlResDto;
 @PropertySource(value = "classpath:config/application-local.properties")
 public class S3Util {
 
-	@Value("${S3.REGION}")
+	@Value("${cloud.aws.region.static}")
 	private String clientRegion;
-	@Value("${S3.BUCKET.NAME}")
+	@Value("${cloud.aws.s3.bucket}")
 	private String bucketName;
-	@Value("${S3.ACCESS.KEY}")
+	@Value("${cloud.aws.credentials.accessKey}")
 	private String accessKey;
-	@Value("${S3.SECRET.KEY}")
+	@Value("${cloud.aws.credentials.secretKey}")
 	private String secretKey;
 
 	public GetPresignedUrlResDto GeneratePresignedUrlAndUploadObject() {

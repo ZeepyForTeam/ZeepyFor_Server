@@ -26,10 +26,8 @@ public class Token extends BaseTimeEntity {
 	@SequenceGenerator(name = "token_sequence_gen", sequenceName = "token_sequence")
 	private Long id;
 
-	@NotNull
 	private String accessToken;
 
-	@NotNull
 	private String refreshToken;
 
 	private String kakaoAccessToken;
