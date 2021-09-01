@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -67,6 +68,16 @@ public abstract class ControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.params(params))
 			.andExpect(status().isCreated())
+			.andDo(MockMvcResultHandlers.print());
+	}
+
+	protected <T> ResultActions doMultipartPost(String path, T request, MockMultipartFile file) throws
+		Exception {
+		return mockMvc.perform(multipart(path)
+			.file(file)
+			.contentType(MediaType.MULTIPART_FORM_DATA)
+			.accept(MediaType.MULTIPART_FORM_DATA))
+			.andExpect(status().isOk())
 			.andDo(MockMvcResultHandlers.print());
 	}
 

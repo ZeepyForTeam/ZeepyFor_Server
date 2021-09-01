@@ -20,6 +20,7 @@ import com.zeepy.server.common.CustomExceptionHandler.CustomException.CustomExce
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateEmailException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.DuplicateNicknameException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.FirebaseCloudMessageException;
+import com.zeepy.server.common.CustomExceptionHandler.CustomException.ImageUploadException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.InValidEmailException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.InvalidRequestParameterException;
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.JointPurchaseOwner;
@@ -239,6 +240,13 @@ public class ControllerExceptionHandler {
 		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
 
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ImageUploadException.class)
+	public ResponseEntity<ErrorResponse> invalidImage(ImageUploadException e) {
+		ErrorResponse response = setErrorResponseOnlyStatusMessage(e);
+
+		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	public ErrorResponse setErrorResponseOnlyStatusMessage(CustomException e) {
