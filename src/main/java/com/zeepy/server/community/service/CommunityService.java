@@ -1,6 +1,7 @@
 package com.zeepy.server.community.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.zeepy.server.common.job.AsyncJob;
@@ -145,24 +146,14 @@ public class CommunityService {
         if (participationToSave.getCommunity().checkCurrentNumberOfPeople()) {
 
             /**
-             * 공동목표 제작자에게 알림
-             */
-
-            asyncJob.onStart(() -> {
-                firebaseCloudMessageUtility.sendTopicMessage(
-                        community.getUser()
-                                .getId()
-                                .toString(),
-                        "목표가 달성되었어요.",
-                        makeMessageBodyAboutParticipationComplete(community, true));
-            });
-
-            /**
              * 참여 유저에게 알림
              */
 
             List<Participation> participationList = participationToSave.getCommunity()
-                    .getParticipationsList();
+                    .getParticipationsList()
+                    .stream()
+                    .distinct()
+                    .collect(Collectors.toList()); // 중복값 제거
 
             for (Participation participation : participationList) {
                 asyncJob.onStart(() -> {
