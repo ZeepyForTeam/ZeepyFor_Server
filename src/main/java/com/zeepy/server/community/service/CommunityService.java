@@ -160,16 +160,20 @@ public class CommunityService {
             /**
              * 참여 유저에게 알림
              */
-            asyncJob.onStart(() -> {
-                for (Participation participation : participationToSave.getCommunity().getParticipationsList()) {
+
+            List<Participation> participationList = participationToSave.getCommunity()
+                    .getParticipationsList();
+
+            for (Participation participation : participationList) {
+                asyncJob.onStart(() -> {
                     firebaseCloudMessageUtility.sendTopicMessage(
                             participation.getUser()
                                     .getId()
                                     .toString(),
                             "목표가 달성되었어요.",
                             makeMessageBodyAboutParticipationComplete(community, false));
-                }
-            });
+                });
+            }
 
         }
     }
