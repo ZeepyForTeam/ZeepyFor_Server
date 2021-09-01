@@ -3,6 +3,7 @@ package com.zeepy.server.push.util;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -33,12 +34,23 @@ public class FirebaseCloudMessageUtility {
             .fromStream(new FileInputStream(firebaseAdminServiceAccountPath)) // Firebase Admin Key Path
             .createScoped(Arrays.asList("https://www.googleapis.com/auth/cloud-platform")); // Firebase 권한
 
-        FirebaseOptions secondaryAppConfig = FirebaseOptions.builder()
-            .setCredentials(googleCredentials)
-            .build();
+        FirebaseApp firebaseApp = null;
+        List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
+        if (firebaseApps != null && !firebaseApps.isEmpty()) {
+            for (FirebaseApp app : firebaseApps) {
+                if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
+                    firebaseApp = app;
+                }
+            }
+        } else {
+            FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(googleCredentials)
+                .build();
 
-        FirebaseApp app = FirebaseApp.initializeApp(secondaryAppConfig);
-        this.instance = FirebaseMessaging.getInstance(app);
+            firebaseApp = FirebaseApp.initializeApp(options);
+        }
+
+        this.instance = FirebaseMessaging.getInstance(firebaseApp);
     }
 
     public void sendTargetMessage(
