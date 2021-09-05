@@ -48,17 +48,18 @@ public class AppleService {
 		//		String idToken = tokenResponse.getId_token();
 
 		String appleRefreshToken = tokenResponse.getRefresh_token();
-		//		Payload payload = getPayload(idToken);
-		//		String userEmail = payload.getEmail();
-		String userEmail = code;
+		Payload payload = getPayload(tokenResponse.getId_token());
+		String userEmail = payload.getEmail();
+		// String userEmail = code;
 
 		User findUser = userRepository.findByEmail(userEmail)
 			.orElseGet(() -> {
 				System.out.println("기존 등록된 사용자가없습니다.");
-				GetUserInfoResDto UserInfoResDto = new GetUserInfoResDto(userEmail);
+				GetUserInfoResDto UserInfoResDto = new GetUserInfoResDto(userEmail,null);
 				User newUser = UserInfoResDto.toEntity();
 				User saveUser = userRepository.save(newUser);
 				saveUser.setNickNameById();
+				//이름은 어떻게하냐??????
 				System.out.println("저장된 사용자의 이름 : " + saveUser.getName());
 				return saveUser;
 			});

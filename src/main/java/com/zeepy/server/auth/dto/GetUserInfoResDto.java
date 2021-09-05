@@ -14,11 +14,14 @@ import lombok.Setter;
 @Getter
 public class GetUserInfoResDto {
 	private String email;
+	private String name;
 	//	private String id;
 
 	public User toEntity() {
 		return User.builder()
 			.email(email)
+			.name(name)
+			.profileImage("https://zeepy.s3.ap-northeast-2.amazonaws.com/zeepyImage/dummyprofile_28pt.png")
 			.role(Role.ROLE_USER)
 			.accessNotify(false)
 			.sendMailCheck(false)
