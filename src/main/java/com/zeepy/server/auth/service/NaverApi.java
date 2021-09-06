@@ -61,10 +61,12 @@ public class NaverApi {
 
 			JSONObject response = (JSONObject)jsonObject.get("response");
 
-			//			String email = response.get("email").toString();
-			String id = response.get("id").toString();
+			// String id = response.get("id").toString();
+			String name = response.get("name").toString();
+			String email = response.get("email").toString();
 
-			userInfoResDto.setEmail(id);
+			userInfoResDto.setEmail(email);
+			userInfoResDto.setName(name);
 			//			userInfoResDto.setId(id);
 		} catch (Exception e) {
 			e.printStackTrace();

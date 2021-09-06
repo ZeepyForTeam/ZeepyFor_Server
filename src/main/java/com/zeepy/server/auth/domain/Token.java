@@ -36,11 +36,6 @@ public class Token extends BaseTimeEntity {
 
 	private String appleRefreshToken;
 
-	@Column(length = 1000)
-	private String appleIdToken;
-
-	private String appleClientSecret;
-
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;

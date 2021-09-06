@@ -23,4 +23,5 @@ public class Payload {
 	private String is_private_email;
 	private Long auth_time;
 	private boolean nonce_supported;
+	private Long real_user_status;
 }
