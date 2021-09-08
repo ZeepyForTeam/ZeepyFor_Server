@@ -11,18 +11,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import com.zeepy.server.common.job.AsyncJob;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.zeepy.server.common.CustomExceptionHandler.CustomException.JointPurchaseOwner;
-import com.zeepy.server.community.domain.Comment;
+import com.zeepy.server.common.job.AsyncJob;
 import com.zeepy.server.community.domain.Community;
 import com.zeepy.server.community.domain.CommunityCategory;
 import com.zeepy.server.community.domain.CommunityLike;
@@ -42,8 +39,6 @@ import com.zeepy.server.user.repository.UserRepository;
 
 @DisplayName("커뮤니티_서비스_테스트")
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
-@Transactional
 public class CommunityServiceTest {
 	private final String dummyEmail = "Zeepy@test.com";
 	private final User likeUser = User.builder()
@@ -90,7 +85,6 @@ public class CommunityServiceTest {
 	}
 
 	@DisplayName("참여하기_서비스로직_테스트")
-	@Transactional
 	@Test
 	public void joinCommunity() {
 		//given
