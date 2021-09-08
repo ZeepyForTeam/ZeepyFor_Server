@@ -18,12 +18,12 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.zeepy.server.review.domain.CommuncationTendency;
-import com.zeepy.server.review.domain.MultiChoiceReview;
 import org.hibernate.annotations.SQLInsert;
 
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
+import com.zeepy.server.review.domain.CommuncationTendency;
+import com.zeepy.server.review.domain.MultiChoiceReview;
 import com.zeepy.server.review.domain.Review;
 
 import lombok.AccessLevel;
@@ -64,7 +64,7 @@ import lombok.Setter;
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 public class Building extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_sequence_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "building_sequence_gen")
     @SequenceGenerator(name = "building_sequence_gen", sequenceName = "building_sequence")
     @Column(name = "building_id")
     private Long id;

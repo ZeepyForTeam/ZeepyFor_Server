@@ -33,7 +33,7 @@ import lombok.Setter;
 @Entity
 public class BuildingDeal extends BaseTimeEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_deal_sequence_gen")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "building_deal_sequence_gen")
 	@SequenceGenerator(name = "building_deal_sequence_gen", sequenceName = "building_deal_sequence")
 	private Long id;
 

@@ -32,7 +32,7 @@ import lombok.Setter;
 public class BuildingLike extends BaseTimeEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_like_sequence_gen")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "building_like_sequence_gen")
 	@SequenceGenerator(name = "building_like_sequence_gen", sequenceName = "building_like_sequence")
 	private Long id;
 
