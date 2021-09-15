@@ -39,7 +39,7 @@ import lombok.Setter;
 @Entity
 public class Review extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_sequence_gen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "review_sequence_gen")
     @SequenceGenerator(name = "review_sequence_gen", sequenceName = "review_sequence")
     private Long id;
 

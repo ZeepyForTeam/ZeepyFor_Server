@@ -35,7 +35,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Community extends BaseTimeEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "community_sequence_gen")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "community_sequence_gen")
 	@SequenceGenerator(name = "community_sequence_gen", sequenceName = "community_sequence")
 	private Long id;
 

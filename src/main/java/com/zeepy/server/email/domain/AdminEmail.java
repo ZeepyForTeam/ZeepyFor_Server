@@ -25,7 +25,7 @@ import lombok.Setter;
 @Entity
 public class AdminEmail {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_sequence_gen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "email_sequence_gen")
     @SequenceGenerator(name = "email_sequence_gen", sequenceName = "email_sequence")
     @Column(name = "email_id")
     private Long id; // PK

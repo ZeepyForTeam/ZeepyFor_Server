@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Comment extends BaseTimeEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_sequence_gen")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "comment_sequence_gen")
 	@SequenceGenerator(name = "comment_sequence_gen", sequenceName = "comment_sequence")
 	private Long id;
 

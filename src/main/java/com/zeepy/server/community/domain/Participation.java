@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Participation extends BaseTimeEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne

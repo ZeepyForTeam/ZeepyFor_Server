@@ -64,7 +64,7 @@ import lombok.Setter;
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 public class Building extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "building_sequence_gen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "building_sequence_gen")
     @SequenceGenerator(name = "building_sequence_gen", sequenceName = "building_sequence")
     @Column(name = "building_id")
     private Long id;

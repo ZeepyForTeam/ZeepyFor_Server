@@ -31,8 +31,8 @@ import lombok.Setter;
 @Entity
 public class Report extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "report_sequence_gen")
-    @SequenceGenerator(name = "report_sequence_gen", sequenceName = "report_sequence")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "report_sequence_gen")
+	@SequenceGenerator(name = "report_sequence_gen", sequenceName = "report_sequence")
     @Column(name = "report_id")
     private Long id; // PK
 

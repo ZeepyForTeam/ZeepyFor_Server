@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class CommunityLike extends BaseTimeEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "like_sequence_gen")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "like_sequence_gen")
 	@SequenceGenerator(name = "like_sequence_gen", sequenceName = "like_sequence")
 	@Column(name = "communitylike_id")
 	private Long id;

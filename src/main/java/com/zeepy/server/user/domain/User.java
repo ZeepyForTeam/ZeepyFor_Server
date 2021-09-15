@@ -46,7 +46,7 @@ import lombok.Setter;
 public class User implements UserDetails {
 	@Id
 	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence_gen")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_sequence_gen")
 	@SequenceGenerator(name = "user_sequence_gen", sequenceName = "user_sequence")
 	private Long id;
 
