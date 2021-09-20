@@ -25,6 +25,7 @@ public class SimpleReviewDto {
 	private MultiChoiceReview waterPressure;
 	private LocalDateTime reviewDate;
 	private String apartmentName;
+	private LocalDateTime createdDate;
 
 	public SimpleReviewDto(Review review) {
 		this.id = review.getId();
@@ -38,5 +39,6 @@ public class SimpleReviewDto {
 		this.waterPressure = review.getWaterPressure();
 		this.reviewDate = review.getCreatedDate();
 		this.apartmentName = review.getBuilding().getApartmentName();
+		this.createdDate = review.getCreatedDate();
 	}
 }

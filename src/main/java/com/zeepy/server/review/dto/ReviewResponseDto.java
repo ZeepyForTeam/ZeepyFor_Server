@@ -1,5 +1,6 @@
 package com.zeepy.server.review.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,102 +21,107 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewResponseDto {
-	private Long id;
-	private ReviewUserResDto user;
-	private String address;
-	private CommuncationTendency communcationTendency;
-	private LessorGender lessorGender;
-	private LessorAge lessorAge;
-	private String lessorReview;
-	private RoomCount roomCount;
-	private MultiChoiceReview soundInsulation;
-	private MultiChoiceReview pest;
-	private MultiChoiceReview lightning;
-	private MultiChoiceReview waterPressure;
-	private List<Furniture> furnitures;
-	private String review;
-	private TotalEvaluation totalEvaluation;
-	private List<String> imageUrls;
+    private Long id;
+    private ReviewUserResDto user;
+    private String address;
+    private CommuncationTendency communcationTendency;
+    private LessorGender lessorGender;
+    private LessorAge lessorAge;
+    private String lessorReview;
+    private RoomCount roomCount;
+    private MultiChoiceReview soundInsulation;
+    private MultiChoiceReview pest;
+    private MultiChoiceReview lightning;
+    private MultiChoiceReview waterPressure;
+    private List<Furniture> furnitures;
+    private String review;
+    private TotalEvaluation totalEvaluation;
+    private List<String> imageUrls;
+    private LocalDateTime createdDate;
 
-	public ReviewResponseDto(
-		Long id,
-		User user,
-		String address,
-		LessorAge lessorAge,
-		LessorGender lessorGender,
-		CommuncationTendency communcationTendency,
-		MultiChoiceReview soundInsulation,
-		MultiChoiceReview pest,
-		MultiChoiceReview lightning,
-		MultiChoiceReview waterPressure,
-		String lessorReview,
-		RoomCount roomCount,
-		List<Furniture> furnitures,
-		String review,
-		TotalEvaluation totalEvaluation,
-		List<String> imageUrls
-	) {
-		this.id = id;
-		this.user = new ReviewUserResDto(user);
-		this.address = address;
-		this.lessorAge = lessorAge;
-		this.lessorGender = lessorGender;
-		this.communcationTendency = communcationTendency;
-		this.soundInsulation = soundInsulation;
-		this.pest = pest;
-		this.lightning = lightning;
-		this.waterPressure = waterPressure;
-		this.lessorReview = lessorReview;
-		this.roomCount = roomCount;
-		this.furnitures = furnitures;
-		this.review = review;
-		this.totalEvaluation = totalEvaluation;
-		this.imageUrls = imageUrls;
-	}
+    public ReviewResponseDto(
+            Long id,
+            User user,
+            String address,
+            LessorAge lessorAge,
+            LessorGender lessorGender,
+            CommuncationTendency communcationTendency,
+            MultiChoiceReview soundInsulation,
+            MultiChoiceReview pest,
+            MultiChoiceReview lightning,
+            MultiChoiceReview waterPressure,
+            String lessorReview,
+            RoomCount roomCount,
+            List<Furniture> furnitures,
+            String review,
+            TotalEvaluation totalEvaluation,
+            List<String> imageUrls,
+            LocalDateTime createdDate
+    ) {
+        this.id = id;
+        this.user = new ReviewUserResDto(user);
+        this.address = address;
+        this.lessorAge = lessorAge;
+        this.lessorGender = lessorGender;
+        this.communcationTendency = communcationTendency;
+        this.soundInsulation = soundInsulation;
+        this.pest = pest;
+        this.lightning = lightning;
+        this.waterPressure = waterPressure;
+        this.lessorReview = lessorReview;
+        this.roomCount = roomCount;
+        this.furnitures = furnitures;
+        this.review = review;
+        this.totalEvaluation = totalEvaluation;
+        this.imageUrls = imageUrls;
+        this.createdDate = createdDate;
+    }
 
-	public ReviewResponseDto(Review review) {
-		this.id = review.getId();
-		this.user = new ReviewUserResDto(review.getUser());
-		this.lessorAge = review.getLessorAge();
-		this.lessorGender = review.getLessorGender();
-		this.communcationTendency = review.getCommunicationTendency();
-		this.soundInsulation = review.getSoundInsulation();
-		this.pest = review.getPest();
-		this.lightning = review.getLightning();
-		this.waterPressure = review.getWaterPressure();
-		this.lessorReview = review.getLessorReview();
-		this.roomCount = review.getRoomCount();
-		this.furnitures = review.getFurnitures();
-		this.review = review.getReview();
-		this.totalEvaluation = review.getTotalEvaluation();
-		this.imageUrls = review.getImageUrls();
-	}
+    public ReviewResponseDto(Review review) {
+        this.id = review.getId();
+        this.user = new ReviewUserResDto(review.getUser());
+        this.lessorAge = review.getLessorAge();
+        this.lessorGender = review.getLessorGender();
+        this.communcationTendency = review.getCommunicationTendency();
+        this.soundInsulation = review.getSoundInsulation();
+        this.pest = review.getPest();
+        this.lightning = review.getLightning();
+        this.waterPressure = review.getWaterPressure();
+        this.lessorReview = review.getLessorReview();
+        this.roomCount = review.getRoomCount();
+        this.furnitures = review.getFurnitures();
+        this.review = review.getReview();
+        this.totalEvaluation = review.getTotalEvaluation();
+        this.imageUrls = review.getImageUrls();
+        this.createdDate = review.getCreatedDate();
+    }
 
     public static ReviewResponseDto of(Review review) {
-		return new ReviewResponseDto(
-			review.getId(),
-			review.getUser(),
-			review.getAddress(),
-			review.getLessorAge(),
-			review.getLessorGender(),
-			review.getCommunicationTendency(),
-			review.getSoundInsulation(),
-			review.getPest(),
-			review.getLightning(),
-			review.getWaterPressure(),
-			review.getLessorReview(),
-			review.getRoomCount(),
-			review.getFurnitures(),
-			review.getReview(),
-			review.getTotalEvaluation(),
-			review.getImageUrls()
-		);
-	}
+        return new ReviewResponseDto(
+                review.getId(),
+                review.getUser(),
+                review.getAddress(),
+                review.getLessorAge(),
+                review.getLessorGender(),
+                review.getCommunicationTendency(),
+                review.getSoundInsulation(),
+                review.getPest(),
+                review.getLightning(),
+                review.getWaterPressure(),
+                review.getLessorReview(),
+                review.getRoomCount(),
+                review.getFurnitures(),
+                review.getReview(),
+                review.getTotalEvaluation(),
+                review.getImageUrls(),
+                review.getCreatedDate()
+        );
+    }
 
     public static List<ReviewResponseDto> listOf(List<Review> reviewList) {
-		return reviewList
-			.stream()
-			.map(ReviewResponseDto::of)
-			.collect(Collectors.toList());
-	}
+        return reviewList
+                .stream()
+                .map(ReviewResponseDto::of)
+                .collect(Collectors.toList());
+    }
 }
