@@ -1,27 +1,12 @@
 package com.zeepy.server.building.domain;
 
-import java.sql.Timestamp;
-
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.NotNull;
-
 import com.zeepy.server.building.dto.BuildingDealRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
+import lombok.*;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 
 /**
  * Created by Minky on 2021-05-15
@@ -34,7 +19,6 @@ import lombok.Setter;
 public class BuildingDeal extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "building_deal_sequence_gen")
-	@SequenceGenerator(name = "building_deal_sequence_gen", sequenceName = "building_deal_sequence")
 	private Long id;
 
 	@NotNull

@@ -1,36 +1,18 @@
 package com.zeepy.server.building.domain;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.SQLInsert;
-
 import com.zeepy.server.building.dto.BuildingRequestDto;
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.review.domain.CommuncationTendency;
 import com.zeepy.server.review.domain.MultiChoiceReview;
 import com.zeepy.server.review.domain.Review;
+import lombok.*;
+import org.hibernate.annotations.SQLInsert;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.annotation.Nullable;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by Minky on 2021-05-15
@@ -65,7 +47,6 @@ import lombok.Setter;
 public class Building extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "building_sequence_gen")
-    @SequenceGenerator(name = "building_sequence_gen", sequenceName = "building_sequence")
     @Column(name = "building_id")
     private Long id;
 

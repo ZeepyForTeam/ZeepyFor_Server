@@ -1,19 +1,12 @@
 package com.zeepy.server.auth.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-
 import com.zeepy.server.common.domain.BaseTimeEntity;
 import com.zeepy.server.user.domain.User;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @NoArgsConstructor
 @Getter
@@ -21,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class Token extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "token_sequence_gen")
-	@SequenceGenerator(name = "token_sequence_gen", sequenceName = "token_sequence")
 	private Long id;
 
 	private String accessToken;

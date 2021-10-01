@@ -1,24 +1,11 @@
 package com.zeepy.server.report.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.SequenceGenerator;
+import com.zeepy.server.common.domain.BaseTimeEntity;
+import lombok.*;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import com.zeepy.server.common.domain.BaseTimeEntity;
-
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * Created by Minky on 2021-07-18
@@ -32,7 +19,6 @@ import lombok.Setter;
 public class Report extends BaseTimeEntity {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "report_sequence_gen")
-	@SequenceGenerator(name = "report_sequence_gen", sequenceName = "report_sequence")
     @Column(name = "report_id")
     private Long id; // PK
 
